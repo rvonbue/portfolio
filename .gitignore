@@ -1,0 +1,7 @@
+.*/
+/build
+node_modules/
+*.log
+server/css
+server/js
+client/src/js/data/*
