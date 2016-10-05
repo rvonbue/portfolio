@@ -2,11 +2,11 @@ import eventController from "../controllers/eventController";
 import BaseModel from "./BaseModel";
 import THREE from "three";
 import WorldTranslator from "../util/worldTranslator";
-import SceneModel from "./sceneModel";
+import sceneModel from "./sceneModel";
 
 var ArtItem = BaseModel.extend({
   initialize: function (options) {
-    SceneModel.prototype.initialize.apply(this, arguments);
+    sceneModel.prototype.initialize.apply(this, arguments);
     this.imgSrc = "/images/artGallery/" + options.imgSrc;
     this.loadTexture();
   },

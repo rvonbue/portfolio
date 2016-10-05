@@ -11,7 +11,7 @@ var Base3dView = BaseView.extend({
     this.loadSceneModel();
   },
   loadSceneModel: function () {
-    eventController.trigger(eventController.LOAD_NEW_SCENE, "models/" + this.name +".json", {name: this.name});
+    eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + this.name +".json", {name: this.name});
   },
   sceneModelLoaded: function (obj) {
     this.model = new SceneModel(obj);

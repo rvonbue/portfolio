@@ -8,7 +8,7 @@ import CameraControls from "../models/cameraControls";
 import SceneControls from "../views/controls/sceneControls";
 import NavigationBar from "../views/navigationBar";
 import StatsView from "../views/statsView";
-import DatGuiView from "../views/controls/datGuiView";
+// import DatGuiView from "../views/controls/datGuiView";
 // require('three-first-person-controls')(THREE);
 
 var AppView = BaseView.extend({
@@ -19,15 +19,13 @@ var AppView = BaseView.extend({
     this.sceneObjects = [];
     this.statsView = new StatsView();
     $("body").append(this.statsView.stats.domElement);
-    $("body").append(new DatGuiView().render().el);
-
+    // $("body").append(new DatGuiView().render().el);
     this.$el.append($("<canvas>"));
     this.clock = new THREE.Clock();
     this.canvasEl = this.$el.find("canvas")[0];
-    // this.initScene();
-    // this.addListeners();
-    // this.animate();
-    console.log("Appview initialize");
+    this.initScene();
+    this.addListeners();
+    this.animate();
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
@@ -37,7 +35,7 @@ var AppView = BaseView.extend({
     var scene = window.scene = this.scene = new THREE.Scene();
     this.initCamera();
     this.lightLoader = new LightLoader({scene: scene});
-    // this.addHelpers();
+    this.addHelpers();
     this.renderer = new THREE.WebGLRenderer({alpha: false, antiAlias: true, canvas: this.canvasEl });
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.renderer.setPixelRatio( window.devicePixelRatio );

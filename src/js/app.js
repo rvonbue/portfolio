@@ -1,5 +1,5 @@
 /* jshint -W079 */ //stop jquery reassignment from showing error
-var view, graphModel;
+var view;
 // import NoCanvasSupportTemplate from "./AppMainNoCanvas.html";
 
 import $ from 'jquery';
@@ -24,7 +24,6 @@ function isCanvasSupported () {
   return !!(elem.getContext && elem.getContext("2d"));
 }
 function startApp () {
-
   view = new AppView({});
 }
 $(function () {
@@ -35,7 +34,7 @@ $(function () {
     return;
   }
   $("body").append(view.render().el);
-  view.onAttach();
+  // view.onAttach();
 
   window.eventController = eventController;
   window.commandController = commandController;

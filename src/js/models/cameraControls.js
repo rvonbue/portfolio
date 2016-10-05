@@ -3,7 +3,7 @@ import BaseModel from "./BaseModel";
 import TWEEN from "tween.js";
 import THREE from "three";
 import TrackballControls from 'three-trackballcontrols';
-require('three-first-person-controls')(THREE);
+// require('three-first-person-controls')(THREE);
 
 var CameraControls = BaseModel.extend({
   initialize: function (options) {

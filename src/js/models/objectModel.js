@@ -1,5 +1,5 @@
 import eventController from "../controllers/eventController";
-var BaseModel = require("models/BaseModel");
+import BaseModel from "./BaseModel";
 
 var ObjectModel = BaseModel.extend({
   defaults: {
@@ -15,4 +15,5 @@ var ObjectModel = BaseModel.extend({
     if (options.object3d) this.set("object3d", options.object3d);
   }
 });
+
 module.exports = ObjectModel;

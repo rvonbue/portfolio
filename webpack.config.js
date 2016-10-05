@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 
 module.exports = {
-     entry: './src/js/app.js',
-     output: {
-         path: './bin',
-         filename: 'app.bundle.js'
-     },
+   entry: './src/js/app.js',
+   output: {
+       path: './bin',
+       filename: 'app.bundle.js'
+   },
 	 module: {
          loaders: [{
              test: /\.js$/,
@@ -37,6 +37,7 @@ module.exports = {
 		})
     ],
 	devServer: {
+    // contentBase: "./bin",
 	  inline: true,
 	  hot: true,
 	  open: true,
