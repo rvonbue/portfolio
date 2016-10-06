@@ -107,7 +107,7 @@
 	    return;
 	  }
 	  (0, _jquery2.default)("body").append(view.render().el);
-	  // view.onAttach();
+	  view.initScene();
 
 	  window.eventController = _eventController2.default;
 	  window.commandController = _commandController2.default;
@@ -16311,29 +16311,26 @@
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	    _.bindAll(this, "animate", "addModelsToScene", "resize");
 	    this.sceneObjects = [];
-	    this.statsView = new _statsView2.default();
-	    $("body").append(this.statsView.stats.domElement);
-	    // $("body").append(new DatGuiView().render().el);
-	    this.$el.append($("<canvas>"));
 	    this.clock = new _three2.default.Clock();
-	    this.canvasEl = this.$el.find("canvas")[0];
-	    this.initScene();
-	    this.addListeners();
-	    this.animate();
 	  },
 	  addListeners: function addListeners() {
 	    _eventController2.default.on(_eventController2.default.ADD_MODEL_TO_SCENE, this.addModelsToScene);
 	    $(window).resize(this.resize);
 	  },
 	  initScene: function initScene() {
+	    var width = this.$el.width();
+	    var height = window.innerHeight - this.$el.find(".navigation-bar:first").height();
+	    console.log("height:", height);
 	    var scene = window.scene = this.scene = new _three2.default.Scene();
 	    this.initCamera();
 	    this.lightLoader = new _lightLoader2.default({ scene: scene });
 	    this.addHelpers();
 	    this.renderer = new _three2.default.WebGLRenderer({ alpha: false, antiAlias: true, canvas: this.canvasEl });
-	    this.renderer.setSize(window.innerWidth, window.innerHeight);
+	    this.renderer.setSize(width, height);
 	    this.renderer.setPixelRatio(window.devicePixelRatio);
 	    this.initControls();
+	    this.addListeners();
+	    this.animate();
 	  },
 	  initCamera: function initCamera() {
 	    this.camera = new _three2.default.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
@@ -16363,8 +16360,8 @@
 	    this.statsView.stats.end();
 	  },
 	  resize: function resize() {
-	    var innerWidth = window.innerWidth;
-	    var innerHeight = window.innerHeight;
+	    var innerWidth = this.$el.width();
+	    var innerHeight = window.innerHeight - this.$el.find(".navigation-bar:first").height();
 
 	    this.camera.aspect = innerWidth / innerHeight;
 	    this.camera.updateProjectionMatrix();
@@ -16372,7 +16369,12 @@
 	  },
 	  render: function render() {
 	    console.log("Appview Render");
-	    $("body").append(new _navigationBar2.default().render().el);
+	    this.statsView = new _statsView2.default();
+	    $("body").append(this.statsView.stats.domElement);
+	    this.$el.append(new _navigationBar2.default().render().el);
+	    console.log("alkdsfjasldjf;sadklfjadskl;f", this.$el.append($("<canvas>")));
+	    this.canvasEl = this.$el.find("canvas")[0];
+	    // $("body").append(new DatGuiView().render().el);
 	    return this;
 	  }
 	});
@@ -58322,9 +58324,9 @@
 	    this.addLight();
 	  },
 	  addLight: function addLight() {
-	    // var light = new THREE.AmbientLight( 0x404040 );
+	    var light = new _three2.default.AmbientLight(0x404040);
 	    // light.position.y = 25;
-	    // this.scene.add( light );
+	    this.scene.add(light);
 	    // var plight = new THREE.PointLight( 0x404040, 25, 50 );
 	    // plight.position.set( 0, 25, 0 );
 	    // this.scene.add( plight );
@@ -58467,8 +58469,8 @@
 	    return this.controls;
 	  },
 	  setInitialPosition: function setInitialPosition() {
-	    this.camera.position.z = 20;
-	    this.camera.position.y = 5;
+	    this.camera.position.z = 30;
+	    this.camera.position.y = 3;
 	  },
 	  updateCamera: function updateCamera(index) {
 	    var selectedObject = this.sceneObjects[index];
@@ -99782,12 +99784,12 @@
 	    // eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
 	    this.sceneCollection = new _SceneModelCollection2.default();
 	    this.modelLoader = new _modelLoader2.default();
-	    this.loadInitialScene("movieTheater");
+	    this.loadInitialScene("home");
 	    this.animating = false;
 	  },
 	  loadInitialScene: function loadInitialScene(name) {
 	    this.load3dView(name);
-	    // eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + name +".json", {name: name});
+	    _eventController2.default.trigger(_eventController2.default.LOAD_NEW_SCENE, "models3d/" + name + ".json", { name: name });
 	  },
 	  load3dView: function load3dView(name) {
 	    if (this.get(name) === null) {
@@ -99930,7 +99932,7 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	"use strict";
 
 	var _eventController = __webpack_require__(6);
 
@@ -99984,11 +99986,11 @@
 	    var loader = new _three2.default.JSONLoader(this.manager);
 
 	    loader.load(url, function (geometry, materials) {
-	      _.each(materials, function (m) {
-	        m.map = self.getNewTexture(materialMapList[m.name], "map");
-	        m.specularMap = self.getNewTexture(materialMapList[m.name], "spec");
-	        m.displacemntMap = self.getNewTexture(materialMapList[m.name], "disp");
-	      });
+	      // _.each(materials, function (m) {
+	      // m.map = self.getNewTexture(materialMapList[m.name], "map");
+	      // m.specularMap = self.getNewTexture(materialMapList[m.name], "spec");
+	      // m.displacemntMap = self.getNewTexture(materialMapList[m.name], "disp");
+	      // });
 	      var object = new _three2.default.Mesh(geometry, new _three2.default.MeshFaceMaterial(materials));
 	      _eventController2.default.trigger(_eventController2.default.MODEL_LOADED, { name: options.name, object3d: object });
 	    });
@@ -100020,7 +100022,6 @@
 	});
 
 	module.exports = ModelLoader;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 26 */
@@ -100173,7 +100174,6 @@
 	  },
 	  sceneModelLoaded: function sceneModelLoaded(obj) {
 	    this.model = new _SceneModel2.default(obj);
-	    console.log("ready", this.ready);
 	    if (this.ready === true) {
 	      _eventController2.default.trigger(_eventController2.default.ADD_MODEL_TO_SCENE, this.model);
 	    } else {
@@ -100376,8 +100376,7 @@
 	  },
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    // _.bindAll(this, "animate", "addModelsToScene");
-	    var self = this;
+	    this.height = 45;
 	    this.navigationItems = [{ displayTitle: "Home", name: "home" }, { displayTitle: "3d", name: "movieTheater" }, { displayTitle: "Art Gallery", name: "artGallery" }];
 	  },
 	  updateCamera: function updateCamera(e) {

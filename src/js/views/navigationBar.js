@@ -9,8 +9,7 @@ var NavigationBar = BaseView.extend({
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
-    // _.bindAll(this, "animate", "addModelsToScene");
-    var self = this;
+    this.height = 45;
     this.navigationItems = [
       { displayTitle: "Home", name:"home" },
       { displayTitle: "3d", name:"movieTheater" },

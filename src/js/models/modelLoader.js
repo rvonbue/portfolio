@@ -40,11 +40,11 @@ var ModelLoader = BaseModel.extend({
     loader.load(
     	url,
     	function ( geometry, materials ) {
-        _.each(materials, function (m) {
+        // _.each(materials, function (m) {
           // m.map = self.getNewTexture(materialMapList[m.name], "map");
           // m.specularMap = self.getNewTexture(materialMapList[m.name], "spec");
           // m.displacemntMap = self.getNewTexture(materialMapList[m.name], "disp");
-      });
+      // });
       var object = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object });
     });

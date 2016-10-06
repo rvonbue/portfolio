@@ -21,12 +21,12 @@ var SceneControls = BaseModel.extend({
     // eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
     this.sceneCollection = new SceneCollection();
     this.modelLoader = new ModelLoader();
-    this.loadInitialScene("movieTheater");
+    this.loadInitialScene("home");
     this.animating = false;
   },
   loadInitialScene: function (name) {
     this.load3dView(name);
-    // eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + name +".json", {name: name});
+    eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + name +".json", {name: name});
   },
   load3dView: function (name) {
     if (this.get(name) === null) {

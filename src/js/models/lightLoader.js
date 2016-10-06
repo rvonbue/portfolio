@@ -10,9 +10,9 @@ var LightLoader = BaseModel.extend({
     this.addLight();
   },
   addLight: function () {
-    // var light = new THREE.AmbientLight( 0x404040 );
+    var light = new THREE.AmbientLight( 0x404040 );
     // light.position.y = 25;
-    // this.scene.add( light );
+    this.scene.add( light );
     // var plight = new THREE.PointLight( 0x404040, 25, 50 );
     // plight.position.set( 0, 25, 0 );
     // this.scene.add( plight );

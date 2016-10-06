@@ -15,7 +15,6 @@ var Base3dView = BaseView.extend({
   },
   sceneModelLoaded: function (obj) {
     this.model = new SceneModel(obj);
-    console.log("ready", this.ready);
     if (this.ready === true ) {
       eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.model);
     } else {

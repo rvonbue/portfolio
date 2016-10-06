@@ -17,30 +17,26 @@ var AppView = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     _.bindAll(this, "animate", "addModelsToScene", "resize");
     this.sceneObjects = [];
-    this.statsView = new StatsView();
-    $("body").append(this.statsView.stats.domElement);
-    // $("body").append(new DatGuiView().render().el);
-    this.$el.append($("<canvas>"));
     this.clock = new THREE.Clock();
-    this.canvasEl = this.$el.find("canvas")[0];
-    this.initScene();
-    this.addListeners();
-    this.animate();
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     $(window).resize(this.resize);
   },
   initScene: function () {
+    var width = this.$el.width();
+    var height = window.innerHeight - this.$el.find(".navigation-bar:first").height();
+    console.log("height:", height);
     var scene = window.scene = this.scene = new THREE.Scene();
     this.initCamera();
     this.lightLoader = new LightLoader({scene: scene});
     this.addHelpers();
     this.renderer = new THREE.WebGLRenderer({alpha: false, antiAlias: true, canvas: this.canvasEl });
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
+    this.renderer.setSize( width, height );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.initControls();
-
+    this.addListeners();
+    this.animate();
   },
   initCamera: function () {
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -70,8 +66,8 @@ var AppView = BaseView.extend({
     this.statsView.stats.end();
   },
   resize: function () {
-    var innerWidth = window.innerWidth;
-    var innerHeight = window.innerHeight;
+    var innerWidth = this.$el.width();
+    var innerHeight = window.innerHeight - this.$el.find(".navigation-bar:first").height();
 
     this.camera.aspect = innerWidth / innerHeight;
 		this.camera.updateProjectionMatrix();
@@ -79,7 +75,12 @@ var AppView = BaseView.extend({
   },
   render: function () {
     console.log("Appview Render");
-    $("body").append(new NavigationBar().render().el);
+    this.statsView = new StatsView();
+    $("body").append(this.statsView.stats.domElement);
+    this.$el.append(new NavigationBar().render().el);
+    console.log("alkdsfjasldjf;sadklfjadskl;f", this.$el.append($("<canvas>")));
+    this.canvasEl = this.$el.find("canvas")[0];
+    // $("body").append(new DatGuiView().render().el);
     return this;
   }
 });

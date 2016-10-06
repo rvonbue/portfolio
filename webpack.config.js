@@ -7,20 +7,11 @@ module.exports = {
        filename: 'app.bundle.js'
    },
 	 module: {
-         loaders: [{
-             test: /\.js$/,
-             exclude: /node_modules/,
-             loader: 'babel-loader'
-         },
-		 {
-		  test: /\.js$/,
-		  exclude: /(node_modules|bower_components)/,
-		  loader: 'babel',
-		  query: {
-			presets: ['es2015']
-		  }
-		}]
-     },
+     loaders: [
+       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+		   { test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: 'babel', query: {	presets: ['es2015'] }}
+     ]
+   },
 	 plugins: [
         // new webpack.optimize.UglifyJsPlugin({
 			// sourceMap: true,
@@ -31,10 +22,7 @@ module.exports = {
                 // comments: false,
             // },
         // }),
-		new webpack.ProvidePlugin({
-			_: "underscore",
-			"window._": "underscore"
-		})
+		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" })
     ],
 	devServer: {
     // contentBase: "./bin",

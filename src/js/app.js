@@ -34,7 +34,7 @@ $(function () {
     return;
   }
   $("body").append(view.render().el);
-  // view.onAttach();
+  view.initScene();
 
   window.eventController = eventController;
   window.commandController = commandController;
