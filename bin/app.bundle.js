@@ -16290,11 +16290,11 @@
 
 	var _sceneControls2 = _interopRequireDefault(_sceneControls);
 
-	var _navigationBar = __webpack_require__(36);
+	var _navigationBar = __webpack_require__(35);
 
 	var _navigationBar2 = _interopRequireDefault(_navigationBar);
 
-	var _statsView = __webpack_require__(37);
+	var _statsView = __webpack_require__(36);
 
 	var _statsView2 = _interopRequireDefault(_statsView);
 
@@ -16320,7 +16320,6 @@
 	  initScene: function initScene() {
 	    var width = this.$el.width();
 	    var height = window.innerHeight - this.$el.find(".navigation-bar:first").height();
-	    console.log("height:", height);
 	    var scene = window.scene = this.scene = new _three2.default.Scene();
 	    this.initCamera();
 	    this.lightLoader = new _lightLoader2.default({ scene: scene });
@@ -99752,11 +99751,11 @@
 
 	var _artGalleryView3d2 = _interopRequireDefault(_artGalleryView3d);
 
-	var _homeView3d = __webpack_require__(34);
+	var _homeView3d = __webpack_require__(33);
 
 	var _homeView3d2 = _interopRequireDefault(_homeView3d);
 
-	var _movieTheaterView3d = __webpack_require__(35);
+	var _movieTheaterView3d = __webpack_require__(34);
 
 	var _movieTheaterView3d2 = _interopRequireDefault(_movieTheaterView3d);
 
@@ -99932,7 +99931,7 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
 	var _eventController = __webpack_require__(6);
 
@@ -99951,22 +99950,22 @@
 	}
 
 	var materialMapList = {
-	  book: { map: "textures/book/book_COLOR.png", spec: "textures/book/book_SPEC.png", disp: "textures/book/book_DISP.png" },
-	  wall: { map: "textures/leather/leather_COLOR.png", spec: "textures/leather/leather_SPEC.png", disp: "textures/leather/leather_DISP.png", repeatScale: 5 },
-	  wood: { map: "textures/wood/wood_COLOR.png", spec: "textures/wood/wood_SPEC.png", disp: "textures/book/book_DISP.png", repeatScale: 5, shininess: 50 },
-	  woodFloor: { map: "textures/woodFloor/woodFloor_COLOR.png", spec: "textures/woodFloor/woodFloor_SPEC.png", disp: "textures/woodFloor/woodFloor_DISP.png", repeatScale: 10 },
-	  leather: { map: "textures/leather/leather_COLOR.png", spec: "textures/leather/leather_SPEC.png", disp: "textures/leather/leather_DISP.png", repeatScale: 12 },
-	  metal: { map: "textures/leather/leather_COLOR.png", spec: "textures/leather/leather_SPEC.png", disp: "textures/leather/leather_DISP.png", repeatScale: 5, shading: "flat" },
-	  plastic: { map: null, spec: null, disp: null, repeatScale: 5 },
-	  plasticRed: { map: null, spec: null, disp: null, repeatScale: 5 },
-	  plasticBlack: { map: null, spec: null, disp: null, repeatScale: 5 },
-	  plasticWhite: { map: null, spec: null, disp: null, repeatScale: 5 },
-	  rug: { map: "textures/rug/rug_COLOR.png", spec: "textures/rug/rug_SPEC.png", disp: "textures/rug/rug_DISP.png", alpha: true },
+	  book: { map: "textures/book/book_COLOR.png", specularMap: "textures/book/book_SPEC.png", displacementMap: "textures/book/book_DISP.png" },
+	  wall: { map: "textures/leather/leather_COLOR.jpg", repeatScale: 5 },
+	  wood: { map: "textures/wood/wood_COLOR.png", specularMap: "textures/wood/wood_SPEC.png", displacementMap: "textures/book/book_DISP.png", repeatScale: 5, shininess: 50 },
+	  woodFloor: { map: "textures/woodFloor.jpg", repeatScale: 10 },
+	  leather: { map: "textures/leather/leather_COLOR.png", specularMap: "textures/leather/leather_SPEC.png", displacementMap: "textures/leather/leather_DISP.png", repeatScale: 12 },
+	  metal: { map: "textures/leather/leather_COLOR.png", specularMap: "textures/leather/leather_SPEC.png", displacementMap: "textures/leather/leather_DISP.png", repeatScale: 5, shading: "flat" },
+	  plastic: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+	  plasticRed: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+	  plasticBlack: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+	  plasticWhite: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+	  rug: { map: "textures/rug/rug_COLOR.png", specularMap: "textures/rug/rug_SPEC.png", displacementMap: "textures/rug/rug_DISP.png", alpha: true },
 	  cityScape: { map: "textures/cityScape.jpg" },
 	  computerScreen: { map: "textures/multibackground.png" },
 	  tvScreen: { map: "video" },
-	  plushRed: { map: null, spec: null, disp: null, repeatScale: 5 },
-	  videoGameCabinet: { map: "textures/videoGameCabinet/videoGameCabinet_COLOR.png", spec: "textures/videoGameCabinet/videoGameCabinet_SPEC.png" }
+	  plushRed: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+	  videoGameCabinet: { map: "textures/videoGameCabinet/videoGameCabinet_COLOR.png", specularMap: "textures/videoGameCabinet/videoGameCabinet_SPEC.png" }
 	};
 
 	var ModelLoader = _BaseModel2.default.extend({
@@ -99986,11 +99985,22 @@
 	    var loader = new _three2.default.JSONLoader(this.manager);
 
 	    loader.load(url, function (geometry, materials) {
-	      // _.each(materials, function (m) {
-	      // m.map = self.getNewTexture(materialMapList[m.name], "map");
-	      // m.specularMap = self.getNewTexture(materialMapList[m.name], "spec");
-	      // m.displacemntMap = self.getNewTexture(materialMapList[m.name], "disp");
-	      // });
+	      console.log("materials", materials);
+	      _.each(materials, function (m) {
+	        // console.log("material:name: ", m.name);
+	        if (m.name === "woodFloor") {
+	          console.log("material:---------", m);
+	          // _.each(materialMapList[m.name], function (key, prop) {
+	          //   console.log("key:", key);
+	          //   console.log("prop:", prop);
+	          // m[prop] = self.getNewTexture(materialMapList[m.name], key);
+	          // });
+	        }
+
+	        // m.map = self.getNewTexture(materialMapList[m.name], "map");
+	        // m.specularMap = self.getNewTexture(materialMapList[m.name], "spec");
+	        // m.displacementMap: = self.getNewTexture(materialMapList[m.name], "disp");
+	      });
 	      var object = new _three2.default.Mesh(geometry, new _three2.default.MeshFaceMaterial(materials));
 	      _eventController2.default.trigger(_eventController2.default.MODEL_LOADED, { name: options.name, object3d: object });
 	    });
@@ -100022,6 +100032,7 @@
 	});
 
 	module.exports = ModelLoader;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 26 */
@@ -100070,9 +100081,10 @@
 	    "ready": true
 	  },
 	  initialize: function initialize(options) {
-	    // console.log("object3d---object3d", options);
 	    this.set("name", options.name);
-	    if (options.object3d) this.set("object3d", options.object3d);
+	    if (options.object3d) {
+	      this.set("object3d", options.object3d);
+	    }
 	  }
 	});
 
@@ -100088,11 +100100,11 @@
 
 	var _Base3dView2 = _interopRequireDefault(_Base3dView);
 
-	var _artGalleryList = __webpack_require__(31);
+	var _artGalleryList = __webpack_require__(30);
 
 	var _artGalleryList2 = _interopRequireDefault(_artGalleryList);
 
-	var _artItem3d = __webpack_require__(32);
+	var _artItem3d = __webpack_require__(31);
 
 	var _artItem3d2 = _interopRequireDefault(_artItem3d);
 
@@ -100153,9 +100165,9 @@
 
 	var _eventController2 = _interopRequireDefault(_eventController);
 
-	var _SceneModel = __webpack_require__(30);
+	var _sceneModel = __webpack_require__(27);
 
-	var _SceneModel2 = _interopRequireDefault(_SceneModel);
+	var _sceneModel2 = _interopRequireDefault(_sceneModel);
 
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
@@ -100173,7 +100185,7 @@
 	    _eventController2.default.trigger(_eventController2.default.LOAD_NEW_SCENE, "models3d/" + this.name + ".json", { name: this.name });
 	  },
 	  sceneModelLoaded: function sceneModelLoaded(obj) {
-	    this.model = new _SceneModel2.default(obj);
+	    this.model = new _sceneModel2.default(obj);
 	    if (this.ready === true) {
 	      _eventController2.default.trigger(_eventController2.default.ADD_MODEL_TO_SCENE, this.model);
 	    } else {
@@ -100187,41 +100199,6 @@
 
 /***/ },
 /* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _eventController = __webpack_require__(6);
-
-	var _eventController2 = _interopRequireDefault(_eventController);
-
-	var _BaseModel = __webpack_require__(20);
-
-	var _BaseModel2 = _interopRequireDefault(_BaseModel);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var SceneModel = _BaseModel2.default.extend({
-	  defaults: {
-	    "name": "Caesar Salad",
-	    "object3d": null,
-	    "imgSrc": null,
-	    "selected": false,
-	    "ready": true
-	  },
-	  initialize: function initialize(options) {
-	    // console.log("object3d---object3d", options);
-	    this.set("name", options.name);
-	    if (options.object3d) this.set("object3d", options.object3d);
-	  }
-	});
-
-	module.exports = SceneModel;
-
-/***/ },
-/* 31 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -100229,7 +100206,7 @@
 	module.exports = [{ "imgSrc": "CED3logocolorwebbig.gif" }, { "imgSrc": "CED3logocolorwith-text2.png" }, { "imgSrc": "npslogohz.jpg" }];
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -100246,7 +100223,7 @@
 
 	var _three2 = _interopRequireDefault(_three);
 
-	var _worldTranslator = __webpack_require__(33);
+	var _worldTranslator = __webpack_require__(32);
 
 	var _worldTranslator2 = _interopRequireDefault(_worldTranslator);
 
@@ -100286,7 +100263,7 @@
 	module.exports = ArtItem;
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -100299,7 +100276,7 @@
 	};
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -100325,7 +100302,7 @@
 	module.exports = HomeView3d;
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -100351,7 +100328,7 @@
 	module.exports = MovieTheaterView3d;
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -100395,7 +100372,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -100412,7 +100389,7 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var Stats = __webpack_require__(38);
+	var Stats = __webpack_require__(37);
 
 	var AppView = _BaseView2.default.extend({
 	  className: "stats",
@@ -100438,7 +100415,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js

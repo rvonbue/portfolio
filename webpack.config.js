@@ -25,9 +25,9 @@ module.exports = {
 		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" })
     ],
 	devServer: {
-    // contentBase: "./bin",
-	  inline: true,
-	  hot: true,
+    contentBase: "./bin",
+	  // inline: true,
+	  // hot: true,
 	  open: true,
 	  historyApiFallback: true
 	}

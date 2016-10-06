@@ -26,7 +26,6 @@ var AppView = BaseView.extend({
   initScene: function () {
     var width = this.$el.width();
     var height = window.innerHeight - this.$el.find(".navigation-bar:first").height();
-    console.log("height:", height);
     var scene = window.scene = this.scene = new THREE.Scene();
     this.initCamera();
     this.lightLoader = new LightLoader({scene: scene});

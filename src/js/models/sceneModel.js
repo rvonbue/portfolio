@@ -10,9 +10,8 @@ var SceneModel = BaseModel.extend({
     "ready": true
   },
   initialize: function( options ) {
-    // console.log("object3d---object3d", options);
     this.set("name", options.name);
-    if (options.object3d) this.set("object3d", options.object3d);
+    if (options.object3d) { this.set("object3d", options.object3d); }
   }
 });
 

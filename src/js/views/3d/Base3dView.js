@@ -1,6 +1,6 @@
 import BaseView from "../BaseView";
 import eventController from "../../controllers/eventController";
-import SceneModel from "../../models/SceneModel";
+import SceneModel from "../../models/sceneModel";
 
 var Base3dView = BaseView.extend({
   name: null,

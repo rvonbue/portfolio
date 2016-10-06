@@ -3,22 +3,22 @@ import BaseModel from "./BaseModel";
 import THREE from "three";
 
 var materialMapList = {
-  book: { map: "textures/book/book_COLOR.png", spec: "textures/book/book_SPEC.png", disp: "textures/book/book_DISP.png"},
-  wall: { map: "textures/leather/leather_COLOR.png", spec: "textures/leather/leather_SPEC.png", disp: "textures/leather/leather_DISP.png", repeatScale: 5 },
-  wood: { map: "textures/wood/wood_COLOR.png", spec: "textures/wood/wood_SPEC.png", disp: "textures/book/book_DISP.png", repeatScale: 5, shininess: 50 },
-  woodFloor: { map: "textures/woodFloor/woodFloor_COLOR.png", spec: "textures/woodFloor/woodFloor_SPEC.png", disp: "textures/woodFloor/woodFloor_DISP.png", repeatScale: 10 },
-  leather: { map: "textures/leather/leather_COLOR.png", spec: "textures/leather/leather_SPEC.png", disp: "textures/leather/leather_DISP.png", repeatScale: 12},
-  metal: { map: "textures/leather/leather_COLOR.png", spec: "textures/leather/leather_SPEC.png", disp: "textures/leather/leather_DISP.png", repeatScale: 5, shading: "flat" },
-  plastic: { map: null, spec: null, disp: null, repeatScale: 5 },
-  plasticRed: { map: null, spec: null, disp: null, repeatScale: 5 },
-  plasticBlack: { map: null, spec: null, disp: null, repeatScale: 5 },
-  plasticWhite: { map: null, spec: null, disp: null, repeatScale: 5 },
-  rug: { map: "textures/rug/rug_COLOR.png", spec: "textures/rug/rug_SPEC.png", disp: "textures/rug/rug_DISP.png", alpha: true },
+  book: { map: "textures/book/book_COLOR.png", specularMap: "textures/book/book_SPEC.png", displacementMap: "textures/book/book_DISP.png"},
+  wall: { map: "textures/leather/leather_COLOR.jpg", repeatScale: 5 },
+  wood: { map: "textures/wood/wood_COLOR.png", specularMap: "textures/wood/wood_SPEC.png", displacementMap: "textures/book/book_DISP.png", repeatScale: 5, shininess: 50 },
+  woodFloor: { map: "textures/woodFloor.jpg", repeatScale: 10 },
+  leather: { map: "textures/leather/leather_COLOR.png", specularMap: "textures/leather/leather_SPEC.png", displacementMap: "textures/leather/leather_DISP.png", repeatScale: 12},
+  metal: { map: "textures/leather/leather_COLOR.png", specularMap: "textures/leather/leather_SPEC.png", displacementMap: "textures/leather/leather_DISP.png", repeatScale: 5, shading: "flat" },
+  plastic: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+  plasticRed: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+  plasticBlack: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+  plasticWhite: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+  rug: { map: "textures/rug/rug_COLOR.png", specularMap: "textures/rug/rug_SPEC.png", displacementMap: "textures/rug/rug_DISP.png", alpha: true },
   cityScape: {map: "textures/cityScape.jpg" },
   computerScreen: {map: "textures/multibackground.png" },
   tvScreen: {map: "video" },
-  plushRed: { map: null, spec: null, disp: null, repeatScale: 5 },
-  videoGameCabinet: { map: "textures/videoGameCabinet/videoGameCabinet_COLOR.png", spec: "textures/videoGameCabinet/videoGameCabinet_SPEC.png" }
+  plushRed: { map: null, specularMap: null, displacementMap: null, repeatScale: 5 },
+  videoGameCabinet: { map: "textures/videoGameCabinet/videoGameCabinet_COLOR.png", specularMap: "textures/videoGameCabinet/videoGameCabinet_SPEC.png" }
 };
 
 var ModelLoader = BaseModel.extend({
@@ -40,11 +40,26 @@ var ModelLoader = BaseModel.extend({
     loader.load(
     	url,
     	function ( geometry, materials ) {
-        // _.each(materials, function (m) {
+        console.log("materials", materials);
+        _.each(materials, function (m) {
+          // console.log("material:name: ", m.name);
+          if (m.name === "woodFloor") {
+
+            _.each(materialMapList[m.name], function (key, prop) {
+              var woodFloor = new THREE.TextureLoader().load( "textures/woodFloor.jpg", function (texture) {
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set( 2, 2 );
+              });
+              console.log("material:---------woodFloor", woodFloor);
+              m.map = woodFloor;
+            });
+
+          }
+
           // m.map = self.getNewTexture(materialMapList[m.name], "map");
           // m.specularMap = self.getNewTexture(materialMapList[m.name], "spec");
-          // m.displacemntMap = self.getNewTexture(materialMapList[m.name], "disp");
-      // });
+          // m.displacementMap: = self.getNewTexture(materialMapList[m.name], "disp");
+      });
       var object = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object });
     });
