@@ -29,8 +29,8 @@ var CameraControls = BaseModel.extend({
     return this.controls;
   },
   setInitialPosition: function () {
-    this.camera.position.z = 30;
-    this.camera.position.y = 3;
+    this.camera.position.z = 25;
+    this.camera.position.y = 0;
   },
   updateCamera: function (index) {
     var selectedObject = this.sceneObjects[index];

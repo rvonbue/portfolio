@@ -49,12 +49,13 @@ var AppView = BaseView.extend({
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
-    var axisHelper = new THREE.AxisHelper( 25 );
+    var axisHelper = new THREE.AxisHelper( 1 );
     this.scene.add( axisHelper );
   },
-  addModelsToScene: function (sceneModel) {
-    console.log("addModelsToScene: sceneModel", sceneModel);
-    this.scene.add(sceneModel.get("object3d"));
+  addModelsToScene: function (sceneModelArray) {
+    _.each(sceneModelArray, function (sceneModel) {
+      this.scene.add(sceneModel.get("object3d"));
+    }, this);
   },
   animate: function (time) {
     raf( this.animate );
@@ -73,11 +74,10 @@ var AppView = BaseView.extend({
 		this.renderer.setSize( innerWidth, innerHeight );
   },
   render: function () {
-    console.log("Appview Render");
     this.statsView = new StatsView();
     $("body").append(this.statsView.stats.domElement);
     this.$el.append(new NavigationBar().render().el);
-    console.log("alkdsfjasldjf;sadklfjadskl;f", this.$el.append($("<canvas>")));
+    this.$el.append($("<canvas>"));
     this.canvasEl = this.$el.find("canvas")[0];
     // $("body").append(new DatGuiView().render().el);
     return this;

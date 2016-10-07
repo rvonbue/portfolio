@@ -3,9 +3,8 @@ import BaseModel from "./BaseModel";
 
 var SceneModel = BaseModel.extend({
   defaults: {
-    "name": "Caesar Salad",
+    "name": "Caesar_Salad",
     "object3d": null,
-    "imgSrc":null,
     "selected": false,
     "ready": true
   },

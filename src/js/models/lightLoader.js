@@ -11,14 +11,14 @@ var LightLoader = BaseModel.extend({
   },
   addLight: function () {
     var light = new THREE.AmbientLight( 0x404040 );
-    // light.position.y = 25;
+    light.position.z = 1.5;
     this.scene.add( light );
     // var plight = new THREE.PointLight( 0x404040, 25, 50 );
     // plight.position.set( 0, 25, 0 );
     // this.scene.add( plight );
     //
     // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-    // directionalLight.position.set( 0, 50, 0 );
+    // directionalLight.position.set( 0, 0, 20 );
     // this.scene.add( directionalLight );
     this.addPointLights();
     // this.addSpotLights();
@@ -26,10 +26,10 @@ var LightLoader = BaseModel.extend({
   addPointLights: function () {
 
     var pointLights = [
-      this.getNewPointLight( -6, 15, -6 ),
-      this.getNewPointLight( 6, 15, -6 ),
-      this.getNewPointLight( 6, 15, 6 ),
-      this.getNewPointLight( -6, 15, 6 ),
+      this.getNewPointLight( 0, 0, 0)
+      // this.getNewPointLight( 6, 15, -6 ),
+      // this.getNewPointLight( 6, 15, 6 ),
+      // this.getNewPointLight( -6, 15, 6 ),
     ];
 
     _.each(pointLights, function (light) {
@@ -52,7 +52,7 @@ var LightLoader = BaseModel.extend({
     var position = { pointLight : 0 };
     var target = { pointLight : 2 };
 
-    var tween2 = new TWEEN.Tween(position).to(target, 100)
+    var tween2 = new TWEEN.Tween(position).to(target, 2000)
     .easing(TWEEN.Easing.Quadratic.Out).onUpdate(function () {
       _.each(lights, function (light) {
         light.intensity = position.pointLight;

@@ -7,19 +7,6 @@ var Base3dView = BaseView.extend({
   ready: true,
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
-    eventController.once(eventController.MODEL_LOADED, this.sceneModelLoaded, this );
-    this.loadSceneModel();
-  },
-  loadSceneModel: function () {
-    eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + this.name +".json", {name: this.name});
-  },
-  sceneModelLoaded: function (obj) {
-    this.model = new SceneModel(obj);
-    if (this.ready === true ) {
-      eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.model);
-    } else {
-      this.loadInteractiveObjects();
-    }
   },
   render3d: function () {
 

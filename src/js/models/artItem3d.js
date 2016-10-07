@@ -1,7 +1,7 @@
 import eventController from "../controllers/eventController";
 import BaseModel from "./BaseModel";
 import THREE from "three";
-import WorldTranslator from "../util/worldTranslator";
+import WorldTranslator from "../util/utils";
 import SceneModel from "./sceneModel";
 
 var ArtItem = BaseModel.extend({

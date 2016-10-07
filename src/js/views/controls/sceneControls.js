@@ -1,9 +1,9 @@
 import eventController from "../../controllers/eventController";
 import BaseModel from "../../models/BaseModel";
 import ModelLoader from "../../models/modelLoader";
-import SceneCollection from "../../collections/SceneModelCollection";
+import SceneModelCollection from "../../collections/SceneModelCollection";
 import ArtGalleryView3d from "../3d/artGalleryView3d";
-import HomeView3d from "../3d/homeView3d";
+import HomeView from "../3d/HomeView";
 import MovieTheaterView3d from "../3d/movieTheaterView3d";
 
 import TWEEN from "tween.js";
@@ -19,14 +19,16 @@ var SceneControls = BaseModel.extend({
     // _.bindAll(this, "updateCamera");
     // eventController.on(eventController.SWITCH_SCENE, this.switchScene, this );
     // eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
-    this.sceneCollection = new SceneCollection();
+    // window.SceneModelCollection = this.SceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
     this.loadInitialScene("home");
     this.animating = false;
   },
   loadInitialScene: function (name) {
     this.load3dView(name);
-    eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + name +".json", {name: name});
+    // this.modelLoader.loadModel("models3d/" + name +".json", {name: name});
+
+    // eventController.trigger(eventController.LOAD_NEW_SCENE, "models3d/" + name +".json", {name: name});
   },
   load3dView: function (name) {
     if (this.get(name) === null) {
@@ -38,7 +40,7 @@ var SceneControls = BaseModel.extend({
     var newView;
     switch(name) {
       case "home":
-          newView = new HomeView3d();
+          newView = new HomeView({ name: name });
           break;
       case "movieTheater":
           newView = new MovieTheaterView3d();
@@ -59,11 +61,11 @@ var SceneControls = BaseModel.extend({
       this.openArtGallery();
       return false;
     }
-    var sceneModel = this.sceneCollection.findWhere({name: name });
+    var sceneModel = this.SceneModelCollection.findWhere({name: name });
     if ( sceneModel ) {  //  if scene exists animate else load new scene
       // animate scene
       if (sceneModel.get("selected")) return false;
-      if (  this.sceneCollection.length === 1 )  {
+      if (  this.SceneModelCollection.length === 1 )  {
         sceneModel.set("selected", true);
         sceneModel.get("object3d").visible = true;
       } else {
@@ -76,10 +78,10 @@ var SceneControls = BaseModel.extend({
   },
   modelLoaded: function (obj) {
     if (obj.name === "artGallery") {
-      var sceneModel = this.sceneCollection.add(obj);
+      var sceneModel = this.SceneModelCollection.add(obj);
       sceneModel.get("object3d").visible = false;
     } else {
-      var sceneModel = this.sceneCollection.add(obj);
+      var sceneModel = this.SceneModelCollection.add(obj);
       sceneModel.get("object3d").visible = false;
       eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel);
       this.switchScene(sceneModel.get("name"));
@@ -98,7 +100,7 @@ var SceneControls = BaseModel.extend({
     this.showScene(sceneModel.get("object3d"));
   },
   getCurrentScene: function (name) {
-    return this.sceneCollection.findWhere({selected: true });
+    return this.SceneModelCollection.findWhere({selected: true });
   },
   setMeshInitRotation: function (mesh) {
     mesh.rotation.z = Math.PI;
@@ -146,17 +148,17 @@ var SceneControls = BaseModel.extend({
     }, 5000).start();
   },
   openArtGallery: function () {
-    this.sceneCollection.findWhere({ selected: true }).get("object3d").visible = false
+    this.SceneModelCollection.findWhere({ selected: true }).get("object3d").visible = false
     var artItem = new ArtItem({ name: "google", imgSrc: "images/CRUSER_v4.1_noWhite_subText.jpg" });
     artItem.once("ART_ITEM_LOADED", function () {
-      var sceneModel = this.sceneCollection.add(artItem);
+      var sceneModel = this.SceneModelCollection.add(artItem);
       eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel);
     }, this);
 
     // sceneModel.get("object3d").visible = false;
 
 
-    // var sceneModel = this.sceneCollection.add(obj);
+    // var sceneModel = this.SceneModelCollection.add(obj);
     // eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel);
     // this.switchScene(sceneModel.get("name"));
 
