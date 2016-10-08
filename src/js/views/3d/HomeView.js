@@ -43,12 +43,10 @@ var HomeView = BaseView.extend({
     object3d.add(text3d);
   },
   getText3d: function (text) {
-    utils.getFontColor().text
-    var myfont = new THREE.Font(data);
-    var material = new THREE.MeshBasicMaterial({ color: utils.getFontColor().text });
+    var material = new THREE.MeshBasicMaterial({ color: utils.getFontColor().text, wireframe: true });
 
     var	textGeo = new THREE.TextGeometry( text, {
-      font: myfont,
+      font: new THREE.Font(data),
       height: 0.5,
       size: 1.5,
       curveSegments: 4,

@@ -1,5 +1,6 @@
 import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
+import navigationList from "../data/navigationList";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",
@@ -10,20 +11,21 @@ var NavigationBar = BaseView.extend({
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
     this.height = 45;
-    this.navigationItems = [
-      { displayTitle: "Home", name:"home" },
-      { displayTitle: "3d", name:"movieTheater" },
-      { displayTitle: "Art Gallery",  name:"artGallery" }
-    ]
   },
   updateCamera: function (e) {
     eventController.trigger(eventController.SWITCH_SCENE, this.navigationItems[$(e.currentTarget).index()].name);
   },
   render: function () {
     var self = this;
-    this.$el.append("<div id='cssmenu'><ul>" + _.reduce(this.navigationItems, function(memo, obj){
-      return memo + self.template(obj);
-    }, "") + "</ul></div>");
+    var cssMenu = "<div id='cssmenu'><ul>";
+
+    _.each(navigationList, function(memo){
+      cssMenu += self.template({displayTitle: memo});
+    });
+
+    cssMenu += "</ul></div>";
+    this.$el.append(cssMenu);
+
     return this;
   }
 });

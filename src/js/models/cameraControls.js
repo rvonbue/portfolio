@@ -21,6 +21,7 @@ var CameraControls = BaseModel.extend({
     //   lookVertical: false
     // });
     this.controls = new TrackballControls(this.camera);
+    this.controls.target = new THREE.Vector3( 0, 6, 0 );
     this.setInitialPosition();
     // console.log("init CameraControls", this.camera);
     // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera], key: "position", name:"camtarget" });
@@ -29,12 +30,12 @@ var CameraControls = BaseModel.extend({
     return this.controls;
   },
   setInitialPosition: function () {
-    this.camera.position.z = 25;
-    this.camera.position.y = 0;
+    this.camera.position.z = 20;
+    this.camera.position.y = 6;
   },
   updateCamera: function (index) {
     var selectedObject = this.sceneObjects[index];
-    var initialPosition = { z: 60, y: 20, x: 0 };
+    var initialPosition = { z: 60, y: 0, x: 0 };
 
     // this.camera.position = initialPosition;
     // this.camera.lookAt(this.sceneObjects[index].position);

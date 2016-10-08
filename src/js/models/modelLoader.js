@@ -5,9 +5,23 @@ import data from "../data/roboto_regular.json";
 import utils from "../util/utils";
 
 var materialMapList = {
-  woodFloor: { maps: [{map: "textures/woodFloor.jpg"}, {displacementMap: null}, {specularMap: null}], repeatScale: 1, mat: "phong" },
-  window: { opacity: .25 }
+  woodFloor: {
+    maps: [{map: "textures/woodFloor.jpg"}, {displacementMap: null}, {specularMap: null}],
+    props: {repeatScale: 0.5},
+  },
+  brickWall: {
+    maps: [{map: "textures/brickWall.jpg"}, {displacementMap: null}, {specularMap: null}],
+    props: {repeatScale: 0.5},
+  },
+  girder: {
+
+
+  },
+  glass: {
+    props: [{opacity: .25 }]
+  }
 };
+
 
 var ModelLoader = BaseModel.extend({
   initialize: function () {
@@ -25,45 +39,50 @@ var ModelLoader = BaseModel.extend({
     var self = this;
     var loader =  new THREE.JSONLoader(this.manager);
 
-    loader.load(
-    	url,
-    	function ( geometry, materials ) {
+    loader.load(url, function ( geometry, materials ) {
         geometry.computeBoundingBox();
         _.each(materials, function (mat) {
           if (materialMapList[mat.name]) {
             self.setMaterialAttr(mat);
           }
       });
+      console.log("materials:", materials);
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
     });
   },
   setMaterialAttr: function (mat) {
-    _.each(materialMapList[mat.name], function (prop, key) {
+    var self = this;
+    var materialObj = materialMapList[mat.name];
+    _.each(materialObj, function (prop, key) {
       if (key === "maps") {
-
+        _.each(prop, function (mapObj) { self.getNewTexture(mapObj, mat, materialObj.props); });
         return;
+      } else {
+        console.log("MAT:::", materialObj);
+        console.log("key:::", key);
+        console.log("prop:::", prop);
       }
-      console.log('key', key);
-      console.log('prop', prop);
-      // mat[key] = prop;
-    });
+    }, this);
   },
-  getNewTexture: function (options, optKey) {
-    if (options && !options[optKey]) return null;
-    if (options[optKey] === "video") return this.addVideoTexture();
-    return new THREE.TextureLoader().load( options[optKey], function (texture) {
-      if (options.repeatScale) {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set( options.repeatScale, options.repeatScale );
-      }
-      if (options.alpha) {
-        texture.alpha = options.alpha;
-      }
-      if (options.shading) {
-        texture.shading = THREE.FlatShading;
-      }
+  getNewTexture: function (mapObj, mat, options) {
+    var texture = null;
+    _.each(mapObj, function (mapURL, mapKey) {
+      if (mapURL === null || mapURL === "null") return null;
+      mat[mapKey] = new THREE.TextureLoader().load( mapURL, function (texture) {
+        if (options.repeatScale) {
+          texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+          texture.repeat.set( options.repeatScale, options.repeatScale );
+        }
+        // if (options.alpha) {
+        //   texture.alpha = options.alpha;
+        // }
+        // if (options.shading) {
+          // texture.shading = THREE.FlatShading;
+        // }
+      });
     });
+    return texture;
   },
   addVideoTexture: function () {
     var video = document.getElementById( 'video' );

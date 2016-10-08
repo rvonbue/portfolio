@@ -17,33 +17,37 @@ var LightLoader = BaseModel.extend({
     // plight.position.set( 0, 25, 0 );
     // this.scene.add( plight );
     //
-    // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-    // directionalLight.position.set( 0, 0, 20 );
-    // this.scene.add( directionalLight );
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    directionalLight.position.set( 0, 20, 20 );
+    directionalLight.castShadow = true;
+    this.scene.add( directionalLight );
     this.addPointLights();
     // this.addSpotLights();
   },
   addPointLights: function () {
-
+    var sphereSize = 0.5;
     var pointLights = [
-      this.getNewPointLight( 0, 0, 0)
-      // this.getNewPointLight( 6, 15, -6 ),
+      this.getNewPointLight( 0, 0, 8, "#FF0000"),
+      this.getNewPointLight( 0, 2.5, 8, "#00FF00"),
+      this.getNewPointLight( 0, 5, 8, "#0000FF")
       // this.getNewPointLight( 6, 15, 6 ),
       // this.getNewPointLight( -6, 15, 6 ),
     ];
 
+
     _.each(pointLights, function (light) {
       this.scene.add(light);
+      this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
     },this );
 
     var self = this;
-    setTimeout( function () {
-      self.raiseLights(pointLights);
-    }, 2500);
-    eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: pointLights, key: "intensity", name:"light" });
+    // setTimeout( function () {
+    //   self.raiseLights(pointLights);
+    // }, 2500);
+    // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: pointLights, key: "intensity", name:"light" });
   },
-  getNewPointLight: function (x, y, z) {
-    var light = new THREE.PointLight( 0x404040, 0, 50 );
+  getNewPointLight: function (x, y, z, color) {
+    var light = new THREE.PointLight( color, 5, 15, 2 );
     light.position.set( x, y, z );
     return light;
   },

@@ -34,18 +34,20 @@ var AppView = BaseView.extend({
     this.renderer.setSize( width, height );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.initControls();
+    this.raycaster = new THREE.Raycaster();
     this.addListeners();
     this.animate();
   },
   initCamera: function () {
-    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-    eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "x", name:"x" });
-    eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "y", name:"y" });
-    eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "z", name:"z" });
+    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+    this.camera.lookAt(new THREE.Vector3( 1, 10, 0 ));
+    // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "x", name:"x" });
+    // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "y", name:"y" });
+    // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "z", name:"z" });
   },
   initControls: function () {
     var cameraControls = new CameraControls({ camera: this.camera, sceneObjects: this.sceneObjects, canvasEl: this.canvasEl });
-    this.sceneControls = new SceneControls({ sceneObjects: this.sceneObjects });
+    this.sceneControls = new SceneControls({ sceneObjects: this.sceneObjects, el: this.$el });
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
@@ -62,6 +64,15 @@ var AppView = BaseView.extend({
     this.statsView.stats.begin();
     TWEEN.update(time);
     this.controls.update(this.clock.getDelta());
+    this.raycaster.setFromCamera( this.sceneControls.mouse, this.camera );
+
+    var intersects = this.raycaster.intersectObjects( this.scene.children );
+    if (intersects.length > 0 ) {
+      _.each(intersects, function (inter, i ) {
+        console.log("intersects :", i);
+        console.log("intersects :", inter.object.name);
+      });
+     }
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
   },
