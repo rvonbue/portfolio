@@ -15,24 +15,31 @@ var SceneControls = BaseModel.extend({
   },
   initialize: function (options) {
     this.mouse = new THREE.Vector2();
+    this.scene = options.scene;
+    this.camera = options.camera;
     this.addListeners(options.el);
     this.modelLoader = new ModelLoader();
+    this.raycaster = new THREE.Raycaster();
     this.loadInitialScene("home");
     this.animating = false;
   },
   addListeners: function (el) {
     var self = this;
     el.on("mousemove", "canvas", function (evt) { self.onMouseMove(evt); });
-    var canvasEl = el.find("canvas:first");
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    console.log("movsse",   this.height);
   },
   onMouseMove: function (evt) {
-    // console.log("movsse", evt);
     evt.preventDefault();
 		this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
 		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
+
+    this.raycaster.setFromCamera( this.mouse, this.camera );
+
+    var intersects = this.raycaster.intersectObjects( this.scene.children );
+    // if (intersects.length > 0 ) {
+        eventController.trigger(eventController.HOVER_NAVIGATION, intersects);
+    // }
   },
   loadInitialScene: function (name) {
     this.load3dView(name);

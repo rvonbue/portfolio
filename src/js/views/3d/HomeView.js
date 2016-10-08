@@ -40,10 +40,11 @@ var HomeView = BaseView.extend({
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.max.z;
     text3d.position.y = -text3d.geometry.boundingBox.max.y / 2;
     text3d.position.x = -((text3d.geometry.boundingBox.max.x - text3d.geometry.boundingBox.min.x) / 2);
+    // text3d.castShadow = true;
     object3d.add(text3d);
   },
   getText3d: function (text) {
-    var material = new THREE.MeshBasicMaterial({ color: utils.getFontColor().text, wireframe: true });
+    var material = new THREE.MeshBasicMaterial({ color: utils.getFontColor().text });
 
     var	textGeo = new THREE.TextGeometry( text, {
       font: new THREE.Font(data),

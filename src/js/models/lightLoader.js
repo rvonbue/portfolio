@@ -26,6 +26,7 @@ var LightLoader = BaseModel.extend({
   },
   addPointLights: function () {
     var sphereSize = 0.5;
+
     var pointLights = [
       this.getNewPointLight( 0, 0, 8, "#FF0000"),
       this.getNewPointLight( 0, 2.5, 8, "#00FF00"),
@@ -33,7 +34,6 @@ var LightLoader = BaseModel.extend({
       // this.getNewPointLight( 6, 15, 6 ),
       // this.getNewPointLight( -6, 15, 6 ),
     ];
-
 
     _.each(pointLights, function (light) {
       this.scene.add(light);

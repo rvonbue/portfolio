@@ -270,6 +270,9 @@ a:link:hover {
 #cssmenu.align-center ul {
   text-align: center;
 }
+#cssmenu ul li.selected {
+  background-color: #FF0000 !important;
+}
 #cssmenu ul li a {
   color: #ffffff;
   text-decoration: none;

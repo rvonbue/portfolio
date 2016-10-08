@@ -34,7 +34,6 @@ var AppView = BaseView.extend({
     this.renderer.setSize( width, height );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.initControls();
-    this.raycaster = new THREE.Raycaster();
     this.addListeners();
     this.animate();
   },
@@ -47,7 +46,7 @@ var AppView = BaseView.extend({
   },
   initControls: function () {
     var cameraControls = new CameraControls({ camera: this.camera, sceneObjects: this.sceneObjects, canvasEl: this.canvasEl });
-    this.sceneControls = new SceneControls({ sceneObjects: this.sceneObjects, el: this.$el });
+    this.sceneControls = new SceneControls({ scene: this.scene, el: this.$el, camera: this.camera });
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
@@ -64,15 +63,6 @@ var AppView = BaseView.extend({
     this.statsView.stats.begin();
     TWEEN.update(time);
     this.controls.update(this.clock.getDelta());
-    this.raycaster.setFromCamera( this.sceneControls.mouse, this.camera );
-
-    var intersects = this.raycaster.intersectObjects( this.scene.children );
-    if (intersects.length > 0 ) {
-      _.each(intersects, function (inter, i ) {
-        console.log("intersects :", i);
-        console.log("intersects :", inter.object.name);
-      });
-     }
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
   },

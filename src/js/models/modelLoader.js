@@ -46,7 +46,6 @@ var ModelLoader = BaseModel.extend({
             self.setMaterialAttr(mat);
           }
       });
-      console.log("materials:", materials);
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
     });
@@ -58,10 +57,6 @@ var ModelLoader = BaseModel.extend({
       if (key === "maps") {
         _.each(prop, function (mapObj) { self.getNewTexture(mapObj, mat, materialObj.props); });
         return;
-      } else {
-        console.log("MAT:::", materialObj);
-        console.log("key:::", key);
-        console.log("prop:::", prop);
       }
     }, this);
   },
@@ -73,13 +68,8 @@ var ModelLoader = BaseModel.extend({
         if (options.repeatScale) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.repeat.set( options.repeatScale, options.repeatScale );
+          texture.shading = THREE.FlatShading;
         }
-        // if (options.alpha) {
-        //   texture.alpha = options.alpha;
-        // }
-        // if (options.shading) {
-          // texture.shading = THREE.FlatShading;
-        // }
       });
     });
     return texture;
