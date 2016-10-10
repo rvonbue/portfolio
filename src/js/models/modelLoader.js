@@ -6,22 +6,19 @@ import utils from "../util/utils";
 
 var materialMapList = {
   woodFloor: {
-    maps: [{map: "textures/woodFloor.jpg"}, {displacementMap: null}, {specularMap: null}],
-    props: {repeatScale: 0.5},
+    maps: [{ map: "textures/woodFloor/woodFloor_COLOR.jpg" }, { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" }, { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }],
+    props: { repeatScale: 0.5, shading: "flat" },
   },
   brickWall: {
-    maps: [{map: "textures/brickWall.jpg"}, {displacementMap: null}, {specularMap: null}],
-    props: {repeatScale: 0.5},
+    maps: [{ map: "textures/brickWall/brickWall_COLOR.jpg" }, { specularMap: "textures/brickWall/brickWall_SPEC.jpg", normalMap: "textures/brickWall/brickWall_NRM.jpg" }],
+    props: { repeatScale: 0.5 },
   },
   girder: {
-
-
   },
   glass: {
     props: [{opacity: .25 }]
   }
 };
-
 
 var ModelLoader = BaseModel.extend({
   initialize: function () {
@@ -47,6 +44,7 @@ var ModelLoader = BaseModel.extend({
           }
       });
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
+      object3d.recieveShadows = true;
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
     });
   },

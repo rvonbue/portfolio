@@ -24,16 +24,7 @@ var NavigationBar = BaseView.extend({
     }, this);
 
   },
-  updateNavigation: function (intersects) {
-    var closestObject = null;
-    _.each(intersects, function (inter, i ) {
-      if (i === 0) {
-        closestObject = inter;
-      } else if (inter.distance < closestObject.distance){
-        closestObject = inter;
-      }
-    });
-
+  updateNavigation: function (closestObject) {
     if (this.selectedEl && closestObject ) {
       this.swapSelectedEl(this.navEls[closestObject.object.name]);
     } else if (this.selectedEl) {
@@ -52,12 +43,11 @@ var NavigationBar = BaseView.extend({
     eventController.trigger(eventController.SWITCH_SCENE, this.navigationItems[$(e.currentTarget).index()].name);
   },
   render: function () {
-    var self = this;
     var cssMenu = "<div id='cssmenu'><ul>";
 
     _.each(navigationList, function(title){
-      cssMenu += self.template({displayTitle: title});
-    });
+      cssMenu += this.template({displayTitle: title.toUpperCase()});
+    }, this);
 
     cssMenu += "</ul></div>";
     this.$el.append(cssMenu);

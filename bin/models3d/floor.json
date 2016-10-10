@@ -50,7 +50,7 @@
         "transparent":false,
         "depthTest":true,
         "blending":"NormalBlending",
-        "specularCoef":50,
+        "specularCoef":10,
         "DbgIndex":4,
         "colorSpecular":[0.5,0.5,0.5],
         "colorEmissive":[0,0,0],

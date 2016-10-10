@@ -24,21 +24,21 @@ var AppView = BaseView.extend({
     $(window).resize(this.resize);
   },
   initScene: function () {
-    var width = this.$el.width();
-    var height = window.innerHeight - this.$el.find(".navigation-bar:first").height();
+    var size = this.getWidthHeight();
     var scene = window.scene = this.scene = new THREE.Scene();
-    this.initCamera();
+    this.initCamera(size);
     this.lightLoader = new LightLoader({scene: scene});
     this.addHelpers();
-    this.renderer = new THREE.WebGLRenderer({alpha: false, antiAlias: true, canvas: this.canvasEl });
-    this.renderer.setSize( width, height );
+    this.renderer = new THREE.WebGLRenderer({alpha: true, antiAlias: true, canvas: this.canvasEl });
+    this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.setClearColor( 0x000000, 0 );
     this.initControls();
     this.addListeners();
     this.animate();
   },
-  initCamera: function () {
-    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+  initCamera: function (size) {
+    this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 1, 1000 );
     this.camera.lookAt(new THREE.Vector3( 1, 10, 0 ));
     // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "x", name:"x" });
     // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: [this.camera.position], key: "y", name:"y" });
@@ -67,12 +67,14 @@ var AppView = BaseView.extend({
     this.statsView.stats.end();
   },
   resize: function () {
-    var innerWidth = this.$el.width();
-    var innerHeight = window.innerHeight - this.$el.find(".navigation-bar:first").height();
+    var size = this.getWidthHeight();
 
-    this.camera.aspect = innerWidth / innerHeight;
+    this.camera.aspect = size.w / size.h;
 		this.camera.updateProjectionMatrix();
-		this.renderer.setSize( innerWidth, innerHeight );
+		this.renderer.setSize(  size.w, size.h );
+  },
+  getWidthHeight: function () {
+    return {w: this.$el.width(), h: window.innerHeight - this.$el.find(".navigation-bar:first").height() }
   },
   render: function () {
     this.statsView = new StatsView();

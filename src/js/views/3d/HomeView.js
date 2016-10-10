@@ -12,10 +12,16 @@ var HomeView = BaseView.extend({
   ready: true,
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
-    eventController.once(eventController.MODEL_LOADED, this.sceneModelLoaded, this );
     window.SceneModelCollection = this.SceneModelCollection = new SceneModelCollection();
-    console.log("init HomeView3d", this);
+    eventController.once(eventController.MODEL_LOADED, this.sceneModelLoaded, this );
     eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/floor.json", {name: "floor"}); //load scene Model
+    this.addListeners();
+  },
+  addListeners: function () {
+    // eventController.on(eventController.HOVER_NAVIGATION, this.selectFloor, this);
+  },
+  removeListeners: function () {
+
   },
   sceneModelLoaded: function (obj) {
     var object3d = obj.object3d;
@@ -34,17 +40,26 @@ var HomeView = BaseView.extend({
       this.SceneModelCollection.add(sceneModel);
     }, this);
   },
+  selectFloor: function (closestObject) {
+    if (closestObject) {
+      this.selectedFloor = this.SceneModelCollection.findWhere({name: closestObject.object.name});
+      this.selectedFloor.set("selected", true);
+      console.log("selectFloor", hello);
+    } else if (this.selectedFloor) {
+      this.selectedFloor.set("selected", false);
+      this.selectedFloor = null;
+    }
+  },
   addText: function (sceneModel) {
     var text3d = this.getText3d(sceneModel.get("name"));
     var object3d = sceneModel.get("object3d");
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.max.z;
     text3d.position.y = -text3d.geometry.boundingBox.max.y / 2;
     text3d.position.x = -((text3d.geometry.boundingBox.max.x - text3d.geometry.boundingBox.min.x) / 2);
-    // text3d.castShadow = true;
     object3d.add(text3d);
   },
   getText3d: function (text) {
-    var material = new THREE.MeshBasicMaterial({ color: utils.getFontColor().text });
+    var material = new THREE.MeshStandardMaterial({ color: utils.getFontColor().text });
 
     var	textGeo = new THREE.TextGeometry( text, {
       font: new THREE.Font(data),

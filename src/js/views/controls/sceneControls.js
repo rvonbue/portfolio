@@ -18,6 +18,7 @@ var SceneControls = BaseModel.extend({
     this.scene = options.scene;
     this.camera = options.camera;
     this.addListeners(options.el);
+    this.loadEnvironmentMap();
     this.modelLoader = new ModelLoader();
     this.raycaster = new THREE.Raycaster();
     this.loadInitialScene("home");
@@ -33,13 +34,20 @@ var SceneControls = BaseModel.extend({
     evt.preventDefault();
 		this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
 		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
-
     this.raycaster.setFromCamera( this.mouse, this.camera );
-
-    var intersects = this.raycaster.intersectObjects( this.scene.children );
-    // if (intersects.length > 0 ) {
-        eventController.trigger(eventController.HOVER_NAVIGATION, intersects);
-    // }
+    var closestObject = this.findClosestObject(this.raycaster.intersectObjects( this.scene.children ));
+    eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
+  },
+  findClosestObject: function (intersects) {
+    var closestObject = null;
+    _.each(intersects, function (inter, i ) {
+      if (i === 0) {
+        closestObject = inter;
+      } else if (inter.distance < closestObject.distance){
+        closestObject = inter;
+      }
+    });
+    return closestObject;
   },
   loadInitialScene: function (name) {
     this.load3dView(name);
@@ -67,27 +75,52 @@ var SceneControls = BaseModel.extend({
     }
     return newView;
   },
+  loadEnvironmentMap: function (reflectionCube) {
+    var format = '.jpg';
+    var path = "textures/yokohama3/";
+    var size = 30;
+    var urls = [
+        path + 'posx' + format, path + 'negx' + format,
+        path + 'posy' + format, path + 'negy' + format,
+        path + 'posz' + format, path + 'negz' + format
+      ];
+    var skyGeometry = new THREE.CubeGeometry( size, size, size );
+  	var materialArray = [];
+  	for (var i = 0; i < 6; i++)
+  		materialArray.push( new THREE.MeshBasicMaterial({
+  			map: THREE.ImageUtils.loadTexture( urls[i] ),
+  			side: THREE.BackSide
+  		}));
+    //
+    // var modifier = new THREE.SubdivisionModifier(3);
+    // modifier.modify( skyGeometry );
+    console.log("THREE:", THREE);
+  	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+  	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+    skyBox.position.y = size / 2;
+  	this.scene.add( skyBox );
+  },
   switchScene: function (name) {
-    console.log("switchScene: name ---",  name);
-    if (this.animating) return false;
-    if( name === "artGallery") {
-      this.openArtGallery();
-      return false;
-    }
-    var sceneModel = this.SceneModelCollection.findWhere({name: name });
-    if ( sceneModel ) {  //  if scene exists animate else load new scene
-      // animate scene
-      if (sceneModel.get("selected")) return false;
-      if (  this.SceneModelCollection.length === 1 )  {
-        sceneModel.set("selected", true);
-        sceneModel.get("object3d").visible = true;
-      } else {
-        this.animateSceneTransition(sceneModel);
-      }
-    } else {
-      // load Model
-      eventController.trigger(eventController.LOAD_NEW_SCENE, "models/" + name +".json", {name: name});
-    }
+    // console.log("switchScene: name ---",  name);
+    // if (this.animating) return false;
+    // if( name === "artGallery") {
+    //   this.openArtGallery();
+    //   return false;
+    // }
+    // var sceneModel = this.SceneModelCollection.findWhere({name: name });
+    // if ( sceneModel ) {  //  if scene exists animate else load new scene
+    //   // animate scene
+    //   if (sceneModel.get("selected")) return false;
+    //   if (  this.SceneModelCollection.length === 1 )  {
+    //     sceneModel.set("selected", true);
+    //     sceneModel.get("object3d").visible = true;
+    //   } else {
+    //     this.animateSceneTransition(sceneModel);
+    //   }
+    // } else {
+    //   // load Model
+    //   eventController.trigger(eventController.LOAD_NEW_SCENE, "models/" + name +".json", {name: name});
+    // }
   },
   modelLoaded: function (obj) {
     // if (obj.name === "artGallery") {
