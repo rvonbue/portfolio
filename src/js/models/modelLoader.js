@@ -13,6 +13,10 @@ var materialMapList = {
     maps: [{ map: "textures/brickWall/brickWall_COLOR.jpg" }, { specularMap: "textures/brickWall/brickWall_SPEC.jpg", normalMap: "textures/brickWall/brickWall_NRM.jpg" }],
     props: { repeatScale: 0.5 },
   },
+  woodChips: {
+      maps: [{ map: "textures/woodFloor/woodChips.jpg" }],
+      props: { repeatScale: 0.5, shading: "flat" },
+  },
   girder: {
   },
   glass: {

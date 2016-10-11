@@ -51,6 +51,7 @@ var NavigationBar = BaseView.extend({
 
     cssMenu += "</ul></div>";
     this.$el.append(cssMenu);
+    this.$el.append("<div class='switch-views'><div class='2d'><a href='javascript;;'>2d</a></div><div class='3d'><a href='javascript;;'>3d</a></div></div>");
     this.cacheListEls();
 
     return this;

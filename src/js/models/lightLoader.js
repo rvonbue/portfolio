@@ -33,7 +33,8 @@ var LightLoader = BaseModel.extend({
   },
   movePointLights: function (intersect) {
     if (intersect !== null ) {
-      var y = intersect.object.position.y;
+      var floorHeight = intersect.object.geometry.boundingBox.max.y / 2;
+      var y = floorHeight + intersect.object.position.y;
       _.each(this.pointLights, function (light) {
         light.position.y = y;
         light.visible = true;

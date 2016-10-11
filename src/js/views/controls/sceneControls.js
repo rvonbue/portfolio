@@ -17,8 +17,9 @@ var SceneControls = BaseModel.extend({
     this.mouse = new THREE.Vector2();
     this.scene = options.scene;
     this.camera = options.camera;
+    this.raycasterObjects = [];
     this.addListeners(options.el);
-    this.loadEnvironmentMap();
+    // this.loadEnvironmentMap();
     this.modelLoader = new ModelLoader();
     this.raycaster = new THREE.Raycaster();
     this.loadInitialScene("home");
@@ -27,15 +28,19 @@ var SceneControls = BaseModel.extend({
   addListeners: function (el) {
     var self = this;
     el.on("mousemove", "canvas", function (evt) { self.onMouseMove(evt); });
+    eventController.on(eventController.INTERACTIVE_OBJECTS_READY, this.setInteractiveObjects, this);
     this.width = window.innerWidth;
     this.height = window.innerHeight;
+  },
+  removeListeners: function () {
+
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
 		this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
 		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
     this.raycaster.setFromCamera( this.mouse, this.camera );
-    var closestObject = this.findClosestObject(this.raycaster.intersectObjects( this.scene.children ));
+    var closestObject = this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
     eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
   },
   findClosestObject: function (intersects) {
@@ -77,8 +82,8 @@ var SceneControls = BaseModel.extend({
   },
   loadEnvironmentMap: function (reflectionCube) {
     var format = '.jpg';
-    var path = "textures/yokohama3/";
-    var size = 30;
+    var path = "textures/forbiddenCity/";
+    var size = 65;
     var urls = [
         path + 'posx' + format, path + 'negx' + format,
         path + 'posy' + format, path + 'negy' + format,
@@ -91,14 +96,13 @@ var SceneControls = BaseModel.extend({
   			map: THREE.ImageUtils.loadTexture( urls[i] ),
   			side: THREE.BackSide
   		}));
-    //
-    // var modifier = new THREE.SubdivisionModifier(3);
-    // modifier.modify( skyGeometry );
-    console.log("THREE:", THREE);
   	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
   	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
     skyBox.position.y = size / 2;
   	this.scene.add( skyBox );
+  },
+  setInteractiveObjects: function (arr) {
+    this.raycasterObjects = arr;
   },
   switchScene: function (name) {
     // console.log("switchScene: name ---",  name);
