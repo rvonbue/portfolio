@@ -22,7 +22,7 @@ module.exports = {
       //           comments: false,
       //       },
       //   }),
-		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" })
+		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
     ],
 	devServer: {
     contentBase: "./bin",

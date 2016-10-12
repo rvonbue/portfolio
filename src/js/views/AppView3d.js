@@ -6,7 +6,7 @@ import raf from "raf";
 import LightLoader from "../models/lightLoader";
 import CameraControls from "../models/cameraControls";
 import SceneControls from "../views/controls/sceneControls";
-import StatsView from "../views/statsView";
+import StatsView from "../views/3d/statsView";
 // import DatGuiView from "../views/controls/datGuiView";
 // require('three-first-person-controls')(THREE);
 
@@ -31,7 +31,7 @@ var AppView3d = BaseView.extend({
   },
   show: function () {
     this.$el.show();
-    this.addListeners;
+    this.addListeners();
   },
   initScene: function () {
     var size = this.getWidthHeight();

@@ -14,7 +14,7 @@ var AppView = BaseView.extend({
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
   },
   initScene: function () {
-    this.renderView3d();
+    this.renderView2d();
   },
   switchViews: function (whichView) {
     switch (whichView) {

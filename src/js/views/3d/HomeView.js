@@ -19,6 +19,7 @@ var HomeView = BaseView.extend({
     this.addListeners();
     eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/floor.json", {name: SCENE_MODEL_NAME}); //load scene Model
     eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/ground.json", { name: "ground" }); //load scene Model
+    eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/roof.json", { name: "roof" }); //load scene Model
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
@@ -27,7 +28,6 @@ var HomeView = BaseView.extend({
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
   },
   modelLoaded: function (obj) {
-    console.log("modelLoaded:", obj);
     if (obj.name === SCENE_MODEL_NAME) {
       this.sceneModelLoaded(obj);
       return;
@@ -58,6 +58,7 @@ var HomeView = BaseView.extend({
       this.addText(sceneModel);
       this.SceneModelCollection.add(sceneModel);
     }, this);
+    navigationList.reverse();
   },
   selectFloor: function (closestObject) {
     if (closestObject) {
@@ -67,6 +68,9 @@ var HomeView = BaseView.extend({
       this.selectedFloor.set("selected", false);
       this.selectedFloor = null;
     }
+  },
+  positionRoof: function (object3d) {
+    object3d.position.y = navigationList.length * 2.059;  // TODO: magic number
   },
   addText: function (sceneModel) {
     var text3d = this.getText3d(sceneModel.get("name"));
@@ -95,6 +99,7 @@ var HomeView = BaseView.extend({
   addNonInteractive: function (obj) {
     obj.interactive = false;
     var sceneModel = this.SceneModelCollection.add(obj); //adding to collection returns sceneModel
+    if (obj.name === "roof") this.positionRoof(sceneModel.get("object3d"));
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel]);
   }
 });

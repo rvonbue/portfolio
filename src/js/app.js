@@ -18,6 +18,9 @@ Backbone.Radio = Radio;
 import eventController from "./controllers/eventController";
 import commandController from "./controllers/commandController";
 import AppView from "./views/AppView";
+require("../styles/style.js");
+console.log("STYLESHEET:", stylesheet);
+
 
 function isCanvasSupported () {
   var elem = document.createElement("canvas");

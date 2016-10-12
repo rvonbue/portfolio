@@ -10,7 +10,6 @@ var CameraControls = BaseModel.extend({
     _.bindAll(this, "updateCamera");
     // eventController.on(eventController.CHANGE_CAMERA, this.updateCamera);
     this.camera = options.camera;
-    this.sceneObjects = options.sceneObjects
     // this.controls = new THREE.FirstPersonControls(this.camera, undefined, {
     //   lookSpeed: 1,
     //   moveLeft: true,
@@ -20,7 +19,7 @@ var CameraControls = BaseModel.extend({
     //   enabled: false,
     //   lookVertical: false
     // });
-    this.controls = new TrackballControls(this.camera);
+    this.controls = new TrackballControls(this.camera, options.canvasEl);
     this.controls.target = new THREE.Vector3( 0, 6, 0 );
     this.setInitialPosition();
     // console.log("init CameraControls", this.camera);

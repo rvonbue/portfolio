@@ -1,4 +1,5 @@
 import eventController from "../controllers/eventController";
+import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
 import navigationList from "../data/navigationList";
 
@@ -6,17 +7,19 @@ var NavigationBar = BaseView.extend({
   className: "navigation-bar",
   template: _.template("<li><a><%= displayTitle %></a></li>"),
   events: {
-    "click li": "updateCamera",
+    "click li": "clickSelected",
     "click .2d": "switchView2d",
     "click .3d": "switchView3d"
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
+    _.bindAll(this, "getSelectedSection");
     this.height = 45;
     this.addListeners();
   },
   addListeners: function () {
     eventController.on(eventController.HOVER_NAVIGATION, this.updateNavigation, this);
+    commandController.reply(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
   },
   cacheListEls: function () {
     var navEljq = this.$el.find("li");
@@ -24,6 +27,10 @@ var NavigationBar = BaseView.extend({
     _.each(navigationList, function (name, i) {
       this.navEls[name] = $(navEljq[i]);
     }, this);
+  },
+  getSelectedSection: function () {
+    if (this.selectedEl) return navigationList[this.selectedEl.index()];
+    return navigationList[0];
   },
   updateNavigation: function (closestObject) {
     if (this.selectedEl && closestObject ) {
@@ -37,17 +44,19 @@ var NavigationBar = BaseView.extend({
   },
   swapSelectedEl: function (newSelectedEl) {
     if (!newSelectedEl) return;
-    this.selectedEl.removeClass("selected");
+    if (this.selectedEl) this.selectedEl.removeClass("selected");
     this.selectedEl = newSelectedEl.addClass("selected");
   },
-  updateCamera: function (e) {
-    eventController.trigger(eventController.SWITCH_SCENE, this.navigationItems[$(e.currentTarget).index()].name);
+  clickSelected: function (e) {
+    var currentTarget = $(e.currentTarget);
+    this.swapSelectedEl(currentTarget);
+
+    eventController.trigger(eventController.SWITCH_SCENE, navigationList[currentTarget.index()].name);
   },
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");
   },
   switchView3d: function (what) {
-    console.log("what", what); 
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
   },
   render: function () {

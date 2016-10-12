@@ -23,7 +23,7 @@ var LightLoader = BaseModel.extend({
     // var light = new THREE.AmbientLight( 0x404040 );
     // light.position.z = 1.5;
     // this.scene.add( light );
-    var hemiLight = new THREE.HemisphereLight( 0x404040, 0x040404, 3);
+    var hemiLight = new THREE.HemisphereLight( 0x404040, 0x040404, 6);
     this.scene.add( hemiLight );
   },
   addDirectionalLight: function () {

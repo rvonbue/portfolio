@@ -15,7 +15,19 @@ var materialMapList = {
   },
   marbleFloor: {
       maps: [{ map: "textures/marbleFloor/marbleFloor_COLOR.jpg" }, { specularMap: "textures/marbleFloor/marbleFloor_SPEC.jpg" }, { normalMap: "textures/marbleFloor/marbleFloor_NRM.jpg" }],
-      props: { repeatScale: 1, shading: "flat" }
+      props: { repeatScale: 0.25, shading: "flat" }
+  },
+  airCond: {
+    maps: [{ map: "textures/airCond.jpg" }],
+    props: { repeatScale: 0.15, shading: "flat" }
+  },
+  roof: {
+      maps: [{ map: "textures/roof.jpg" }],
+      props: { repeatScale: 0.25, shading: "flat" }
+  },
+  grass: {
+    maps: [{ map: "textures/grass/grass.jpg" }],
+    props: { repeatScale: 0.25, shading: "flat" }
   },
   girder: {
   },

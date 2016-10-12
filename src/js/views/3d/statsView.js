@@ -1,5 +1,5 @@
-import eventController from "../controllers/eventController";
-import BaseView from "./BaseView";
+import eventController from "../../controllers/eventController";
+import BaseView from "../BaseView";
 var Stats = require("stats-js");
 
 var AppView = BaseView.extend({
