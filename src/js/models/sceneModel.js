@@ -6,7 +6,8 @@ var SceneModel = BaseModel.extend({
     "name": "Caesar_Salad",
     "object3d": null,
     "selected": false,
-    "ready": true
+    "ready": true,
+    "interactive": true
   },
   initialize: function( options ) {
     this.set("name", options.name);

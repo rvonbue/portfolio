@@ -19,11 +19,22 @@ var AppView3d = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
-    $(window).resize(this.resize);
+    $(window).on("resize", this.resize);
+  },
+  removeListeners: function () {
+    eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
+    $(window).off("resize", this.resize);
+  },
+  hide: function () {
+    this.$el.hide();
+    this.removeListeners();
+  },
+  show: function () {
+    this.$el.show();
+    this.addListeners;
   },
   initScene: function () {
     var size = this.getWidthHeight();
-    console.log("Size:", size);
     var scene = window.scene = this.scene = new THREE.Scene();
     this.initCamera(size);
     this.lightLoader = new LightLoader({scene: scene});
@@ -75,8 +86,9 @@ var AppView3d = BaseView.extend({
   render: function () {
     this.statsView = new StatsView();
     $("body").append(this.statsView.stats.domElement);
-    this.$el.append($("<canvas>"));
-    this.canvasEl = this.$el.find("canvas")[0];
+    var canvasEl = $("<canvas>");
+    this.$el.append(canvasEl);
+    this.canvasEl = canvasEl[0];
     // $("body").append(new DatGuiView().render().el);
     return this;
   }

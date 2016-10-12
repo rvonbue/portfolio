@@ -32,10 +32,11 @@ var CameraControls = BaseModel.extend({
   setInitialPosition: function () {
     this.camera.position.z = 20;
     this.camera.position.y = 6;
+    this.camera.position.x = -10;
   },
   updateCamera: function (index) {
     var selectedObject = this.sceneObjects[index];
-    var initialPosition = { z: 60, y: 0, x: 0 };
+    // var initialPosition = { z: 60, y: 0, x: -15 };
 
     // this.camera.position = initialPosition;
     // this.camera.lookAt(this.sceneObjects[index].position);

@@ -1,23 +1,51 @@
 import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import NavigationBar from "../views/navigationBar";
-import Appview3d from "./AppView3d";
+import AppView3d from "./AppView3d";
+import AppView2d from "./AppView2d";
 
 var AppView = BaseView.extend({
   className: "appview-container",
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
+    this.addListeners();
   },
   addListeners: function () {
-    // $(window).resize(this.resize);
+    eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
   },
   initScene: function () {
-    this.appView3d = new Appview3d();
+    this.renderView3d();
+  },
+  switchViews: function (whichView) {
+    switch (whichView) {
+      case "2d":
+        this.appView3d.hide();
+        if (!this.appView2d) {
+          this.renderView2d();
+        } else {
+          this.appView2d.show();
+        }
+        break;
+      case "3d":
+        this.appView2d.hide();
+        if (!this.appView3d) {
+          this.renderView3d();
+        } else {
+          this.appView3d.show();
+        }
+        break;
+      default:
+        console.log("swithcview error");
+    }
+  },
+  renderView2d: function () {
+    this.appView2d = new AppView2d();
+    this.$el.append(this.appView2d.render().el);
+  },
+  renderView3d: function () {
+    this.appView3d = new AppView3d();
     this.$el.append(this.appView3d.render().el);
     this.appView3d.initScene();
-  },
-  switchViews: function () {
-    
   },
   render: function () {
     this.$el.append(new NavigationBar().render().el);

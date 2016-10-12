@@ -15,21 +15,23 @@ var LightLoader = BaseModel.extend({
   },
   addLight: function () {
     this.addAmbientLight();
-    this.addDirectionalLight();
+    // this.addDirectionalLight();
     this.addPointLights();
     // this.addSpotLights();
   },
   addAmbientLight: function () {
-    var light = new THREE.AmbientLight( 0x404040 );
-    light.position.z = 1.5;
-    this.scene.add( light );
+    // var light = new THREE.AmbientLight( 0x404040 );
+    // light.position.z = 1.5;
+    // this.scene.add( light );
+    var hemiLight = new THREE.HemisphereLight( 0x404040, 0x040404, 3);
+    this.scene.add( hemiLight );
   },
   addDirectionalLight: function () {
-    var size = 0.5333;
+    var size = 0.7;
     var directionalLight = new THREE.DirectionalLight( 0xffffff, size );
-    directionalLight.position.set( -15 , 15 , 15 );
+    directionalLight.position.set( -30 , 15 , 15 );
     this.scene.add( directionalLight );
-    this.scene.add( new THREE.DirectionalLightHelper(directionalLight, size) );
+    this.scene.add( new THREE.DirectionalLightHelper( directionalLight, size ) );
   },
   movePointLights: function (intersect) {
     if (intersect !== null ) {
@@ -53,6 +55,9 @@ var LightLoader = BaseModel.extend({
       this.getNewPointLight( 3, 4.5, 8, color),
       this.getNewPointLight( 0, 4.5, 8, color),
       this.getNewPointLight( -3, 4.5, 8, color),
+      this.getNewPointLight( 3, 4.5, 6, color),
+      this.getNewPointLight( 0, 4.5, 6, color),
+      this.getNewPointLight( -3, 4.5, 6, color)
     ];
 
     _.each(this.pointLights, function (light) {
@@ -60,7 +65,7 @@ var LightLoader = BaseModel.extend({
       // this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
     }, this );
 
-    var self = this;
+    // var self = this;
     // setTimeout( function () {
     //   self.raiseLights(pointLights);
     // }, 2500);
@@ -68,7 +73,7 @@ var LightLoader = BaseModel.extend({
   },
   getNewPointLight: function (x, y, z, color) {
     // color, intensity, distance, decay
-    var light = new THREE.PointLight( color, 7, 3, 2 );
+    var light = new THREE.PointLight( color, 6, 3, 2 );
     light.position.set( x, y, z );
     return light;
   },
@@ -91,7 +96,7 @@ var LightLoader = BaseModel.extend({
     var sphereSize = 1;
     var spotlights = [
       // this.getNewSpotlight( 2.5, 4.5, 8, color),
-      this.getNewSpotlight( 0, 4.5, 12, color),
+      this.getNewSpotlight( 0, 2, 9, color),
       // this.getNewSpotlight( -2.5, 4.5, 8, color)
     ];
 
@@ -102,9 +107,12 @@ var LightLoader = BaseModel.extend({
 
   },
   getNewSpotlight: function (x, y, z, color) {
-    var directionalLight = new THREE.SpotLight( color );
-    directionalLight.position.set( x, y, z );
-    return directionalLight;
+    //color, intensity, distance, angle, penumbra, decay )
+    var spotLight = new THREE.SpotLight( color, 5, 15, Math.PI / 6, 1, 1 );
+    spotLight.position.set( x, y, z );
+    spotLight.castShadow = true;
+    spotLight.angle = Math.PI / 10;
+    return spotLight;
   }
 });
 

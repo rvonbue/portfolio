@@ -7,15 +7,15 @@ import utils from "../util/utils";
 var materialMapList = {
   woodFloor: {
     maps: [{ map: "textures/woodFloor/woodFloor_COLOR.jpg" }, { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" }, { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }],
-    props: { repeatScale: 0.5, shading: "flat" },
+    props: { repeatScale: 1, shading: "flat" },
   },
   brickWall: {
     maps: [{ map: "textures/brickWall/brickWall_COLOR.jpg" }, { specularMap: "textures/brickWall/brickWall_SPEC.jpg", normalMap: "textures/brickWall/brickWall_NRM.jpg" }],
     props: { repeatScale: 0.5 },
   },
-  woodChips: {
-      maps: [{ map: "textures/woodFloor/woodChips.jpg" }],
-      props: { repeatScale: 0.5, shading: "flat" },
+  marbleFloor: {
+      maps: [{ map: "textures/marbleFloor/marbleFloor_COLOR.jpg" }, { specularMap: "textures/marbleFloor/marbleFloor_SPEC.jpg" }, { normalMap: "textures/marbleFloor/marbleFloor_NRM.jpg" }],
+      props: { repeatScale: 1, shading: "flat" }
   },
   girder: {
   },

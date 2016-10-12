@@ -6,7 +6,9 @@ var NavigationBar = BaseView.extend({
   className: "navigation-bar",
   template: _.template("<li><a><%= displayTitle %></a></li>"),
   events: {
-    "click li": "updateCamera"
+    "click li": "updateCamera",
+    "click .2d": "switchView2d",
+    "click .3d": "switchView3d"
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -22,7 +24,6 @@ var NavigationBar = BaseView.extend({
     _.each(navigationList, function (name, i) {
       this.navEls[name] = $(navEljq[i]);
     }, this);
-
   },
   updateNavigation: function (closestObject) {
     if (this.selectedEl && closestObject ) {
@@ -42,6 +43,13 @@ var NavigationBar = BaseView.extend({
   updateCamera: function (e) {
     eventController.trigger(eventController.SWITCH_SCENE, this.navigationItems[$(e.currentTarget).index()].name);
   },
+  switchView2d: function () {
+    eventController.trigger(eventController.SWITCH_VIEWS, "2d");
+  },
+  switchView3d: function (what) {
+    console.log("what", what); 
+    eventController.trigger(eventController.SWITCH_VIEWS, "3d");
+  },
   render: function () {
     var cssMenu = "<div id='cssmenu'><ul>";
 
@@ -51,7 +59,7 @@ var NavigationBar = BaseView.extend({
 
     cssMenu += "</ul></div>";
     this.$el.append(cssMenu);
-    this.$el.append("<div class='switch-views'><div class='2d'><a href='javascript;;'>2d</a></div><div class='3d'><a href='javascript;;'>3d</a></div></div>");
+    this.$el.append("<div class='switch-views'><div class='2d'><a href='javascript:;'>2d</a></div><div class='3d'><a href='javascript:;'>3d</a></div></div>");
     this.cacheListEls();
 
     return this;
