@@ -25,13 +25,15 @@ var AppView3d = BaseView.extend({
     eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     $(window).off("resize", this.resize);
   },
-  hide: function () {
+  hide: function (parentEl) {
     this.$el.hide();
     this.removeListeners();
+    parentEl.removeClass("threeD");
   },
-  show: function () {
+  show: function (parentEl) {
     this.$el.show();
     this.addListeners();
+    parentEl.addClass("threeD");
   },
   initScene: function () {
     var size = this.getWidthHeight();

@@ -18,7 +18,7 @@ var NavigationBar = BaseView.extend({
     this.addListeners();
   },
   addListeners: function () {
-    eventController.on(eventController.HOVER_NAVIGATION, this.updateNavigation, this);
+    eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
     commandController.reply(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
   },
   cacheListEls: function () {
@@ -29,17 +29,27 @@ var NavigationBar = BaseView.extend({
     }, this);
   },
   getSelectedSection: function () {
-    if (this.selectedEl) return navigationList[this.selectedEl.index()];
-    return navigationList[0];
+    if (this.selectedEl) return this.selectedEl.index();
+    return 0;
   },
-  updateNavigation: function (closestObject) {
-    if (this.selectedEl && closestObject ) {
-      this.swapSelectedEl(this.navEls[closestObject.object.name]);
-    } else if (this.selectedEl) {
-      this.selectedEl.removeClass("selected");
-      this.selectedEl = null;
+  // updateNavigation: function (closestObject) {
+  //   if (this.selectedEl && closestObject ) {
+  //     this.swapSelectedEl(this.navEls[closestObject.object.name]);
+  //   } else if (this.selectedEl) {
+  //     this.selectedEl.removeClass("selected");
+  //     this.selectedEl = null;
+  //   } else if (closestObject) {
+  //     this.selectedEl = this.navEls[closestObject.object.name].addClass("selected");
+  //   }
+  // },
+  updateHoverNavigationFrom3d: function (closestObject) {
+    if (this.hoveredEl && closestObject ) {
+      this.swapHoveredEl(this.navEls[closestObject.object.name]);
+    } else if (this.hoveredEl) {
+      this.hoveredEl.removeClass("hovered");
+      this.hoveredEl = null;
     } else if (closestObject) {
-      this.selectedEl = this.navEls[closestObject.object.name].addClass("selected");
+      this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
     }
   },
   swapSelectedEl: function (newSelectedEl) {
@@ -47,11 +57,16 @@ var NavigationBar = BaseView.extend({
     if (this.selectedEl) this.selectedEl.removeClass("selected");
     this.selectedEl = newSelectedEl.addClass("selected");
   },
+  swapHoveredEl: function (newSelectedEl) {
+    if (!newSelectedEl) return;
+    if (this.hoveredEl) this.hoveredEl.removeClass("hovered");
+    this.hoveredEl = newSelectedEl.addClass("hovered");
+  },
   clickSelected: function (e) {
     var currentTarget = $(e.currentTarget);
     this.swapSelectedEl(currentTarget);
 
-    eventController.trigger(eventController.SWITCH_SCENE, navigationList[currentTarget.index()].name);
+    eventController.trigger(eventController.SWITCH_SCENE, currentTarget.index());
   },
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");

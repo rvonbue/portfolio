@@ -19,32 +19,33 @@ var AppView = BaseView.extend({
   switchViews: function (whichView) {
     switch (whichView) {
       case "2d":
-        this.appView3d.hide();
+        if (this.appView3d) this.appView3d.hide(this.$el);
         if (!this.appView2d) {
           this.renderView2d();
         } else {
-          this.appView2d.show();
+          this.appView2d.show(this.$el);
         }
         break;
       case "3d":
-        this.appView2d.hide();
+        if (this.appView2d) this.appView2d.hide(this.$el);
         if (!this.appView3d) {
           this.renderView3d();
         } else {
-          this.appView3d.show();
+          this.appView3d.show(this.$el);
         }
         break;
       default:
-        console.log("swithcview error");
     }
   },
   renderView2d: function () {
     this.appView2d = new AppView2d();
     this.$el.append(this.appView2d.render().el);
+    this.$el.addClass("twoD").removeClass("threeD");
   },
   renderView3d: function () {
     this.appView3d = new AppView3d();
     this.$el.append(this.appView3d.render().el);
+    this.$el.addClass("threeD").removeClass("twoD");
     this.appView3d.initScene();
   },
   render: function () {
