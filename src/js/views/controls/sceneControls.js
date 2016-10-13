@@ -37,7 +37,8 @@ var SceneControls = BaseModel.extend({
   },
   onMouseClick: function (evt) {
     var closestObject = this.shootRaycaster(evt);
-    console.log("onMouseClick", closestObject);
+    if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
+    // console.log("onMouseClick", closestObject);
   },
   onMouseMove: function (evt) {
     evt.preventDefault();

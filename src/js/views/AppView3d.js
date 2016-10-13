@@ -4,7 +4,7 @@ import THREE from "three";
 import TWEEN from "tween.js";
 import raf from "raf";
 import LightLoader from "../models/lightLoader";
-import CameraControls from "../models/cameraControls";
+import CameraControls from "../views/controls/cameraControls";
 import SceneControls from "../views/controls/sceneControls";
 import StatsView from "../views/3d/statsView";
 // import DatGuiView from "../views/controls/datGuiView";
@@ -77,13 +77,12 @@ var AppView3d = BaseView.extend({
   },
   resize: function () {
     var size = this.getWidthHeight();
-
     this.camera.aspect = size.w / size.h;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(  size.w, size.h );
   },
   getWidthHeight: function () {
-    return {w: this.$el.width(), h: this.$el.height() }
+    return {w: window.innerWidth, h: this.$el.height() }
   },
   render: function () {
     this.statsView = new StatsView();

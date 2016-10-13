@@ -17,15 +17,22 @@ var HomeView = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.SceneModelCollection = new SceneModelCollection();
     this.addListeners();
-    eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/floor.json", {name: SCENE_MODEL_NAME}); //load scene Model
+    eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/floor.json", { name: SCENE_MODEL_NAME }); //load scene Model
     eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/ground.json", { name: "ground" }); //load scene Model
     eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/roof.json", { name: "roof" }); //load scene Model
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
+     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.toggleSceneModel, this);
   },
   removeListeners: function () {
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
+  },
+  toggleSceneModel: function (intersectObject) {
+    if ( intersectObject ) var name = intersectObject.object.name;
+    var oldSceneModel = this.SceneModelCollection.findWhere({ selected: true});
+    var newSceneModel = this.SceneModelCollection.findWhere({ name: name}).set({ selected: true });
+    if ( newSceneModel ) eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));
   },
   modelLoaded: function (obj) {
     if (obj.name === SCENE_MODEL_NAME) {

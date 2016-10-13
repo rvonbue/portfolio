@@ -430,7 +430,10 @@ input {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-
+canvas {
+  position: absolute;
+  left: 0px;
+}
 /*  Base  */
 .appView-2d {
   color: #FAEBD7;
