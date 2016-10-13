@@ -43,7 +43,7 @@ var SceneControls = BaseModel.extend({
   onMouseMove: function (evt) {
     evt.preventDefault();
     var closestObject = this.shootRaycaster(evt);
-    if (closestObject) eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
+    eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
     this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
