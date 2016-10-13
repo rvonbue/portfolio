@@ -9,9 +9,7 @@ import THREE from "three";
 
 var SceneControls = BaseModel.extend({
   defaults:  {
-    home: null,
-    movieTheater: null,
-    artGallery: null,
+    home: null
   },
   initialize: function (options) {
     this.mouse = new THREE.Vector2();
@@ -28,6 +26,8 @@ var SceneControls = BaseModel.extend({
   addListeners: function (el) {
     var self = this;
     el.on("mousemove", "canvas", function (evt) { self.onMouseMove(evt); });
+    el.on("mouseleave", "canvas", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
+    el.on("click", "canvas", function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.INTERACTIVE_OBJECTS_READY, this.setInteractiveObjects, this);
     this.width = window.innerWidth;
     this.height = window.innerHeight;
@@ -35,13 +35,20 @@ var SceneControls = BaseModel.extend({
   removeListeners: function () {
 
   },
+  onMouseClick: function (evt) {
+    var closestObject = this.shootRaycaster(evt);
+    console.log("onMouseClick", closestObject);
+  },
   onMouseMove: function (evt) {
     evt.preventDefault();
-		this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
+    var closestObject = this.shootRaycaster(evt);
+    if (closestObject) eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
+  },
+  shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
+    this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
 		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
     this.raycaster.setFromCamera( this.mouse, this.camera );
-    var closestObject = this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
-    eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
+    return this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
   },
   findClosestObject: function (intersects) {
     var closestObject = null;
@@ -55,30 +62,7 @@ var SceneControls = BaseModel.extend({
     return closestObject;
   },
   loadInitialScene: function (name) {
-    this.load3dView(name);
-  },
-  load3dView: function (name) {
-    if (this.get(name) === null) {
-      var view3d = this.get3dView(name);
-      this.set(name, view3d);
-    }
-  },
-  get3dView: function (name) {
-    var newView;
-    switch(name) {
-      case "home":
-          newView = new HomeView({ name: name });
-          break;
-      case "movieTheater":
-          newView = new MovieTheaterView3d();
-          break;
-      case "artGallery":
-          newView = new ArtGalleryView3d();
-          break;
-      default:
-          break;
-    }
-    return newView;
+    this.set(name, new HomeView({ name: name }));
   },
   loadEnvironmentMap: function (reflectionCube) {
     var format = '.jpg';
@@ -104,6 +88,7 @@ var SceneControls = BaseModel.extend({
   setInteractiveObjects: function (arr) {
     this.raycasterObjects = arr;
   },
+
   switchScene: function (name) {
     // console.log("switchScene: name ---",  name);
     // if (this.animating) return false;

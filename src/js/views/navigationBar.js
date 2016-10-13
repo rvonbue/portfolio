@@ -32,16 +32,6 @@ var NavigationBar = BaseView.extend({
     if (this.selectedEl) return this.selectedEl.index();
     return 0;
   },
-  // updateNavigation: function (closestObject) {
-  //   if (this.selectedEl && closestObject ) {
-  //     this.swapSelectedEl(this.navEls[closestObject.object.name]);
-  //   } else if (this.selectedEl) {
-  //     this.selectedEl.removeClass("selected");
-  //     this.selectedEl = null;
-  //   } else if (closestObject) {
-  //     this.selectedEl = this.navEls[closestObject.object.name].addClass("selected");
-  //   }
-  // },
   updateHoverNavigationFrom3d: function (closestObject) {
     if (this.hoveredEl && closestObject ) {
       this.swapHoveredEl(this.navEls[closestObject.object.name]);
