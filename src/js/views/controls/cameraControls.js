@@ -9,7 +9,7 @@ var CameraControls = BaseModel.extend({
     // eventController.on(eventController.CHANGE_CAMERA, this.updateCamera);
     this.camera = options.camera;
     this.addListeners();
-    this.setInitialPosition();
+    this.camera.position.set( -10, 8, 20);  // set Initial Camera Position
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
     this.orbitControls.target = new THREE.Vector3( 0, 6, 0 );
   },
@@ -20,43 +20,33 @@ var CameraControls = BaseModel.extend({
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
   },
   zoomOnSceneModel: function (object3d) {
-    var zSpacer = 5;
-    var newPosition = {
+    var zSpacer = 5;  // Move camera away from target... so you can see the object
+    var newCameraTarget = {
       x: object3d.position.x,
       y: object3d.position.y,
-      z: object3d.position.z + object3d.geometry.boundingBox.max.z
+      z: 0
      };
 
-    this.tweenToObject(newPosition, this.orbitControls);
-    newPosition.z += zSpacer;  // Move camera away from target... so you can see the object
-    this.tweenCameraToPosition(this.orbitControls.object, newPosition);
+     var newCameraPosition = {
+       x: object3d.position.x,
+       y: object3d.position.y + ( object3d.geometry.boundingBox.max.y / 2),
+       z: object3d.geometry.boundingBox.max.z
+    };
+    this.tweenToPosition( this.orbitControls.target, newCameraTarget );  // move camera target or lookAt
+    this.tweenToPosition( this.orbitControls.object.position, newCameraPosition );
   },
   getControls: function () {
     return this.orbitControls;
   },
-  setInitialPosition: function () {
-    // this.camera.target = new THREE.Vector3( 0, 6, 0 );
-    this.camera.position.set(-10, 8, 20);
-  },
-  tweenToObject: function (newPosition, controls) {
-    var tween2 = new TWEEN.Tween(controls.target).to({
+  tweenToPosition: function (obj, newPosition) {
+    var tween2 = new TWEEN.Tween(obj).to({
         x: newPosition.x,
         y: newPosition.y,
         z: newPosition.z
-    }).easing(TWEEN.Easing.Linear.None).onUpdate(function (a, b) {
-    }).onComplete(function () {
-    }).start();
-  },
-  tweenCameraToPosition: function (camera, newPosition) {
-    var tween = new TWEEN.Tween(camera.position).to({
-        x: newPosition.x,
-        y: newPosition.y,
-        z: newPosition.z
-    }).easing(TWEEN.Easing.Linear.None).onUpdate(function () {
-        // camera.lookAt(camera.target);
-    }).onComplete(function () {
-        // camera.lookAt(selectedObject.position);
-    }).start();
+    }).easing(TWEEN.Easing.Linear.None)
+    // .onUpdate(function (a, b) {})
+    // .onComplete(function () {})
+    .start();
   },
   render: function () {
     return this;

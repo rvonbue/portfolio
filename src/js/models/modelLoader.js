@@ -7,7 +7,7 @@ import utils from "../util/utils";
 var materialMapList = {
   woodFloor: {
     maps: [{ map: "textures/woodFloor/woodFloor_COLOR.jpg" }, { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" }, { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }],
-    props: { repeatScale: 1, shading: "flat" },
+    props: { repeatScale: 0.60, shading: "flat" },
   },
   brickWall: {
     maps: [{ map: "textures/brickWall/brickWall_COLOR.jpg" }, { specularMap: "textures/brickWall/brickWall_SPEC.jpg", normalMap: "textures/brickWall/brickWall_NRM.jpg" }],
@@ -45,7 +45,7 @@ var ModelLoader = BaseModel.extend({
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
     this.manager.onProgress = function ( item, loaded, total ) {
-      console.log( item, loaded, total );
+      // console.log( item, loaded, total );
     };
   },
   loadModel: function (url, options) {

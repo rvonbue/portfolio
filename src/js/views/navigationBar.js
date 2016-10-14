@@ -44,7 +44,6 @@ var NavigationBar = BaseView.extend({
     }
   },
   swapSelectedEl: function (newSelectedEl) {
-    console.log("newSelectedEl", newSelectedEl);
     if (!newSelectedEl) return;
     if (this.selectedEl) this.selectedEl.removeClass("selected");
     this.selectedEl = newSelectedEl.addClass("selected");

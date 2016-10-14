@@ -5,6 +5,7 @@ import SceneModel from "../../models/sceneModel";
 import SceneModelCollection from "../../collections/SceneModelCollection";
 import utils from "../../util/utils";
 import THREE from "three";
+import TWEEN from "tween.js";
 import data from "../../data/roboto_regular.json";
 
 var SCENE_MODEL_NAME = "floor";
@@ -41,9 +42,31 @@ var HomeView = BaseView.extend({
   },
   toggleSelectedSceneModel: function (sceneModelName) {
     var oldSceneModel = this.SceneModelCollection.findWhere({ selected: true});
-    if (oldSceneModel) oldSceneModel.set("selected", false);
+    if ( oldSceneModel ) oldSceneModel.set("selected", false);
     var newSceneModel = this.SceneModelCollection.findWhere({ name: sceneModelName }).set({ selected: true });
-    if ( newSceneModel ) eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
+    if ( newSceneModel ) {
+      eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
+      eventController.trigger(eventController.RESET_RAYCASTER, []);
+      // this.hideEverythingNotSelected();
+    }
+  },
+  hideEverythingNotSelected: function () {
+    var falseArr = this.SceneModelCollection.where({ selected: false });
+    _.each(falseArr, function (sceneModel) {
+      sceneModel.get("object3d").visible = false;
+    });
+  },
+  getTweenOpacity: function (material, opacityEnd) {
+    if ( opacityEnd === 0 )  material.transparent = true;
+
+    var tween = new TWEEN.Tween(material)
+    .to({ opacity: opacityEnd }, 500)
+    .onComplete(function () {
+      if ( opacityEnd === 1 ) {
+        material.transparent = false;
+      }
+    })
+    .start();
   },
   modelLoaded: function (obj) {
     if (obj.name === SCENE_MODEL_NAME) {

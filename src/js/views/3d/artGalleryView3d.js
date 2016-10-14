@@ -1,5 +1,4 @@
 import Base3dView from "./Base3dView";
-import artGalleryList from "../../data/artGalleryList";
 import ArtItem3d from "../../models/artItem3d";
 
 var ArtGalleryView3d = Base3dView.extend({
@@ -12,13 +11,11 @@ var ArtGalleryView3d = Base3dView.extend({
     _.bindAll(this, "addInteractiveObjectToScene");
     this.currentItemViewIndex = 0;
     this.artItemMap = {};
-    console.log("init art gallery View 3d");
   },
   loadInteractiveObjects: function () {
     this.loadArtItem();
   },
   loadArtItem: function () {
-      var currentArtItem  = artGalleryList[this.currentItemViewIndex];
       new ArtItem3d(currentArtItem).on("READY", this.addInteractiveObjectToScene);
       // this.artItemArray.push(new ArtItem3d(currentArtItem).on("READY", this.addInteractiveObjectToScene));
   },

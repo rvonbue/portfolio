@@ -7,16 +7,20 @@ var SceneModel = Backbone.Model.extend({
     "object3d": null,
     "selected": false,
     "ready": true,
-    "interactive": true
+    "interactive": true,
   },
   initialize: function( options ) {
     this.set("name", options.name);
-    var object3d = options.object3d;
-    object3d.name = options.name;
-    this.set("object3d", object3d);
-    this.on("change:selected", function () {
-      console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
-    })
+    options.object3d.name = options.name;
+    this.set("object3d", options.object3d);
+    this.addModelListeners();
+  },
+  addModelListeners: function () {
+    this.on("change:selected", this.onChangeSelectedListeners);
+  },
+  onChangeSelectedListeners: function () {
+    console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
+    // this.get("object3d").visible = this.get("selected");
   }
 });
 
