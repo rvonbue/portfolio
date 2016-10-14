@@ -54,8 +54,8 @@ var AppView3d = BaseView.extend({
     this.camera.lookAt(new THREE.Vector3( 1, 10, 0 ));
   },
   initControls: function () {
-    var cameraControls = new CameraControls({ camera: this.camera, canvasEl: this.canvasEl });
-    this.sceneControls = new SceneControls({ camera: this.camera, scene: this.scene, el: this.$el,  });
+    var cameraControls = new CameraControls({ camera:this.camera, canvasEl:this.canvasEl });
+    this.sceneControls = new SceneControls({ camera:this.camera, scene:this.scene, parentEl:this.$el, canvasEl:this.canvasEl });
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
@@ -80,6 +80,7 @@ var AppView3d = BaseView.extend({
     this.camera.aspect = size.w / size.h;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(  size.w, size.h );
+    eventController.trigger(eventController.ON_RESIZE, size);
   },
   getWidthHeight: function () {
     return {w: window.innerWidth, h: this.$el.height() }

@@ -12,33 +12,44 @@ var SceneControls = BaseModel.extend({
     home: null
   },
   initialize: function (options) {
-    this.mouse = new THREE.Vector2();
+    this.parentEl = options.parentEl;
+    this.canvasEl = $(options.canvasEl);
     this.scene = options.scene;
     this.camera = options.camera;
     this.raycasterObjects = [];
-    this.addListeners(options.el);
+    this.mouse = new THREE.Vector2();
+    this.onResize();
+    this.addListeners(this.parentEl);
     // this.loadEnvironmentMap();
     this.modelLoader = new ModelLoader();
     this.raycaster = new THREE.Raycaster();
+    this.raycaster.far = 100;
     this.loadInitialScene("home");
     this.animating = false;
   },
   addListeners: function (el) {
     var self = this;
-    el.on("mousemove", "canvas", function (evt) { self.onMouseMove(evt); });
-    el.on("mouseleave", "canvas", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    el.on("click", "canvas", function (evt) { self.onMouseClick(evt); });
+    el.on("mousemove", this.parentEl, function (evt) { self.onMouseMove(evt); });
+    el.on("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
+    el.on("click", this.parentEl, function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.INTERACTIVE_OBJECTS_READY, this.setInteractiveObjects, this);
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    eventController.on(eventController.ON_RESIZE, this.onResize, this);
+
   },
   removeListeners: function () {
-
+    el.off("mousemove", this.parentEl, function (evt) { self.onMouseMove(evt); });
+    el.off("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
+    el.off("click", this.parentEl, function (evt) { self.onMouseClick(evt); });
+    eventController.off(eventController.INTERACTIVE_OBJECTS_READY, this.setInteractiveObjects, this);
+    eventController.off(eventController.ON_RESIZE, this.onResize, this);
+  },
+  onResize: function (size) {
+    this.height = window.innerHeight;
+    this.width = window.innerWidth;
   },
   onMouseClick: function (evt) {
     var closestObject = this.shootRaycaster(evt);
     if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
-    // console.log("onMouseClick", closestObject);
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
@@ -49,6 +60,7 @@ var SceneControls = BaseModel.extend({
     this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
 		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
     this.raycaster.setFromCamera( this.mouse, this.camera );
+    // console.log("mouse:", this.mouse);
     return this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
   },
   findClosestObject: function (intersects) {
@@ -137,9 +149,6 @@ var SceneControls = BaseModel.extend({
   },
   getCurrentScene: function (name) {
     return this.SceneModelCollection.findWhere({selected: true });
-  },
-  setMeshInitRotation: function (mesh) {
-    mesh.rotation.z = Math.PI;
   },
   hideScene: function (mesh) {
     // var end = new THREE.Vector3( 0, 0, mesh.rotation.z + Math.PI);

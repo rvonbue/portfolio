@@ -6,13 +6,13 @@ var OrbitControls = require('three-orbit-controls')(THREE);
 
 var CameraControls = BaseModel.extend({
   initialize: function (options) {
-    _.bindAll(this, "updateCamera");
     // eventController.on(eventController.CHANGE_CAMERA, this.updateCamera);
     this.camera = options.camera;
     this.addListeners();
     this.setInitialPosition();
-    this.cameraControls = new OrbitControls(this.camera, options.canvasEl);
-    // this.cameraControls.autoRotate = true;
+    this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
+    this.orbitControls.target = new THREE.Vector3( 0, 6, 0 );
+      console.log("this.camera: ", this.camera);
   },
   addListeners: function () {
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
@@ -22,28 +22,22 @@ var CameraControls = BaseModel.extend({
   },
   zoomOnSceneModel: function (object3d) {
     var zSpacer = 5;
-    var newPositionZ = object3d.position.z + object3d.geometry.boundingBox.max.z + zSpacer;
-    var newPositionY = object3d.position.y;
-    var newPosition = { x: object3d.position.x, y: newPositionY, z: newPositionZ };
-    console.log("this.cameraControls: ", this.cameraControls);
-    this.tweenCameraToPosition(this.cameraControls.object, newPosition);
-    // this.cameraControls.target = new THREE.Vector3( 0, newPositionY, newPositionZ );
+    var newPosition = {
+      x: object3d.position.x,
+      y: object3d.position.y,
+      z: object3d.position.z + object3d.geometry.boundingBox.max.z
+     };
+
+    this.tweenToObject(newPosition, this.orbitControls);
+    newPosition.z += zSpacer;  // Move camera away from target... so you can see the object
+    this.tweenCameraToPosition(this.orbitControls.object, newPosition);
   },
   getControls: function () {
-    return this.cameraControls;
+    return this.orbitControls;
   },
   setInitialPosition: function () {
-    this.camera.target = new THREE.Vector3( 0, 6, 0 );
-    this.camera.position.set(-10, 6, 20);
-  },
-  updateCamera: function (index) {
-    // var selectedObject = this.sceneObjects[index];
-    // var initialPosition = { z: 60, y: 0, x: -15 };
-
-    // this.camera.position = initialPosition;
-    // this.camera.lookAt(this.sceneObjects[index].position);
-    // this.tweenCameraToPosition(this.camera, { x: 20, y: 2, z: 7.5 });
-    // this.tweenToObject({ x: 30, y: 2, z: 7.5  }, this.cameraControls);
+    // this.camera.target = new THREE.Vector3( 0, 6, 0 );
+    this.camera.position.set(-10, 8, 20);
   },
   tweenToObject: function (newPosition, controls) {
     var tween2 = new TWEEN.Tween(controls.target).to({
