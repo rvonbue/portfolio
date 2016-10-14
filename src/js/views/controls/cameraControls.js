@@ -12,7 +12,6 @@ var CameraControls = BaseModel.extend({
     this.setInitialPosition();
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
     this.orbitControls.target = new THREE.Vector3( 0, 6, 0 );
-      console.log("this.camera: ", this.camera);
   },
   addListeners: function () {
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);

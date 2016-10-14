@@ -14,16 +14,15 @@ var AppView2d = BaseView.extend({
     this.setSection();
   },
   addListeners: function () {
-    eventController.on(eventController.SWITCH_SCENE , this.switchPage, this);
+    eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   removeListeners: function () {
-    eventController.off(eventController.SWITCH_SCENE , this.switchPage, this);
+    eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   setSection: function () {
     this.$el.append(htmlPageNavigation[0]);
   },
   switchPage: function (index) {
-
     if (!index) index = commandController.request(commandController.GET_SELECTED_SECTION);
     console.log("switchPage:", index);
     this.$el.empty();

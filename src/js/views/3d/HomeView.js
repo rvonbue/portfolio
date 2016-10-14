@@ -23,16 +23,27 @@ var HomeView = BaseView.extend({
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
-     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.toggleSceneModel, this);
+     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
+     eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
   },
   removeListeners: function () {
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
+    eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
+    eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
   },
-  toggleSceneModel: function (intersectObject) {
+  clickSelectSceneModel: function (intersectObject) {
     if ( intersectObject ) var name = intersectObject.object.name;
+    this.toggleSelectedSceneModel(name);
+  },
+  navigationBarSelectSceneModel: function (index) {
+    if (isNaN(index)) return;
+    this.toggleSelectedSceneModel(navigationList[index]);
+  },
+  toggleSelectedSceneModel: function (sceneModelName) {
     var oldSceneModel = this.SceneModelCollection.findWhere({ selected: true});
-    var newSceneModel = this.SceneModelCollection.findWhere({ name: name}).set({ selected: true });
-    if ( newSceneModel ) eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));
+    if (oldSceneModel) oldSceneModel.set("selected", false);
+    var newSceneModel = this.SceneModelCollection.findWhere({ name: sceneModelName }).set({ selected: true });
+    if ( newSceneModel ) eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
   },
   modelLoaded: function (obj) {
     if (obj.name === SCENE_MODEL_NAME) {

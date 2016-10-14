@@ -19,6 +19,7 @@ var NavigationBar = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
+    eventController.on(eventController.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
     commandController.reply(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
   },
   cacheListEls: function () {
@@ -43,6 +44,7 @@ var NavigationBar = BaseView.extend({
     }
   },
   swapSelectedEl: function (newSelectedEl) {
+    console.log("newSelectedEl", newSelectedEl);
     if (!newSelectedEl) return;
     if (this.selectedEl) this.selectedEl.removeClass("selected");
     this.selectedEl = newSelectedEl.addClass("selected");
@@ -55,8 +57,10 @@ var NavigationBar = BaseView.extend({
   clickSelected: function (e) {
     var currentTarget = $(e.currentTarget);
     this.swapSelectedEl(currentTarget);
-
-    eventController.trigger(eventController.SWITCH_SCENE, currentTarget.index());
+    eventController.trigger(eventController.SWITCH_PAGE, currentTarget.index());
+  },
+  setSelectedFrom3d: function (text3d) {
+    this.swapSelectedEl(this.navEls[text3d.name]);
   },
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");
