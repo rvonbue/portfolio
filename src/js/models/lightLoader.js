@@ -11,7 +11,7 @@ var LightLoader = BaseModel.extend({
     this.addListeners();
   },
   addListeners: function () {
-    eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
+    // eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
   },
   addLight: function () {
     this.addAmbientLight();
@@ -23,7 +23,7 @@ var LightLoader = BaseModel.extend({
     // var light = new THREE.AmbientLight( 0x404040 );
     // light.position.z = 1.5;
     // this.scene.add( light );
-    var hemiLight = new THREE.HemisphereLight( 0x404040, 0x040404, 6);
+    var hemiLight = new THREE.HemisphereLight( 0x404040, 0x040404, 5); //0xB82601
     this.scene.add( hemiLight );
   },
   addDirectionalLight: function () {
@@ -50,19 +50,19 @@ var LightLoader = BaseModel.extend({
   },
   addPointLights: function () {
     var sphereSize = 0.25;
-    var color = "#FFFFFF";
+    var color = "#B82601";
     this.pointLights = [
-      this.getNewPointLight( 3, 4.5, 8, color),
-      this.getNewPointLight( 0, 4.5, 8, color),
-      this.getNewPointLight( -3, 4.5, 8, color),
-      this.getNewPointLight( 3, 4.5, 6, color),
-      this.getNewPointLight( 0, 4.5, 6, color),
-      this.getNewPointLight( -3, 4.5, 6, color)
+      // this.getNewPointLight( 3, 7.5, 7, color),
+      // this.getNewPointLight( 0, 7.5, 7, color),
+      // this.getNewPointLight( -3, 7.5, 7, color),
+      this.getNewPointLight( 5.25, 2.25, 5.25, color),
+      // this.getNewPointLight( 0, 4.5, 6, color),
+      // this.getNewPointLight( -3, 4.5, 6, color)
     ];
 
     _.each(this.pointLights, function (light) {
       this.scene.add(light);
-      // this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
+      this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
     }, this );
 
     // var self = this;
@@ -73,7 +73,7 @@ var LightLoader = BaseModel.extend({
   },
   getNewPointLight: function (x, y, z, color) {
     // color, intensity, distance, decay
-    var light = new THREE.PointLight( color, 6, 3, 2 );
+    var light = new THREE.PointLight( color, 6, 5, 2 );
     light.position.set( x, y, z );
     return light;
   },

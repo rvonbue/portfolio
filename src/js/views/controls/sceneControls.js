@@ -105,7 +105,7 @@ var SceneControls = BaseModel.extend({
     this.raycasterObjects = arr;
   },
   resetRaycaster: function (arr) {
-    this.raycasterObjects = arr; 
+    this.raycasterObjects = arr;
   },
   switchScene: function (name) {
     // console.log("switchScene: name ---",  name);

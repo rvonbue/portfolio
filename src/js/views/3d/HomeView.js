@@ -18,9 +18,15 @@ var HomeView = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.SceneModelCollection = new SceneModelCollection();
     this.addListeners();
-    eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/floor.json", { name: SCENE_MODEL_NAME }); //load scene Model
-    eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/ground.json", { name: "ground" }); //load scene Model
-    eventController.trigger(eventController.LOAD_JSON_MODEL, "models3d/roof.json", { name: "roof" }); //load scene Model
+    var models = [
+      // { url: "models3d/floor.json", name: SCENE_MODEL_NAME},
+      { url: "models3d/japanBottomFloor.json", name: "ground" },
+      { url: "models3d/roof.json", name: "roof" }
+    ];
+    this.TOTAL_MODELS = models.length;
+    _.each(models, function (modelsArrObj) {
+      eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, { name: modelsArrObj.name }); //load scene Model
+    });
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );

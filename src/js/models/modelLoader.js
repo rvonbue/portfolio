@@ -11,11 +11,11 @@ var materialMapList = {
   },
   brickWall: {
     maps: [{ map: "textures/brickWall/brickWall_COLOR.jpg" }, { specularMap: "textures/brickWall/brickWall_SPEC.jpg", normalMap: "textures/brickWall/brickWall_NRM.jpg" }],
-    props: { repeatScale: 0.5 },
+    props: { repeatScale: 5},
   },
   marbleFloor: {
       maps: [{ map: "textures/marbleFloor/marbleFloor_COLOR.jpg" }, { specularMap: "textures/marbleFloor/marbleFloor_SPEC.jpg" }, { normalMap: "textures/marbleFloor/marbleFloor_NRM.jpg" }],
-      props: { repeatScale: 0.25, shading: "flat" }
+      props: { repeatScale: 1, shading: "flat" }
   },
   airCond: {
     maps: [{ map: "textures/airCond.jpg" }],
@@ -33,6 +33,30 @@ var materialMapList = {
   },
   glass: {
     props: [{opacity: .25 }]
+  },
+  roofTop: {
+      maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
+      props: { repeatScale: 0.75, shading: "flat" }
+  },
+  roofLog: {
+      maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
+      props: { repeatScale: 0.25, shading: "smooth" }
+  },
+  woodBeamPrimary: {
+      maps: [
+        { map: "textures/plywoodPaintedBlue/plywoodPaintedBlue_COLOR.jpg" },
+        { specularMap: "textures/plywoodPaintedBlue/plywoodPaintedBlue_SPEC.jpg" },
+        { normalMap: "textures/plywoodPaintedBlue/plywoodPaintedBlue_NRM.jpg" }
+      ],
+      props: { repeatScale: 4, shading: "flat" }
+  },
+  woodBeamSecondary: {
+    maps: [
+      { map: "textures/woodPlanksPainted.jpg" },
+      { specularMap: "textures/woodPlanksPainted.jpg" },
+      { normalMap: "textures/woodPlanksPainted.jpg" }
+    ],
+    props: { repeatScale: 4, shading: "flat" }
   }
 };
 
