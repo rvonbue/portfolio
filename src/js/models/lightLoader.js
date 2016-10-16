@@ -56,7 +56,7 @@ var LightLoader = BaseModel.extend({
       // this.getNewPointLight( 0, 7.5, 7, color),
       // this.getNewPointLight( -3, 7.5, 7, color),
       this.getNewPointLight( 5.25, 2.25, 5.25, color),
-      this.getNewPointLight( -5.25, 2.25, 5.25, color)
+      this.getNewPointLight( 5.25, 7.25, 6.5, color)
       // this.getNewPointLight( 0, 4.5, 6, color),
       // this.getNewPointLight( -3, 4.5, 6, color)
     ];

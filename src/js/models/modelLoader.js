@@ -62,6 +62,12 @@ var materialMapList = {
     ],
     props: { repeatScale: 4, shading: "flat" }
   },
+  lampLight: {
+    maps: [
+      { map: "textures/japan_character.png" }
+    ],
+    props: { repeatScale: 1, shading: "flat" }
+  },
   stucco:{
     maps: [
       { map: "textures/stucco/stucco_COLOR.jpg" },
@@ -120,6 +126,7 @@ var ModelLoader = BaseModel.extend({
           texture.repeat.set( options.repeatScale, options.repeatScale );
           texture.shading = THREE.FlatShading;
         }
+        if (options.transparent) texture.transparent = true;
       });
     });
     return texture;

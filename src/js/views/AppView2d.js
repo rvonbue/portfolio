@@ -4,7 +4,7 @@ import BaseView from "./BaseView";
 var htmlPageNavigation = [
   require("html!./2d/home.html"),
   require("html!./2d/web_dev.html")
-]
+];
 
 var AppView2d = BaseView.extend({
   className: "appView-2d",
