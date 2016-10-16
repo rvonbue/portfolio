@@ -35,7 +35,11 @@ var materialMapList = {
     props: [{opacity: .25 }]
   },
   roofTop: {
-      maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
+      maps: [
+        { map: "textures/paintedWoodGreen/woodPlanksPainted_COLOR.jpg" },
+        { specularMap: "textures/paintedWoodGreen/woodPlanksPainted_SPEC.jpg" },
+        { normalMap: "textures/paintedWoodGreen/woodPlanksPainted_NRM.jpg" }
+      ],
       props: { repeatScale: 0.75, shading: "flat" }
   },
   roofLog: {
@@ -44,19 +48,27 @@ var materialMapList = {
   },
   woodBeamPrimary: {
       maps: [
-        { map: "textures/plywoodPaintedBlue/plywoodPaintedBlue_COLOR.jpg" },
-        { specularMap: "textures/plywoodPaintedBlue/plywoodPaintedBlue_SPEC.jpg" },
-        { normalMap: "textures/plywoodPaintedBlue/plywoodPaintedBlue_NRM.jpg" }
+        { map: "textures/woodBare/woodBare_COLOR.jpg" },
+        { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
+        { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
       ],
-      props: { repeatScale: 4, shading: "flat" }
+      props: { repeatScale: 10, shading: "flat" }
   },
   woodBeamSecondary: {
     maps: [
-      { map: "textures/woodPlanksPainted.jpg" },
-      { specularMap: "textures/woodPlanksPainted.jpg" },
-      { normalMap: "textures/woodPlanksPainted.jpg" }
+      { map: "textures/woodBare/woodBare_COLOR.jpg" },
+      { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
+      { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
     ],
     props: { repeatScale: 4, shading: "flat" }
+  },
+  stucco:{
+    maps: [
+      { map: "textures/stucco/stucco_COLOR.jpg" },
+      { specularMap: "textures/stucco/stucco_SPEC.jpg" },
+      { normalMap: "textures/stucco/stucco_NRM.jpg" }
+    ],
+    props: { repeatScale: 20, shading: "flat" }
   }
 };
 

@@ -21,7 +21,8 @@ var HomeView = BaseView.extend({
     var models = [
       // { url: "models3d/floor.json", name: SCENE_MODEL_NAME},
       { url: "models3d/japanBottomFloor.json", name: "ground" },
-      { url: "models3d/roof.json", name: "roof" }
+      { url: "models3d/ground.json", name: "ground" }
+      // { url: "models3d/roof.json", name: "roof" }
     ];
     this.TOTAL_MODELS = models.length;
     _.each(models, function (modelsArrObj) {
