@@ -25,12 +25,12 @@ var ModelLoader = BaseModel.extend({
     loader.load(url, function ( geometry, materials ) {
         geometry.computeBoundingBox();
         _.each(materials, function (mat) {
+          console.log("Material:", mat);
           if (materialMapList[mat.name]) {
             self.setMaterialAttr(mat);
           }
       });
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
-      object3d.recieveShadows = true;
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
     });
   },
