@@ -6,5 +6,12 @@ module.exports = {
   },
   getFontColor: function () {
     return { text: "#062f4f"};
+  },
+  getColorPallete: function () {
+    return {
+      color1: {hex: "#b5651d" }, //brown
+      color2: {hex: "#008000" },  //green
+      lampLight: {hex: "#fe3a08" }  //red
+    }
   }
-};
+}

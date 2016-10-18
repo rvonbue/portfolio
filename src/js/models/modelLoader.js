@@ -24,23 +24,26 @@ var ModelLoader = BaseModel.extend({
     loader.load(url, function ( geometry, materials ) {
         geometry.computeBoundingBox();
         _.each(materials, function (mat) {
-          console.log("Material:", mat);
           if (materialMapList[mat.name]) {
-            self.setMaterialAttr(mat);
+            self.setMaterialMap(mat);
           }
       });
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
     });
   },
-  setMaterialAttr: function (mat) {
+  setMaterialMap: function (mat) {
     var self = this;
     var materialObj = materialMapList[mat.name];
     _.each(materialObj, function (prop, key) {
       if (key === "maps") {
-        _.each(prop, function (mapObj) { self.getNewTexture(mapObj, mat, materialObj.props); });
-        return;
+        _.each(prop, function (mapObj) { self.getNewTexture(mapObj, mat, materialObj.mapProps); });
       }
+      if (key === "props") self.setMaterialAttributes(mat, prop);
+      // console.log("key:", key);
+      // console.log("prop:", prop);
+      // if (prop.color) this.setMaterialAttributes(mat, materialObj.props);
+      // if (prop.transparent) mat.transparent = true;
     }, this);
   },
   getNewTexture: function (mapObj, mat, options) {
@@ -57,6 +60,20 @@ var ModelLoader = BaseModel.extend({
       });
     });
     return texture;
+  },
+  setMaterialAttributes: function (mat, props) {
+    console.log("mat:", mat);
+    _.each(props, function (p,k) {
+      //
+      if (k === "color" || k === "emissive" || k === "specular" ) {
+        this.setMaterialColor(mat, k, p);
+      } else {
+        mat[k] = p;
+      }
+    }, this);
+  },
+  setMaterialColor: function (mat, k, color) {
+    mat[k] = new THREE.Color(color);
   },
   addVideoTexture: function () {
     var video = document.getElementById( 'video' );

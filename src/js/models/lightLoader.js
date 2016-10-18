@@ -15,7 +15,7 @@ var LightLoader = BaseModel.extend({
   },
   addLight: function () {
     this.addAmbientLight();
-    // this.addDirectionalLight();
+    this.addDirectionalLight();
     this.addPointLights();
     // this.addSpotLights();
   },

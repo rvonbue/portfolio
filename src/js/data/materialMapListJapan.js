@@ -1,3 +1,7 @@
+import utils from "../util/utils";
+var colorPallete = utils.getColorPallete();
+
+console.log("colorPallete", colorPallete);
 module.exports = {
   roofTop: {
       maps: [
@@ -5,11 +9,11 @@ module.exports = {
         { specularMap: "textures/paintedWoodGreen/woodPlanksPainted_SPEC.jpg" },
         { normalMap: "textures/paintedWoodGreen/woodPlanksPainted_NRM.jpg" }
       ],
-      props: { repeatScale: 0.75, shading: "flat" }
+      mapProps: { repeatScale: 0.75, shading: "flat" }
   },
   roofLog: {
       maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
-      props: { repeatScale: 0.25, shading: "smooth" }
+      mapProps: { repeatScale: 0.25, shading: "smooth" }
   },
   woodBeamPrimary: {
       maps: [
@@ -17,7 +21,7 @@ module.exports = {
         { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
         { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
       ],
-      props: { repeatScale: 10, shading: "flat" }
+      mapProps: { repeatScale: 10, shading: "flat" }
   },
   woodBeamSecondary: {
     maps: [
@@ -25,7 +29,7 @@ module.exports = {
       { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
       { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
     ],
-    props: { repeatScale: 4, shading: "flat" }
+    mapProps: { repeatScale: 4, shading: "flat" }
   },
   stucco:{
     maps: [
@@ -33,7 +37,7 @@ module.exports = {
       { specularMap: "textures/stucco/stucco_SPEC.jpg" },
       { normalMap: "textures/stucco/stucco_NRM.jpg" }
     ],
-    props: { repeatScale: 20, shading: "flat" }
+    mapProps: { repeatScale: 20, shading: "flat" }
   },
   woodBamboo:{
     maps: [
@@ -41,18 +45,28 @@ module.exports = {
       { specularMap: "textures/woodBamboo/woodBamboo_SPEC.jpg" },
       { normalMap: "textures/woodBamboo/woodBamboo_NRM.jpg" }
     ],
-    props: { repeatScale: 1, shading: "flat" }
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: {  color: colorPallete.color1.hex }
   },
   windowJapan: {
     maps: [
       { map: "textures/windowJapan.jpg" },
     ],
-    props: { repeatScale: 1, shading: "flat" }
+    mapProps: { repeatScale: 1, shading: "flat" }
   },
   lampLight: {
     maps: [
       {map: "textures/japan_character.png"}
     ],
-    props: { repeatScale: 1, shading: "flat" }
-  }
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: {  transparent: true }
+  },
+  lampLightEmit: {
+    props: {
+      color: colorPallete.lampLight.hex,
+      emissive: colorPallete.lampLight.hex,
+      specular: colorPallete.lampLight.hex,
+     }
+  },
+
 };
