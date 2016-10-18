@@ -3,80 +3,7 @@ import BaseModel from "./BaseModel";
 import THREE from "three";
 import data from "../data/roboto_regular.json";
 import utils from "../util/utils";
-
-var materialMapList = {
-  woodFloor: {
-    maps: [{ map: "textures/woodFloor/woodFloor_COLOR.jpg" }, { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" }, { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }],
-    props: { repeatScale: 0.60, shading: "flat" },
-  },
-  brickWall: {
-    maps: [{ map: "textures/brickWall/brickWall_COLOR.jpg" }, { specularMap: "textures/brickWall/brickWall_SPEC.jpg", normalMap: "textures/brickWall/brickWall_NRM.jpg" }],
-    props: { repeatScale: 5},
-  },
-  marbleFloor: {
-      maps: [{ map: "textures/marbleFloor/marbleFloor_COLOR.jpg" }, { specularMap: "textures/marbleFloor/marbleFloor_SPEC.jpg" }, { normalMap: "textures/marbleFloor/marbleFloor_NRM.jpg" }],
-      props: { repeatScale: 1, shading: "flat" }
-  },
-  airCond: {
-    maps: [{ map: "textures/airCond.jpg" }],
-    props: { repeatScale: 0.15, shading: "flat" }
-  },
-  roof: {
-      maps: [{ map: "textures/roof.jpg" }],
-      props: { repeatScale: 0.25, shading: "flat" }
-  },
-  grass: {
-    maps: [{ map: "textures/grass/grass.jpg" }],
-    props: { repeatScale: 0.25, shading: "flat" }
-  },
-  girder: {
-  },
-  glass: {
-    props: [{opacity: .25 }]
-  },
-  roofTop: {
-      maps: [
-        { map: "textures/paintedWoodGreen/woodPlanksPainted_COLOR.jpg" },
-        { specularMap: "textures/paintedWoodGreen/woodPlanksPainted_SPEC.jpg" },
-        { normalMap: "textures/paintedWoodGreen/woodPlanksPainted_NRM.jpg" }
-      ],
-      props: { repeatScale: 0.75, shading: "flat" }
-  },
-  roofLog: {
-      maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
-      props: { repeatScale: 0.25, shading: "smooth" }
-  },
-  woodBeamPrimary: {
-      maps: [
-        { map: "textures/woodBare/woodBare_COLOR.jpg" },
-        { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-        { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
-      ],
-      props: { repeatScale: 10, shading: "flat" }
-  },
-  woodBeamSecondary: {
-    maps: [
-      { map: "textures/woodBare/woodBare_COLOR.jpg" },
-      { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-      { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
-    ],
-    props: { repeatScale: 4, shading: "flat" }
-  },
-  lampLight: {
-    maps: [
-      { map: "textures/japan_character.png" }
-    ],
-    props: { repeatScale: 1, shading: "flat" }
-  },
-  stucco:{
-    maps: [
-      { map: "textures/stucco/stucco_COLOR.jpg" },
-      { specularMap: "textures/stucco/stucco_SPEC.jpg" },
-      { normalMap: "textures/stucco/stucco_NRM.jpg" }
-    ],
-    props: { repeatScale: 20, shading: "flat" }
-  }
-};
+import materialMapList from "../data/materialMapListJapan";
 
 var ModelLoader = BaseModel.extend({
   initialize: function () {
@@ -97,12 +24,12 @@ var ModelLoader = BaseModel.extend({
     loader.load(url, function ( geometry, materials ) {
         geometry.computeBoundingBox();
         _.each(materials, function (mat) {
+          console.log("Material:", mat);
           if (materialMapList[mat.name]) {
             self.setMaterialAttr(mat);
           }
       });
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
-      object3d.recieveShadows = true;
       eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
     });
   },

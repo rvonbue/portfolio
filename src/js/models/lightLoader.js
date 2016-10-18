@@ -15,7 +15,7 @@ var LightLoader = BaseModel.extend({
   },
   addLight: function () {
     this.addAmbientLight();
-    this.addDirectionalLight();
+    // this.addDirectionalLight();
     this.addPointLights();
     // this.addSpotLights();
   },
@@ -56,7 +56,7 @@ var LightLoader = BaseModel.extend({
       // this.getNewPointLight( 0, 7.5, 7, color),
       // this.getNewPointLight( -3, 7.5, 7, color),
       this.getNewPointLight( 5.25, 2.25, 5.25, color),
-      this.getNewPointLight( 5.25, 7.25, 6.5, color)
+      this.getNewPointLight( 5.25,7.25, 6.75, color)
       // this.getNewPointLight( 0, 4.5, 6, color),
       // this.getNewPointLight( -3, 4.5, 6, color)
     ];
@@ -74,7 +74,7 @@ var LightLoader = BaseModel.extend({
   },
   getNewPointLight: function (x, y, z, color) {
     // color, intensity, distance, decay
-    var light = new THREE.PointLight( color, 6, 3, 2 );
+    var light = new THREE.PointLight( color, 7, 2, 2 );
     light.position.set( x, y, z );
     return light;
   },
