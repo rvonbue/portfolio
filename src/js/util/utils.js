@@ -11,7 +11,8 @@ module.exports = {
     return {
       color1: {hex: "#b5651d" }, //brown
       color2: {hex: "#008000" },  //green
-      lampLight: {hex: "#fe3a08" }  //red
+      color3: {hex: "#008000" },  //green
+      lampLight: {hex: "#fe3a08" }  //red //663399 purple
     }
   }
 }

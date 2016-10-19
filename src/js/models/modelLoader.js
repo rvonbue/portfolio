@@ -62,7 +62,7 @@ var ModelLoader = BaseModel.extend({
     return texture;
   },
   setMaterialAttributes: function (mat, props) {
-    console.log("mat:", mat);
+    // console.log("mat:", mat);
     _.each(props, function (p,k) {
       //
       if (k === "color" || k === "emissive" || k === "specular" ) {

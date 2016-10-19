@@ -13,7 +13,8 @@ module.exports = {
   },
   roofLog: {
       maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
-      mapProps: { repeatScale: 0.25, shading: "smooth" }
+      mapProps: { repeatScale: 1, shading: "smooth" },
+      props: { color: "#b5651d"}
   },
   woodBeamPrimary: {
       maps: [
@@ -21,7 +22,8 @@ module.exports = {
         { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
         { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
       ],
-      mapProps: { repeatScale: 10, shading: "flat" }
+      mapProps: { repeatScale: 10, shading: "flat" },
+      props: {  color: colorPallete.color1.hex }
   },
   woodBeamSecondary: {
     maps: [
@@ -29,7 +31,8 @@ module.exports = {
       { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
       { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 4, shading: "flat" }
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { color: colorPallete.color2.hex }
   },
   stucco:{
     maps: [
@@ -46,7 +49,7 @@ module.exports = {
       { normalMap: "textures/woodBamboo/woodBamboo_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: {  color: colorPallete.color1.hex }
+    props: {  color: colorPallete.color3.hex }
   },
   windowJapan: {
     maps: [
@@ -56,10 +59,16 @@ module.exports = {
   },
   lampLight: {
     maps: [
-      {map: "textures/japan_character.png"}
+      {map: "textures/characterJapan.png"}
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: {  transparent: true }
+  },
+  shutterJapan:{
+     maps: [
+    {map: "textures/japanShutter.jpg"}
+  ],
+  mapProps: { repeatScale: 1, shading: "flat" },
   },
   lampLightEmit: {
     props: {
@@ -68,5 +77,12 @@ module.exports = {
       specular: colorPallete.lampLight.hex,
      }
   },
-
+  woodFloor: {
+    maps: [
+      { map: "textures/woodFloor/woodFloor_COLOR.jpg" },
+      { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" },
+      { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }
+    ],
+    mapProps: { repeatScale: 1.5, shading: "flat" },
+  }
 };

@@ -2,6 +2,8 @@ import eventController from "../controllers/eventController";
 import BaseModel from "./BaseModel";
 import THREE from "three";
 import TWEEN from "tween.js";
+import utils from "../util/utils";
+var pointLightColor = utils.getColorPallete().lampLight.hex;
 
 var LightLoader = BaseModel.extend({
   initialize: function (options) {
@@ -15,7 +17,7 @@ var LightLoader = BaseModel.extend({
   },
   addLight: function () {
     this.addAmbientLight();
-    this.addDirectionalLight();
+    // this.addDirectionalLight();
     this.addPointLights();
     // this.addSpotLights();
   },
@@ -23,11 +25,10 @@ var LightLoader = BaseModel.extend({
     // var light = new THREE.AmbientLight( 0x404040 );
     // light.position.z = 1.5;
     // this.scene.add( light );
-    var hemiLight = new THREE.HemisphereLight( 0x404040, 0x040404, 1); //0xB82601
-    this.scene.add( hemiLight );
+    this.scene.add( new THREE.HemisphereLight( 0x404040, 0x404040, 0.40) );
   },
   addDirectionalLight: function () {
-    var size = 0.7;
+    var size = 1;
     var directionalLight = new THREE.DirectionalLight( 0xffffff, size );
     directionalLight.position.set( -30 , 15 , 15 );
     this.scene.add( directionalLight );
@@ -50,20 +51,22 @@ var LightLoader = BaseModel.extend({
   },
   addPointLights: function () {
     var sphereSize = 0.25;
-    var color = "#B82601";
     this.pointLights = [
       // this.getNewPointLight( 3, 7.5, 7, color),
       // this.getNewPointLight( 0, 7.5, 7, color),
       // this.getNewPointLight( -3, 7.5, 7, color),
-      this.getNewPointLight( 5.25, 2.25, 5.25, color),
-      this.getNewPointLight( 5.25,7.25, 6.75, color)
+      // this.getNewPointLight( 5, 2.25, 4.75, pointLightColor),
+      this.getNewPointLight( 5.25, 8.50, 5.25, pointLightColor),
+      this.getNewPointLight( 1.25, 8.50, 5.25, pointLightColor),
+      this.getNewPointLight( -1.25, 8.50, 5.25, pointLightColor),
+      this.getNewPointLight( -5.25, 8.50, 5.25, pointLightColor),
       // this.getNewPointLight( 0, 4.5, 6, color),
       // this.getNewPointLight( -3, 4.5, 6, color)
     ];
 
     _.each(this.pointLights, function (light) {
       this.scene.add(light);
-      this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
+      // this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
     }, this );
 
     // var self = this;
@@ -74,7 +77,7 @@ var LightLoader = BaseModel.extend({
   },
   getNewPointLight: function (x, y, z, color) {
     // color, intensity, distance, decay
-    var light = new THREE.PointLight( color, 7, 2, 2 );
+    var light = new THREE.PointLight( color, 10, 2, 2 );
     light.position.set( x, y, z );
     return light;
   },

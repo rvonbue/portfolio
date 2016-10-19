@@ -38,6 +38,7 @@ var AppView3d = BaseView.extend({
   initScene: function () {
     var size = this.getWidthHeight();
     var scene = window.scene = this.scene = new THREE.Scene();
+    // scene.fog = new THREE.FogExp2( "#663399", 0.02 );
     this.initCamera(size);
     this.lightLoader = new LightLoader({scene: scene});
     this.addHelpers();
