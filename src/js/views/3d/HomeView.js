@@ -8,19 +8,18 @@ import THREE from "three";
 import TWEEN from "tween.js";
 import data from "../../data/roboto_regular.json";
 
-var SCENE_MODEL_NAME = "floor";
-
 var HomeView = BaseView.extend({
   name: null,
   ready: false,
-  SCENE_MODEL_NAME: SCENE_MODEL_NAME,
+  TOTAL_MODEL: 0, // set in intialize function;
+  SCENE_MODEL_NAME: "floor",
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
     this.SceneModelCollection = new SceneModelCollection();
     this.addListeners();
     var models = [
-      // { url: "models3d/floor.json", name: SCENE_MODEL_NAME},
-      { url: "models3d/japanBottomFloor.json", name: "ground" },
+      { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME},
+      { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
       { url: "models3d/ground.json", name: "ground" }
       // { url: "models3d/roof.json", name: "roof" }
     ];
@@ -76,7 +75,7 @@ var HomeView = BaseView.extend({
     .start();
   },
   modelLoaded: function (obj) {
-    if (obj.name === SCENE_MODEL_NAME) {
+    if (obj.name === this.SCENE_MODEL_NAME) {
       this.sceneModelLoaded(obj);
       return;
     }
@@ -90,12 +89,13 @@ var HomeView = BaseView.extend({
   },
   sceneModelLoaded: function (obj) {
     var object3d = obj.object3d;
+    var startingHeight = 7;
     this.createFloors(object3d);
     var sceneModels = this.SceneModelCollection.where({ interactive: true });
     sceneModels.forEach(function (scmodel, i) { // stack floors on top of each other
       var object3d = scmodel.get("object3d");
       var floorHeight =  Math.abs(object3d.geometry.boundingBox.max.y) + Math.abs(object3d.geometry.boundingBox.min.y);
-      object3d.position.set(0, i * floorHeight, 0);
+      object3d.position.set(0, i * floorHeight + startingHeight, 0);
     });
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModels);
     this.setInteractiveObjects();
@@ -123,15 +123,15 @@ var HomeView = BaseView.extend({
   addText: function (sceneModel) {
     var text3d = this.getText3d(sceneModel.get("name"));
     var object3d = sceneModel.get("object3d");
-    var offsetY = 0.25;
+    var offsetY = 0.7;
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.max.z;
     text3d.position.y = (text3d.geometry.boundingBox.max.y + text3d.geometry.boundingBox.min.y) / 2 - offsetY;
     text3d.position.x = -((text3d.geometry.boundingBox.max.x - text3d.geometry.boundingBox.min.x) / 2);
     object3d.add(text3d);
   },
   getText3d: function (text) {
-    var material = new THREE.MeshStandardMaterial({ color: utils.getFontColor().text });
-
+    var material = new THREE.MeshPhongMaterial({ color: utils.getFontColor().text });
+    // material.emissive = new THREE.Color(utils.getFontColor().text);
     var	textGeo = new THREE.TextGeometry( text, {
       font: new THREE.Font(data),
       height: 0.5,

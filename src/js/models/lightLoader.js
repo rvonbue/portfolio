@@ -4,6 +4,7 @@ import THREE from "three";
 import TWEEN from "tween.js";
 import utils from "../util/utils";
 var pointLightColor = utils.getColorPallete().lampLight.hex;
+var pointLightColor2 = utils.getFontColor().text;
 
 var LightLoader = BaseModel.extend({
   initialize: function (options) {
@@ -13,11 +14,11 @@ var LightLoader = BaseModel.extend({
     this.addListeners();
   },
   addListeners: function () {
-    // eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
+    eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
   },
   addLight: function () {
     this.addAmbientLight();
-    // this.addDirectionalLight();
+    this.addDirectionalLight();
     this.addPointLights();
     // this.addSpotLights();
   },
@@ -51,17 +52,18 @@ var LightLoader = BaseModel.extend({
   },
   addPointLights: function () {
     var sphereSize = 0.25;
+    var pointLightDist1 = 2;
+    var pointLightDist2 = 4;
+    var intensity1 = 10;
+    var intensity2 = 10;
     this.pointLights = [
-      // this.getNewPointLight( 3, 7.5, 7, color),
-      // this.getNewPointLight( 0, 7.5, 7, color),
-      // this.getNewPointLight( -3, 7.5, 7, color),
       // this.getNewPointLight( 5, 2.25, 4.75, pointLightColor),
-      this.getNewPointLight( 5.25, 8.50, 5.25, pointLightColor),
-      this.getNewPointLight( 1.25, 8.50, 5.25, pointLightColor),
-      this.getNewPointLight( -1.25, 8.50, 5.25, pointLightColor),
-      this.getNewPointLight( -5.25, 8.50, 5.25, pointLightColor),
-      // this.getNewPointLight( 0, 4.5, 6, color),
-      // this.getNewPointLight( -3, 4.5, 6, color)
+      this.getNewPointLight( 5.25, 8.50, 5.25, pointLightColor, intensity1, pointLightDist1),
+      this.getNewPointLight( 1.25, 8.50, 5.25, pointLightColor, intensity1, pointLightDist1),
+      this.getNewPointLight( 5.25, 7.50, 7.25, pointLightColor2, intensity2, pointLightDist2),
+      this.getNewPointLight( 1.25, 7.50, 7.25, pointLightColor2, intensity2, pointLightDist2)
+      // this.getNewPointLight( -1.25, 8.50, 5.25, pointLightColor),
+      // this.getNewPointLight( -5.25, 8.50, 5.25, pointLightColor),
     ];
 
     _.each(this.pointLights, function (light) {
@@ -75,9 +77,9 @@ var LightLoader = BaseModel.extend({
     // }, 2500);
     // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: pointLights, key: "intensity", name:"light" });
   },
-  getNewPointLight: function (x, y, z, color) {
+  getNewPointLight: function (x, y, z, color, intensity, distance ) {
     // color, intensity, distance, decay
-    var light = new THREE.PointLight( color, 10, 2, 2 );
+    var light = new THREE.PointLight( color, intensity, distance, 2 );
     light.position.set( x, y, z );
     return light;
   },
