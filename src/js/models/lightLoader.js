@@ -17,7 +17,7 @@ var LightLoader = BaseModel.extend({
     eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
   },
   addLight: function () {
-    this.addAmbientLight();
+    // this.addAmbientLight();
     this.addDirectionalLight();
     this.addPointLights();
     // this.addSpotLights();

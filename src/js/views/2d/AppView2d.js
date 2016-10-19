@@ -1,9 +1,9 @@
-import eventController from "../controllers/eventController";
-import commandController from "../controllers/commandController";
-import BaseView from "./BaseView";
+import eventController from "../../controllers/eventController";
+import commandController from "../../controllers/commandController";
+import BaseView from "../BaseView";
 var htmlPageNavigation = [
-  require("html!./2d/home.html"),
-  require("html!./2d/web_dev.html")
+  require("html!./home.html"),
+  require("html!./web_dev.html")
 ];
 
 var AppView2d = BaseView.extend({

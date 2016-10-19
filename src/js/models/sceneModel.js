@@ -20,6 +20,7 @@ var SceneModel = Backbone.Model.extend({
   },
   onChangeSelectedListeners: function () {
     console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
+    console.log("Here is my Object:", this.get("object3d"));
     // this.get("object3d").visible = this.get("selected");
   }
 });

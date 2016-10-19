@@ -40,10 +40,6 @@ var ModelLoader = BaseModel.extend({
         _.each(prop, function (mapObj) { self.getNewTexture(mapObj, mat, materialObj.mapProps); });
       }
       if (key === "props") self.setMaterialAttributes(mat, prop);
-      // console.log("key:", key);
-      // console.log("prop:", prop);
-      // if (prop.color) this.setMaterialAttributes(mat, materialObj.props);
-      // if (prop.transparent) mat.transparent = true;
     }, this);
   },
   getNewTexture: function (mapObj, mat, options) {
@@ -64,11 +60,10 @@ var ModelLoader = BaseModel.extend({
   setMaterialAttributes: function (mat, props) {
     // console.log("mat:", mat);
     _.each(props, function (p,k) {
-      //
       if (k === "color" || k === "emissive" || k === "specular" ) {
         this.setMaterialColor(mat, k, p);
       } else {
-        mat[k] = p;
+        mat[k] = p; // set all other attributes by key and property
       }
     }, this);
   },

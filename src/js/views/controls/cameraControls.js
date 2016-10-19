@@ -3,21 +3,24 @@ import BaseModel from "../../models/BaseModel";
 import TWEEN from "tween.js";
 import THREE from "three";
 var OrbitControls = require('three-orbit-controls')(THREE);
+var INTIAL_POSITION = { x: -10, y: 20, z: 20 };
+var TARGET_INITIAL_POSITION = { x: 0, y: 15, z: 0 };
 
 var CameraControls = BaseModel.extend({
   initialize: function (options) {
     // eventController.on(eventController.CHANGE_CAMERA, this.updateCamera);
     this.camera = options.camera;
     this.addListeners();
-    this.camera.position.set( -10, 8, 20);  // set Initial Camera Position
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
-    this.orbitControls.target = new THREE.Vector3( 0, 6, 0 );
+    this.setCameraInitialPosition();
   },
   addListeners: function () {
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
+    eventController.on(eventController.RESET_CAMERA_INITIAL_POSITION, this.setCameraInitialPosition, this);
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
+    eventController.off(eventController.RESET_CAMERA_INITIAL_POSITION, this.setCameraInitialPosition, this);
   },
   zoomOnSceneModel: function (object3d) {
     var zSpacer = 5;  // Move camera away from target... so you can see the object
@@ -37,6 +40,10 @@ var CameraControls = BaseModel.extend({
   },
   getControls: function () {
     return this.orbitControls;
+  },
+  setCameraInitialPosition: function () {
+    this.camera.position.set( INTIAL_POSITION.x, INTIAL_POSITION.y, INTIAL_POSITION.z);  // set Initial Camera Position
+    this.orbitControls.target = new THREE.Vector3( TARGET_INITIAL_POSITION.x, TARGET_INITIAL_POSITION.y, TARGET_INITIAL_POSITION.z );
   },
   tweenToPosition: function (obj, newPosition) {
     var tween2 = new TWEEN.Tween(obj).to({

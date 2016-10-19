@@ -1,8 +1,8 @@
 import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import NavigationBar from "../views/navigationBar";
-import AppView3d from "./AppView3d";
-import AppView2d from "./AppView2d";
+import AppView3d from "./3d/AppView3d";
+import AppView2d from "./2d/AppView2d";
 
 var AppView = BaseView.extend({
   className: "appview-container",

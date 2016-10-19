@@ -454,3 +454,32 @@ h1 {
   color: #FAEBD7;
   font-size: 125%;
 }
+
+/*  cameraControlsGUI   */
+
+.dropdown {
+    /*display: none;*/
+    position: relative;
+    display: inline-block;
+    float: right;
+    height: 24px;
+    width: 24px;
+    margin-top: 11px;
+    margin-right: 95px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: black;
+    /*min-width: 160px;*/
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 6px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

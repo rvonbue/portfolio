@@ -1,12 +1,12 @@
-import eventController from "../../controllers/eventController";
 import BaseView from "../BaseView";
+import eventController from "../../controllers/eventController";
 import navigationList from "../../data/navigationList";
 import SceneModel from "../../models/sceneModel";
 import SceneModelCollection from "../../collections/SceneModelCollection";
 import utils from "../../util/utils";
 import THREE from "three";
 import TWEEN from "tween.js";
-import data from "../../data/roboto_regular.json";
+import fontData from "../../data/roboto_regular.json";
 
 var HomeView = BaseView.extend({
   name: null,
@@ -133,7 +133,7 @@ var HomeView = BaseView.extend({
     var material = new THREE.MeshPhongMaterial({ color: utils.getFontColor().text });
     // material.emissive = new THREE.Color(utils.getFontColor().text);
     var	textGeo = new THREE.TextGeometry( text, {
-      font: new THREE.Font(data),
+      font: new THREE.Font(fontData),
       height: 0.5,
       size: 1.5,
       curveSegments: 4,

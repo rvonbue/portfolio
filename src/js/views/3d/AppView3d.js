@@ -1,14 +1,12 @@
-import eventController from "../controllers/eventController";
-import BaseView from "./BaseView";
+import BaseView from "../BaseView";
 import THREE from "three";
 import TWEEN from "tween.js";
 import raf from "raf";
-import LightLoader from "../models/lightLoader";
-import CameraControls from "../views/controls/cameraControls";
-import SceneControls from "../views/controls/sceneControls";
-import StatsView from "../views/3d/statsView";
-// import DatGuiView from "../views/controls/datGuiView";
-// require('three-first-person-controls')(THREE);
+import eventController from "../../controllers/eventController";
+import LightLoader from "../../models/lightLoader";
+import CameraControls from "../../views/controls/cameraControls";
+import SceneControls from "../../views/controls/sceneControls";
+import StatsView from "../../views/3d/statsView";
 
 var AppView3d = BaseView.extend({
   className: "appView-3d",

@@ -3,13 +3,16 @@ import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
 import navigationList from "../data/navigationList";
 
+var cameraControlsGuiHTML = require("html?attrs=img:data-src!./html/cameraControlsGUI.html");
+
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",
   template: _.template("<li><a><%= displayTitle %></a></li>"),
   events: {
     "click li": "clickSelected",
     "click .2d": "switchView2d",
-    "click .3d": "switchView3d"
+    "click .3d": "switchView3d",
+    "click .resetCamera": "resetCamera"
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -67,7 +70,10 @@ var NavigationBar = BaseView.extend({
   switchView3d: function (what) {
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
   },
-  render: function () {
+  resetCamera: function () {
+    eventController.trigger(eventController.RESET_CAMERA_INITIAL_POSITION, "3d");
+  },
+  getCssMenu: function () {
     var cssMenu = "<div id='cssmenu'><ul>";
 
     _.each(navigationList, function(title){
@@ -75,7 +81,11 @@ var NavigationBar = BaseView.extend({
     }, this);
 
     cssMenu += "</ul></div>";
-    this.$el.append(cssMenu);
+    return cssMenu;
+  },
+  render: function () {
+    this.$el.append(cameraControlsGuiHTML);
+    this.$el.append(this.getCssMenu());
     this.$el.append("<div class='switch-views'><div class='2d'><a href='javascript:;'>2d</a></div><div class='3d'><a href='javascript:;'>3d</a></div></div>");
     this.cacheListEls();
 
