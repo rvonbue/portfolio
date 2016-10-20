@@ -1,5 +1,6 @@
 import eventController from "../controllers/eventController";
 import BaseModel from "./BaseModel";
+import utils from "../util/utils";
 
 var SceneModel = Backbone.Model.extend({
   defaults: {
@@ -35,16 +36,18 @@ var SceneModel = Backbone.Model.extend({
   },
   onChangeSelected: function () {
     console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
-    console.log("Here is my Object:", this.get("object3d"));
+    // console.log("Here is my Object:", this.get("object3d"));
     // this.get("object3d").visible = this.get("selected");
   },
   onChangeHover: function () {
     console.log("HI IM " + this.get("name") + " and I'm HOVERED = " + this.get("hover"));
     this.toggleLampEmitMaterial();
-    console.log(_.find(this.get("object3d").material.materials, function(item) {
-        return item.name == "lampLightEmit";
-    }));
-
+    // this.toggleTextMaterial();
+  },
+  setEmissiveMaterial: function (mat, r, g, b) {
+    mat.emissive.r = r;
+    mat.emissive.g = g;
+    mat.emissive.b = b;
   },
   getLampLightMaterial: function () {
     return _.find(this.get("object3d").material.materials, function(item) {
@@ -52,16 +55,22 @@ var SceneModel = Backbone.Model.extend({
     });
   },
   toggleLampEmitMaterial:function () {
-    var lampLightEmitMaterial = this.getLampLightMaterial();
+    var mat = this.getLampLightMaterial();
+    if (this.get("hover") === true ) {
+      var lampLightRGB = utils.getColorPallete().lampLight.rgb;
+      this.setEmissiveMaterial(mat, lampLightRGB.r, lampLightRGB.g, lampLightRGB.b);
+    } else {
+      this.setEmissiveMaterial(mat, 0, 0, 0);
+    }
+  },
+  toggleTextMaterial: function () {
+    var textMaterial = this.get("text3d").material;
 
     if (this.get("hover") === true ) {
-      lampLightEmitMaterial.emissive.r = 0.80;
-      lampLightEmitMaterial.emissive.g = 0.15;
-      lampLightEmitMaterial.emissive.b = 0.005;
+      var textRGB = utils.getColorPallete().text.rgb;
+      this.setEmissiveMaterial(textMaterial, textRGB.r, textRGB.g, textRGB.b );
     } else {
-      lampLightEmitMaterial.emissive.r = 0;
-      lampLightEmitMaterial.emissive.g = 0;
-      lampLightEmitMaterial.emissive.b = 0;
+      this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
     }
   }
 });

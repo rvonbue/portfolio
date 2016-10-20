@@ -74,11 +74,7 @@ var HomeView = BaseView.extend({
     // console.log("intersect:", intersect);
   },
   setHoverSceneModelNavBar: function (modelName, hoverBool) { // hoverBool = true when hover is true
-    if (hoverBool) {
-      this.SceneModelCollection.findWhere({ name: modelName }).set("hover", hoverBool);
-    } else {
-      this.SceneModelCollection.findWhere({ hover: true }).set("hover", hoverBool);
-    }
+    this.SceneModelCollection.findWhere({ name: modelName }).set("hover", hoverBool);
   },
   clickSelectSceneModel: function (intersectObject) {
     if ( intersectObject ) var name = intersectObject.object.name;
@@ -95,16 +91,20 @@ var HomeView = BaseView.extend({
     if ( newSceneModel ) {
       eventController.trigger(eventController.RESET_RAYCASTER, []);
       eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
-      // this.hideEverythingNotSelected();
+      this.hideEverythingNotSelected();
     }
   },
   hideEverythingNotSelected: function () {
     var falseArr = this.SceneModelCollection.where({ selected: false });
+    var self = this;
     _.each(falseArr, function (sceneModel) {
-      sceneModel.get("object3d").visible = false;
+      _.each(sceneModel.get("object3d").material.materials, function (mat) {
+        self.fadeMaterial(mat, 0);
+      });
+      self.fadeMaterial(sceneModel.get("text3d").material, 0);
     });
   },
-  getTweenOpacity: function (material, opacityEnd) {
+  fadeMaterial: function (material, opacityEnd) {
     if ( opacityEnd === 0 )  material.transparent = true;
 
     var tween = new TWEEN.Tween(material)
