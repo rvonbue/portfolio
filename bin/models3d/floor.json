@@ -1,4 +1,4 @@
-{
+module.exports = {
     "name":"Cube.025Geometry",
     "metadata":{
         "generator":"io_three",

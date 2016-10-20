@@ -13,6 +13,11 @@ module.exports = {
       color2: {hex: "#008000" },  //green
       color3: {hex: "#008000" },  //green
       lampLight: {hex: "#fe3a08" }  //red //663399 purple
-    }
+    };
+  },
+  getGetAnimationSpeed: function () {
+    return {
+      time: 500
+    };
   }
 }

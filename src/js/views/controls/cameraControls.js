@@ -32,11 +32,11 @@ var CameraControls = BaseModel.extend({
 
      var newCameraPosition = {
        x: object3d.position.x,
-       y: object3d.position.y + ( object3d.geometry.boundingBox.max.y / 2),
+       y: object3d.position.y + ( (object3d.geometry.boundingBox.max.y + object3d.geometry.boundingBox.min.y ) / 2),
        z: object3d.geometry.boundingBox.max.z
     };
     this.tweenToPosition( this.orbitControls.target, newCameraTarget );  // move camera target or lookAt
-    this.tweenToPosition( this.orbitControls.object.position, newCameraPosition );
+    this.tweenToPosition( this.orbitControls.object.position, newCameraPosition, true ); // animate move camera
   },
   getControls: function () {
     return this.orbitControls;
@@ -45,14 +45,16 @@ var CameraControls = BaseModel.extend({
     this.camera.position.set( INTIAL_POSITION.x, INTIAL_POSITION.y, INTIAL_POSITION.z);  // set Initial Camera Position
     this.orbitControls.target = new THREE.Vector3( TARGET_INITIAL_POSITION.x, TARGET_INITIAL_POSITION.y, TARGET_INITIAL_POSITION.z );
   },
-  tweenToPosition: function (obj, newPosition) {
-    var tween2 = new TWEEN.Tween(obj).to({
+  tweenToPosition: function (oldPosition, newPosition, triggerTrue) {
+    var tween2 = new TWEEN.Tween(oldPosition).to({
         x: newPosition.x,
         y: newPosition.y,
         z: newPosition.z
     }).easing(TWEEN.Easing.Linear.None)
     // .onUpdate(function (a, b) {})
-    // .onComplete(function () {})
+    .onComplete(function () {
+        if (triggerTrue) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION );
+    })
     .start();
   },
   render: function () {

@@ -7,11 +7,12 @@ import utils from "../../util/utils";
 import THREE from "three";
 import TWEEN from "tween.js";
 import fontData from "../../data/roboto_regular.json";
+// import door from "../../../../bin/models3d/floor.json";
 
 var HomeView = BaseView.extend({
   name: null,
   ready: false,
-  TOTAL_MODEL: 0, // set in intialize function;
+  TOTAL_MODELS: 0, // set in intialize function;
   SCENE_MODEL_NAME: "floor",
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -23,6 +24,7 @@ var HomeView = BaseView.extend({
       { url: "models3d/ground.json", name: "ground" }
       // { url: "models3d/roof.json", name: "roof" }
     ];
+    // this.addDoors();
     this.TOTAL_MODELS = models.length;
     _.each(models, function (modelsArrObj) {
       eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, { name: modelsArrObj.name }); //load scene Model
@@ -32,11 +34,13 @@ var HomeView = BaseView.extend({
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
      eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
+     eventController.on(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishedAnimation, this);
   },
   removeListeners: function () {
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
+    eventController.off(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishedAnimation, this);
   },
   clickSelectSceneModel: function (intersectObject) {
     if ( intersectObject ) var name = intersectObject.object.name;
@@ -51,8 +55,8 @@ var HomeView = BaseView.extend({
     if ( oldSceneModel ) oldSceneModel.set("selected", false);
     var newSceneModel = this.SceneModelCollection.findWhere({ name: sceneModelName }).set({ selected: true });
     if ( newSceneModel ) {
-      eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
       eventController.trigger(eventController.RESET_RAYCASTER, []);
+      eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
       // this.hideEverythingNotSelected();
     }
   },
@@ -92,12 +96,16 @@ var HomeView = BaseView.extend({
     var startingHeight = 7;
     this.createFloors(object3d);
     var sceneModels = this.SceneModelCollection.where({ interactive: true });
-    sceneModels.forEach(function (scmodel, i) { // stack floors on top of each other
-      var object3d = scmodel.get("object3d");
+    var object3dArr = [];
+    // console.log("scene Models:", sceneModels);
+    sceneModels.forEach(function (scModel, i) { // stack floors on top of each other
+      var object3d = scModel.get("object3d");
       var floorHeight =  Math.abs(object3d.geometry.boundingBox.max.y) + Math.abs(object3d.geometry.boundingBox.min.y);
       object3d.position.set(0, i * floorHeight + startingHeight, 0);
+      object3dArr.push(object3d);
     });
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModels);
+
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
     this.setInteractiveObjects();
   },
   createFloors: function (object3d) {
@@ -144,11 +152,17 @@ var HomeView = BaseView.extend({
     textGeo.computeBoundingBox();
     return new THREE.Mesh( textGeo, material );
   },
+  addDoors: function () {
+    // var loader = new THREE.JSONLoader.parse(door);
+    console.log("LOADER: ", loader);
+  },
+  cameraFinishedAnimation: function () {
+    console.log("cameraFinishedAnimation: ");
+  },
   addNonInteractive: function (obj) {
     obj.interactive = false;
     var sceneModel = this.SceneModelCollection.add(obj); //adding to collection returns sceneModel
-    if (obj.name === "roof") this.positionRoof(sceneModel.get("object3d"));
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel]);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   }
 });
 
