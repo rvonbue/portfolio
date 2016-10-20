@@ -20,7 +20,6 @@ var ModelLoader = BaseModel.extend({
   loadModel: function (url, options) {
     var self = this;
     var loader =  new THREE.JSONLoader(this.manager);
-
     loader.load(url, function ( geometry, materials ) {
         geometry.computeBoundingBox();
         _.each(materials, function (mat) {
@@ -68,6 +67,16 @@ var ModelLoader = BaseModel.extend({
   },
   setMaterialColor: function (mat, k, color) {
     mat[k] = new THREE.Color(color);
+  },
+  parseJSON: function (json) {
+    var loader = new THREE.JSONLoader();
+    var model = loader.parse(json);
+    _.each(model.materials, function (mat) {
+      if (materialMapList[mat.name]) {
+        this.setMaterialMap(mat);
+      }
+    }, this);
+    return model;
   },
   addVideoTexture: function () {
     var video = document.getElementById( 'video' );

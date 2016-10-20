@@ -1,6 +1,5 @@
 import eventController from "../../controllers/eventController";
 import BaseModel from "../../models/BaseModel";
-import ModelLoader from "../../models/modelLoader";
 import ArtGalleryView3d from "../3d/artGalleryView3d";
 import HomeView from "../3d/HomeView";
 import MovieTheaterView3d from "../3d/movieTheaterView3d";
@@ -21,7 +20,6 @@ var SceneControls = BaseModel.extend({
     this.onResize();
     this.addListeners(this.parentEl);
     // this.loadEnvironmentMap();
-    this.modelLoader = new ModelLoader();
     this.raycaster = new THREE.Raycaster();
     this.raycaster.far = 100;
     this.loadInitialScene("home");

@@ -1,4 +1,4 @@
-import eventController from "../controllers/eventController";
+// import eventController from "../controllers/eventController";
 import BaseModel from "./BaseModel";
 import utils from "../util/utils";
 
@@ -6,12 +6,14 @@ var SceneModel = Backbone.Model.extend({
   defaults: {
     "name": "Caesar_Salad",
     "object3d": null,
+    "text3d": null,
     "selected": false,
     "hover": false,
     "ready": true,
     "interactive": true,
-    "size": { width: 0, height: 0 },
-    "position": {x: 0, y: 0 }
+    "doors": null,
+    "hoverLamps": null,
+    "hoverLights": null
   },
   initialize: function( options ) {
     this.set("name", options.name);
@@ -36,13 +38,28 @@ var SceneModel = Backbone.Model.extend({
   },
   onChangeSelected: function () {
     console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
-    // console.log("Here is my Object:", this.get("object3d"));
-    // this.get("object3d").visible = this.get("selected");
+    console.log("Here is my Object:", this);
+    this.toggleDoors();
+    this.toggleTextVisiblilty();
+  },
+  toggleDoors: function () {
+    _.each(this.get("doors"), function (doorMesh) {
+      doorMesh.position.x += 0.5;
+    });
+  },
+  toggleTextVisiblilty:function () {
+    this.get("text3d").visible = !this.get("selected");
   },
   onChangeHover: function () {
-    console.log("HI IM " + this.get("name") + " and I'm HOVERED = " + this.get("hover"));
+    console.log("Hi im " + this.get("name") + " and I'm hovered = " + this.get("hover"));
     this.toggleLampEmitMaterial();
-    // this.toggleTextMaterial();
+    this.toggleHoverLights();
+    this.toggleTextMaterial();
+  },
+  toggleHoverLights: function () {
+    _.each(this.get("hoverLights"), function (light) {
+      light.visible = this.get("hover");
+    }, this);
   },
   setEmissiveMaterial: function (mat, r, g, b) {
     mat.emissive.r = r;
@@ -50,7 +67,7 @@ var SceneModel = Backbone.Model.extend({
     mat.emissive.b = b;
   },
   getLampLightMaterial: function () {
-    return _.find(this.get("object3d").material.materials, function(item) {
+    return _.find(this.get("hoverLamps")[0].material.materials, function(item) {
         return item.name == "lampLightEmit";
     });
   },
