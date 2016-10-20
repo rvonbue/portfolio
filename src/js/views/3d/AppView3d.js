@@ -17,10 +17,12 @@ var AppView3d = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
+    eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).on("resize", this.resize);
   },
   removeListeners: function () {
     eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
+    eventController.off(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).off("resize", this.resize);
   },
   hide: function (parentEl) {
@@ -36,7 +38,7 @@ var AppView3d = BaseView.extend({
   initScene: function () {
     var size = this.getWidthHeight();
     var scene = window.scene = this.scene = new THREE.Scene();
-    // scene.fog = new THREE.FogExp2( "#663399", 0.02 );
+    // scene.fog = new THREE.FogExp2( "#b82601", 0.02 );
     this.initCamera(size);
     this.lightLoader = new LightLoader({scene: scene});
     this.addHelpers();
@@ -49,7 +51,7 @@ var AppView3d = BaseView.extend({
     this.animate();
   },
   initCamera: function (size) {
-    this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 1, 1000 );
+    this.camera = new THREE.PerspectiveCamera( 75, size.w / size.h, 0.1, 1000 );
     this.camera.lookAt(new THREE.Vector3( 1, 10, 0 ));
   },
   initControls: function () {
@@ -62,8 +64,13 @@ var AppView3d = BaseView.extend({
     this.scene.add( axisHelper );
   },
   addModelsToScene: function (sceneModelArray) {
-    _.each(sceneModelArray, function (sceneModel) {
-      this.scene.add(sceneModel.get("object3d"));
+    _.each(sceneModelArray, function (object3d) {
+      this.scene.add(object3d);
+    }, this);
+  },
+  removeModelsFromScene: function (modelArray) {
+    _.each(modelArray, function (object3d) {
+      this.scene.add(object3d);
     }, this);
   },
   animate: function (time) {

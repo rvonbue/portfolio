@@ -15,11 +15,16 @@ var LightLoader = BaseModel.extend({
   },
   addListeners: function () {
     eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
+    eventController.on(eventController.SCENE_MODEL_SELECTED, this.turnOnFloorLights, this);
+  },
+  removeListeners: function () {
+    eventController.off(eventController.HOVER_NAVIGATION, this.movePointLights, this);
+    eventController.off(eventController.SCENE_MODEL_SELECTED, this.turnOnFloorLights, this);
   },
   addLight: function () {
     // this.addAmbientLight();
     this.addDirectionalLight();
-    this.addPointLights();
+    this.addHoverLights();
     // this.addSpotLights();
   },
   addAmbientLight: function () {
@@ -39,24 +44,37 @@ var LightLoader = BaseModel.extend({
     if (intersect !== null ) {
       var floorHeight = intersect.object.geometry.boundingBox.max.y / 2;
       var y = floorHeight + intersect.object.position.y;
-      _.each(this.pointLights, function (light) {
+      _.each(this.hoverLights, function (light) {
         light.position.y = y;
         light.visible = true;
       });
     } else {
-      _.each(this.pointLights, function (light) {
+      _.each(this.hoverLights, function (light) { //turn off lights
         light.visible = false;
       });
     }
-
   },
-  addPointLights: function () {
+  turnOnFloorLights: function () {
+    if (!this.floorLights) this.createFloorLights();
+    // _.each(this.floorLights, function (light) { //turn on lights
+    //   light.visible = true;
+    // });
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.floorLights );
+  },
+  createFloorLights: function () {
+
+    this.floorLights = [
+      this.getNewPointLight( 5.25, 8.50, 5.25, pointLightColor, 10, 2),
+      this.getNewPointLight( 1.25, 8.50, 5.25, pointLightColor, 10, 2)
+    ];
+  },
+  addHoverLights: function () {
     var sphereSize = 0.25;
     var pointLightDist1 = 2;
     var pointLightDist2 = 4;
     var intensity1 = 10;
     var intensity2 = 10;
-    this.pointLights = [
+    this.hoverLights = [
       // this.getNewPointLight( 5, 2.25, 4.75, pointLightColor),
       this.getNewPointLight( 5.25, 8.50, 5.25, pointLightColor, intensity1, pointLightDist1),
       this.getNewPointLight( 1.25, 8.50, 5.25, pointLightColor, intensity1, pointLightDist1),
@@ -66,7 +84,7 @@ var LightLoader = BaseModel.extend({
       // this.getNewPointLight( -5.25, 8.50, 5.25, pointLightColor),
     ];
 
-    _.each(this.pointLights, function (light) {
+    _.each(this.hoverLights, function (light) {
       this.scene.add(light);
       // this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
     }, this );
@@ -78,8 +96,8 @@ var LightLoader = BaseModel.extend({
     // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: pointLights, key: "intensity", name:"light" });
   },
   getNewPointLight: function (x, y, z, color, intensity, distance ) {
-    // color, intensity, distance, decay
-    var light = new THREE.PointLight( color, intensity, distance, 2 );
+    var decay = 2;
+    var light = new THREE.PointLight( color, intensity, distance, decay );
     light.position.set( x, y, z );
     return light;
   },
