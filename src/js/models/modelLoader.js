@@ -50,9 +50,8 @@ var ModelLoader = BaseModel.extend({
         if (options.repeatScale) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.repeat.set( options.repeatScale, options.repeatScale );
-          texture.shading = THREE.FlatShading;
+          texture.shading = options.shading === "smooth" ? THREE.SmoothShading : THREE.FlatShading ;
         }
-        if (options.transparent) texture.transparent = true;
       });
     });
     return texture;

@@ -73,8 +73,8 @@ module.exports = {
   lampLightEmit: {
     props: {
       color: colorPallete.lampLight.hex,
-      emissive: colorPallete.lampLight.hex,
-      specular: colorPallete.lampLight.hex,
+      // emissive: colorPallete.lampLight.hex,
+      // specular: colorPallete.lampLight.hex,
      }
   },
   woodFloor: {
@@ -84,5 +84,12 @@ module.exports = {
       { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1.5, shading: "flat" },
+  },
+  bannerLogo: {
+    maps: [
+      { map: "textures/bannerLogoAlt.png" }
+    ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: { transparent: false }
   }
 };
