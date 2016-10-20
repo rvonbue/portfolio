@@ -10,6 +10,8 @@ var NavigationBar = BaseView.extend({
   template: _.template("<li><a><%= displayTitle %></a></li>"),
   events: {
     "click li": "clickSelected",
+    "mouseenter li": "enterHoverNavigationLi",
+    "mouseleave li": "leaveHoverNavigationLi",
     "click .2d": "switchView2d",
     "click .3d": "switchView3d",
     "click .resetCamera": "resetCamera"
@@ -45,6 +47,12 @@ var NavigationBar = BaseView.extend({
     } else if (closestObject) {
       this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
     }
+  },
+  enterHoverNavigationLi: function (evt) {
+    eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, navigationList[$(evt.currentTarget).index()] , true );
+  },
+  leaveHoverNavigationLi: function (evt) {
+    eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, navigationList[$(evt.currentTarget).index()] , false );
   },
   swapSelectedEl: function (newSelectedEl) {
     if (!newSelectedEl) return;

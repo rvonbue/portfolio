@@ -9,6 +9,32 @@ import TWEEN from "tween.js";
 import fontData from "../../data/roboto_regular.json";
 // import door from "../../../../bin/models3d/floor.json";
 
+THREE.Object3D.prototype.GdeepCloneMaterials = function() { //TODO: where to move this in the code http://stackoverflow.com/questions/22360936/will-three-js-object3d-clone-create-a-deep-copy-of-the-geometry
+        var object = this.clone( new THREE.Object3D(), false );
+
+        for ( var i = 0; i < this.children.length; i++ ) {
+
+            var child = this.children[ i ];
+            if ( child.GdeepCloneMaterials ) {
+                object.add( child.GdeepCloneMaterials() );
+            } else {
+                object.add( child.clone() );
+            }
+
+        }
+        return object;
+    };
+
+    THREE.Mesh.prototype.GdeepCloneMaterials = function( object, recursive ) {
+        if ( object === undefined ) {
+            object = new THREE.Mesh( this.geometry, this.material.clone() );
+        }
+
+        THREE.Object3D.prototype.GdeepCloneMaterials.call( this, object, recursive );
+
+        return object;
+    };
+
 var HomeView = BaseView.extend({
   name: null,
   ready: false,
@@ -35,12 +61,24 @@ var HomeView = BaseView.extend({
      eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
      eventController.on(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishedAnimation, this);
+     eventController.on(eventController.HOVER_NAVIGATION, this.setHoverSceneModel, this);
+     eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
   },
   removeListeners: function () {
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
     eventController.off(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishedAnimation, this);
+  },
+  setHoverSceneModel: function (intersect) {
+    // console.log("intersect:", intersect);
+  },
+  setHoverSceneModelNavBar: function (modelName, hoverBool) { // hoverBool = true when hover is true
+    if (hoverBool) {
+      this.SceneModelCollection.findWhere({ name: modelName }).set("hover", hoverBool);
+    } else {
+      this.SceneModelCollection.findWhere({ hover: true }).set("hover", hoverBool);
+    }
   },
   clickSelectSceneModel: function (intersectObject) {
     if ( intersectObject ) var name = intersectObject.object.name;
@@ -110,7 +148,7 @@ var HomeView = BaseView.extend({
   },
   createFloors: function (object3d) {
     _.each(navigationList.reverse(), function (floorName) {
-      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.clone() });
+      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.GdeepCloneMaterials() });
       this.addText(sceneModel);
       this.SceneModelCollection.add(sceneModel);
     }, this);
@@ -131,6 +169,7 @@ var HomeView = BaseView.extend({
   addText: function (sceneModel) {
     var text3d = this.getText3d(sceneModel.get("name"));
     var object3d = sceneModel.get("object3d");
+    sceneModel.set("text3d", text3d);
     var offsetY = 0.7;
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.max.z;
     text3d.position.y = (text3d.geometry.boundingBox.max.y + text3d.geometry.boundingBox.min.y) / 2 - offsetY;

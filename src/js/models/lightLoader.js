@@ -14,11 +14,11 @@ var LightLoader = BaseModel.extend({
     this.addListeners();
   },
   addListeners: function () {
-    eventController.on(eventController.HOVER_NAVIGATION, this.movePointLights, this);
+    eventController.on(eventController.HOVER_NAVIGATION, this.moveHoverLights, this);
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.turnOnFloorLights, this);
   },
   removeListeners: function () {
-    eventController.off(eventController.HOVER_NAVIGATION, this.movePointLights, this);
+    eventController.off(eventController.HOVER_NAVIGATION, this.moveHoverLights, this);
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.turnOnFloorLights, this);
   },
   addLight: function () {
@@ -40,7 +40,7 @@ var LightLoader = BaseModel.extend({
     this.scene.add( directionalLight );
     this.scene.add( new THREE.DirectionalLightHelper( directionalLight, size ) );
   },
-  movePointLights: function (intersect) {
+  moveHoverLights: function (intersect) {
     if (intersect !== null ) {
       var floorHeight = intersect.object.geometry.boundingBox.max.y / 2;
       var y = floorHeight + intersect.object.position.y;
@@ -86,14 +86,8 @@ var LightLoader = BaseModel.extend({
 
     _.each(this.hoverLights, function (light) {
       this.scene.add(light);
-      // this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
+      this.scene.add(new THREE.PointLightHelper( light, sphereSize ));
     }, this );
-
-    // var self = this;
-    // setTimeout( function () {
-    //   self.raiseLights(pointLights);
-    // }, 2500);
-    // eventController.trigger(eventController.ADD_DAT_GUI_CONTROLLER,{ arr: pointLights, key: "intensity", name:"light" });
   },
   getNewPointLight: function (x, y, z, color, intensity, distance ) {
     var decay = 2;
