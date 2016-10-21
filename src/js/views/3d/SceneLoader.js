@@ -11,7 +11,7 @@ import door from "../../data/door.json";
 import lampLight from "../../data/lampLight.json";
 import ModelLoader from "../../models/modelLoader";
 
-var HomeView = BaseView.extend({
+var SceneLoader = BaseView.extend({
   name: null,
   ready: false,
   TOTAL_MODELS: 0, // set in intialize function;
@@ -87,20 +87,19 @@ var HomeView = BaseView.extend({
   },
   toggleSelectedSceneModel: function (sceneModelName) {
     this.deselectSceneModel();
-    var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName }).set({ selected: true });
+    var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName })
     if ( newSceneModel ) {
+      newSceneModel.set({ selected:true });
       eventController.trigger(eventController.RESET_RAYCASTER, []);
       eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
-      this.hideEverythingNotSelected();
     }
   },
   deselectSceneModel: function () {
     var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true});
     if ( oldSceneModel ) oldSceneModel.set("selected", false);
   },
-  hideEverythingNotSelected: function () {
-     var falseArr = this.sceneModelCollection.where({ selected: false });
-    _.each(falseArr, function (sceneModel) {
+  hideSceneModel: function (sceneModelArr) {
+    _.each(sceneModelArr, function (sceneModel) {
       sceneModel.showHide(false);
     });
     // var falseArr = this.sceneModelCollection.where({ selected: false });
@@ -154,8 +153,7 @@ var HomeView = BaseView.extend({
     var startingHeight = 7;
     var sceneModels = this.sceneModelCollection.where({ interactive: true });
     var object3dArr = [];
-    // console.log("scene Models:", sceneModels);
-    sceneModels.forEach(function (scModel, i) { // psoition floors on top of each other
+    sceneModels.forEach(function (scModel, i) { // position floors on top of each other
       var object3d = scModel.get("object3d");
       var floorHeight =  Math.abs(object3d.geometry.boundingBox.max.y) + Math.abs(object3d.geometry.boundingBox.min.y);
       object3d.position.set(0, i * floorHeight + startingHeight, 0);
@@ -166,14 +164,14 @@ var HomeView = BaseView.extend({
     this.setInteractiveObjects();
   },
   createFloors: function (object3d) {
-    _.each(navigationList.reverse(), function (floorName) {
-      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.GdeepCloneMaterials() });
+    _.each(_.clone(navigationList).reverse(), function (floorName) { // clone and reverse Navigation list
+      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.GdeepCloneMaterials() }); //THREE JS EXTEND WITH PROTOYTPE
       this.addText(sceneModel);
       this.addDoors(sceneModel);
       this.addLights(sceneModel);
       this.sceneModelCollection.add(sceneModel);
     }, this);
-    navigationList.reverse();
+    // navigationList.reverse();
   },
   selectFloor: function (closestObject) {
     if (closestObject) {
@@ -228,22 +226,27 @@ var HomeView = BaseView.extend({
     this.parentToSceneModel(meshArr, sceneModel);
   },
   addLights: function (sceneModel) {
+    var lampLightPos = {x:9, y: 1.5, z:5, spacer: 3.6};
     var model = this.modelLoader.parseJSON(lampLight);
-    var mesh1 = new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials));
-    var mesh2 = mesh1.clone();
-    mesh2.position.x = 4;  // magic number but needs to be placed by hand
-    sceneModel.set("hoverLamps", [mesh1, mesh2]);
-
-    var light1 = this.getNewHoverLight(mesh1.position, 10, 3 );
-    var light2 = this.getNewHoverLight(mesh2.position, 10, 3 )
-    sceneModel.set("hoverLights", [light1, light2]);
-    this.parentToSceneModel([mesh1, mesh2, light1, light2], sceneModel);
+    var meshArray =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
+    this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
+    meshArray =[this.getNewHoverLight(10, 3)];
+    this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
   },
-  getNewHoverLight: function (pos, intensity, distance ) {
+  duplicateMesh: function (meshArray, sceneModel, startPosition, total, setModelProp) {
+    for (var i = 0; i < total; i++ ) {
+      if( i !== 0) meshArray.push(meshArray[0].clone());
+      startPosition.x -= startPosition.spacer;
+      meshArray[i].position.set(startPosition.x,startPosition.y, startPosition.z);
+    }
+    sceneModel.set(setModelProp, meshArray);
+    this.parentToSceneModel(meshArray, sceneModel);
+  },
+  getNewHoverLight: function (intensity, distance ) {
     var decay = 2;
     var color = utils.getColorPallete().lampLight.hex;
     var light = new THREE.PointLight( color, intensity, distance, decay );
-    light.position.set( pos.x + 1, 1.5, 5.25 );  //TODO: magic numbers abound
+    // light.position.set( pos.x + 1, 1.5, 5.25 );  //TODO: magic numbers abound
     light.visible = false;
     return light;
   },
@@ -257,6 +260,7 @@ var HomeView = BaseView.extend({
     var selectedModel = this.sceneModelCollection.findWhere({ selected: true });
     console.log("selectedModel: :", selectedModel);
     selectedModel.toggleDoors(true);
+    this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
   },
   addNonInteractive: function (obj) {
     obj.interactive = false;
@@ -265,4 +269,4 @@ var HomeView = BaseView.extend({
   }
 });
 
-module.exports = HomeView;
+module.exports = SceneLoader;

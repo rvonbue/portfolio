@@ -20,6 +20,7 @@ var SceneModel = Backbone.Model.extend({
     this.set("name", options.name);
     options.object3d.name = options.name;
     this.set("object3d", options.object3d);
+    this.showHide(false);
     this.addModelListeners();
   },
   addModelListeners: function () {
