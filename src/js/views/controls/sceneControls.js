@@ -30,8 +30,7 @@ var SceneControls = BaseModel.extend({
     var throttledMouseMove = _.throttle(_.bind(this.onMouseMove, this), 50);
     el.on("mousemove", this.parentEl, function (evt) { throttledMouseMove(evt); });
     el.on("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    el.on("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
-    eventController.on(eventController.INTERACTIVE_OBJECTS_READY, this.setInteractiveObjects, this);
+    // el.on("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
 
@@ -40,7 +39,6 @@ var SceneControls = BaseModel.extend({
     el.off("mousemove", this.parentEl, function (evt) { self.onMouseMove(evt); });
     el.off("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     el.off("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
-    eventController.off(eventController.INTERACTIVE_OBJECTS_READY, this.setInteractiveObjects, this);
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
   },
@@ -98,9 +96,6 @@ var SceneControls = BaseModel.extend({
   	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
     skyBox.position.y = size / 2;
   	this.scene.add( skyBox );
-  },
-  setInteractiveObjects: function (arr) {
-    this.raycasterObjects = arr;
   },
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;

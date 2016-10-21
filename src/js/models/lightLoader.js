@@ -22,7 +22,7 @@ var LightLoader = BaseModel.extend({
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.turnOnFloorLights, this);
   },
   addLight: function () {
-    // this.addAmbientLight();
+    this.addAmbientLight();
     this.addDirectionalLight();
     // this.addHoverLights();
     // this.addSpotLights();

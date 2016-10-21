@@ -14,7 +14,7 @@ var NavigationBar = BaseView.extend({
     "mouseleave li": "leaveHoverNavigationLi",
     "click .2d": "switchView2d",
     "click .3d": "switchView3d",
-    "click .resetCamera": "resetCamera"
+    "click .resetCamera": "resetScene"
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -78,7 +78,10 @@ var NavigationBar = BaseView.extend({
   switchView3d: function (what) {
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
   },
-  resetCamera: function () {
+  resetScene: function () {
+    _.each(this.navEls, function (el) {
+      el.removeClass("hovered selected");
+    });
     eventController.trigger(eventController.RESET_SCENE, "3d");
   },
   getCssMenu: function () {

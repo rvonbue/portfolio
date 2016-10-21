@@ -15,6 +15,7 @@ var HomeView = BaseView.extend({
   name: null,
   ready: false,
   TOTAL_MODELS: 0, // set in intialize function;
+  TOTAL_MODELS_LOADED: 0,
   SCENE_MODEL_NAME: "floor",
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -53,6 +54,7 @@ var HomeView = BaseView.extend({
     this.sceneModelCollection.each(function (sceneModel) {
       sceneModel.reset();
     });
+    this.setInteractiveObjects();
   },
   setHoverSceneModel: function (intersect) {
     if (!intersect) {
@@ -97,14 +99,19 @@ var HomeView = BaseView.extend({
     if ( oldSceneModel ) oldSceneModel.set("selected", false);
   },
   hideEverythingNotSelected: function () {
-    var falseArr = this.sceneModelCollection.where({ selected: false });
-    var self = this;
+     var falseArr = this.sceneModelCollection.where({ selected: false });
     _.each(falseArr, function (sceneModel) {
-      _.each(sceneModel.get("object3d").material.materials, function (mat) {
-        self.fadeMaterial(mat, 0);
-      });
-      if(sceneModel.get("text3d")) self.fadeMaterial(sceneModel.get("text3d").material, 0);
+      sceneModel.showHide(false);
     });
+    // var falseArr = this.sceneModelCollection.where({ selected: false });
+    // var self = this;
+    // _.each(falseArr, function (sceneModel) {
+    //   _.each(sceneModel.get("object3d").material.materials, function (mat) {
+    //     self.fadeMaterial(mat, 0);
+    //   });
+    //   if(sceneModel.get("text3d")) self.fadeMaterial(sceneModel.get("text3d").material, 0);
+    //
+    // });
   },
   fadeMaterial: function (material, opacityEnd) {
     if ( opacityEnd === 0 )  material.transparent = true;
@@ -121,18 +128,28 @@ var HomeView = BaseView.extend({
   modelLoaded: function (obj) {
     if (obj.name === this.SCENE_MODEL_NAME) {
       this.sceneModelLoaded(obj);
-      return;
+    } else {
+      this.addNonInteractive(obj);
     }
-    this.addNonInteractive(obj);
+
+    ++this.TOTAL_MODELS_LOADED;
+    this.checkAllModelsLoaded();
+  },
+  checkAllModelsLoaded: function () {
+    console.log("checkAllModelsLoaded", this.TOTAL_MODELS_LOADED)
+    if ( this.TOTAL_MODELS_LOADED === this.TOTAL_MODELS) {
+      console.log("All models loaded");
+    }
   },
   setInteractiveObjects: function () {
     var objects3d = this.sceneModelCollection.where({interactive: true}).map(function (model) {
       return model.get('object3d');
     });
-    eventController.trigger(eventController.INTERACTIVE_OBJECTS_READY, objects3d);
+    eventController.trigger(eventController.RESET_RAYCASTER, objects3d);
   },
   sceneModelLoaded: function (obj) {
     var object3d = obj.object3d;
+
     this.createFloors(object3d);
     var startingHeight = 7;
     var sceneModels = this.sceneModelCollection.where({ interactive: true });
@@ -194,9 +211,21 @@ var HomeView = BaseView.extend({
   },
   addDoors: function (sceneModel) {
     var model = this.modelLoader.parseJSON(door);
-    var mesh = new THREE.Mesh( model.geometry, model.materials[0]); //only one material on the door
-    sceneModel.set("doors", [mesh]);
-    sceneModel.get("object3d").add(mesh);
+    var mesh1 = new THREE.Mesh( model.geometry, model.materials[0]); //only one material on the door
+    mesh1.geometry.computeBoundingBox();
+
+    var meshArr = [mesh1];
+    var doorWidth = (mesh1.geometry.boundingBox.max.x - mesh1.geometry.boundingBox.min.x);
+    for(var i = 1; i < 4; i++) {  //build doors from right to left 4 doors total
+      var meshClone = mesh1.clone();
+      meshClone.position.x -= i * doorWidth;
+      if ( i !== 3 ) {
+        meshClone.position.z += 0.05;
+      }
+      meshArr.push(meshClone);
+    }
+    sceneModel.set("doors", meshArr);
+    this.parentToSceneModel(meshArr, sceneModel);
   },
   addLights: function (sceneModel) {
     var model = this.modelLoader.parseJSON(lampLight);
@@ -225,6 +254,9 @@ var HomeView = BaseView.extend({
   },
   cameraFinishedAnimation: function () {
     console.log("cameraFinishedAnimation:");
+    var selectedModel = this.sceneModelCollection.findWhere({ selected: true });
+    console.log("selectedModel: :", selectedModel);
+    selectedModel.toggleDoors(true);
   },
   addNonInteractive: function (obj) {
     obj.interactive = false;

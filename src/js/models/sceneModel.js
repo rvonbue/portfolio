@@ -11,6 +11,7 @@ var SceneModel = Backbone.Model.extend({
     "hover": false,
     "ready": true,
     "interactive": true,
+    "doorsBool": false, //doors are close by default
     "doors": null,
     "hoverLamps": null,
     "hoverLights": null
@@ -28,20 +29,13 @@ var SceneModel = Backbone.Model.extend({
   reset: function () {
     this.set("selected", false);
     this.set("hover", false);
+    this.showHide(true);
   },
-  toggleVisibility: function (visBool) { // show = true
+  showHide: function (visBool) { // show = true
       this.get("object3d").visible = visBool;
-
       _.each(this.get("object3d").children, function (mesh) {
-          mesh.visible = visBool;
+          if ( mesh.type === "Mesh" ) mesh.visible = visBool;  // do not turn on lights
       });
-      // this.get("text3d").visible = visBool;
-      // _.each(this.get("doors"), function (door) {
-      //     door.visible = visBool;
-      // });
-      // _.each(this.get("hoverLamps"), function (door) {
-      //     door.visible = visBool;
-      // });
   },
   getPosition: function () {
     var object3dPos = this.get("object3d").position;
@@ -55,21 +49,35 @@ var SceneModel = Backbone.Model.extend({
     return { w: width, h: height, l: length };
   },
   onChangeSelected: function () {
-    // console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
-    // console.log("Here is my Object:", this);
-    this.toggleDoors();
+    // this.toggleDoors();
     this.toggleTextVisiblilty();
   },
-  toggleDoors: function () {
-    _.each(this.get("doors"), function (doorMesh) {
-      doorMesh.position.x += 0.5;
-    });
+  toggleDoors: function (doorBool) {
+    var doorWidth = 0.4;
+    var totalDoors = this.get("doors").length;
+    _.each(this.get("doors"), function (doorMesh, i) {
+      if (doorBool) { // open door
+        if (i < totalDoors / 2) {
+          if (i === 0) this.openDoor(doorMesh, doorWidth);
+          if (i === 1) this.openDoor(doorMesh, doorWidth * 2 );
+        } else {
+          if (i === 2) this.openDoor(doorMesh, -doorWidth * 2 );
+          if (i === 3) this.openDoor(doorMesh, -doorWidth );
+        }
+      }
+    }, this);
+    // this.set("doorsBool", doorBool || false);
+  },
+  openDoor: function (doorMesh, doorWidth) {
+    doorMesh.position.x += doorWidth;
+  },
+  closeDoor: function () {
+
   },
   toggleTextVisiblilty:function () {
     this.get("text3d").visible = !this.get("selected");
   },
   onChangeHover: function () {
-    // console.log("Hi im " + this.get("name") + " and I'm hovered = " + this.get("hover"));
     this.toggleLampEmitMaterial();
     this.toggleHoverLights();
     // this.toggleTextMaterial();

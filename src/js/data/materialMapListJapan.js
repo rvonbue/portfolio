@@ -49,7 +49,7 @@ module.exports = {
       { normalMap: "textures/woodBamboo/woodBamboo_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: {  color: colorPallete.color3.hex }
+    props: {  color: colorPallete.color3.hex, shininess: 10 }
   },
   windowJapan: {
     maps: [
