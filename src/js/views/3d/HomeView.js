@@ -18,7 +18,7 @@ var HomeView = BaseView.extend({
   SCENE_MODEL_NAME: "floor",
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
-    this.SceneModelCollection = new SceneModelCollection();
+    this.sceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
     this.addListeners();
     var models = [
@@ -38,12 +38,21 @@ var HomeView = BaseView.extend({
      eventController.on(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishedAnimation, this);
      eventController.on(eventController.HOVER_NAVIGATION, this.setHoverSceneModel, this);
      eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
+     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
   },
   removeListeners: function () {
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
     eventController.off(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishedAnimation, this);
+    eventController.off(eventController.HOVER_NAVIGATION, this.setHoverSceneModel, this);
+    eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
+    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
+  },
+  resetScene: function () {
+    this.sceneModelCollection.each(function (sceneModel) {
+      sceneModel.reset();
+    });
   },
   setHoverSceneModel: function (intersect) {
     if (!intersect) {
@@ -53,7 +62,7 @@ var HomeView = BaseView.extend({
     this.setHoverSceneModelNavBar(intersect.object.name, true);
   },
   setHoverSceneModelNavBar: function (modelName, hoverBool) { // hoverBool = true when hover is true
-    var newHoverModel = this.SceneModelCollection.findWhere({ name: modelName });
+    var newHoverModel = this.sceneModelCollection.findWhere({ name: modelName });
     if (this.hoverModel) {
       this.hoverModel.set("hover", false);
     }
@@ -61,7 +70,7 @@ var HomeView = BaseView.extend({
     newHoverModel.set("hover", hoverBool);
   },
   setAllHoverFalse: function () {
-    _.each(this.SceneModelCollection.find({ hover: true }), function (sceneModel) {
+    _.each(this.sceneModelCollection.find({ hover: true }), function (sceneModel) {
       sceneModel.set("hover", false);
     });
     if (this.hoverModel) this.hoverModel = null;
@@ -76,7 +85,7 @@ var HomeView = BaseView.extend({
   },
   toggleSelectedSceneModel: function (sceneModelName) {
     this.deselectSceneModel();
-    var newSceneModel = this.SceneModelCollection.findWhere({ name: sceneModelName }).set({ selected: true });
+    var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName }).set({ selected: true });
     if ( newSceneModel ) {
       eventController.trigger(eventController.RESET_RAYCASTER, []);
       eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
@@ -84,11 +93,11 @@ var HomeView = BaseView.extend({
     }
   },
   deselectSceneModel: function () {
-    var oldSceneModel = this.SceneModelCollection.findWhere({ selected: true});
+    var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true});
     if ( oldSceneModel ) oldSceneModel.set("selected", false);
   },
   hideEverythingNotSelected: function () {
-    var falseArr = this.SceneModelCollection.where({ selected: false });
+    var falseArr = this.sceneModelCollection.where({ selected: false });
     var self = this;
     _.each(falseArr, function (sceneModel) {
       _.each(sceneModel.get("object3d").material.materials, function (mat) {
@@ -117,7 +126,7 @@ var HomeView = BaseView.extend({
     this.addNonInteractive(obj);
   },
   setInteractiveObjects: function () {
-    var objects3d = this.SceneModelCollection.where({interactive: true}).map(function (model) {
+    var objects3d = this.sceneModelCollection.where({interactive: true}).map(function (model) {
       return model.get('object3d');
     });
     eventController.trigger(eventController.INTERACTIVE_OBJECTS_READY, objects3d);
@@ -126,7 +135,7 @@ var HomeView = BaseView.extend({
     var object3d = obj.object3d;
     this.createFloors(object3d);
     var startingHeight = 7;
-    var sceneModels = this.SceneModelCollection.where({ interactive: true });
+    var sceneModels = this.sceneModelCollection.where({ interactive: true });
     var object3dArr = [];
     // console.log("scene Models:", sceneModels);
     sceneModels.forEach(function (scModel, i) { // psoition floors on top of each other
@@ -145,21 +154,18 @@ var HomeView = BaseView.extend({
       this.addText(sceneModel);
       this.addDoors(sceneModel);
       this.addLights(sceneModel);
-      this.SceneModelCollection.add(sceneModel);
+      this.sceneModelCollection.add(sceneModel);
     }, this);
     navigationList.reverse();
   },
   selectFloor: function (closestObject) {
     if (closestObject) {
-      this.selectedFloor = this.SceneModelCollection.findWhere({name: closestObject.object.name});
+      this.selectedFloor = this.sceneModelCollection.findWhere({name: closestObject.object.name});
       this.selectedFloor.set("selected", true);
     } else if (this.selectedFloor) {
       this.selectedFloor.set("selected", false);
       this.selectedFloor = null;
     }
-  },
-  positionRoof: function (object3d) {
-    object3d.position.y = navigationList.length * 2.059;  // TODO: magic number
   },
   addText: function (sceneModel) {
     var text3d = this.getText3d(sceneModel.get("name"));
@@ -194,19 +200,15 @@ var HomeView = BaseView.extend({
   },
   addLights: function (sceneModel) {
     var model = this.modelLoader.parseJSON(lampLight);
-    var mesh1 = new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials)); //only one material on the door
+    var mesh1 = new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials));
     var mesh2 = mesh1.clone();
     mesh2.position.x = 4;  // magic number but needs to be placed by hand
     sceneModel.set("hoverLamps", [mesh1, mesh2]);
 
-    var light1 = this.getNewHoverLight(mesh1.position, 10, 2 );
-    var light2 = this.getNewHoverLight(mesh2.position, 10, 2 )
+    var light1 = this.getNewHoverLight(mesh1.position, 10, 3 );
+    var light2 = this.getNewHoverLight(mesh2.position, 10, 3 )
     sceneModel.set("hoverLights", [light1, light2]);
-
-    sceneModel.get("object3d").add(mesh1); //parent Model to sceneModel object3d
-    sceneModel.get("object3d").add(mesh2);
-    sceneModel.get("object3d").add(light1);
-    sceneModel.get("object3d").add(light2);
+    this.parentToSceneModel([mesh1, mesh2, light1, light2], sceneModel);
   },
   getNewHoverLight: function (pos, intensity, distance ) {
     var decay = 2;
@@ -216,12 +218,17 @@ var HomeView = BaseView.extend({
     light.visible = false;
     return light;
   },
+  parentToSceneModel: function (meshArray, sceneModel) {
+    _.each(meshArray, function (mesh) {
+      sceneModel.get("object3d").add(mesh);
+    });
+  },
   cameraFinishedAnimation: function () {
     console.log("cameraFinishedAnimation:");
   },
   addNonInteractive: function (obj) {
     obj.interactive = false;
-    var sceneModel = this.SceneModelCollection.add(obj); //adding to collection returns sceneModel
+    var sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   }
 });

@@ -1,7 +1,6 @@
 module.exports = [
-  "Home",
   "Web Dev",
-  "3d Animations",
+  "3d Animation",
   "Digital Art",
   "About Me",
   "Contact"

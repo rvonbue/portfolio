@@ -25,6 +25,24 @@ var SceneModel = Backbone.Model.extend({
     this.on("change:selected", this.onChangeSelected);
     this.on("change:hover", this.onChangeHover);
   },
+  reset: function () {
+    this.set("selected", false);
+    this.set("hover", false);
+  },
+  toggleVisibility: function (visBool) { // show = true
+      this.get("object3d").visible = visBool;
+
+      _.each(this.get("object3d").children, function (mesh) {
+          mesh.visible = visBool;
+      });
+      // this.get("text3d").visible = visBool;
+      // _.each(this.get("doors"), function (door) {
+      //     door.visible = visBool;
+      // });
+      // _.each(this.get("hoverLamps"), function (door) {
+      //     door.visible = visBool;
+      // });
+  },
   getPosition: function () {
     var object3dPos = this.get("object3d").position;
     return { x: object3dPos.x, y: object3dPos.y, z: object3dPos.z };
@@ -37,8 +55,8 @@ var SceneModel = Backbone.Model.extend({
     return { w: width, h: height, l: length };
   },
   onChangeSelected: function () {
-    console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
-    console.log("Here is my Object:", this);
+    // console.log("HI IM " + this.get("name") + " and I'm selected = " + this.get("selected"));
+    // console.log("Here is my Object:", this);
     this.toggleDoors();
     this.toggleTextVisiblilty();
   },
@@ -51,10 +69,10 @@ var SceneModel = Backbone.Model.extend({
     this.get("text3d").visible = !this.get("selected");
   },
   onChangeHover: function () {
-    console.log("Hi im " + this.get("name") + " and I'm hovered = " + this.get("hover"));
+    // console.log("Hi im " + this.get("name") + " and I'm hovered = " + this.get("hover"));
     this.toggleLampEmitMaterial();
     this.toggleHoverLights();
-    this.toggleTextMaterial();
+    // this.toggleTextMaterial();
   },
   toggleHoverLights: function () {
     _.each(this.get("hoverLights"), function (light) {

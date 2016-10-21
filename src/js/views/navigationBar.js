@@ -79,7 +79,7 @@ var NavigationBar = BaseView.extend({
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
   },
   resetCamera: function () {
-    eventController.trigger(eventController.RESET_CAMERA_INITIAL_POSITION, "3d");
+    eventController.trigger(eventController.RESET_SCENE, "3d");
   },
   getCssMenu: function () {
     var cssMenu = "<div id='cssmenu'><ul>";

@@ -6,6 +6,7 @@ var OrbitControls = require('three-orbit-controls')(THREE);
 var INTIAL_POSITION = { x: -10, y: 20, z: 20 };
 var TARGET_INITIAL_POSITION = { x: 0, y: 15, z: 0 };
 
+
 var CameraControls = BaseModel.extend({
   initialize: function (options) {
     // eventController.on(eventController.CHANGE_CAMERA, this.updateCamera);
@@ -16,11 +17,11 @@ var CameraControls = BaseModel.extend({
   },
   addListeners: function () {
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
-    eventController.on(eventController.RESET_CAMERA_INITIAL_POSITION, this.setCameraInitialPosition, this);
+    eventController.on(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
-    eventController.off(eventController.RESET_CAMERA_INITIAL_POSITION, this.setCameraInitialPosition, this);
+    eventController.off(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
   },
   zoomOnSceneModel: function (object3d) {
     var zSpacer = 5;  // Move camera away from target... so you can see the object
@@ -50,7 +51,7 @@ var CameraControls = BaseModel.extend({
         x: newPosition.x,
         y: newPosition.y,
         z: newPosition.z
-    }).easing(TWEEN.Easing.Linear.None)
+    }).easing(TWEEN.Easing.Quadratic.Out)
     // .onUpdate(function (a, b) {})
     .onComplete(function () {
         if (triggerTrue) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION );
