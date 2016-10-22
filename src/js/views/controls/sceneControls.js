@@ -1,7 +1,7 @@
 import eventController from "../../controllers/eventController";
 import BaseModel from "../../models/BaseModel";
 import ArtGalleryView3d from "../3d/artGalleryView3d";
-import HomeView from "../3d/HomeView";
+import SceneLoader from "../3d/SceneLoader";
 import MovieTheaterView3d from "../3d/movieTheaterView3d";
 import TWEEN from "tween.js";
 import THREE from "three";
@@ -74,7 +74,7 @@ var SceneControls = BaseModel.extend({
     return closestObject;
   },
   loadInitialScene: function (name) {
-    this.set(name, new HomeView({ name: name }));
+    this.set(name, new SceneLoader({ name: name }));
   },
   loadEnvironmentMap: function (reflectionCube) {
     var format = '.jpg';

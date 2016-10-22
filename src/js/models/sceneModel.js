@@ -20,7 +20,8 @@ var SceneModel = Backbone.Model.extend({
     this.set("name", options.name);
     options.object3d.name = options.name;
     this.set("object3d", options.object3d);
-    this.showHide(false);
+    // this.showHide(false);
+    // this.setFadeInMaterials();
     this.addModelListeners();
   },
   addModelListeners: function () {
@@ -30,17 +31,42 @@ var SceneModel = Backbone.Model.extend({
   reset: function () {
     this.set("selected", false);
     this.set("hover", false);
+    this.resetAllMaterials();
     this.showHide(true);
   },
   showHide: function (visBool) { // show = true
       this.get("object3d").visible = visBool;
       _.each(this.get("object3d").children, function (mesh) {
-          if ( mesh.type === "Mesh" ) mesh.visible = visBool;  // do not turn on lights
+          if ( mesh.type === "Mesh" ) { // do not turn on lights
+            mesh.visible = visBool;
+          }
       });
   },
   getPosition: function () {
     var object3dPos = this.get("object3d").position;
     return { x: object3dPos.x, y: object3dPos.y, z: object3dPos.z };
+  },
+  getCameraPosition: function () {
+    return this.getCameraPositionLoaded();
+  },
+  getCameraPositionLoaded: function () {
+    var size = this.getSize();
+    var object3d = this.get("object3d");
+    return {
+      target: {
+        x: object3d.position.x,
+        y: object3d.position.y,
+        z: 0
+      },
+      camera: {
+        x: object3d.position.x,
+        y: object3d.position.y + ((size.h / 2) * .65),  //magic number to find where to place camera when zooming in on floor model should be erased if model is vertically symetric
+        z: object3d.geometry.boundingBox.max.z
+      }
+    };
+  },
+  getCameraPositionLoading: function () {
+
   },
   getSize: function () {
     var object3d = this.get("object3d");
@@ -51,6 +77,8 @@ var SceneModel = Backbone.Model.extend({
   },
   onChangeSelected: function () {
     // this.toggleDoors();
+    this.showHide(this.get("selected"))
+    this.toggleHoverLights(this.get("selected"));
     this.toggleTextVisiblilty();
   },
   toggleDoors: function (doorBool) {
@@ -80,12 +108,12 @@ var SceneModel = Backbone.Model.extend({
   },
   onChangeHover: function () {
     this.toggleLampEmitMaterial();
-    this.toggleHoverLights();
+    this.toggleHoverLights(this.get("hover"));
     // this.toggleTextMaterial();
   },
-  toggleHoverLights: function () {
+  toggleHoverLights: function (hoverBool) {
     _.each(this.get("hoverLights"), function (light) {
-      light.visible = this.get("hover");
+      light.visible = hoverBool;
     }, this);
   },
   setEmissiveMaterial: function (mat, r, g, b) {
@@ -116,6 +144,33 @@ var SceneModel = Backbone.Model.extend({
     } else {
       this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
     }
+  },
+  getAllMaterials: function () {
+    var object3d = this.get("object3d");
+    var objectMaterialsArr = _.clone(object3d.material.materials);
+    _.each(object3d.children, function (mesh) {
+      if (!mesh.material) return; // if not a light
+      if (mesh.material.materials) { // if mesh has multiple materials
+        _.each(mesh.material.materials, function (mat) {
+          objectMaterialsArr.push(mat);
+        });
+      } else {
+        objectMaterialsArr.push(mesh.material);
+      }
+    });
+    return _.uniq(objectMaterialsArr, false); // remove duplicate materials
+  },
+  setFadeInMaterials:function () {
+    _.each(this.getAllMaterials(), function (mat) {
+      if (!mat.alwaysTransparent) mat.transparent = true;
+      mat.opacity = 0;
+    });
+  },
+  resetAllMaterials: function () {
+    _.each(this.getAllMaterials(), function (mat) {
+      if (!mat.alwaysTransparent) mat.transparent = false;
+      mat.opacity = 1;
+    });
   }
 });
 

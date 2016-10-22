@@ -62,13 +62,13 @@ module.exports = {
       {map: "textures/characterJapan.png"}
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
-    props: {  transparent: true }
+    props: {  transparent: true, alwaysTransparent: true }
   },
   shutterJapan:{
      maps: [
-    {map: "textures/japanShutter.jpg"}
-  ],
-  mapProps: { repeatScale: 1, shading: "flat" },
+      {map: "textures/japanShutter.jpg"}
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" },
   },
   lampLightEmit: {
     props: {

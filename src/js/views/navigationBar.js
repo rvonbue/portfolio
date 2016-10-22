@@ -69,8 +69,8 @@ var NavigationBar = BaseView.extend({
     this.swapSelectedEl(currentTarget);
     eventController.trigger(eventController.SWITCH_PAGE, currentTarget.index());
   },
-  setSelectedFrom3d: function (text3d) {
-    this.swapSelectedEl(this.navEls[text3d.name]);
+  setSelectedFrom3d: function (sceneModel) {
+    this.swapSelectedEl(this.navEls[sceneModel.name]);
   },
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");

@@ -6,10 +6,9 @@ import SceneModelCollection from "../../collections/SceneModelCollection";
 import utils from "../../util/utils";
 import THREE from "three";
 import TWEEN from "tween.js";
-import fontData from "../../data/roboto_regular.json";
-import door from "../../data/door.json";
-import lampLight from "../../data/lampLight.json";
+
 import ModelLoader from "../../models/modelLoader";
+import FloorView3d from "./FloorView3d";
 
 var SceneLoader = BaseView.extend({
   name: null,
@@ -78,8 +77,8 @@ var SceneLoader = BaseView.extend({
     if (this.hoverModel) this.hoverModel = null;
   },
   clickSelectSceneModel: function (intersectObject) {
-    if ( intersectObject ) var name = intersectObject.object.name;
-    this.toggleSelectedSceneModel(name);
+    if ( !intersectObject ) return;
+    this.toggleSelectedSceneModel(intersectObject.object.name);
   },
   navigationBarSelectSceneModel: function (index) {
     if (isNaN(index)) return;
@@ -90,39 +89,38 @@ var SceneLoader = BaseView.extend({
     var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName })
     if ( newSceneModel ) {
       newSceneModel.set({ selected:true });
+      this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
       eventController.trigger(eventController.RESET_RAYCASTER, []);
-      eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel.get("object3d"));  //zoom to selected model
+      eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel);  //zoom to selected model
     }
   },
   deselectSceneModel: function () {
     var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true});
-    if ( oldSceneModel ) oldSceneModel.set("selected", false);
+    if ( oldSceneModel ) oldSceneModel.reset();
   },
   hideSceneModel: function (sceneModelArr) {
+    console.log("hideSceneModela");
     _.each(sceneModelArr, function (sceneModel) {
-      sceneModel.showHide(false);
-    });
-    // var falseArr = this.sceneModelCollection.where({ selected: false });
-    // var self = this;
-    // _.each(falseArr, function (sceneModel) {
-    //   _.each(sceneModel.get("object3d").material.materials, function (mat) {
-    //     self.fadeMaterial(mat, 0);
-    //   });
-    //   if(sceneModel.get("text3d")) self.fadeMaterial(sceneModel.get("text3d").material, 0);
-    //
-    // });
+      this.fadeMaterials(sceneModel.getAllMaterials(), 0);
+    }, this);
   },
-  fadeMaterial: function (material, opacityEnd) {
-    if ( opacityEnd === 0 )  material.transparent = true;
-
-    var tween = new TWEEN.Tween(material)
-    .to({ opacity: opacityEnd }, 500)
-    .onComplete(function () {
-      if ( opacityEnd === 1 ) {
-        material.transparent = false;
-      }
-    })
-    .start();
+  animateSceneStart: function () {
+    _.each(this.sceneModelCollection.models, function (sceneModel) {
+      // this.fadeMaterials(sceneModel.getAllMaterials(), 1);
+      sceneModel.showHide(true);
+    }, this);
+  },
+  fadeMaterials: function (materials, opacityEnd) {
+    console.log("animateSceneStart", materials);
+    _.each(materials, function (material) {
+      material.transparent = true;
+      var tween = new TWEEN.Tween(material)
+      .to({ opacity: opacityEnd }, utils.getAnimationSpeed.fade)
+      .onComplete(function () {
+        if ( opacityEnd === 1  && !material.alwaysTransparent ) material.transparent = false;
+      })
+      .start();
+    });
   },
   modelLoaded: function (obj) {
     if (obj.name === this.SCENE_MODEL_NAME) {
@@ -135,9 +133,9 @@ var SceneLoader = BaseView.extend({
     this.checkAllModelsLoaded();
   },
   checkAllModelsLoaded: function () {
-    console.log("checkAllModelsLoaded", this.TOTAL_MODELS_LOADED)
     if ( this.TOTAL_MODELS_LOADED === this.TOTAL_MODELS) {
       console.log("All models loaded");
+      this.animateSceneStart();
     }
   },
   setInteractiveObjects: function () {
@@ -164,14 +162,12 @@ var SceneLoader = BaseView.extend({
     this.setInteractiveObjects();
   },
   createFloors: function (object3d) {
-    _.each(_.clone(navigationList).reverse(), function (floorName) { // clone and reverse Navigation list
-      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.GdeepCloneMaterials() }); //THREE JS EXTEND WITH PROTOYTPE
-      this.addText(sceneModel);
-      this.addDoors(sceneModel);
-      this.addLights(sceneModel);
+    var floorView3d = new FloorView3d();
+    _.each(_.clone(navigationList).reverse(), function (floorName) { // clone and reverse Navigation list so buidling stacks from bottom to top
+      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.GdeepCloneMaterials() }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
+      floorView3d.addFloorItems(sceneModel, this.modelLoader);
       this.sceneModelCollection.add(sceneModel);
     }, this);
-    // navigationList.reverse();
   },
   selectFloor: function (closestObject) {
     if (closestObject) {
@@ -181,79 +177,6 @@ var SceneLoader = BaseView.extend({
       this.selectedFloor.set("selected", false);
       this.selectedFloor = null;
     }
-  },
-  addText: function (sceneModel) {
-    var text3d = this.getText3d(sceneModel.get("name"));
-    var object3d = sceneModel.get("object3d");
-    sceneModel.set("text3d", text3d);
-    var offsetY = 0.7;
-    text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.max.z;
-    text3d.position.y = (text3d.geometry.boundingBox.max.y + text3d.geometry.boundingBox.min.y) / 2 - offsetY;
-    text3d.position.x = -((text3d.geometry.boundingBox.max.x - text3d.geometry.boundingBox.min.x) / 2);
-    object3d.add(text3d);
-  },
-  getText3d: function (text) {
-    var material = new THREE.MeshPhongMaterial({ color: utils.getFontColor().text });
-    // material.emissive = new THREE.Color(utils.getFontColor().text);
-    var	textGeo = new THREE.TextGeometry( text, {
-      font: new THREE.Font(fontData),
-      height: 0.5,
-      size: 1.5,
-      curveSegments: 4,
-      bevelThickness: 2,
-      bevelSize: 1.5,
-      bevelSegments: 3
-    });
-    textGeo.computeBoundingBox();
-    return new THREE.Mesh( textGeo, material );
-  },
-  addDoors: function (sceneModel) {
-    var model = this.modelLoader.parseJSON(door);
-    var mesh1 = new THREE.Mesh( model.geometry, model.materials[0]); //only one material on the door
-    mesh1.geometry.computeBoundingBox();
-
-    var meshArr = [mesh1];
-    var doorWidth = (mesh1.geometry.boundingBox.max.x - mesh1.geometry.boundingBox.min.x);
-    for(var i = 1; i < 4; i++) {  //build doors from right to left 4 doors total
-      var meshClone = mesh1.clone();
-      meshClone.position.x -= i * doorWidth;
-      if ( i !== 3 ) {
-        meshClone.position.z += 0.05;
-      }
-      meshArr.push(meshClone);
-    }
-    sceneModel.set("doors", meshArr);
-    this.parentToSceneModel(meshArr, sceneModel);
-  },
-  addLights: function (sceneModel) {
-    var lampLightPos = {x:9, y: 1.5, z:5, spacer: 3.6};
-    var model = this.modelLoader.parseJSON(lampLight);
-    var meshArray =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
-    this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
-    meshArray =[this.getNewHoverLight(10, 3)];
-    this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
-  },
-  duplicateMesh: function (meshArray, sceneModel, startPosition, total, setModelProp) {
-    for (var i = 0; i < total; i++ ) {
-      if( i !== 0) meshArray.push(meshArray[0].clone());
-      startPosition.x -= startPosition.spacer;
-      meshArray[i].position.set(startPosition.x,startPosition.y, startPosition.z);
-    }
-    sceneModel.set(setModelProp, meshArray);
-    this.parentToSceneModel(meshArray, sceneModel);
-  },
-  getNewHoverLight: function (intensity, distance ) {
-    var decay = 2;
-    var color = utils.getColorPallete().lampLight.hex;
-    var light = new THREE.PointLight( color, intensity, distance, decay );
-    // light.position.set( pos.x + 1, 1.5, 5.25 );  //TODO: magic numbers abound
-    light.visible = false;
-    return light;
-  },
-  parentToSceneModel: function (meshArray, sceneModel) {
-    _.each(meshArray, function (mesh) {
-      sceneModel.get("object3d").add(mesh);
-    });
   },
   cameraFinishedAnimation: function () {
     console.log("cameraFinishedAnimation:");
