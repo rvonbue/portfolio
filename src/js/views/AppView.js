@@ -50,6 +50,7 @@ var AppView = BaseView.extend({
   },
   render: function () {
     this.$el.append(new NavigationBar().render().el);
+    this.$el.append("<div class='sky-gradient'></div>");
     return this;
   }
 });

@@ -91,5 +91,12 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: { transparent: false }
+  },
+  grass: {
+    maps: [
+      { map: "textures/grass256.jpg" }
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { transparent: false }
   }
 };

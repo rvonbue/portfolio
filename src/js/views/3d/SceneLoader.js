@@ -18,13 +18,14 @@ var SceneLoader = BaseView.extend({
   SCENE_MODEL_NAME: "floor",
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
-    this.sceneModelCollection = new SceneModelCollection();
+    window.smc = this.sceneModelCollection = new SceneModelCollection();
     this.modelLoader = new ModelLoader();
     this.addListeners();
     var models = [
       { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME},
-      { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
-      { url: "models3d/ground.json", name: "ground" }
+      // { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
+      { url: "models3d/floor4/webDev.json", name: "web_dev" },
+      // { url: "models3d/ground.json", name: "ground" }
     ];
     this.TOTAL_MODELS = models.length;
     _.each(models, function (modelsArrObj) {
@@ -87,31 +88,27 @@ var SceneLoader = BaseView.extend({
   toggleSelectedSceneModel: function (sceneModelName) {
     this.deselectSceneModel();
     var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName })
-    if ( newSceneModel ) {
+    if ( !newSceneModel ) return;  //if model doesn't exist for some reason can probably remove
+    if ( newSceneModel.get("ready") === true ) {
       newSceneModel.set({ selected:true });
       this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
       eventController.trigger(eventController.RESET_RAYCASTER, []);
       eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel);  //zoom to selected model
+    } else {
+      console.log("scene Details NOT Loaded");
     }
+
   },
   deselectSceneModel: function () {
-    var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true});
+    var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true });
     if ( oldSceneModel ) oldSceneModel.reset();
   },
   hideSceneModel: function (sceneModelArr) {
-    console.log("hideSceneModela");
     _.each(sceneModelArr, function (sceneModel) {
       this.fadeMaterials(sceneModel.getAllMaterials(), 0);
     }, this);
   },
-  animateSceneStart: function () {
-    _.each(this.sceneModelCollection.models, function (sceneModel) {
-      // this.fadeMaterials(sceneModel.getAllMaterials(), 1);
-      sceneModel.showHide(true);
-    }, this);
-  },
   fadeMaterials: function (materials, opacityEnd) {
-    console.log("animateSceneStart", materials);
     _.each(materials, function (material) {
       material.transparent = true;
       var tween = new TWEEN.Tween(material)
@@ -134,7 +131,6 @@ var SceneLoader = BaseView.extend({
   },
   checkAllModelsLoaded: function () {
     if ( this.TOTAL_MODELS_LOADED === this.TOTAL_MODELS) {
-      console.log("All models loaded");
       this.animateSceneStart();
     }
   },
@@ -143,6 +139,11 @@ var SceneLoader = BaseView.extend({
       return model.get('object3d');
     });
     eventController.trigger(eventController.RESET_RAYCASTER, objects3d);
+  },
+  addNonInteractive: function (obj) {
+    obj.interactive = false;
+    var sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
     var object3d = obj.object3d;
@@ -163,20 +164,11 @@ var SceneLoader = BaseView.extend({
   },
   createFloors: function (object3d) {
     var floorView3d = new FloorView3d();
-    _.each(_.clone(navigationList).reverse(), function (floorName) { // clone and reverse Navigation list so buidling stacks from bottom to top
-      var sceneModel = new SceneModel({ name: floorName, object3d: object3d.GdeepCloneMaterials() }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
+    _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
+      var sceneModel = new SceneModel({ name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex: i }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
       floorView3d.addFloorItems(sceneModel, this.modelLoader);
       this.sceneModelCollection.add(sceneModel);
     }, this);
-  },
-  selectFloor: function (closestObject) {
-    if (closestObject) {
-      this.selectedFloor = this.sceneModelCollection.findWhere({name: closestObject.object.name});
-      this.selectedFloor.set("selected", true);
-    } else if (this.selectedFloor) {
-      this.selectedFloor.set("selected", false);
-      this.selectedFloor = null;
-    }
   },
   cameraFinishedAnimation: function () {
     console.log("cameraFinishedAnimation:");
@@ -185,10 +177,11 @@ var SceneLoader = BaseView.extend({
     selectedModel.toggleDoors(true);
     this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
   },
-  addNonInteractive: function (obj) {
-    obj.interactive = false;
-    var sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
+  animateSceneStart: function () {
+    _.each(this.sceneModelCollection.models, function (sceneModel) {
+      // this.fadeMaterials(sceneModel.getAllMaterials(), 1);
+      sceneModel.showHide(true);
+    }, this);
   }
 });
 

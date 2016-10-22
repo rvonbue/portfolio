@@ -3,7 +3,7 @@ import THREE from "three";
 import TWEEN from "tween.js";
 import raf from "raf";
 import eventController from "../../controllers/eventController";
-import LightLoader from "../../models/lightLoader";
+import LightControls from "../controls/LightControls";
 import CameraControls from "../../views/controls/cameraControls";
 import SceneControls from "../../views/controls/sceneControls";
 import StatsView from "../../views/3d/statsView";
@@ -40,9 +40,9 @@ var AppView3d = BaseView.extend({
     var scene = window.scene = this.scene = new THREE.Scene();
     // scene.fog = new THREE.FogExp2( "#b82601", 0.02 );
     this.initCamera(size);
-    this.lightLoader = new LightLoader({scene: scene});
+    this.lightControls = new LightControls({ scene: scene });
     this.addHelpers();
-    this.renderer = new THREE.WebGLRenderer({alpha: true, antiAlias: true, canvas: this.canvasEl });
+    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas:this.canvasEl });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( 0x000000, 0 );
@@ -94,8 +94,10 @@ var AppView3d = BaseView.extend({
   render: function () {
     this.statsView = new StatsView();
     $("body").append(this.statsView.stats.domElement);
+    this.bodyEl = $("<div class='view-body-3d'></div>");
+    this.$el.append(this.bodyEl);
     var canvasEl = $("<canvas>");
-    this.$el.append(canvasEl);
+    this.bodyEl.append(canvasEl);
     this.canvasEl = canvasEl[0];
     // $("body").append(new DatGuiView().render().el);
     return this;

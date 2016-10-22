@@ -16278,9 +16278,9 @@
 
 	var _raf2 = _interopRequireDefault(_raf);
 
-	var _lightLoader = __webpack_require__(19);
+	var _LightControls = __webpack_require__(19);
 
-	var _lightLoader2 = _interopRequireDefault(_lightLoader);
+	var _LightControls2 = _interopRequireDefault(_LightControls);
 
 	var _cameraControls = __webpack_require__(21);
 
@@ -16322,7 +16322,7 @@
 	    var height = window.innerHeight - this.$el.find(".navigation-bar:first").height();
 	    var scene = window.scene = this.scene = new _three2.default.Scene();
 	    this.initCamera();
-	    this.lightLoader = new _lightLoader2.default({ scene: scene });
+	    this.LightControls = new _LightControls2.default({ scene: scene });
 	    this.addHelpers();
 	    this.renderer = new _three2.default.WebGLRenderer({ alpha: false, antiAlias: true, canvas: this.canvasEl });
 	    this.renderer.setSize(width, height);
@@ -58316,7 +58316,7 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var LightLoader = _BaseModel2.default.extend({
+	var LightControls = _BaseModel2.default.extend({
 	  initialize: function initialize(options) {
 	    _BaseModel2.default.prototype.initialize.apply(this, arguments);
 	    this.scene = options.scene;
@@ -58391,7 +58391,7 @@
 	  }
 	});
 
-	module.exports = LightLoader;
+	module.exports = LightControls;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },

@@ -41,7 +41,7 @@ var CameraControls = BaseModel.extend({
         y: newPosition.y,
         z: newPosition.z
     }, utils.getAnimationSpeed().cameraMove)
-    .easing(TWEEN.Easing.Cubic.Out)
+    .easing(TWEEN.Easing.Circular.Out)
     // .onUpdate(function (a, b) {})
     .onComplete(function () {
         if (triggerTrue) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION );

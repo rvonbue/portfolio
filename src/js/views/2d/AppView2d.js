@@ -11,6 +11,7 @@ var AppView2d = BaseView.extend({
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
     this.addListeners();
+    this.bodyEl = $("<div class='view-body-2d'></div>");
     this.setSection();
   },
   addListeners: function () {
@@ -20,13 +21,13 @@ var AppView2d = BaseView.extend({
     eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   setSection: function () {
-    this.$el.append(htmlPageNavigation[0]);
+    this.bodyEl.append(htmlPageNavigation[0]);
   },
   switchPage: function (index) {
     if (!index) index = commandController.request(commandController.GET_SELECTED_SECTION);
     console.log("switchPage:", index);
-    this.$el.empty();
-    this.$el.append(htmlPageNavigation[index]);
+    this.bodyEl.empty();
+    this.bodyEl.append(htmlPageNavigation[index]);
   },
   show: function (parentEl) {
     this.$el.show();
@@ -39,7 +40,7 @@ var AppView2d = BaseView.extend({
     parentEl.removeClass("twoD");
   },
   render: function () {
-    // this.$el.
+    this.$el.append(this.bodyEl);
     return this;
   }
 });
