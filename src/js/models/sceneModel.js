@@ -14,7 +14,8 @@ var SceneModel = Backbone.Model.extend({
     "doorsBool": false, //doors are close by default
     "doors": null,
     "hoverLamps": null,
-    "hoverLights": null
+    "hoverLights": null,
+    "sceneDetails": null,
   },
   initialize: function( options ) {
     this.set("name", options.name);
@@ -29,14 +30,23 @@ var SceneModel = Backbone.Model.extend({
     this.on("change:selected", this.onChangeSelected);
     this.on("change:hover", this.onChangeHover);
   },
-  loadSceneDetails:function () {
-    console.log("loadSceneDetails");
-  },
   reset: function () {
     this.set("selected", false);
     this.set("hover", false);
     this.resetAllMaterials();
     this.showHide(true);
+  },
+  setSceneDetails: function (modelObj) {
+    console.log("setSceneDetails");
+    this.set("sceneDetails", modelObj.object3d);
+    modelObj.object3d.name = modelObj.sceneModelName;
+    this.get("object3d").add(modelObj.object3d);
+    this.set("ready", true);
+    return modelObj.object3d;
+  },
+  getPosition: function () {
+    var object3dPos = this.get("object3d").position;
+    return { x: object3dPos.x, y: object3dPos.y, z: object3dPos.z };
   },
   showHide: function (visBool) { // show = true
       this.get("object3d").visible = visBool;
@@ -45,10 +55,6 @@ var SceneModel = Backbone.Model.extend({
             mesh.visible = visBool;
           }
       });
-  },
-  getPosition: function () {
-    var object3dPos = this.get("object3d").position;
-    return { x: object3dPos.x, y: object3dPos.y, z: object3dPos.z };
   },
   getCameraPosition: function () {
     return this.getCameraPositionLoaded();

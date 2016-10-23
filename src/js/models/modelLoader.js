@@ -17,7 +17,7 @@ var ModelLoader = BaseModel.extend({
       // console.log( item, loaded, total );
     };
   },
-  loadModel: function (url, options) {
+  loadModel: function (url, options, whichCallback) {
     var self = this;
     var loader =  new THREE.JSONLoader(this.manager);
     loader.load(url, function ( geometry, materials ) {
@@ -28,7 +28,13 @@ var ModelLoader = BaseModel.extend({
           }
       });
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
-      eventController.trigger(eventController.MODEL_LOADED, { name: options.name, object3d: object3d });
+      var modelDetails = { name: options.name, sceneModelName: options.sceneModelName, object3d: object3d };
+      if ( options.sceneModelName ) {
+         eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
+      } else {
+        eventController.trigger(eventController.MODEL_LOADED, modelDetails);
+      }
+
     });
   },
   setMaterialMap: function (mat) {

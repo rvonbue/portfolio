@@ -23,14 +23,13 @@ var SceneLoader = BaseView.extend({
     this.addListeners();
     var models = [
       { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME},
-      // { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
-      { url: "models3d/floor4/webDev.json", name: "web_dev" },
-      // { url: "models3d/ground.json", name: "ground" }
+      { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
+      { url: "models3d/ground.json", name: "ground" }
     ];
     this.TOTAL_MODELS = models.length;
     _.each(models, function (modelsArrObj) {
-      eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, { name: modelsArrObj.name }); //load scene Model
-    });
+      eventController.trigger(eventController.LOAD_JSON_MODEL, modelsArrObj.url, { name: modelsArrObj.name, sceneModelName: null }); //load scene Models
+    }, this);
   },
   addListeners: function () {
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
@@ -96,8 +95,21 @@ var SceneLoader = BaseView.extend({
       eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel);  //zoom to selected model
     } else {
       console.log("scene Details NOT Loaded");
+      this.loadSceneDetails(newSceneModel)
     }
 
+  },
+  loadSceneDetails: function (newSceneModel) {
+    eventController.once(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
+    var sceneDetailsUrl = 'models3d/floor' + newSceneModel.get("floorIndex") + '/webDev.json';
+    eventController.trigger(eventController.LOAD_JSON_MODEL, sceneDetailsUrl,
+      { name: "web_dev", sceneModelName: newSceneModel.get("name") }
+    );
+  },
+  sceneDetailsLoaded: function (modelObj) {
+    var sceneModel = this.sceneModelCollection.findWhere({ name: modelObj.sceneModelName });
+    var mesh = sceneModel.setSceneDetails(modelObj);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [mesh]);
   },
   deselectSceneModel: function () {
     var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true });
@@ -125,7 +137,6 @@ var SceneLoader = BaseView.extend({
     } else {
       this.addNonInteractive(obj);
     }
-
     ++this.TOTAL_MODELS_LOADED;
     this.checkAllModelsLoaded();
   },
@@ -146,15 +157,16 @@ var SceneLoader = BaseView.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
+    var startingHeight = 7;
+    var object3dArr = [];
     var object3d = obj.object3d;
 
     this.createFloors(object3d);
-    var startingHeight = 7;
     var sceneModels = this.sceneModelCollection.where({ interactive: true });
-    var object3dArr = [];
+
     sceneModels.forEach(function (scModel, i) { // position floors on top of each other
       var object3d = scModel.get("object3d");
-      var floorHeight =  Math.abs(object3d.geometry.boundingBox.max.y) + Math.abs(object3d.geometry.boundingBox.min.y);
+      var floorHeight =  scModel.getSize().h;
       object3d.position.set(0, i * floorHeight + startingHeight, 0);
       object3dArr.push(object3d);
     });
@@ -171,7 +183,6 @@ var SceneLoader = BaseView.extend({
     }, this);
   },
   cameraFinishedAnimation: function () {
-    console.log("cameraFinishedAnimation:");
     var selectedModel = this.sceneModelCollection.findWhere({ selected: true });
     console.log("selectedModel: :", selectedModel);
     selectedModel.toggleDoors(true);
