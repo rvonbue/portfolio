@@ -1,4 +1,4 @@
-import utils from "../util/utils";
+import utils from "../../util/utils";
 var colorPallete = utils.getColorPallete();
 
 console.log("colorPallete", colorPallete);

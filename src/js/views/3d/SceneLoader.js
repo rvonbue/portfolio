@@ -9,6 +9,7 @@ import TWEEN from "tween.js";
 
 import ModelLoader from "../../models/modelLoader";
 import FloorView3d from "./FloorView3d";
+import SceneDetailsModel from "../../models/SceneDetailsModel";
 
 var SceneLoader = BaseView.extend({
   name: null,
@@ -78,38 +79,46 @@ var SceneLoader = BaseView.extend({
   },
   clickSelectSceneModel: function (intersectObject) {
     if ( !intersectObject ) return;
-    this.toggleSelectedSceneModel(intersectObject.object.name);
+    var name = intersectObject.object.name;
+    this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: name }));
   },
   navigationBarSelectSceneModel: function (index) {
     if (isNaN(index)) return;
     this.toggleSelectedSceneModel(navigationList[index]);
   },
   toggleSelectedSceneModel: function (sceneModelName) {
-    this.deselectSceneModel();
-    var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName })
-    if ( !newSceneModel ) return;  //if model doesn't exist for some reason can probably remove
-    if ( newSceneModel.get("ready") === true ) {
-      newSceneModel.set({ selected:true });
-      this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
-      eventController.trigger(eventController.RESET_RAYCASTER, []);
-      eventController.trigger(eventController.SCENE_MODEL_SELECTED, newSceneModel);  //zoom to selected model
+    var newSceneModel = null
+    if (!sceneModelName.cid) {
+      this.deselectSceneModel();
+      var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName });
     } else {
-      console.log("scene Details NOT Loaded");
-      this.loadSceneDetails(newSceneModel)
+      var newSceneModel = sceneModelName;
     }
+    if ( !newSceneModel ) return;  //if model doesn't exist for some reason can probably remove
+    if ( newSceneModel.get("ready") === false && !newSceneModel.get("selected") ) this.loadSceneDetails(newSceneModel);
+    newSceneModel.set({ selected:true });
+    this.zoomToSelectedSceneModel(newSceneModel);
 
+  },
+  zoomToSelectedSceneModel: function (sceneModel) {
+    this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
+    eventController.trigger(eventController.RESET_RAYCASTER, []);
+    eventController.trigger(eventController.SCENE_MODEL_SELECTED, sceneModel);  //zoom to selected model
   },
   loadSceneDetails: function (newSceneModel) {
     eventController.once(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
-    var sceneDetailsUrl = 'models3d/floor' + newSceneModel.get("floorIndex") + '/webDev.json';
+    var sceneDetailsUrl = 'models3d/floor' + newSceneModel.get("floorIndex") + '/sceneDetails.json';
     eventController.trigger(eventController.LOAD_JSON_MODEL, sceneDetailsUrl,
-      { name: "web_dev", sceneModelName: newSceneModel.get("name") }
+      { name: "sceneDetails", sceneModelName: newSceneModel.get("name") }
     );
   },
   sceneDetailsLoaded: function (modelObj) {
     var sceneModel = this.sceneModelCollection.findWhere({ name: modelObj.sceneModelName });
-    var mesh = sceneModel.setSceneDetails(modelObj);
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [mesh]);
+    modelObj.sceneModel = sceneModel;
+    var sceneDetailsModel = new SceneDetailsModel(modelObj);
+    sceneModel.set("sceneDetails", sceneDetailsModel);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneDetailsModel.get("object3d")]);
+    this.toggleSelectedSceneModel(sceneModel);
   },
   deselectSceneModel: function () {
     var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true });

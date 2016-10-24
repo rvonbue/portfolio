@@ -1,8 +1,8 @@
 // import eventController from "../controllers/eventController";
-import BaseModel from "./BaseModel";
+import BaseModel3d from "./BaseModel3d";
 import utils from "../util/utils";
 
-var SceneModel = Backbone.Model.extend({
+var SceneModel = BaseModel3d.extend({
   defaults: {
     "name": "Caesar_Salad",
     "object3d": null,
@@ -18,35 +18,27 @@ var SceneModel = Backbone.Model.extend({
     "sceneDetails": null,
   },
   initialize: function( options ) {
-    this.set("name", options.name);
-    options.object3d.name = options.name;
-    this.set("object3d", options.object3d);
+    BaseModel3d.prototype.initialize.apply(this, arguments);
     // this.showHide(false);
     // this.setFadeInMaterials();
-    this.addModelListeners();
+    this.once("change:selected", this.loadSceneDetails);
+    this.once("change:sceneDetails", function () {
+      this.set("ready", true);
+    });
   },
   addModelListeners: function () {
-    this.once("change:selected", this.loadSceneDetails);
     this.on("change:selected", this.onChangeSelected);
     this.on("change:hover", this.onChangeHover);
+  },
+  removeModelListeners: function () {
+    this.off("change:selected", this.onChangeSelected);
+    this.off("change:hover", this.onChangeHover);
   },
   reset: function () {
     this.set("selected", false);
     this.set("hover", false);
     this.resetAllMaterials();
     this.showHide(true);
-  },
-  setSceneDetails: function (modelObj) {
-    console.log("setSceneDetails");
-    this.set("sceneDetails", modelObj.object3d);
-    modelObj.object3d.name = modelObj.sceneModelName;
-    this.get("object3d").add(modelObj.object3d);
-    this.set("ready", true);
-    return modelObj.object3d;
-  },
-  getPosition: function () {
-    var object3dPos = this.get("object3d").position;
-    return { x: object3dPos.x, y: object3dPos.y, z: object3dPos.z };
   },
   showHide: function (visBool) { // show = true
       this.get("object3d").visible = visBool;
@@ -57,7 +49,7 @@ var SceneModel = Backbone.Model.extend({
       });
   },
   getCameraPosition: function () {
-    return this.getCameraPositionLoaded();
+    return this.get("ready") ? this.getCameraPositionLoaded() : this.getCameraPositionLoading();
   },
   getCameraPositionLoading: function () {
     var size = this.getSize();
@@ -156,32 +148,14 @@ var SceneModel = Backbone.Model.extend({
       this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
     }
   },
-  getAllMaterials: function () {
-    var object3d = this.get("object3d");
-    var objectMaterialsArr = _.clone(object3d.material.materials);
-    _.each(object3d.children, function (mesh) {
-      if (!mesh.material) return; // if not a light
-      if (mesh.material.materials) { // if mesh has multiple materials
-        _.each(mesh.material.materials, function (mat) {
-          objectMaterialsArr.push(mat);
-        });
-      } else {
-        objectMaterialsArr.push(mesh.material);
-      }
-    });
-    return _.uniq(objectMaterialsArr, false); // remove duplicate materials
-  },
   setFadeInMaterials:function () {
     _.each(this.getAllMaterials(), function (mat) {
       if (!mat.alwaysTransparent) mat.transparent = true;
       mat.opacity = 0;
     });
   },
-  resetAllMaterials: function () {
-    _.each(this.getAllMaterials(), function (mat) {
-      if (!mat.alwaysTransparent) mat.transparent = false;
-      mat.opacity = 1;
-    });
+  setSceneAsParent: function (mesh) {
+    this.get("object3d").add(mesh);
   }
 });
 

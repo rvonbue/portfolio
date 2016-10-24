@@ -66,6 +66,7 @@ var NavigationBar = BaseView.extend({
   },
   clickSelected: function (e) {
     var currentTarget = $(e.currentTarget);
+    if (currentTarget.hasClass("selected")) return; //same element click do not select again;
     this.swapSelectedEl(currentTarget);
     eventController.trigger(eventController.SWITCH_PAGE, currentTarget.index());
   },
