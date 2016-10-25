@@ -6,7 +6,7 @@ import utils from "../../util/utils";
 import door from "../../data/door.json";
 import lampLight from "../../data/lampLight.json";
 
-var FloorView3d = Base3dView.extend({  //setups up all the outside lights and meshes for each individual floor
+var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and meshes for each individual floor
   initialize: function () {
     Base3dView.prototype.initialize.apply(this, arguments);
   },
@@ -59,7 +59,7 @@ var FloorView3d = Base3dView.extend({  //setups up all the outside lights and me
     this.parentToSceneModel(meshArr, sceneModel);
   },
   addLights: function (modelLoader, sceneModel) {
-    var lampLightPos = {x:9, y: 1.5, z:5, spacer: 3.6};
+    var lampLightPos = {x:18, y: 3, z:10, spacer: 7.2 };
     var model = modelLoader.parseJSON(lampLight);
     var meshArray =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
     this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
@@ -90,4 +90,4 @@ var FloorView3d = Base3dView.extend({  //setups up all the outside lights and me
   }
 });
 
-module.exports = FloorView3d;
+module.exports = FloorBuilder3d;

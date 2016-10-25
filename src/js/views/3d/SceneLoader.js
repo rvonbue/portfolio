@@ -5,10 +5,11 @@ import SceneModel from "../../models/sceneModel";
 import SceneModelCollection from "../../collections/SceneModelCollection";
 import utils from "../../util/utils";
 import THREE from "three";
-import TWEEN from "tween.js"; 
+import TWEEN from "tween.js";
 
 import ModelLoader from "../../models/modelLoader";
-import FloorView3d from "./FloorView3d";
+import FloorBuilder3d from "./FloorBuilder3d";
+import SceneDetailsBuilder3d from "./SceneDetailsBuilder3d";
 import SceneDetailsModel from "../../models/sceneDetails/SceneDetailsBaseModel3d";
 import WebDevModel3d from "../../models/sceneDetails/WebDevModel3d";
 
@@ -116,9 +117,14 @@ var SceneLoader = BaseView.extend({
   sceneDetailsLoaded: function (modelObj) {
     var sceneModel = this.sceneModelCollection.findWhere({ name: modelObj.sceneModelName });
     modelObj.sceneModel = sceneModel;
+
     var sceneDetailsModel = this.getSceneDetailsModel(modelObj);
+    var sceneDetailsBuilder3d = new SceneDetailsBuilder3d();
+    var lights = sceneDetailsBuilder3d.setup(sceneDetailsModel);
     sceneModel.set("sceneDetails", sceneDetailsModel);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, lights);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneDetailsModel.get("object3d")]);
+    eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, false);
     this.toggleSelectedSceneModel(sceneModel);
   },
   getSceneDetailsModel: function (modelObj) {
@@ -126,8 +132,7 @@ var SceneLoader = BaseView.extend({
     var sceneDetailsModel = null;
     switch(floorName) {
         case "Web Dev":
-            // view =  block
-            break;
+            return new WebDevModel3d(modelObj);
         case "heloo":
             // code block
             break;
@@ -182,7 +187,7 @@ var SceneLoader = BaseView.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
-    var startingHeight = 7; //TODO: MAGIC NUMBER its the height of the bottom floor
+    var startingHeight = 14.75; //TODO: MAGIC NUMBER its the height of the bottom floor
     var object3dArr = [];
     var object3d = obj.object3d;
 
@@ -199,7 +204,7 @@ var SceneLoader = BaseView.extend({
     this.setInteractiveObjects();
   },
   createFloors: function (object3d) {
-    var floorView3d = new FloorView3d();
+    var floorView3d = new FloorBuilder3d();
     _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
       var sceneModel = new SceneModel({ name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex: i }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
 
@@ -209,7 +214,6 @@ var SceneLoader = BaseView.extend({
   },
   cameraFinishedAnimation: function () {
     var selectedModel = this.sceneModelCollection.findWhere({ selected: true });
-    console.log("selectedModel: :", selectedModel);
     selectedModel.toggleDoors(true);
     this.hideSceneModel(this.sceneModelCollection.where({ selected: false }));
   },
