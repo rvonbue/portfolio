@@ -60,7 +60,8 @@ var AppView3d = BaseView.extend({
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
-    var axisHelper = new THREE.AxisHelper( 10 );
+    var axisHelper = new THREE.AxisHelper( 11 );
+    // axisHelper.position.y = 40;
     this.scene.add( axisHelper );
   },
   addModelsToScene: function (sceneModelArray) {

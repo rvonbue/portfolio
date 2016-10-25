@@ -23,11 +23,11 @@ var LightControls = BaseView.extend({
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.turnOnFloorLights, this);
-      eventController.on(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleAmbientLighting, this);
+    eventController.on(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleAmbientLighting, this);
   },
   clickChangeSkyGradient: function () {
     this.skyGradientElClickNum++;
-    this.toggleAmbientLighting(this.skyGradientElClickNum % 2 == 0);
+    // this.toggleAmbientLighting(this.skyGradientElClickNum % 2 == 0);
     if (this.skyGradientElClickNum > 23) this.skyGradientElClickNum = 0 ;
     var classNames = "sky-gradient" + " sky-gradient-" + this.skyGradientElClickNum;
     this.skyGradientEl.attr("class", classNames);
@@ -37,10 +37,22 @@ var LightControls = BaseView.extend({
     this.addDirectionalLight();
     // this.addSpotLights();
   },
-  toggleAmbientLighting: function (onOff) {
+  toggleAmbientLighting: function (newLightSettings) {
     _.each(this.ambientLights, function (light) {
-      light.visible = onOff;
-    });
+      if (light.type === "HemisphereLight") this.setHemiLight(light, newLightSettings);
+      if (light.type === "DirectionalLight") this.setDirectionalLight(light, newLightSettings);
+    }, this);
+  },
+  setHemiLight: function (light, newLightSettings) {
+    light.skyColor =  new THREE.Color(newLightSettings.hemisphere[0]);
+    light.groundColor = new THREE.Color(newLightSettings.hemisphere[1]);
+    light.intensity = newLightSettings.hemisphere[2];
+    light.visible = newLightSettings.hemisphere[2] > 0 ? true : false; // if intensity if 0 turn off light
+  },
+  setDirectionalLight: function (light, newLightSettings) {
+    light.hex = newLightSettings.directional[0];
+    light.intensity = newLightSettings.directional[1];
+    light.visible = newLightSettings.directional[1] > 0 ? true : false; // if intensity if 0 turn off light
   },
   addAmbientLight: function () {
     // var light = new THREE.AmbientLight( 0x404040 );

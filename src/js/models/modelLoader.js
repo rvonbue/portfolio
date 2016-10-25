@@ -6,7 +6,7 @@ import utils from "../util/utils";
 import materialMapListJapan from "../data/materials/materialMapJapan";
 import materialMapListWebDev from "../data/materials/materialMapWebDev";
 import materialMapList3dAnimation from "../data/materials/materialMap3dAnimation";
- 
+
 var materialMapList = _.extendOwn(materialMapListJapan, materialMapList3dAnimation, materialMapListWebDev);
 var ModelLoader = BaseModel.extend({
   initialize: function () {
@@ -35,7 +35,7 @@ var ModelLoader = BaseModel.extend({
       if ( options.sceneModelName ) {
         setTimeout(function () {
           eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
-        }, 500);
+        }, 1500);
       } else {
         eventController.trigger(eventController.MODEL_LOADED, modelDetails);
       }

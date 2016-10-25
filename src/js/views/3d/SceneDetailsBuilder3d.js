@@ -7,17 +7,15 @@ import utils from "../../util/utils";
 var SceneDetailsBuilder3d = Base3dView.extend({  //setups up all the inside lights and meshes for each individual floor
   initialize: function (options) {
     Base3dView.prototype.initialize.apply(this, arguments);
-    console.log("SceneDetailsBuilder3d", options);
   },
   setup: function (sceneDetailsModel) {
-    console.log("sceneDetailsModel", sceneDetailsModel);
     var positionY = sceneDetailsModel.get("sceneModel").get("object3d").position.y;
     return this.buildPointLights(sceneDetailsModel.get("pointLights"), positionY);
   },
   buildPointLights: function (lightArray, positionY) {
     if (!lightArray.length) return;
     var pointLightArr = lightArray.map(function (pl) {
-      var light = new THREE.PointLight( pl.color, pl.instensity, pl.distance, 2 );
+      var light = new THREE.PointLight( pl.color, pl.intensity, pl.distance, 2 );
       var floorStartHeight =
       light.position.set(pl.x, pl.y + positionY, pl.z);
       return light;

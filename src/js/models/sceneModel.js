@@ -21,7 +21,7 @@ var SceneModel = BaseModel3d.extend({
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
     // this.showHide(false);
-    // this.setFadeInMaterials(); 
+    // this.setFadeInMaterials();
     this.once("change:selected", this.loadSceneDetails);
     this.once("change:sceneDetails", function () {
       this.set("ready", true);
@@ -50,7 +50,7 @@ var SceneModel = BaseModel3d.extend({
     // this.toggleTextVisiblilty(selectedBool);
   },
   onChangeHover: function () {
-    if (this.get("selected")) return;
+    // if (this.get("selected")) return;
     this.toggleLampEmitMaterial();
     this.toggleHoverLights(this.get("hover"));
     this.toggleTextMaterial();
@@ -73,24 +73,36 @@ var SceneModel = BaseModel3d.extend({
   },
   getCameraPositionLoading: function () {
     var size = this.getSize();
-    var object3d = this.get("object3d");
+    var object3dPos = this.getPosition();
     return {
       target: {
-        x: object3d.position.x,
-        y: object3d.position.y,
+        x: object3dPos.x,
+        y: object3dPos.y,
         z: 0
       },
       camera: {
-        x: object3d.position.x,
-        y: object3d.position.y + ((size.h / 2) * .65),  //magic number to find where to place camera when zooming in on floor model should be erased if model is vertically symetric
-        z: object3d.geometry.boundingBox.max.z
+        x: object3dPos.x,
+        y: object3dPos.y + ((size.h / 2) * .65),  //magic number to find where to place camera when zooming in on floor model should be erased if model is vertically symetric
+        z: this.get("object3d").geometry.boundingBox.max.z
       }
     };
   },
   getCameraPositionLoaded: function () {
-    var cameraPosition = this.getCameraPositionLoading();
-    cameraPosition.camera.z -= 2;
-    return cameraPosition;
+    var startingPos = this.getCameraPositionLoading();
+    var sceneDetailsModel = this.get("sceneDetails");
+    var newPos = {
+      target: sceneDetailsModel.get("initialCameraTarget"),
+      camera: sceneDetailsModel.get("initialCameraPosition")
+    };
+    startingPos.target.x += newPos.target.x;
+    startingPos.target.y += newPos.target.y;
+    startingPos.target.z += newPos.target.z;
+    startingPos.camera.x += newPos.camera.x;
+    startingPos.camera.y += newPos.camera.y;
+    startingPos.camera.z += newPos.camera.z;
+    startingPos.camera.z -= 2;
+    console.log("startingPos", startingPos);
+    return startingPos;
   },
   getSize: function () {
     var object3d = this.get("object3d");

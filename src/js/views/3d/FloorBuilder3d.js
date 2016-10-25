@@ -19,9 +19,9 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var text3d = this.getText3d(sceneModel.get("name"));
     var object3d = sceneModel.get("object3d");
     sceneModel.set("text3d", text3d);
-    var offsetY = 0.7;
-    text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.max.z;
-    text3d.position.y = (text3d.geometry.boundingBox.max.y + text3d.geometry.boundingBox.min.y) / 2 - offsetY;
+    var offsetY = 1.3;
+    text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.min.z - 2;
+    text3d.position.y = (text3d.geometry.boundingBox.max.y - text3d.geometry.boundingBox.min.y) / 2 - offsetY;
     text3d.position.x = -((text3d.geometry.boundingBox.max.x - text3d.geometry.boundingBox.min.x) / 2);
     object3d.add(text3d);
   },
@@ -30,8 +30,8 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     // material.emissive = new THREE.Color(utils.getFontColor().text);
     var	textGeo = new THREE.TextGeometry( text, {
       font: new THREE.Font(fontData),
-      height: 0.5,
-      size: 1.5,
+      height: 0.75,
+      size: 2.5,
       curveSegments: 4,
       bevelThickness: 2,
       bevelSize: 1.5,
@@ -59,11 +59,11 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     this.parentToSceneModel(meshArr, sceneModel);
   },
   addLights: function (modelLoader, sceneModel) {
-    var lampLightPos = {x:18, y: 3, z:10, spacer: 7.2 };
+    var lampLightPos = {x:18, y: 3, z: 11, spacer: 7.2 };
     var model = modelLoader.parseJSON(lampLight);
     var meshArray =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
     this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
-    meshArray =[this.getNewHoverLight(10, 3)];
+    meshArray =[this.getNewHoverLight(20, 4)];
     this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
   },
   duplicateMesh: function (meshArray, sceneModel, startPosition, total, setModelProp) {
