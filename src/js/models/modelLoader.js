@@ -6,7 +6,7 @@ import utils from "../util/utils";
 import materialMapListJapan from "../data/materials/materialMapJapan";
 import materialMapListWebDev from "../data/materials/materialMapWebDev";
 import materialMapList3dAnimation from "../data/materials/materialMap3dAnimation";
-
+ 
 var materialMapList = _.extendOwn(materialMapListJapan, materialMapList3dAnimation, materialMapListWebDev);
 var ModelLoader = BaseModel.extend({
   initialize: function () {

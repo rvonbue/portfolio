@@ -5,22 +5,23 @@ import utils from "../util/utils";
 var SceneModel = BaseModel3d.extend({
   defaults: {
     "name": "Caesar_Salad",
-    "object3d": null,
-    "text3d": null,
+    "object3d": null, // mesh of the building floor
+    "text3d": null,  // mesh
     "selected": false,
     "hover": false,
-    "ready": false,
+    "ready": false,  //ready if sceneDetails are loaded
     "interactive": true,
-    "doorsBool": false, //doors are close by default
-    "doors": null,
-    "hoverLamps": null,
-    "hoverLights": null,
-    "sceneDetails": null,
+    "doorsBool": false, // doors are close by default
+    "doors": null,     //array of meshes
+    "hoverLamps": null,     // array meshes
+    "hoverLights": null,    // array of point lights
+    "sceneDetails": null, // sceneDetailsModel
+    "sceneLights": null    // array
   },
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
     // this.showHide(false);
-    // this.setFadeInMaterials();
+    // this.setFadeInMaterials(); 
     this.once("change:selected", this.loadSceneDetails);
     this.once("change:sceneDetails", function () {
       this.set("ready", true);
@@ -34,19 +35,38 @@ var SceneModel = BaseModel3d.extend({
     this.off("change:selected", this.onChangeSelected);
     this.off("change:hover", this.onChangeHover);
   },
-  reset: function () {
+  reset: function (showHideBool) {
+
     this.set("selected", false);
     this.set("hover", false);
     this.resetAllMaterials();
-    this.showHide(true);
+    this.showHide(showHideBool);
+  },
+  onChangeSelected: function () {
+    // this.toggleDoors();
+    var selectedBool = this.get("selected");
+    this.showHide(selectedBool)
+    this.toggleHoverLights(selectedBool);
+    // this.toggleTextVisiblilty(selectedBool);
+  },
+  onChangeHover: function () {
+    if (this.get("selected")) return;
+    this.toggleLampEmitMaterial();
+    this.toggleHoverLights(this.get("hover"));
+    this.toggleTextMaterial();
   },
   showHide: function (visBool) { // show = true
+    visBool = visBool ? visBool : this.get("selected");
       this.get("object3d").visible = visBool;
       _.each(this.get("object3d").children, function (mesh) {
           if ( mesh.type === "Mesh" ) { // do not turn on lights
             mesh.visible = visBool;
           }
       });
+      var sceneDetails = this.get("sceneDetails");
+      if (sceneDetails) {
+        sceneDetails.get("object3d").visible = visBool;
+      }
   },
   getCameraPosition: function () {
     return this.get("ready") ? this.getCameraPositionLoaded() : this.getCameraPositionLoading();
@@ -79,18 +99,7 @@ var SceneModel = BaseModel3d.extend({
     var length = Math.abs(object3d.geometry.boundingBox.max.z) + Math.abs(object3d.geometry.boundingBox.min.z);
     return { w: width, h: height, l: length };
   },
-  onChangeSelected: function () {
-    // this.toggleDoors();
-    this.showHide(this.get("selected"))
-    this.toggleHoverLights(this.get("selected"));
-    this.toggleTextVisiblilty();
-  },
-  onChangeHover: function () {
-    if (this.get("selected")) return;
-    this.toggleLampEmitMaterial();
-    this.toggleHoverLights(this.get("hover"));
-    this.toggleTextMaterial();
-  },
+
   toggleDoors: function (doorBool) {
     if (this.get("doorsBool")) return;
     var doorWidth = 0.4;

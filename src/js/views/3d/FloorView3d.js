@@ -6,7 +6,7 @@ import utils from "../../util/utils";
 import door from "../../data/door.json";
 import lampLight from "../../data/lampLight.json";
 
-var FloorView3d = Base3dView.extend({
+var FloorView3d = Base3dView.extend({  //setups up all the outside lights and meshes for each individual floor
   initialize: function () {
     Base3dView.prototype.initialize.apply(this, arguments);
   },

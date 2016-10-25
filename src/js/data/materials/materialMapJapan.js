@@ -53,7 +53,9 @@ module.exports = {
   },
   windowJapan: {
     maps: [
-      { map: "textures/windowJapan.jpg" },
+      { map: "textures//windowJapan/windowJapan_COLOR.jpg" },
+      { specularMap: "textures/windowJapan/windowJapan_SPEC.jpg" },
+      { normalMap: "textures/windowJapan/windowJapan_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" }
   },

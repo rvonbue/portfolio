@@ -1,6 +1,5 @@
 import eventController from "../../controllers/eventController";
 import BaseModel from "../../models/BaseModel";
-import ArtGalleryView3d from "../3d/artGalleryView3d";
 import SceneLoader from "../3d/SceneLoader";
 import MovieTheaterView3d from "../3d/movieTheaterView3d";
 import TWEEN from "tween.js";

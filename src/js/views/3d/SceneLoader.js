@@ -5,11 +5,12 @@ import SceneModel from "../../models/sceneModel";
 import SceneModelCollection from "../../collections/SceneModelCollection";
 import utils from "../../util/utils";
 import THREE from "three";
-import TWEEN from "tween.js";
+import TWEEN from "tween.js"; 
 
 import ModelLoader from "../../models/modelLoader";
 import FloorView3d from "./FloorView3d";
-import SceneDetailsModel from "../../models/SceneDetailsModel";
+import SceneDetailsModel from "../../models/sceneDetails/SceneDetailsBaseModel3d";
+import WebDevModel3d from "../../models/sceneDetails/WebDevModel3d";
 
 var SceneLoader = BaseView.extend({
   name: null,
@@ -52,7 +53,7 @@ var SceneLoader = BaseView.extend({
   },
   resetScene: function () {
     this.sceneModelCollection.each(function (sceneModel) {
-      sceneModel.reset();
+      sceneModel.reset(true);
     });
     this.setInteractiveObjects();
   },
@@ -90,9 +91,9 @@ var SceneLoader = BaseView.extend({
     var newSceneModel = null
     if (!sceneModelName.cid) {
       this.deselectSceneModel();
-      var newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName });
+      newSceneModel = this.sceneModelCollection.findWhere({ name: sceneModelName });
     } else {
-      var newSceneModel = sceneModelName;
+      newSceneModel = sceneModelName;
     }
     if ( !newSceneModel ) return;  //if model doesn't exist for some reason can probably remove
     if ( newSceneModel.get("ready") === false && !newSceneModel.get("selected") ) this.loadSceneDetails(newSceneModel);
@@ -115,18 +116,33 @@ var SceneLoader = BaseView.extend({
   sceneDetailsLoaded: function (modelObj) {
     var sceneModel = this.sceneModelCollection.findWhere({ name: modelObj.sceneModelName });
     modelObj.sceneModel = sceneModel;
-    var sceneDetailsModel = new SceneDetailsModel(modelObj);
+    var sceneDetailsModel = this.getSceneDetailsModel(modelObj);
     sceneModel.set("sceneDetails", sceneDetailsModel);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneDetailsModel.get("object3d")]);
     this.toggleSelectedSceneModel(sceneModel);
   },
+  getSceneDetailsModel: function (modelObj) {
+    var floorName = modelObj.sceneModelName;
+    var sceneDetailsModel = null;
+    switch(floorName) {
+        case "Web Dev":
+            // view =  block
+            break;
+        case "heloo":
+            // code block
+            break;
+        default:
+            return new SceneDetailsModel(modelObj);
+    }
+  },
   deselectSceneModel: function () {
     var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true });
-    if ( oldSceneModel ) oldSceneModel.reset();
+    if ( oldSceneModel ) oldSceneModel.reset(false);
   },
   hideSceneModel: function (sceneModelArr) {
     _.each(sceneModelArr, function (sceneModel) {
-      this.fadeMaterials(sceneModel.getAllMaterials(), 0);
+      // this.fadeMaterials(sceneModel.getAllMaterials(), 0);
+      sceneModel.showHide(false);
     }, this);
   },
   fadeMaterials: function (materials, opacityEnd) {
@@ -166,7 +182,7 @@ var SceneLoader = BaseView.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
-    var startingHeight = 7;
+    var startingHeight = 7; //TODO: MAGIC NUMBER its the height of the bottom floor
     var object3dArr = [];
     var object3d = obj.object3d;
 
@@ -175,8 +191,7 @@ var SceneLoader = BaseView.extend({
 
     sceneModels.forEach(function (scModel, i) { // position floors on top of each other
       var object3d = scModel.get("object3d");
-      var floorHeight =  scModel.getSize().h;
-      object3d.position.set(0, i * floorHeight + startingHeight, 0);
+      object3d.position.set(0, i * scModel.getSize().h + startingHeight, 0);
       object3dArr.push(object3d);
     });
 
@@ -187,6 +202,7 @@ var SceneLoader = BaseView.extend({
     var floorView3d = new FloorView3d();
     _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
       var sceneModel = new SceneModel({ name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex: i }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
+
       floorView3d.addFloorItems(sceneModel, this.modelLoader);
       this.sceneModelCollection.add(sceneModel);
     }, this);

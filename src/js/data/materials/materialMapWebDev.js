@@ -7,7 +7,7 @@ module.exports = {
         { map: "textures/computer.jpg" },
         // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
         // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
-      ],
+      ], 
       mapProps: { repeatScale: 1, shading: "smooth" },
       // props: {color: colorPallete.lampLight.hex }
   },
