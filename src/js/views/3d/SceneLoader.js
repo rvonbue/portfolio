@@ -61,7 +61,7 @@ var SceneLoader = BaseView.extend({
   },
   setMouseMoveHoverSceneModel: function (intersect) {
     if (!intersect && this.hoverModel) {
-      this.hoverModel.reset(true);
+      this.hoverModel.set("hover", false);
       this.hoverModel = null;
       return;
     }
@@ -184,15 +184,7 @@ var SceneLoader = BaseView.extend({
       sceneModel.showHide(true);
     }, this);
   },
-  createFloors: function (object3d) {
-    var floorView3d = new FloorBuilder3d();
-    _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
-      var sceneModel = new SceneModel({ name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex: i }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
 
-      floorView3d.addFloorItems(sceneModel, this.modelLoader);
-      this.sceneModelCollection.add(sceneModel);
-    }, this);
-  },
   addNonInteractive: function (obj) {
     obj.interactive = false;
     var sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
@@ -213,6 +205,15 @@ var SceneLoader = BaseView.extend({
 
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
     this.setInteractiveObjects();
+  },
+  createFloors: function (object3d) {
+    var floorView3d = new FloorBuilder3d();
+    _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
+      var sceneModel = new SceneModel({ name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex: i }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
+
+      floorView3d.addFloorItems(sceneModel, this.modelLoader);
+      this.sceneModelCollection.add(sceneModel);
+    }, this);
   },
   modelLoaded: function (obj) {
     if (obj.name === this.SCENE_MODEL_NAME) {

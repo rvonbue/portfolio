@@ -10,34 +10,31 @@ var SceneControls = BaseModel.extend({
     home: null
   },
   initialize: function (options) {
-    this.parentEl = options.parentEl;
     this.canvasEl = $(options.canvasEl);
-    this.scene = options.scene;
     this.camera = options.camera;
     this.raycasterObjects = [];
     this.mouse = new THREE.Vector2();
     this.onResize();
-    this.addListeners(this.parentEl);
+    this.addListeners(this.canvasEl);
     // this.loadEnvironmentMap();
     this.raycaster = new THREE.Raycaster();
     this.raycaster.far = 100;
     this.loadInitialScene("home");
     this.animating = false;
   },
-  addListeners: function (el) {
+  addListeners: function () {
     var self = this;
-    var throttledMouseMove = _.throttle(_.bind(this.onMouseMove, this), 50);
-    el.on("mousemove", this.parentEl, function (evt) { throttledMouseMove(evt); });
-    el.on("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    el.on("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
+    var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 50);
+    this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
+    this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
+    this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-
   },
   removeListeners: function () {
-    el.off("mousemove", this.parentEl, function (evt) { self.onMouseMove(evt); });
-    el.off("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    el.off("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
+    this.canvasEl.off("mousemove", function (evt) { self.onMouseMove(evt); });
+    this.canvasEl.off("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
+    this.canvasEl.off("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
   },
@@ -47,7 +44,7 @@ var SceneControls = BaseModel.extend({
   },
   onMouseClick: function (evt) {
     var closestObject = this.shootRaycaster(evt);
-    if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
+    // if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
@@ -57,7 +54,6 @@ var SceneControls = BaseModel.extend({
     this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
 		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
     this.raycaster.setFromCamera( this.mouse, this.camera );
-    // console.log("mouse:", this.mouse);
     return this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
   },
   findClosestObject: function (intersects) {
@@ -93,7 +89,7 @@ var SceneControls = BaseModel.extend({
   	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
   	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
     skyBox.position.y = size / 2;
-  	this.scene.add( skyBox );
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skybox]);
   },
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;

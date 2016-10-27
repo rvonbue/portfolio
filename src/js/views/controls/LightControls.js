@@ -6,7 +6,6 @@ import skyGradients from "../../data/skyGradients";
 import utils from "../../util/utils";
 var worldColor = utils.getColorPallete().world;
 
-
 var LightControls = BaseView.extend({
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -64,11 +63,9 @@ var LightControls = BaseView.extend({
     }, this);
   },
   setHemiLight: function (light, newLightSettings) {
-    console.log("light", light);
     light.skyColor =  new THREE.Color(newLightSettings[0]);
     light.groundColor = new THREE.Color(newLightSettings[1]);
     light.intensity = newLightSettings[2];
-    // light.visible = newLightSettings.hemisphere[2] > 0 ? true : false; // if intensity if 0 turn off light
   },
   setDirectionalLight: function (light, newLightSettings) {
     light.color = light.hex = new THREE.Color(newLightSettings[0]);
@@ -80,7 +77,6 @@ var LightControls = BaseView.extend({
       worldColor.directional.intensity
     )
     this.worldLights.push(directionalLight);
-    // directionalLight.position.set( -0 , 15 , 15 );
     this.scene.add( directionalLight );
     this.scene.add( new THREE.DirectionalLightHelper( directionalLight, worldColor.directional.intensity ) );
   },

@@ -56,7 +56,7 @@ var AppView3d = BaseView.extend({
   },
   initControls: function () {
     var cameraControls = new CameraControls({ camera:this.camera, canvasEl:this.canvasEl });
-    this.sceneControls = new SceneControls({ camera:this.camera, scene:this.scene, parentEl:this.$el, canvasEl:this.canvasEl });
+    this.sceneControls = new SceneControls({ camera:this.camera, scene:this.scene, canvasEl:this.canvasEl });
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {

@@ -14,6 +14,7 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     this.addText(sceneModel);
     this.addDoors(modelLoader, sceneModel);
     this.addLights(modelLoader, sceneModel);
+    this.setRaycasterMesh(sceneModel);
   },
   addText: function (sceneModel) {
     var text3d = this.getText3d(sceneModel.get("name"));
@@ -82,6 +83,12 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     // light.position.set( pos.x + 1, 1.5, 5.25 );  //TODO: magic numbers abound
     light.visible = false;
     return light;
+  },
+  setRaycasterMesh: function (sceneModel) {
+    sceneModel.set("rayCasterMesh", this.getRaycasterMesh());
+  },
+  getRaycasterMesh: function () {
+    
   },
   parentToSceneModel: function (meshArray, sceneModel) {
     _.each(meshArray, function (mesh) {

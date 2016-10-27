@@ -54,7 +54,6 @@ var SceneModel = BaseModel3d.extend({
     this.resetAllMaterials();
     this.showHide(showHideBool);
   },
-
   showHide: function (visBool) { // show = true
     visBool = visBool ? visBool : this.get("selected");
       this.get("object3d").visible = visBool;
@@ -64,6 +63,7 @@ var SceneModel = BaseModel3d.extend({
       var sceneDetails = this.get("sceneDetails");
       if (sceneDetails) sceneDetails.showHide(visBool);
   },
+  setInteractiveObjects
   startScene: function () {
     this.toggleTextVisiblilty(false);
     this.toggleHoverLights(false);

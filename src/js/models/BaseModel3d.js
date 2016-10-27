@@ -26,9 +26,6 @@ var BaseModel3d = Backbone.Model.extend({
     var object3dPos = this.get("object3d").position;
     return { x: object3dPos.x, y: object3dPos.y, z: object3dPos.z };
   },
-  showHide: function (visBool) { // show = true
-
-  },
   getCameraPosition: function () {
     return this.getCameraPositionLoaded();
   },
