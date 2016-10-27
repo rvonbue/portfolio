@@ -29,7 +29,7 @@ var SceneControls = BaseModel.extend({
     var throttledMouseMove = _.throttle(_.bind(this.onMouseMove, this), 50);
     el.on("mousemove", this.parentEl, function (evt) { throttledMouseMove(evt); });
     el.on("mouseleave", this.parentEl, function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    // el.on("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
+    el.on("mouseup", this.parentEl, function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
 
@@ -51,8 +51,7 @@ var SceneControls = BaseModel.extend({
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
-    var closestObject = this.shootRaycaster(evt);
-    if (closestObject) eventController.trigger(eventController.HOVER_NAVIGATION, closestObject);
+    eventController.trigger(eventController.HOVER_NAVIGATION, this.shootRaycaster(evt));
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
     this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;

@@ -35,13 +35,6 @@ var SceneModel = BaseModel3d.extend({
     this.off("change:selected", this.onChangeSelected);
     this.off("change:hover", this.onChangeHover);
   },
-  reset: function (showHideBool) {
-
-    this.set("selected", false);
-    this.set("hover", false);
-    this.resetAllMaterials();
-    this.showHide(showHideBool);
-  },
   onChangeSelected: function () {
     // this.toggleDoors();
     var selectedBool = this.get("selected");
@@ -55,54 +48,51 @@ var SceneModel = BaseModel3d.extend({
     this.toggleHoverLights(this.get("hover"));
     this.toggleTextMaterial();
   },
+  reset: function (showHideBool) {
+    this.set("selected", false);
+    this.set("hover", false);
+    this.resetAllMaterials();
+    this.showHide(showHideBool);
+  },
+
   showHide: function (visBool) { // show = true
     visBool = visBool ? visBool : this.get("selected");
       this.get("object3d").visible = visBool;
       _.each(this.get("object3d").children, function (mesh) {
-          if ( mesh.type === "Mesh" ) { // do not turn on lights
-            mesh.visible = visBool;
-          }
+          if ( mesh.type === "Mesh" ) mesh.visible = visBool; // do not turn on lights
       });
       var sceneDetails = this.get("sceneDetails");
-      if (sceneDetails) {
-        sceneDetails.get("object3d").visible = visBool;
-      }
+      if (sceneDetails) sceneDetails.showHide(visBool);
+  },
+  startScene: function () {
+    this.toggleTextVisiblilty(false);
+    this.toggleHoverLights(false);
   },
   getCameraPosition: function () {
     return this.get("ready") ? this.getCameraPositionLoaded() : this.getCameraPositionLoading();
   },
   getCameraPositionLoading: function () {
-    var size = this.getSize();
+    return { target: this.getCameraLoadingTarget(), camera: this.getCameraLoadingPosition() };
+  },
+  getCameraLoadingTarget: function () {
     var object3dPos = this.getPosition();
-    return {
-      target: {
-        x: object3dPos.x,
-        y: object3dPos.y,
-        z: 0
-      },
-      camera: {
-        x: object3dPos.x,
-        y: object3dPos.y + ((size.h / 2) * .65),  //magic number to find where to place camera when zooming in on floor model should be erased if model is vertically symetric
-        z: this.get("object3d").geometry.boundingBox.max.z
-      }
-    };
+    return { x: object3dPos.x, y: object3dPos.y, z: 0 };
+  },
+  getCameraLoadingPosition: function () {
+    var objPos = this.getPosition();
+    var size = this.getSize();
+    var maxZ = this.get("object3d").geometry.boundingBox.max.z;
+    return { x: objPos.x, y: objPos.y + ((size.h / 2) * .65), z: maxZ };
   },
   getCameraPositionLoaded: function () {
-    var startingPos = this.getCameraPositionLoading();
-    var sceneDetailsModel = this.get("sceneDetails");
-    var newPos = {
-      target: sceneDetailsModel.get("initialCameraTarget"),
-      camera: sceneDetailsModel.get("initialCameraPosition")
+    var cameraPositionLoading = this.getCameraPositionLoading();
+    var sceneDetailsPosition = {
+      target: _.clone(this.get("sceneDetails").get("initialCameraTarget")), // dont actually change these position just clone them ;)
+      camera: _.clone(this.get("sceneDetails").get("initialCameraPosition"))
     };
-    startingPos.target.x += newPos.target.x;
-    startingPos.target.y += newPos.target.y;
-    startingPos.target.z += newPos.target.z;
-    startingPos.camera.x += newPos.camera.x;
-    startingPos.camera.y += newPos.camera.y;
-    startingPos.camera.z += newPos.camera.z;
-    startingPos.camera.z -= 2;
-    console.log("startingPos", startingPos);
-    return startingPos;
+    sceneDetailsPosition.target.y += cameraPositionLoading.target.y;
+    sceneDetailsPosition.camera.y += cameraPositionLoading.camera.y;
+    return sceneDetailsPosition;
   },
   getSize: function () {
     var object3d = this.get("object3d");
@@ -132,8 +122,9 @@ var SceneModel = BaseModel3d.extend({
   moveDoor: function (doorMesh, doorWidth) {
     doorMesh.position.x += doorWidth;
   },
-  toggleTextVisiblilty:function () {
-    this.get("text3d").visible = !this.get("selected");
+  toggleTextVisiblilty:function (tBool) {
+    var textBool = tBool ? tBool : !this.get("selected");
+    this.get("text3d").visible = textBool;
   },
   toggleHoverLights: function (hoverBool) {
     _.each(this.get("hoverLights"), function (light) {

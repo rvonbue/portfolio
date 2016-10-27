@@ -47,6 +47,8 @@ var NavigationBar = BaseView.extend({
     } else if (closestObject) {
       this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
     }
+    var hoveredBool = this.hoveredEl ? true : false;
+    $(".appView-3d").toggleClass("hovered", hoveredBool);
   },
   enterHoverNavigationLi: function (evt) {
     eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, navigationList[$(evt.currentTarget).index()] , true );

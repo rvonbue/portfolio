@@ -8,13 +8,12 @@
         "DbgName":"drywall",
         "transparent":false,
         "DbgColor":15597806,
-        "shading":"phong",
+        "shading":"lambert",
         "wireframe":false,
         "blending":"NormalBlending",
         "specularCoef":50,
         "DbgIndex":6,
-        "colorSpecular":[0.5,0.5,0.5],
-        "colorEmissive":[0,0,0]
+        "colorSpecular":[0.5,0.5,0.5]
     },{
         "depthWrite":true,
         "opacity":1,
