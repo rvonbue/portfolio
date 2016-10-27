@@ -13,13 +13,15 @@ var LightControls = BaseView.extend({
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
     this.skyGradientElClickNum = 0;
-    $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
+    // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
+    this.clickChangeSkyGradient();
     this.addLight();
     this.addListeners();
   },
   addListeners: function () {
     eventController.on(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
+    eventController.on(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
   },
   removeListeners: function () {
     eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleAmbientLighting, this);
@@ -27,8 +29,8 @@ var LightControls = BaseView.extend({
   },
   addLight: function () {
     this.addHemisphereLight();
-    this.addDirectionalLight();
-    // this.addSpotLights();
+    // this.addDirectionalLight();
+    this.addSpotLights();
   },
   resetScene: function () {
     this.toggleWorldLighting(this.getResetLightSettings());
@@ -102,28 +104,40 @@ var LightControls = BaseView.extend({
   //   })
   //   .start();
   // },
+  getWorldLight: function (lightType) {
+    return _.findWhere(this.worldLights, {type: lightType});
+  },
+  setSpotlightTarget: function (spotLightTarget) {
+    var spotLight = this.getWorldLight("SpotLight");
+    // spotLight.target = spotLightTarget;
+    var lightTarget = new THREE.Object3D();
+  	lightTarget.position.set(0,50,0);
+  	this.scene.add(lightTarget);
+  	spotLight.target = lightTarget;
+    lightTarget.updateMatrixWorld();
+    console.log("this.worldLights", spotLight);
+  },
   addSpotLights: function () {
     // color, intensity, distance, angle, penumbra, decay
     var color = "0xffffff";
     var sphereSize = 1;
     var spotlights = [
       // this.getNewSpotlight( 2.5, 4.5, 8, color),
-      this.getNewSpotlight( 0, 2, 9, color),
+      this.getNewSpotlight( 0, 0, 35, color),
       // this.getNewSpotlight( -2.5, 4.5, 8, color)
     ];
 
     _.each(spotlights, function (light) {
+      this.worldLights.push(light);
       this.scene.add(light);
       this.scene.add(new THREE.SpotLightHelper( light, sphereSize ));
-    },this );
-
+    }, this);
   },
   getNewSpotlight: function (x, y, z, color) {
     //color, intensity, distance, angle, penumbra, decay )
-    var spotLight = new THREE.SpotLight( color, 5, 15, Math.PI / 6, 1, 1 );
+    var spotLight = new THREE.SpotLight( color, 25, 70, Math.PI / 6, 1, 2 );
     spotLight.position.set( x, y, z );
     spotLight.castShadow = true;
-    spotLight.angle = Math.PI / 10;
     return spotLight;
   }
 });

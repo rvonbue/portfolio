@@ -13,6 +13,7 @@ var SceneControls = BaseModel.extend({
     this.canvasEl = $(options.canvasEl);
     this.camera = options.camera;
     this.raycasterObjects = [];
+    this.raycasterOffset = { x: 1, y: 47 };  //ozzffset of canvas from the top of the screen;
     this.mouse = new THREE.Vector2();
     this.addListeners(this.canvasEl);
     // this.loadEnvironmentMap();
@@ -41,6 +42,7 @@ var SceneControls = BaseModel.extend({
   onResize: function (size) {
     this.height = size.h;
     this.width = size.w;
+    this.raycasterOffset = { x: 1, y: this.canvasEl.offset().top };
   },
   onMouseClick: function (evt) {
     var closestObject = this.shootRaycaster(evt);
@@ -51,9 +53,8 @@ var SceneControls = BaseModel.extend({
     eventController.trigger(eventController.HOVER_NAVIGATION, this.shootRaycaster(evt));
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
-    var navigationBarOffsetY = 45;
-    this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
-		this.mouse.y = - ( (evt.clientY - navigationBarOffsetY ) / this.height ) * 2 + 1; 
+    this.mouse.x = ( (evt.clientX - this.raycasterOffset.x) / this.width ) * 2 - 1;
+		this.mouse.y = - ( (evt.clientY - this.raycasterOffset.y ) / this.height ) * 2 + 1;
     this.raycaster.setFromCamera( this.mouse, this.camera );
     return this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
   },

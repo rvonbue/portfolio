@@ -36,6 +36,7 @@ var SceneLoader = BaseView.extend({
     }, this);
   },
   addListeners: function () {
+     eventController.on(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
      eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
@@ -91,22 +92,22 @@ var SceneLoader = BaseView.extend({
   },
   toggleSelectedSceneModel: function (newSceneModel) {
     var prevSceneModel = this.sceneModelCollection.findWhere({ selected: true });
-    if (prevSceneModel && prevSceneModel.cid !== newSceneModel.cid) {
-      this.deselectSceneModel(prevSceneModel);
+    var isPrevModelNewModel = prevSceneModel && prevSceneModel.cid === newSceneModel.cid;
+    var sceneDetailsStartLoad;
+    if (prevSceneModel && !isPrevModelNewModel) { // if there a prev sceneModel
+      prevSceneModel.reset(false);
     }
-
-    if ( !newSceneModel ) return;  //if model doesn't exist for some reason can probably remove
-
-    if ( newSceneModel.get("ready") === false && !newSceneModel.get("sceneDetails") ) this.loadSceneDetails(newSceneModel);
-    if ( !newSceneModel.get({ selected:false }) ) newSceneModel.set({ selected:true });
+    if (isPrevModelNewModel || !newSceneModel ) return;
+    sceneDetailsStartLoad = newSceneModel.get("ready") === false && !newSceneModel.get("sceneDetails");
+    if ( sceneDetailsStartLoad ) this.loadSceneDetails(newSceneModel);
+    newSceneModel.set({ selected:true });
     this.zoomToSelectedSceneModel(newSceneModel);
   },
   zoomToSelectedSceneModel: function (sceneModel) {
     eventController.trigger(eventController.RESET_RAYCASTER, []);   //reset Interactive objects to nothing will loading new ones
     eventController.trigger(eventController.SCENE_MODEL_SELECTED, sceneModel);  //zoom to selected model
   },
-  loadSceneDetails: function (newSceneModel, sceneDetailsName) {
-    eventController.once(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
+  loadSceneDetails: function (newSceneModel) {
     var sceneDetailsUrl = 'models3d/floor' + newSceneModel.get("floorIndex") + '/sceneDetails.json';
     eventController.trigger(eventController.LOAD_JSON_MODEL, sceneDetailsUrl,
       { name: "sceneDetails", sceneModelName: newSceneModel.get("name") }
@@ -122,7 +123,7 @@ var SceneLoader = BaseView.extend({
     sceneModel.set("sceneDetails", sceneDetailsModel);
     if (!sceneModel.get("selected")) sceneDetailsModel.showHide(false);
     this.addSceneDetailsToScene(sceneDetailsModel); //add to stage so they rendered
-    this.zoomToSelectedSceneModel(sceneModel);
+    if (sceneModel.get("selected")) this.zoomToSelectedSceneModel(sceneModel);
   },
   addSceneDetailsToScene: function (sceneDetailsModel) {
     var sceneDetail_lights = sceneDetailsModel.get("sceneLights");
@@ -143,9 +144,6 @@ var SceneLoader = BaseView.extend({
       default:
         return new SceneDetailsModel(modelObj);
     }
-  },
-  deselectSceneModel: function (oldSceneModel) {
-    if ( oldSceneModel ) oldSceneModel.reset(false);
   },
   hideSceneModel: function (sceneModelArr) {
     var selectedFalse = this.sceneModelCollection.where({ selected: false });
@@ -202,8 +200,8 @@ var SceneLoader = BaseView.extend({
       object3d.position.set(0, i * scModel.getSize().h + startingHeight, 0);
       object3dArr.push(object3d);
     });
-
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
+    eventController.trigger(eventController.SET_SPOTLIGHT_TARGET, sceneModels[sceneModels.length -1].get("text3d"));
     this.setInteractiveObjects();
   },
   createFloors: function (object3d) {

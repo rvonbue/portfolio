@@ -46,6 +46,7 @@ var AppView3d = BaseView.extend({
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( 0x000000, 0 );
+    // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.initControls();
     this.addListeners();
     this.resize();

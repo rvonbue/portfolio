@@ -65,7 +65,9 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var meshArray =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
     this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
     meshArray =[this.getNewHoverLight(20, 4)];
-    this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
+    var lampLightPos2 = _.clone(lampLightPos);
+    // lampLightPos2.y -= 1;
+    this.duplicateMesh(meshArray, sceneModel, lampLightPos2, 4, "hoverLights");
   },
   duplicateMesh: function (meshArray, sceneModel, startPosition, total, setModelProp) {
     for (var i = 0; i < total; i++ ) {
@@ -80,7 +82,6 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var decay = 2;
     var color = utils.getColorPallete().lampLight.hex;
     var light = new THREE.PointLight( color, intensity, distance, decay );
-    // light.position.set( pos.x + 1, 1.5, 5.25 );  //TODO: magic numbers abound
     light.visible = false;
     return light;
   },
@@ -88,12 +89,13 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var text3d = sceneModel.get("text3d");
     var size = sceneModel.getSize(text3d);
     var geometry = new THREE.PlaneGeometry( size.w, size.h );
-    var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.FrontSide } );
+    material.visible = false;
+    material.alwaysHidden = true;
     var rayCasterMesh = new THREE.Mesh( geometry, material );
     rayCasterMesh.name = sceneModel.get("name");
     rayCasterMesh.position.y = size.h / 2;
     rayCasterMesh.position.z = text3d.position.z + (size.l * 1.1);
-    // rayCasterMesh.visible = false;
     rayCasterMesh.rayCasterMesh = false;
     sceneModel.set("rayCasterMesh", rayCasterMesh);
     this.parentToSceneModel([rayCasterMesh], sceneModel);
