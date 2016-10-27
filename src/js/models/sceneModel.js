@@ -56,14 +56,15 @@ var SceneModel = BaseModel3d.extend({
   },
   showHide: function (visBool) { // show = true
     visBool = visBool ? visBool : this.get("selected");
-      this.get("object3d").visible = visBool;
-      _.each(this.get("object3d").children, function (mesh) {
-          if ( mesh.type === "Mesh" ) mesh.visible = visBool; // do not turn on lights
-      });
-      var sceneDetails = this.get("sceneDetails");
-      if (sceneDetails) sceneDetails.showHide(visBool);
+    this.get("object3d").visible = visBool;
+
+    _.each(this.get("object3d").children, function (mesh) {
+        if ( mesh.type === "Mesh" && mesh.rayCasterMesh !== false ) mesh.visible = visBool; // do not turn on lights or raycaster
+    });
+
+    var sceneDetails = this.get("sceneDetails");
+    if (sceneDetails) sceneDetails.showHide(visBool);
   },
-  setInteractiveObjects
   startScene: function () {
     this.toggleTextVisiblilty(false);
     this.toggleHoverLights(false);
@@ -94,14 +95,13 @@ var SceneModel = BaseModel3d.extend({
     sceneDetailsPosition.camera.y += cameraPositionLoading.camera.y;
     return sceneDetailsPosition;
   },
-  getSize: function () {
-    var object3d = this.get("object3d");
-    var height = Math.abs(object3d.geometry.boundingBox.max.y) + Math.abs(object3d.geometry.boundingBox.min.y);
-    var width = Math.abs(object3d.geometry.boundingBox.max.x) + Math.abs(object3d.geometry.boundingBox.min.x);
-    var length = Math.abs(object3d.geometry.boundingBox.max.z) + Math.abs(object3d.geometry.boundingBox.min.z);
+  getSize: function (mesh) {
+    mesh = mesh ? mesh : this.get("object3d");
+    var height = Math.abs(mesh.geometry.boundingBox.max.y) + Math.abs(mesh.geometry.boundingBox.min.y);
+    var width = Math.abs(mesh.geometry.boundingBox.max.x) + Math.abs(mesh.geometry.boundingBox.min.x);
+    var length = Math.abs(mesh.geometry.boundingBox.max.z) + Math.abs(mesh.geometry.boundingBox.min.z);
     return { w: width, h: height, l: length };
   },
-
   toggleDoors: function (doorBool) {
     if (this.get("doorsBool")) return;
     var doorWidth = 0.4;

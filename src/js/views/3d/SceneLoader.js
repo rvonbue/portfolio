@@ -168,7 +168,7 @@ var SceneLoader = BaseView.extend({
   setInteractiveObjects: function () {
     var objects3d = this.sceneModelCollection
     .where({interactive: true})
-    .map(function (model) { return model.get('object3d'); });
+    .map(function (model) { return model.get('rayCasterMesh'); });
     eventController.trigger(eventController.RESET_RAYCASTER, objects3d);
   },
   cameraStartAnimatingToSceneDetails: function () {

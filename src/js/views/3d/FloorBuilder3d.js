@@ -85,10 +85,18 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     return light;
   },
   setRaycasterMesh: function (sceneModel) {
-    sceneModel.set("rayCasterMesh", this.getRaycasterMesh());
-  },
-  getRaycasterMesh: function () {
-    
+    var text3d = sceneModel.get("text3d");
+    var size = sceneModel.getSize(text3d);
+    var geometry = new THREE.PlaneGeometry( size.w, size.h );
+    var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    var rayCasterMesh = new THREE.Mesh( geometry, material );
+    rayCasterMesh.name = sceneModel.get("name");
+    rayCasterMesh.position.y = size.h / 2;
+    rayCasterMesh.position.z = text3d.position.z + (size.l * 1.1);
+    // rayCasterMesh.visible = false;
+    rayCasterMesh.rayCasterMesh = false;
+    sceneModel.set("rayCasterMesh", rayCasterMesh);
+    this.parentToSceneModel([rayCasterMesh], sceneModel);
   },
   parentToSceneModel: function (meshArray, sceneModel) {
     _.each(meshArray, function (mesh) {

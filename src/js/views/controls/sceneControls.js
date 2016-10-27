@@ -14,18 +14,18 @@ var SceneControls = BaseModel.extend({
     this.camera = options.camera;
     this.raycasterObjects = [];
     this.mouse = new THREE.Vector2();
-    this.onResize();
     this.addListeners(this.canvasEl);
     // this.loadEnvironmentMap();
     this.raycaster = new THREE.Raycaster();
     this.raycaster.far = 100;
+    this.raycaster.near = 0.25;
     this.loadInitialScene("home");
     this.animating = false;
   },
   addListeners: function () {
     var self = this;
-    var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 50);
-    this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
+    // var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 50);
+    this.canvasEl.on("mousemove", function (evt) { self.onMouseMove(evt); });
     this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
@@ -39,8 +39,8 @@ var SceneControls = BaseModel.extend({
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
   },
   onResize: function (size) {
-    this.height = window.innerHeight;
-    this.width = window.innerWidth;
+    this.height = size.h;
+    this.width = size.w;
   },
   onMouseClick: function (evt) {
     var closestObject = this.shootRaycaster(evt);
@@ -51,8 +51,9 @@ var SceneControls = BaseModel.extend({
     eventController.trigger(eventController.HOVER_NAVIGATION, this.shootRaycaster(evt));
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
+    var navigationBarOffsetY = 45;
     this.mouse.x = ( evt.clientX / this.width ) * 2 - 1;
-		this.mouse.y = - ( evt.clientY / this.height ) * 2 + 1;
+		this.mouse.y = - ( (evt.clientY - navigationBarOffsetY ) / this.height ) * 2 + 1; 
     this.raycaster.setFromCamera( this.mouse, this.camera );
     return this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
   },

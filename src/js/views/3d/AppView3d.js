@@ -48,6 +48,7 @@ var AppView3d = BaseView.extend({
     this.renderer.setClearColor( 0x000000, 0 );
     this.initControls();
     this.addListeners();
+    this.resize();
     this.animate();
   },
   initCamera: function (size) {
@@ -86,7 +87,7 @@ var AppView3d = BaseView.extend({
     var size = this.getWidthHeight();
     this.camera.aspect = size.w / size.h;
 		this.camera.updateProjectionMatrix();
-		this.renderer.setSize(  size.w, size.h );
+		this.renderer.setSize( size.w, size.h );
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   getWidthHeight: function () {
