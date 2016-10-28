@@ -27,12 +27,12 @@ var AppView3d = BaseView.extend({
   },
   hide: function (parentEl) {
     this.$el.hide();
-    this.removeListeners();
+    // this.removeListeners();
     parentEl.removeClass("threeD");
   },
   show: function (parentEl) {
     this.$el.show();
-    this.addListeners();
+    // this.addListeners();
     parentEl.addClass("threeD");
   },
   initScene: function () {
@@ -95,7 +95,7 @@ var AppView3d = BaseView.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   getWidthHeight: function () {
-    return {w: window.innerWidth, h: this.$el.height() }
+    return {w: this.$el.width(), h: this.$el.height() }
   },
   render: function () {
     this.statsView = new StatsView();
