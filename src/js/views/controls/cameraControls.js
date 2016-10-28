@@ -7,7 +7,6 @@ var OrbitControls = require('three-orbit-controls')(THREE);
 var CAMERA_INTIAL_POSITION = { x: -25, y: 45, z: 45 };
 var TARGET_INITIAL_POSITION = { x: 0, y: 15, z: 0 };
 
-
 var CameraControls = BaseModel.extend({
   initialize: function (options) {
     this.camera = options.camera;
@@ -45,7 +44,7 @@ var CameraControls = BaseModel.extend({
     .onComplete(function () {
       if (triggerTrue) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION);
     })
-     .start();
+    .start();
   },
   isAnimating: function () {
     return TWEEN.getAll().length > 0;

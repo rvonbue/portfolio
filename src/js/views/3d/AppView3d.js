@@ -36,19 +36,22 @@ var AppView3d = BaseView.extend({
     parentEl.addClass("threeD");
   },
   initScene: function () {
+    this.addListeners();
     var size = this.getWidthHeight();
     var scene = window.scene = this.scene = new THREE.Scene();
     // scene.fog = new THREE.FogExp2( "#b82601", 0.02 );
     this.initCamera(size);
-    this.lightControls = new LightControls({ scene: scene });
+
     this.addHelpers();
     this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas:this.canvasEl });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( 0x000000, 0 );
+    // this.renderer.shadowMapEnabled = true;
     // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.initControls();
-    this.addListeners();
+
+    this.lightControls = new LightControls();
     this.resize();
     this.animate();
   },

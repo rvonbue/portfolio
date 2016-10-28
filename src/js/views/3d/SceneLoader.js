@@ -1,11 +1,11 @@
+import THREE from "three";
+import TWEEN from "tween.js";
 import BaseView from "../BaseView";
 import eventController from "../../controllers/eventController";
 import navigationList from "../../data/navigationList";
 import SceneModel from "../../models/sceneModel";
 import SceneModelCollection from "../../collections/SceneModelCollection";
 import utils from "../../util/utils";
-import THREE from "three";
-import TWEEN from "tween.js";
 
 import ModelLoader from "../../models/modelLoader";
 import FloorBuilder3d from "./FloorBuilder3d";
@@ -26,8 +26,8 @@ var SceneLoader = BaseView.extend({
     this.modelLoader = new ModelLoader();
     this.addListeners();
     var models = [
-      { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
       { url: "models3d/ground.json", name: "ground" },
+      { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
       { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME}
     ];
     this.TOTAL_MODELS = models.length;
@@ -46,6 +46,7 @@ var SceneLoader = BaseView.extend({
      eventController.on(eventController.RESET_SCENE, this.resetScene, this);
   },
   removeListeners: function () {
+    eventController.off(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
@@ -191,7 +192,6 @@ var SceneLoader = BaseView.extend({
   sceneModelLoaded: function (obj) {
     var startingHeight = 14.75; //TODO: MAGIC NUMBER its the height of the bottom floor
     var object3dArr = [];
-
     this.createFloors(obj.object3d);
     var sceneModels = this.sceneModelCollection.where({ interactive: true });
 
@@ -201,7 +201,7 @@ var SceneLoader = BaseView.extend({
       object3dArr.push(object3d);
     });
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
-    eventController.trigger(eventController.SET_SPOTLIGHT_TARGET, sceneModels[sceneModels.length -1].get("text3d"));
+    // eventController.trigger(eventController.SET_SPOTLIGHT_TARGET, sceneModels[sceneModels.length -1].get("text3d"));
     this.setInteractiveObjects();
   },
   createFloors: function (object3d) {

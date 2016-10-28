@@ -402,6 +402,9 @@ input {
   opacity: 0.85;
   background-color: black;
 }
+.appview-container.twoD .sky-gradient {
+  display: none;
+}
 .switch-views {
   position: absolute;
   top: 0px;
@@ -445,7 +448,10 @@ header {
 h1 {
   display: block;
   text-align: center;
-  margin-top: 8px;
+  padding: 24px 0px;
+}
+.view-body {
+  background: slategrey;
 }
 .view-body-2d {
   max-width: 1300px;

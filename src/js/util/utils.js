@@ -2,7 +2,7 @@ module.exports = {
   worldScale: 20,
   size: { width: null, height: null },
   getAnimationSpeed: function () {
-    return { fade: 500, cameraMove: 1500 };
+    return { fade: 500, cameraMove: 250 };
   },
   translateWidthHeight: function(w, h) {
     return { width: w  / this.worldScale, height: h / this.worldScale };
@@ -24,8 +24,8 @@ module.exports = {
           intensity: 0.15
         },
         directional: {
-          color: "#FFFFFF",
-          intensity: 0.55
+          color: "#9be2fe",
+          intensity: 0.25
         }
       }
     };

@@ -9,11 +9,10 @@ var worldColor = utils.getColorPallete().world;
 var LightControls = BaseView.extend({
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
-    this.scene = options.scene;
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
     this.skyGradientElClickNum = 0;
-    // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
+    $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
     this.clickChangeSkyGradient();
     this.addLight();
     this.addListeners();
@@ -26,11 +25,13 @@ var LightControls = BaseView.extend({
   removeListeners: function () {
     eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleAmbientLighting, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
+    eventController.off(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
   },
   addLight: function () {
     this.addHemisphereLight();
-    // this.addDirectionalLight();
-    this.addSpotLights();
+    this.addDirectionalLight();
+    // this.addSpotLights();
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.worldLights);
   },
   resetScene: function () {
     this.toggleWorldLighting(this.getResetLightSettings());
@@ -46,7 +47,7 @@ var LightControls = BaseView.extend({
     var classNames = "sky-gradient" + " sky-gradient-" + this.skyGradientElClickNum;
     this.skyGradientEl.attr("class", classNames);
     var sky = skyGradients[this.skyGradientElClickNum][0];
-    var ground = skyGradients[this.skyGradientElClickNum][skyGradients[this.skyGradientElClickNum].length - 1];
+    var ground = skyGradients[this.skyGradientElClickNum][1];
     this.toggleWorldLighting(
       {
         hemisphere: [sky, ground, worldColor.hemisphere.intensity],
@@ -54,9 +55,6 @@ var LightControls = BaseView.extend({
       }
     );
     this.skyGradientElClickNum++;
-  },
-  getHemisphereLight: function () {
-
   },
   toggleWorldLighting: function (newLightSettings) {
     _.each(this.worldLights, function (light) {
@@ -79,8 +77,6 @@ var LightControls = BaseView.extend({
       worldColor.directional.intensity
     )
     this.worldLights.push(directionalLight);
-    this.scene.add( directionalLight );
-    this.scene.add( new THREE.DirectionalLightHelper( directionalLight, worldColor.directional.intensity ) );
   },
   addHemisphereLight: function () {
     var hemiLight = new THREE.HemisphereLight(
@@ -89,7 +85,6 @@ var LightControls = BaseView.extend({
       worldColor.hemisphere.intensity
     );
     this.worldLights.push(hemiLight);
-    this.scene.add( hemiLight );
   },
   // raiseLights: function (lights) {
   //
@@ -109,13 +104,7 @@ var LightControls = BaseView.extend({
   },
   setSpotlightTarget: function (spotLightTarget) {
     var spotLight = this.getWorldLight("SpotLight");
-    // spotLight.target = spotLightTarget;
-    var lightTarget = new THREE.Object3D();
-  	lightTarget.position.set(0,50,0);
-  	this.scene.add(lightTarget);
-  	spotLight.target = lightTarget;
-    lightTarget.updateMatrixWorld();
-    console.log("this.worldLights", spotLight);
+    spotLight.target = spotLightTarget;
   },
   addSpotLights: function () {
     // color, intensity, distance, angle, penumbra, decay
@@ -123,7 +112,7 @@ var LightControls = BaseView.extend({
     var sphereSize = 1;
     var spotlights = [
       // this.getNewSpotlight( 2.5, 4.5, 8, color),
-      this.getNewSpotlight( 0, 0, 35, color),
+      this.getNewSpotlight( 0, 30, 35, color),
       // this.getNewSpotlight( -2.5, 4.5, 8, color)
     ];
 
@@ -135,7 +124,7 @@ var LightControls = BaseView.extend({
   },
   getNewSpotlight: function (x, y, z, color) {
     //color, intensity, distance, angle, penumbra, decay )
-    var spotLight = new THREE.SpotLight( color, 25, 70, Math.PI / 6, 1, 2 );
+    var spotLight = new THREE.SpotLight( color, 50, 70, Math.PI / 6, 0, 2 );
     spotLight.position.set( x, y, z );
     spotLight.castShadow = true;
     return spotLight;

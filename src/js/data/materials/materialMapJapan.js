@@ -100,5 +100,8 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { transparent: false }
+  },
+  plasticBlack: {
+    props: { color: "#24282a" }
   }
 };

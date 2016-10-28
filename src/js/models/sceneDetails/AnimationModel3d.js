@@ -8,11 +8,16 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     this.set("initialCameraPosition", { x:0, y: -0.5, z: 8});
     this.set("initialCameraTarget", { x:0, y: 1, z: 0});
     this.set("pointLights", [
-      {x: 5, y: 3, z: 2, color: "#FFFFFF", intensity: 5, distance: 4 },
-      {x: 5, y: 3, z: 6.5, color: "#FFFFFF", intensity: 8, distance: 4 },
-      {x: -5, y: 3, z: 2, color: "#FFFFFF", intensity: 5, distance: 5 },
-      {x: -5, y: 3, z: 6.5, color: "#FFFFFF", intensity: 8, distance: 5 },
+      {x: 6, y: 1, z: 2, color: "#FFFFFF", intensity: 3, distance: 2 },
+      {x: 6, y: 1, z: 6.5, color: "#FFFFFF", intensity: 3, distance: 2 },
+      {x: -6, y: 1, z: 2, color: "#FFFFFF", intensity: 3, distance: 2 },
+      {x: -6, y: 1, z: 6.5, color: "#FFFFFF", intensity: 3, distance: 2 },
     ]);
+    this.set("intialAmbientLights", {
+      ambient: ["#FFFFFF", 0], // color intensity
+      directional: ["#FFFFFF", 0],  // color intensity,
+      hemisphere: ["#404040", "#9BE2FE", 0.09]  // skyColor, groundColor, intensity
+    });
   }
 });
 

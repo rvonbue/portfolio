@@ -35,7 +35,7 @@ var ModelLoader = BaseModel.extend({
       if ( options.sceneModelName ) {
         setTimeout(function () {
           eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
-        }, 1500);
+        }, 15);
       } else {
         eventController.trigger(eventController.MODEL_LOADED, modelDetails);
       }

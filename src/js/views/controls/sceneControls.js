@@ -13,20 +13,19 @@ var SceneControls = BaseModel.extend({
     this.canvasEl = $(options.canvasEl);
     this.camera = options.camera;
     this.raycasterObjects = [];
-    this.raycasterOffset = { x: 1, y: 47 };  //ozzffset of canvas from the top of the screen;
+    this.raycasterOffset = { x: 1, y: 47 };  //ozzffset of canvas;
     this.mouse = new THREE.Vector2();
-    this.addListeners(this.canvasEl);
+    this.addListeners();
     // this.loadEnvironmentMap();
     this.raycaster = new THREE.Raycaster();
-    this.raycaster.far = 100;
+    this.raycaster.far = 125;
     this.raycaster.near = 0.25;
     this.loadInitialScene("home");
-    this.animating = false;
   },
   addListeners: function () {
     var self = this;
-    // var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 50);
-    this.canvasEl.on("mousemove", function (evt) { self.onMouseMove(evt); });
+    var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 25);
+    this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
     this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
@@ -91,7 +90,7 @@ var SceneControls = BaseModel.extend({
   	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
   	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
     skyBox.position.y = size / 2;
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skybox]);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
   },
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;
