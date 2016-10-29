@@ -6,6 +6,10 @@ module.exports = {
     maps: [{ map: "textures/cityNightAlt1.jpg" }],
     mapProps: { repeatScale: 1, shading: "flat" },
   },
+  coinSlot: {
+    maps: [{ map: "textures/videoGameCabinet/coinSlot.png" }],
+    mapProps: { repeatScale: 1, shading: "flat" },
+  },
   computer: {
       maps: [
         { map: "textures/computer.jpg" }
@@ -24,9 +28,9 @@ module.exports = {
   },
   keyboard: {
       maps: [
-        { map: "textures/keyboard.jpg" },
-        // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-        // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
+        { map: "textures/computer/keyboard.jpg" },
+        // { specularMap: "textures/computer/keyboard_SPEC.jpg" },
+        // { normalMap: "textures/computer/keyboard_NRM.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "smooth" },
   },
@@ -50,7 +54,9 @@ module.exports = {
   },
   videoGameCabinet: {
     maps: [
-      { map: "textures/videoGameCabinet/videoGameCabinet.png" },
+      { map: "textures/videoGameCabinet/videoGameCabinet_COLOR.jpg" },
+      { specularMap: "textures/videoGameCabinet/videoGameCabinet_SPECA.jpg" },
+      // { normalMap: "textures/videoGameCabinet/videoGameCabinet_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
   },

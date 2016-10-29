@@ -48,12 +48,12 @@ var LightControls = BaseView.extend({
     this.skyGradientEl.attr("class", classNames);
     var sky = skyGradients[this.skyGradientElClickNum][0];
     var ground = skyGradients[this.skyGradientElClickNum][1];
-    this.toggleWorldLighting(
-      {
-        hemisphere: [sky, ground, worldColor.hemisphere.intensity],
-        directional: [sky, worldColor.directional.intensity]
-      }
-    );
+    // this.toggleWorldLighting(
+    //   {
+    //     hemisphere: [sky, ground, worldColor.hemisphere.intensity],
+    //     directional: [sky, worldColor.directional.intensity]
+    //   }
+    // );
     this.skyGradientElClickNum++;
   },
   toggleWorldLighting: function (newLightSettings) {

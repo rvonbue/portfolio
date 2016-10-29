@@ -58,7 +58,7 @@
         "opacity":1,
         "wireframe":false,
         "depthTest":true,
-        "shading":"phong",
+        "shading":"basic",
         "DbgName":"wall",
         "DbgColor":60928,
         "DbgIndex":2

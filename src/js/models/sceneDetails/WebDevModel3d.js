@@ -7,10 +7,15 @@ var WebDevModel3d = SceneDetailsBaseModel3d.extend({
     this.set("initialCameraPosition", { x:1, y: 0, z: 4});
     this.set("initialCameraTarget", { x:1.75, y: 2, z: 2});
     this.set("pointLights", [
-      {x: 4, y: 1.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 3 }, //couch lights
-      {x: 4, y: 1.5, z: 6.5, color: "#FFFFFF", intensity: 3, distance: 3 }, //couch lights
-      {x: 0.5, y: 1.5, z: 2, color: "#0000FF", intensity: 2, distance: 2.5 }  //desk lamp
+      {x: 5.90, y: 2, z: 1.5, color: "#0000FF", intensity: 1, distance: 2 }, //video game lights
+      {x: 5.65, y: 2, z: 1.65, color: "#fe3a08", intensity: 1, distance: 2 }, //video game  lights
+      {x: 0.5, y: 1.5, z: 1, color: "#0000FF", intensity: 3, distance: 2.5 }  //computer screen fake light
     ]);
+    this.set("intialAmbientLights", {
+      ambient: ["#FFFFFF", 0], // color intensity
+      directional: ["#FFFFFF", 0],  // color intensity,
+      hemisphere: ["#404040", "#9BE2FE", 0.05]  // skyColor, groundColor, intensity
+    });
   }
 });
 
