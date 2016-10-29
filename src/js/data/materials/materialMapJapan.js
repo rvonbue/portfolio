@@ -103,5 +103,8 @@ module.exports = {
   },
   plasticBlack: {
     props: { color: "#24282a" }
+  },
+  plasticRed: {
+    props: { color: "#FF0000" }
   }
 };

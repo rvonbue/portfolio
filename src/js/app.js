@@ -19,6 +19,8 @@ import THREE from "three";
 import eventController from "./controllers/eventController";
 import commandController from "./controllers/commandController";
 import AppView from "./views/AppView";
+import stylesheet from "../styles/index.less";
+console.log("stylesheet", )
 // require("../styles/style.js");
 // console.log("STYLESHEET:", stylesheet);
 

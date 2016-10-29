@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
    entry: './src/js/app.js',
@@ -9,8 +10,9 @@ module.exports = {
 	 module: {
      loaders: [
        { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-		   { test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: 'babel', query: {	presets: ['es2015'] }},
-       { test: /\.(jpe?g|png|gif|svg)$/i, loader:'file' }
+		   { test: /\.js$/, exclude: /node_modules/, loader: 'babel', query: {	presets: ['es2015'] }},
+       { test: /\.(jpe?g|png|gif|svg)$/i, exclude: /node_modules/, loader:'file' },
+       { test: /\.less$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")}
      ]
    },
 	 plugins: [
@@ -24,11 +26,10 @@ module.exports = {
       //       },
       //   }),
 		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
+    new ExtractTextPlugin('allStyles.css'),
     ],
 	devServer: {
     contentBase: "./bin",
-	  // inline: true,
-	  // hot: true,
 	  open: true,
 	  historyApiFallback: true
 	}

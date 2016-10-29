@@ -3,7 +3,7 @@ var colorPallete = utils.getColorPallete();
 
 module.exports = {
   cityNight: {
-    maps: [{ map: "textures/cityNight.jpg" }],
+    maps: [{ map: "textures/cityNightAlt1.jpg" }],
     mapProps: { repeatScale: 1, shading: "flat" },
   },
   computer: {
@@ -47,5 +47,17 @@ module.exports = {
       ],
       mapProps: { repeatScale: 1, shading: "smooth" },
       // props: {color: colorPallete.lampLight.hex }
+  },
+  videoGameCabinet: {
+    maps: [
+      { map: "textures/videoGameCabinet/videoGameCabinet.png" },
+    ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
+  },
+  videoGameCabinetEmmisive: {
+    maps: [
+      { map: "textures/videoGameCabinet/videoGameCabinetEmmisive.png" },
+    ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
   }
 };

@@ -4,8 +4,8 @@ var WebDevModel3d = SceneDetailsBaseModel3d.extend({
   initialize: function () {
     this.set("name", "WebDevModel3dSceneDetails");
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
-    this.set("initialCameraPosition", { x:0, y: 0, z: 5});
-    this.set("initialCameraTarget", { x:3, y: 2, z: 2});
+    this.set("initialCameraPosition", { x:1, y: 0, z: 4});
+    this.set("initialCameraTarget", { x:1.75, y: 2, z: 2});
     this.set("pointLights", [
       {x: 4, y: 1.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 3 }, //couch lights
       {x: 4, y: 1.5, z: 6.5, color: "#FFFFFF", intensity: 3, distance: 3 }, //couch lights
