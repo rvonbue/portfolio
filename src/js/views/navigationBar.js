@@ -2,8 +2,7 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
 import navigationList from "../data/navigationList";
-
-var cameraControlsGuiHTML = require("html?attrs=img:data-src!./html/cameraControlsGUI.html");
+import cameraControlsGuiHTML from "./html/cameraControlsGUI.html";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",

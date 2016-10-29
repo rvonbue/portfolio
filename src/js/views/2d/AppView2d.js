@@ -1,10 +1,9 @@
 import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import BaseView from "../BaseView";
-var htmlPageNavigation = [
-  // require("html!./home.html"),
-  require("html!./webDev.html"),
-  require("html!./3dAnimation.html")
+import WebDevView2d from "./WebDevView";
+var viewArray = [
+  WebDevView2d,
 ];
 
 var AppView2d = BaseView.extend({
@@ -13,7 +12,7 @@ var AppView2d = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.addListeners();
     this.bodyEl = $("<div class='view-body-2d'></div>");
-    this.setSection();
+    this.setSection(0);
   },
   addListeners: function () {
     eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
@@ -21,14 +20,16 @@ var AppView2d = BaseView.extend({
   removeListeners: function () {
     eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
   },
-  setSection: function () {
-    this.bodyEl.append(htmlPageNavigation[0]);
+  getSectionView: function () {
+
+  },
+  setSection: function (index) {
+    var newView = new viewArray[index];
+    this.bodyEl.append(newView.render().el);
   },
   switchPage: function (index) {
     if (!index) index = commandController.request(commandController.GET_SELECTED_SECTION);
-    console.log("switchPage:", index);
-    this.bodyEl.empty();
-    this.bodyEl.append(htmlPageNavigation[index]);
+    this.bodyEl.empty().append(new viewArray[index].render().el);
   },
   show: function (parentEl) {
     this.$el.show();
