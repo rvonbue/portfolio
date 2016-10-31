@@ -1,10 +1,10 @@
 import Base3dView from "./Base3dView";
 // import eventController from "../../controllers/eventController";
 import THREE from "three";
-import fontData from "../../data/roboto_regular.json";
+import fontData from "../../data/fonts/roboto_regular.json";
 import utils from "../../util/utils";
-import door from "../../data/door.json";
-import lampLight from "../../data/lampLight.json";
+import door from "../../data/embeded3dModels/door.json";
+import lampLight from "../../data/embeded3dModels/lampLight.json";
 
 var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and meshes for each individual floor
   initialize: function () {

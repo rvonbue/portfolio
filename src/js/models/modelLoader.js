@@ -1,13 +1,9 @@
 import eventController from "../controllers/eventController";
 import BaseModel from "./BaseModel";
 import THREE from "three";
-import data from "../data/roboto_regular.json";
-import utils from "../util/utils";
-import materialMapListJapan from "../data/materials/materialMapJapan";
-import materialMapListWebDev from "../data/materials/materialMapWebDev";
-import materialMapList3dAnimation from "../data/materials/materialMap3dAnimation";
+// import utils from "../util/utils";
+import materialMapList from "../data/materials/combinedMaterials";
 
-var materialMapList = _.extendOwn(materialMapListJapan, materialMapList3dAnimation, materialMapListWebDev);
 var ModelLoader = BaseModel.extend({
   initialize: function () {
     BaseModel.prototype.initialize.apply(this, arguments);
@@ -33,9 +29,9 @@ var ModelLoader = BaseModel.extend({
       var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
       var modelDetails = { name: options.name, sceneModelName: options.sceneModelName, object3d: object3d };
       if ( options.sceneModelName ) {
-        setTimeout(function () {
+        // setTimeout(function () {
           eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
-        }, 15);
+        // }, 15);
       } else {
         eventController.trigger(eventController.MODEL_LOADED, modelDetails);
       }

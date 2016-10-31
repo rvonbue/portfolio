@@ -1,15 +1,17 @@
-import eventController from "../../controllers/eventController";
-import commandController from "../../controllers/commandController";
-import BaseView from "../BaseView";
-import WebDevView2d from "./WebDevView";
+import eventController from "../controllers/eventController";
+import commandController from "../controllers/commandController";
+import BaseView from "./BaseView";
+import WebDevView2d from "./2d/WebDevView";
 var viewArray = [
   WebDevView2d,
 ];
 
 var AppView2d = BaseView.extend({
   className: "appView-2d",
-  initialize: function () {
+  parentClass: "twoD",
+  initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
+    this.parentEl = options.parentEl;
     this.addListeners();
     this.bodyEl = $("<div class='view-body-2d'></div>");
     this.setSection(0);
@@ -30,16 +32,6 @@ var AppView2d = BaseView.extend({
   switchPage: function (index) {
     if (!index) index = commandController.request(commandController.GET_SELECTED_SECTION);
     this.bodyEl.empty().append(new viewArray[index].render().el);
-  },
-  show: function (parentEl) {
-    this.$el.show();
-    this.addListeners();
-    parentEl.addClass("twoD");
-  },
-  hide: function (parentEl) {
-    this.$el.hide();
-    this.removeListeners();
-    parentEl.removeClass("twoD");
   },
   render: function () {
     this.$el.append(this.bodyEl);

@@ -13,6 +13,7 @@ import SceneDetailsBuilder3d from "./SceneDetailsBuilder3d";
 import SceneDetailsModel from "../../models/sceneDetails/SceneDetailsBaseModel3d";
 import WebDevModel3d from "../../models/sceneDetails/WebDevModel3d";
 import AnimationModel3d from "../../models/sceneDetails/AnimationModel3d";
+import DigitalArtModel3d from "../../models/sceneDetails/DigitalArtModel3d";
 
 var SceneLoader = BaseView.extend({
   name: null,
@@ -95,9 +96,11 @@ var SceneLoader = BaseView.extend({
     var prevSceneModel = this.sceneModelCollection.findWhere({ selected: true });
     var isPrevModelNewModel = prevSceneModel && prevSceneModel.cid === newSceneModel.cid;
     var sceneDetailsStartLoad;
+
     if (prevSceneModel && !isPrevModelNewModel) { // if there a prev sceneModel
       prevSceneModel.reset(false);
     }
+
     if (isPrevModelNewModel || !newSceneModel ) return;
     sceneDetailsStartLoad = newSceneModel.get("ready") === false && !newSceneModel.get("sceneDetails");
     if ( sceneDetailsStartLoad ) this.loadSceneDetails(newSceneModel);
@@ -116,23 +119,23 @@ var SceneLoader = BaseView.extend({
   },
   sceneDetailsLoaded: function (modelObj) {
     var sceneModel = this.sceneModelCollection.findWhere({ name: modelObj.sceneModelName });
-    modelObj.sceneModel = sceneModel;
+    modelObj.parentScenePosition = sceneModel.get("object3d").position;
 
     var sceneDetailsModel = this.getSceneDetailsModel(modelObj);
     var sceneDetailsBuilder3d = new SceneDetailsBuilder3d();
-    sceneDetailsModel.set("sceneLights", sceneDetailsBuilder3d.getPointLights(sceneDetailsModel));
-    sceneModel.set("sceneDetails", sceneDetailsModel);
-    if (!sceneModel.get("selected")) sceneDetailsModel.showHide(false);
-    this.addSceneDetailsToScene(sceneDetailsModel); //add to stage so they rendered
+
+    sceneDetailsBuilder3d.setSceneDetails(sceneDetailsModel, this.modelLoader);
+
+    sceneModel.set("sceneDetails", sceneDetailsModel); //set sceneModel and toggle show/hide of sceneDetails Model
+    this.addSceneDetailsToScene(sceneDetailsModel); //add to stage so get they rendered
+
     if (sceneModel.get("selected")) this.zoomToSelectedSceneModel(sceneModel);
   },
   addSceneDetailsToScene: function (sceneDetailsModel) {
-    var sceneDetail_lights = sceneDetailsModel.get("sceneLights");
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetail_lights);
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetail_lights.map( function (light) {
-      return new THREE.PointLightHelper(light, 0.25);
-    }));
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneDetailsModel.get("object3d")]);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.getAllMeshes());
+    // eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetail_lights.map( function (light) {
+    //   return new THREE.PointLightHelper(light, 0.25);
+    // }));
     eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneDetailsModel.get("intialAmbientLights"));
   },
   getSceneDetailsModel: function (modelObj) {
@@ -142,6 +145,8 @@ var SceneLoader = BaseView.extend({
         return new WebDevModel3d(modelObj);
       case navigationList[1]:
         return new AnimationModel3d(modelObj);
+      case navigationList[2]:
+        return new DigitalArtModel3d(modelObj);
       default:
         return new SceneDetailsModel(modelObj);
     }

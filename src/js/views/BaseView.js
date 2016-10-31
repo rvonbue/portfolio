@@ -1,25 +1,18 @@
 var BaseView = Backbone.View.extend({
   childViews: [],
   initialize: function(){
-  var initializeContext = this;
-    _.bindAll(this,
-      "onAttach",
-      "removeEventHandlers",
-      "removeChildViewEventHandlers",
-      "beforeRender",
-      "render",
-      "afterRender"
-    );
-    this.render = _.wrap(this.render, function(render) {
-      initializeContext.beforeRender();
-      render();
-      initializeContext.afterRender();
-      return initializeContext;
-    });
+  },
+  hide: function () {
+    this.$el.fadeOut();
+    // this.removeListeners();
+    this.parentEl.removeClass(this.parentClass);
+  },
+  show: function () {
+    this.$el.fadeIn();
+    // this.addListeners();
+    this.parentEl.addClass(this.parentClass);
   },
   beforeRender: function(){
-    this.removeChildViewEventHandlers();
-    this.childViews = [];
   },
   afterRender: function() {
 

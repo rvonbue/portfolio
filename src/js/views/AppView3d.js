@@ -1,18 +1,20 @@
-import BaseView from "../BaseView";
+import BaseView from "./BaseView";
 import THREE from "three";
 import TWEEN from "tween.js";
 import raf from "raf";
-import eventController from "../../controllers/eventController";
-import LightControls from "../controls/LightControls";
-import CameraControls from "../../views/controls/cameraControls";
-import SceneControls from "../../views/controls/sceneControls";
-import StatsView from "../../views/3d/statsView";
+import eventController from "../controllers/eventController";
+import LightControls from "./controls/LightControls";
+import CameraControls from "./controls/cameraControls";
+import SceneControls from "./controls/sceneControls";
+import StatsView from "./3d/statsView";
 
 var AppView3d = BaseView.extend({
   className: "appView-3d",
-  initialize: function () {
+  parentClass: "threeD",
+  initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
     _.bindAll(this, "animate", "addModelsToScene", "resize");
+    this.parentEl = options.parentEl;
     this.clock = new THREE.Clock();
   },
   addListeners: function () {
@@ -24,16 +26,6 @@ var AppView3d = BaseView.extend({
     eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.off(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).off("resize", this.resize);
-  },
-  hide: function (parentEl) {
-    this.$el.hide();
-    // this.removeListeners();
-    parentEl.removeClass("threeD");
-  },
-  show: function (parentEl) {
-    this.$el.show();
-    // this.addListeners();
-    parentEl.addClass("threeD");
   },
   initScene: function () {
     this.addListeners();

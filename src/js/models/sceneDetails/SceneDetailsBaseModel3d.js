@@ -4,8 +4,10 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
   defaults: {
     name: "Spinach",
     pointLights: new Array,
+    parentScenePosition: { x:0, y: 0, z: 0},
     initialCameraPosition: { x:0, y: 0, z: 0},
     initialCameraTarget: { x:0, y: 0, z: 0},
+    interactiveObjects: new Array,
     intialAmbientLights:{
       ambient: ["#FFFFFF", 0], // color intensity
       directional: ["#FFFFFF", 0],  // color intensity,
@@ -14,34 +16,25 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
   },
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
-    this.setInitialPosition(options.sceneModel);
+    this.setInitialPosition();
     if (options.name) this.set("name", options.name);
   },
   setInitialPosition: function (sceneModel) {
-    var y = sceneModel.get("object3d").position.y;
+    var y = this.get("parentScenePosition").y;
     this.get("object3d").position.y = y;
-    this.parentToSceneModel(sceneModel);
   },
-  parentToSceneModel: function (sceneModel) {
-    sceneModel.get("object3d").add(this.get("object3d"));
-  },
-  showHide: function (tBool) {
-    var selectedParent = this.get("sceneModel").get("selected");
-    this.toggleSceneLights(tBool && selectedParent);
-    this.get("object3d").visible = tBool && selectedParent;
-  },
-  toggleSceneLights: function (tBool) {
-    _.each(this.get("sceneLights"), function (light) {
-      light.visible = tBool;
+  showHide: function (tBool, selectedParentScene) {
+    var showHideBool = tBool && selectedParentScene;
+    _.each(this.getAllMeshes(), function (mesh) {
+      mesh.visible = showHideBool;
     });
   },
-  addSceneLights: function () {
-
+  getAllMeshes: function () {
+    return [...this.get("sceneLights"), ...this.get("interactiveObjects"), this.get("object3d") ];
   },
-  getInteractive: function () {
+  addInteractiveObjects: function () {
 
   }
-
 });
 
 module.exports = SceneDetailsBaseModel3d;

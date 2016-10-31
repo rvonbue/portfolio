@@ -1,6 +1,6 @@
 import BaseView from "../BaseView";
 import webDevData from "../../data/pageData/WebDevProjects";
-import projectContainerHTML from "./component/projectContainer.html";
+import projectContainerHTML from "./component/WebDevViewTemplate.html";
 
 var WebDevView2d = BaseView.extend({
   className: "web-dev",
@@ -11,10 +11,10 @@ var WebDevView2d = BaseView.extend({
   },
   render: function () {
     this.$el.append(this.titleTemplate({ title: this.title }));
+    this.$el.append("<hr class='first'/>");
     _.each(webDevData, function (templateData) {
-      var html = _.template(projectContainerHTML(templateData));
-      console.log("html:", html);
-      this.$el.append(html);
+      var newProjectContainer = _.template(projectContainerHTML(templateData));
+      this.$el.append(newProjectContainer);
     }, this);
     return this;
   }

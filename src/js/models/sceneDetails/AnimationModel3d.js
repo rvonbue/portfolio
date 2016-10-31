@@ -1,7 +1,6 @@
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 
 var AnimationModel3d = SceneDetailsBaseModel3d.extend({
-  name: "Your Name Here",
   initialize: function () {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
     this.set("name", "AnimationModel3dSceneDetails");

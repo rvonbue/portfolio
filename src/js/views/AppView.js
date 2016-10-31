@@ -1,8 +1,8 @@
 import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import NavigationBar from "../views/navigationBar";
-import AppView3d from "./3d/AppView3d";
-import AppView2d from "./2d/AppView2d";
+import AppView3d from "./AppView3d";
+import AppView2d from "./AppView2d";
 
 var AppView = BaseView.extend({
   className: "appview-container",
@@ -14,38 +14,38 @@ var AppView = BaseView.extend({
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
   },
   initScene: function () {
-    this.renderView2d();
-    // this.renderView3d();
+    // this.renderView2d();
+    this.renderView3d();
     // this.switchViews("2d");
   },
   switchViews: function (whichView) {
     switch (whichView) {
       case "2d":
-        if (this.appView3d) this.appView3d.hide(this.$el);
+        if (this.appView3d) this.appView3d.hide();
         if (!this.appView2d) {
           this.renderView2d();
         } else {
-          this.appView2d.show(this.$el);
+          this.appView2d.show();
         }
         break;
       case "3d":
-        if (this.appView2d) this.appView2d.hide(this.$el);
+        if (this.appView2d) this.appView2d.hide();
         if (!this.appView3d) {
           this.renderView3d();
         } else {
-          this.appView3d.show(this.$el);
+          this.appView3d.show();
         }
         break;
       default:
     }
   },
   renderView2d: function () {
-    this.appView2d = new AppView2d();
+    this.appView2d = new AppView2d({ parentEl: this.$el });
     this.$el.append(this.appView2d.render().el);
     this.$el.addClass("twoD").removeClass("threeD");
   },
   renderView3d: function () {
-    this.appView3d = new AppView3d();
+    this.appView3d = new AppView3d({ parentEl: this.$el });
     this.$el.append(this.appView3d.render().el);
     this.$el.addClass("threeD").removeClass("twoD");
     this.appView3d.initScene();

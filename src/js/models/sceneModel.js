@@ -23,8 +23,9 @@ var SceneModel = BaseModel3d.extend({
     // this.showHide(false);
     // this.setFadeInMaterials();
     this.once("change:selected", this.loadSceneDetails);
-    this.once("change:sceneDetails", function () {
+    this.once("change:sceneDetails", function (mesh) {
       this.set("ready", true);
+      this.get("sceneDetails").showHide(true, this.get("selected"));
     });
   },
   addModelListeners: function () {
@@ -63,7 +64,10 @@ var SceneModel = BaseModel3d.extend({
     });
 
     var sceneDetails = this.get("sceneDetails");
-    if (sceneDetails) sceneDetails.showHide(visBool);
+    if (sceneDetails) {
+      sceneDetails.showHide(visBool, this.get("selected"));
+      console.log("SceneModel:" +  this.get("name") + "  " + visBool);
+    }
   },
   startScene: function () {
     this.toggleTextVisiblilty(false);

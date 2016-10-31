@@ -2,25 +2,27 @@ import Base3dView from "./Base3dView";
 // import eventController from "../../controllers/eventController";
 import THREE from "three";
 import utils from "../../util/utils";
+// import canvas from "../../data/embeded3dModels/canvas.json";
+// import easel from "../../data/embeded3dModels/easel.json";
 
 var SceneDetailsBuilder3d = Base3dView.extend({  //setups up all the inside lights and meshes for each individual floor
   initialize: function (options) {
     Base3dView.prototype.initialize.apply(this, arguments);
   },
-  getAllDetails: function () {
-    return { lights: this.getPointLights() };
+  setSceneDetails: function (sceneDetailsModel, modelLoader) {
+    sceneDetailsModel.set("sceneLights", this.getPointLights(sceneDetailsModel));
+    sceneDetailsModel.addInteractiveObjects(modelLoader);
   },
   getPointLights: function (sceneDetailsModel) {
-    var positionY = sceneDetailsModel.get("sceneModel").get("object3d").position.y;
+    var positionY = sceneDetailsModel.get("parentScenePosition").y;
     var lightArray = sceneDetailsModel.get("pointLights");
     if (!lightArray.length) return lightArray;
-    var pointLightArr = lightArray.map(function (pl) {
-      var light = new THREE.PointLight( pl.color, pl.intensity, pl.distance, 2 );
-      var floorStartHeight =
-      light.position.set(pl.x, pl.y + positionY, pl.z);
-      return light;
-    });
-    return pointLightArr;
+
+    return lightArray.map(function (pl) {
+     var light = new THREE.PointLight( pl.color, pl.intensity, pl.distance, 2 );
+     light.position.set(pl.x, pl.y + positionY, pl.z);
+     return light;
+   });
   }
 });
 
