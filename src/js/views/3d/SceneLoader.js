@@ -85,23 +85,22 @@ var SceneLoader = BaseView.extend({
   },
   clickSelectSceneModel: function (intersectObject) {
     if ( !intersectObject ) return;
-    var name = intersectObject.object.name;
-    this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: name }));
+    this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: intersectObject.object.name }));
   },
   navigationBarSelectSceneModel: function (index) {
-    if (isNaN(index)) return;
     this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: navigationList[index] }));
   },
   toggleSelectedSceneModel: function (newSceneModel) {
-    var prevSceneModel = this.sceneModelCollection.findWhere({ selected: true });
-    var isPrevModelNewModel = prevSceneModel && prevSceneModel.cid === newSceneModel.cid;
+    var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true });
+    var isOldModelNewModel = oldSceneModel && oldSceneModel.cid === newSceneModel.cid;
     var sceneDetailsStartLoad;
 
-    if (prevSceneModel && !isPrevModelNewModel) { // if there a prev sceneModel
-      prevSceneModel.reset(false);
-    }
+    if (oldSceneModel && !isOldModelNewModel)  oldSceneModel.set("selected", false);
 
-    if (isPrevModelNewModel || !newSceneModel ) return;
+    if (isOldModelNewModel || !newSceneModel ) { // if they click on navbar after it is already selected
+      eventController.trigger(eventController.RESET_SCENE_DETAILS, oldSceneModel);
+      return;
+    }
     sceneDetailsStartLoad = newSceneModel.get("ready") === false && !newSceneModel.get("sceneDetails");
     if ( sceneDetailsStartLoad ) this.loadSceneDetails(newSceneModel);
     newSceneModel.set({ selected:true });

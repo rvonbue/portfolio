@@ -2,30 +2,47 @@ import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 import canvas from "../../data/embeded3dModels/canvas.json";
 import easel from "../../data/embeded3dModels/easel.json";
 import THREE from "three";
+import pageData from "../../data/pageData/digitalArt";
 
 var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
-  initialize: function (options) {
-    SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
-    window.wtf = this;
-    this.set("name", "DigitalArtSD");
-    this.set("initialCameraPosition", { x:0, y: -0.25, z: 2.75});
-    this.set("initialCameraTarget", { x:0, y: 1.5, z: 0});
-    this.set("pointLights", [
+  defaults: {
+    name: "DigitalArtSD",
+    initialCameraPosition: { x:0, y: -0.25, z: 2.75 },
+    initialCameraTarget: { x:0, y: 1.5, z: 0 },
+    pointLights: [
+      { x: -2, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 },
       { x: 0, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 },
-      { x: 2, y: 1, z: 1, color: "#0000FF", intensity: 7, distance: 2 },
-      { x: -2, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 }
-    ]);
-    this.set("intialAmbientLights", {
+      { x: 2, y: 1, z: 1, color: "#0000FF", intensity: 7, distance: 2 }
+    ],
+    intialAmbientLights: {
       ambient: ["#FFFFFF", 0], // color intensity
       hemisphere: ["#9BE2FE", "#404040", 0.4],  // skyColor, groundColor, intensity
       directional: ["#FFFFFF", 0]  // color intensity,
-    });
+    },
+    projectIndex: 0
   },
-  addInteractiveObjects: function (modelLoader) {
-    this.addArtEasels(modelLoader);
+  initialize: function (options) {
+    SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
+    // console.log("this", this);
   },
   showHide: function (tBool, selectedParentScene) {
     SceneDetailsBaseModel3d.prototype.showHide.apply(this, arguments);
+  },
+  loadImagesEasel: function (forward) {
+    var projectIndex = this.get("projectIndex");
+    var imgNum = 0;
+    _.each(this.get("interactiveObjects"), (mesh, i) => {
+      var projectData = pageData[projectIndex + i];
+      if (projectData) {
+        mesh.material.map = new THREE.TextureLoader().load( projectData.imgSrc);
+        imgNum++;
+      }
+    });
+    this.set("projectIndex", projectIndex += forward ? imgNum : -imgNum); //add or subtract 3 from the how many images
+  },
+  addInteractiveObjects: function (modelLoader) {
+    this.addArtEasels(modelLoader);
+    this.loadImagesEasel(true);
   },
   addArtEasels: function (modelLoader) {
     var interactiveObjects = [];
@@ -33,7 +50,7 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
       var canvasMesh = this.getArtEasel(modelLoader);
       canvasMesh.position.set( light.x, light.y, light.z);
       canvasMesh.position.y = this.get("parentScenePosition").y;
-      // this.get("object3d").add(canvasMesh);
+      this.get("object3d").add(canvasMesh);
       interactiveObjects.push(canvasMesh);
     }, this);
     this.set("interactiveObjects", interactiveObjects);

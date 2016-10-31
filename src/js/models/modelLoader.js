@@ -43,12 +43,12 @@ var ModelLoader = BaseModel.extend({
     var materialObj = materialMapList[mat.name];
     _.each(materialObj, function (prop, key) {
       if (key === "maps") {
-        _.each(prop, function (mapObj) { self.getNewTexture(mapObj, mat, materialObj.mapProps); });
+        _.each(prop, function (mapObj) { self.setNewTexture(mapObj, mat, materialObj.mapProps); });
       }
       if (key === "props") self.setMaterialAttributes(mat, prop);
     }, this);
   },
-  getNewTexture: function (mapObj, mat, options) {
+  setNewTexture: function (mapObj, mat, options) {
     var texture = null;
     _.each(mapObj, function (mapURL, mapKey) {
       if (mapURL === null || mapURL === "null") return null;
@@ -60,7 +60,6 @@ var ModelLoader = BaseModel.extend({
         }
       });
     });
-    return texture;
   },
   setMaterialAttributes: function (mat, props) {
     // console.log("mat:", mat);
