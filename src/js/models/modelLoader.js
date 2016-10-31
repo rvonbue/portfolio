@@ -13,20 +13,22 @@ var ModelLoader = BaseModel.extend({
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
     this.manager.onProgress = function ( item, loaded, total ) {
-      // console.log( item, loaded, total );
+      console.log( item, loaded, total );
     };
   },
   loadModel: function (url, options, whichCallback) {
     var self = this;
     var loader =  new THREE.JSONLoader(this.manager);
     loader.load(url, function ( geometry, materials ) {
-        geometry.computeBoundingBox();
+        var bufferGeo = new THREE.BufferGeometry();
+        bufferGeo.fromGeometry ( geometry );
+        bufferGeo.computeBoundingBox();
         _.each(materials, function (mat) {
           if (materialMapList[mat.name]) {
             self.setMaterialMap(mat);
           }
       });
-      var object3d = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial(materials) );
+      var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(materials) );
       var modelDetails = { name: options.name, sceneModelName: options.sceneModelName, object3d: object3d };
       if ( options.sceneModelName ) {
         // setTimeout(function () {

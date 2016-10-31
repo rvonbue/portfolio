@@ -60,7 +60,7 @@ var SceneLoader = BaseView.extend({
     this.sceneModelCollection.each(function (sceneModel) {
       sceneModel.reset(true);
     });
-    this.setInteractiveObjects();
+    this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
   setMouseMoveHoverSceneModel: function (intersect) {
     if (!intersect && this.hoverModel) {
@@ -128,14 +128,17 @@ var SceneLoader = BaseView.extend({
     sceneModel.set("sceneDetails", sceneDetailsModel); //set sceneModel and toggle show/hide of sceneDetails Model
     this.addSceneDetailsToScene(sceneDetailsModel); //add to stage so get they rendered
 
-    if (sceneModel.get("selected")) this.zoomToSelectedSceneModel(sceneModel);
+    if (sceneModel.get("selected")) {
+      this.zoomToSelectedSceneModel(sceneModel);
+
+    }
   },
   addSceneDetailsToScene: function (sceneDetailsModel) {
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.getAllMeshes());
-    // eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetail_lights.map( function (light) {
+    eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneDetailsModel.get("intialAmbientLights"));
+    //  eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetail_lights.map( function (light) {
     //   return new THREE.PointLightHelper(light, 0.25);
     // }));
-    eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneDetailsModel.get("intialAmbientLights"));
   },
   getSceneDetailsModel: function (modelObj) {
     delete modelObj["name"]; // let models set their own names
@@ -168,10 +171,13 @@ var SceneLoader = BaseView.extend({
       .start();
     });
   },
-  setInteractiveObjects: function () {
+  getSceneModelInteractiveObjects: function () {
     var objects3d = this.sceneModelCollection
     .where({interactive: true})
     .map(function (model) { return model.get('rayCasterMesh'); });
+    return objects3d;
+  },
+  setInteractiveObjects: function (objects3d) {
     eventController.trigger(eventController.RESET_RAYCASTER, objects3d);
   },
   cameraStartAnimatingToSceneDetails: function () {
@@ -187,7 +193,6 @@ var SceneLoader = BaseView.extend({
       sceneModel.showHide(true);
     }, this);
   },
-
   addNonInteractive: function (obj) {
     obj.interactive = false;
     var sceneModel = this.sceneModelCollection.add(obj); //adding to collection returns sceneModel
@@ -206,7 +211,7 @@ var SceneLoader = BaseView.extend({
     });
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
     // eventController.trigger(eventController.SET_SPOTLIGHT_TARGET, sceneModels[sceneModels.length -1].get("text3d"));
-    this.setInteractiveObjects();
+    this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
   createFloors: function (object3d) {
     var floorView3d = new FloorBuilder3d();

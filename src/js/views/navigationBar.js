@@ -3,6 +3,8 @@ import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
 import navigationList from "../data/navigationList";
 import cameraControlsGuiHTML from "./html/cameraControlsGUI.html";
+import PhotoSwipe from "photoswipe";
+import PhotoSwipeUI_Default from "../../../node_modules/photoswipe/dist/photoswipe-ui-default.min.js";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",
@@ -15,9 +17,10 @@ var NavigationBar = BaseView.extend({
     "click .3d": "switchView3d",
     "click .resetCamera": "resetScene"
   },
-  initialize: function () {
+  initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
     _.bindAll(this, "getSelectedSection");
+    this.parentEl = options.parentEl;
     this.height = 45;
     this.addListeners();
   },
@@ -47,7 +50,10 @@ var NavigationBar = BaseView.extend({
       this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
     }
     var hoveredBool = this.hoveredEl ? true : false;
-    $(".appView-3d").toggleClass("hovered", hoveredBool);
+    this.updateHoverMouseCursor(hoveredBool)
+  },
+  updateHoverMouseCursor: function (hoveredBool) {
+    this.parentEl.toggleClass("hovered", hoveredBool);
   },
   enterHoverNavigationLi: function (evt) {
     eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, navigationList[$(evt.currentTarget).index()] , true );
@@ -61,7 +67,7 @@ var NavigationBar = BaseView.extend({
     this.selectedEl = newSelectedEl.addClass("selected");
   },
   swapHoveredEl: function (newSelectedEl) {
-    if (!newSelectedEl) return;
+    if (!newSelectedEl || this.hoveredEl === newSelectedEl ) return;
     if (this.hoveredEl) this.hoveredEl.removeClass("hovered");
     this.hoveredEl = newSelectedEl.addClass("hovered");
   },
@@ -103,6 +109,41 @@ var NavigationBar = BaseView.extend({
     this.cacheListEls();
 
     return this;
+  },
+  openPhotoSwipe: function () {
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+
+      // build items array
+      var items = [
+          {
+              src: 'https://placekitten.com/600/400',
+              w: 600,
+              h: 400
+          },
+          {
+              src: 'https://placekitten.com/1200/900',
+              w: 1200,
+              h: 900
+          }
+      ];
+
+      // define options (if needed)
+      var options = {
+        closeEl:true,
+        captionEl: true,
+        fullscreenEl: true,
+        zoomEl: true,
+        shareEl: true,
+        counterEl: true,
+        arrowEl: true,
+        preloaderEl: true,
+        index: 0 // start at first slide
+      };
+
+      // Initializes and opens PhotoSwipe
+      console.log("PhotoSwipeUI_Default", PhotoSwipe);
+      var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+      gallery.init();
   }
 });
 

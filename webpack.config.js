@@ -12,8 +12,7 @@ module.exports = {
      loaders: [
        { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
 		   { test: /\.js$/, exclude: /node_modules/, loader: 'babel', query: {	presets: ['es2015'] }},
-       { test: /\.(jpe?g|png|gif|svg)$/i, exclude: /node_modules/, loader:'file' },
-       { test: /\.less$/, exclude: /node_modules/, loader: "url-loader"},
+      { test: /\.(jpe?g|png|gif|svg)$/i, exclude: /node_modules/, loader: "url-loader?limit=4096"},
        { test: /\.less$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")},
        { test: /\.html$/, loader: "underscore-template-loader" }
      ]
