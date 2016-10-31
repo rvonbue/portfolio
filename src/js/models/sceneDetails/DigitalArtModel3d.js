@@ -7,8 +7,8 @@ import pageData from "../../data/pageData/digitalArt";
 var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   defaults: {
     name: "DigitalArtSD",
-    initialCameraPosition: { x:0, y: -0.25, z: 2.75 },
-    initialCameraTarget: { x:0, y: 1.5, z: 0 },
+    initialCameraPosition: { x:0, y: -0.75, z: 2.75 },
+    initialCameraTarget: { x:0, y: 1, z: 0 },
     pointLights: [
       { x: -2, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 },
       { x: 0, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 },

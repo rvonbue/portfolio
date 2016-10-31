@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+// require("url?limit=10000!./file.png");
 
 module.exports = {
    entry: './src/js/entry.js',
@@ -11,7 +12,8 @@ module.exports = {
      loaders: [
        { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
 		   { test: /\.js$/, exclude: /node_modules/, loader: 'babel', query: {	presets: ['es2015'] }},
-      //  { test: /\.(jpe?g|png|gif|svg)$/i, exclude: /node_modules/, loader:'file' },
+       { test: /\.(jpe?g|png|gif|svg)$/i, exclude: /node_modules/, loader:'file' },
+       { test: /\.less$/, exclude: /node_modules/, loader: "url-loader"},
        { test: /\.less$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")},
        { test: /\.html$/, loader: "underscore-template-loader" }
      ]
