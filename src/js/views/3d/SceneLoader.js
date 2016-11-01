@@ -5,11 +5,12 @@ import eventController from "../../controllers/eventController";
 import navigationList from "../../data/navigationList";
 import SceneModel from "../../models/sceneModel";
 import SceneModelCollection from "../../collections/SceneModelCollection";
+import ModelLoader from "../../models/modelLoader";
 import utils from "../../util/utils";
 
-import ModelLoader from "../../models/modelLoader";
 import FloorBuilder3d from "./FloorBuilder3d";
 import SceneDetailsBuilder3d from "./SceneDetailsBuilder3d";
+
 import SceneDetailsModel from "../../models/sceneDetails/SceneDetailsBaseModel3d";
 import WebDevModel3d from "../../models/sceneDetails/WebDevModel3d";
 import AnimationModel3d from "../../models/sceneDetails/AnimationModel3d";
@@ -39,29 +40,28 @@ var SceneLoader = BaseView.extend({
   addListeners: function () {
      eventController.on(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
      eventController.on(eventController.MODEL_LOADED, this.modelLoaded, this );
-     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
-     eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
-     eventController.on(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
-     eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
      eventController.on(eventController.RESET_SCENE, this.resetScene, this);
-     this.setMouseHoverListeners(true);
+     // hover - click events from the 3d space
+     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
+     eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
+     // hover - click events from the navigation bar
+     eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
+     eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
+
+     eventController.on(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
     eventController.off(eventController.MODEL_LOADED, this.modelLoaded, this );
+    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
+
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
-    eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
-    eventController.off(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
+    eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
 
     eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
-    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
-  },
-  setMouseHoverListeners: function (turnOn) {
-    if (turnOn) {
-      eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
-    } else {
-      eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
-    }
+    eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
+
+    eventController.off(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
   },
   resetScene: function () {
     this.sceneModelCollection.each(function (sceneModel) {
@@ -107,24 +107,41 @@ var SceneLoader = BaseView.extend({
   navigationBarSelectSceneModel: function (index) {
     this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: navigationList[index] }));
   },
+  getSelectedScene: function () {
+    return this.sceneModelCollection.findWhere({ selected: true });
+  },
   toggleSelectedSceneModel: function (newSceneModel) {
-    var oldSceneModel = this.sceneModelCollection.findWhere({ selected: true });
+    var oldSceneModel = this.getSelectedScene();
     var isOldModelNewModel = oldSceneModel && oldSceneModel.cid === newSceneModel.cid;
-    var sceneDetailsStartLoad;
 
-    if (oldSceneModel && !isOldModelNewModel)  oldSceneModel.set("selected", false);
+    if ( !newSceneModel.get("ready") && !newSceneModel.get("loading")){
+      this.loadSceneDetails(newSceneModel);
+      this.zoomToSelectedSceneModel(newSceneModel);
+    }
 
-    if (isOldModelNewModel || !newSceneModel ) { // if they click on navbar after it is already selected
-      eventController.trigger(eventController.RESET_SCENE_DETAILS, oldSceneModel);
+    if (isOldModelNewModel && oldSceneModel.get("sceneDetails")) { //same scene Selected just reset sceneDetails lighting,camera,raycaster
+      eventController.trigger(eventController.RESET_RAYCASTER, []);   //reset Interactive objects to nothing will loading new ones
+      this.resetSceneDetails(oldSceneModel);
       return;
     }
-    sceneDetailsStartLoad = newSceneModel.get("ready") === false && !newSceneModel.get("sceneDetails");
-    if ( sceneDetailsStartLoad ) this.loadSceneDetails(newSceneModel);
+
+    this.unselectSceneModel(oldSceneModel);
     newSceneModel.set({ selected:true });
-    this.zoomToSelectedSceneModel(newSceneModel);
+    this.resetSceneDetails(newSceneModel);
+  },
+  unselectSceneModel: function (sceneModel) {
+    if (sceneModel) sceneModel.set("selected", false);
+  },
+  resetSceneDetails: function (sceneModel) {
+    eventController.trigger(eventController.RESET_SCENE_DETAILS, sceneModel);
+    if (sceneModel.get("ready")) {
+      var sceneDetails = sceneModel.get("sceneDetails");
+      eventController.trigger(eventController.RESET_RAYCASTER, sceneDetails.get("interactiveObjects"));
+      eventController.trigger(eventController.SET_RENDER_VIDEO_TEXTURE, sceneDetails.get("video"));
+    }
+    this.zoomToSelectedSceneModel(sceneModel);
   },
   zoomToSelectedSceneModel: function (sceneModel) {
-    eventController.trigger(eventController.RESET_RAYCASTER, []);   //reset Interactive objects to nothing will loading new ones
     eventController.trigger(eventController.SCENE_MODEL_SELECTED, sceneModel);  //zoom to selected model
   },
   loadSceneDetails: function (newSceneModel) {
@@ -145,18 +162,16 @@ var SceneLoader = BaseView.extend({
     sceneModel.set("sceneDetails", sceneDetailsModel); //set sceneModel and toggle show/hide of sceneDetails Model
     this.addSceneDetailsToScene(sceneDetailsModel); //add to stage so get they rendered
 
-    if (sceneModel.get("selected")) {
-      this.zoomToSelectedSceneModel(sceneModel);
-      console.log("interactiveObjects", sceneDetailsModel.get("interactiveObjects"));
-      eventController.trigger(eventController.RESET_RAYCASTER, sceneDetailsModel.get("interactiveObjects"));
+    if ( sceneModel.get("selected") ) {
+      this.toggleSelectedSceneModel(sceneModel);
     }
   },
   addSceneDetailsToScene: function (sceneDetailsModel) {
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.getAllMeshes());
     eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneDetailsModel.get("intialAmbientLights"));
-    //  eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetail_lights.map( function (light) {
-    //   return new THREE.PointLightHelper(light, 0.25);
-    // }));
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.get("sceneLights").map( function (light) {
+      return new THREE.PointLightHelper(light, 0.25);
+    }));
   },
   getSceneDetailsModel: function (modelObj) {
     delete modelObj["name"]; // let getSceneDetailsModel set their own names
@@ -237,6 +252,9 @@ var SceneLoader = BaseView.extend({
       );
       floorView3d.addFloorItems(sceneModel, this.modelLoader);
     }, this);
+
+    floorView3d.remove();
+    floorView3d = null;
   },
   modelLoaded: function (obj) {
     if (obj.name === this.SCENE_MODEL_NAME) {

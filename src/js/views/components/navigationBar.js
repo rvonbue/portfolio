@@ -1,8 +1,8 @@
-import eventController from "../controllers/eventController";
-import commandController from "../controllers/commandController";
-import BaseView from "./BaseView";
-import navigationList from "../data/navigationList";
-import cameraControlsGuiHTML from "./html/cameraControlsGUI.html";
+import eventController from "../../controllers/eventController";
+import commandController from "../../controllers/commandController";
+import BaseView from "../BaseView";
+import navigationList from "../../data/navigationList";
+import cameraControlsGuiHTML from "../html/cameraControlsGUI.html";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",

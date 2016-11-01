@@ -9,6 +9,7 @@ var SceneModel = BaseModel3d.extend({
     "text3d": null,  // mesh
     "selected": false,
     "hover": false,
+    "loading": false,
     "ready": false,  //ready if sceneDetails are loaded
     "interactive": true,
     "doorsBool": false, // doors are close by default
@@ -24,7 +25,7 @@ var SceneModel = BaseModel3d.extend({
     // this.setFadeInMaterials();
     this.once("change:selected", this.loadSceneDetails);
     this.once("change:sceneDetails", function (mesh) {
-      this.set("ready", true);
+      this.set({ ready: true, loading: false });
       this.get("sceneDetails").showHide(true, this.get("selected"));
     });
   },
@@ -66,7 +67,6 @@ var SceneModel = BaseModel3d.extend({
     var sceneDetails = this.get("sceneDetails");
     if (sceneDetails) {
       sceneDetails.showHide(visBool, this.get("selected"));
-      console.log("SceneModel:" +  this.get("name") + "  " + visBool);
     }
   },
   startScene: function () {

@@ -1,9 +1,10 @@
-import eventController from "../../controllers/eventController";
-import BaseView from "../BaseView";
 import THREE from "three";
 import TWEEN from "tween.js";
-import skyGradients from "../../data/skyGradients";
-import utils from "../../util/utils";
+
+import eventController from "../../../controllers/eventController";
+import BaseView from "../../BaseView";
+import skyGradients from "../../../data/skyGradients";
+import utils from "../../../util/utils";
 var worldColor = utils.getColorPallete().world;
 
 var LightControls = BaseView.extend({
@@ -21,11 +22,13 @@ var LightControls = BaseView.extend({
     eventController.on(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
     eventController.on(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
+    eventController.on(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
   },
   removeListeners: function () {
     eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleAmbientLighting, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
     eventController.off(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
+    eventController.off(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
   },
   addLight: function () {
     this.addHemisphereLight();
@@ -35,6 +38,10 @@ var LightControls = BaseView.extend({
   },
   resetScene: function () {
     this.toggleWorldLighting(this.getResetLightSettings());
+  },
+  resetToSceneDetails: function (sceneModel) {
+    var sceneDetails = sceneModel.get("sceneDetails");
+    if ( sceneDetails ) this.toggleWorldLighting(sceneDetails.get("intialAmbientLights"));
   },
   getResetLightSettings: function () {
     return {

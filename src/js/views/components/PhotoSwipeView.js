@@ -1,8 +1,9 @@
-import eventController from "../controllers/eventController";
-import BaseView from "./BaseView";
 import PhotoSwipe from "photoswipe";
-import PhotoSwipeUI_Default from "../../../node_modules/photoswipe/dist/photoswipe-ui-default.min.js";
-import photoSwipeHtml from "./html/photoSwipe.html";
+
+import eventController from "../../controllers/eventController";
+import BaseView from "../BaseView";
+import PhotoSwipeUI_Default from "../../../../node_modules/photoswipe/dist/photoswipe-ui-default.min.js";
+import photoSwipeHtml from "../html/photoSwipe.html";
 
 var PhotoSwipeView = BaseView.extend({
   className: "photo-swipe",

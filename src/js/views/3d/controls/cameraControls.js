@@ -1,9 +1,11 @@
-import eventController from "../../controllers/eventController";
-import BaseModel from "../../models/BaseModel";
 import TWEEN from "tween.js";
 import THREE from "three";
-import utils from "../../util/utils"
+
+import eventController from "../../../controllers/eventController";
+import BaseModel from "../../../models/BaseModel";
+import utils from "../../../util/utils"
 var OrbitControls = require('three-orbit-controls')(THREE);
+
 var CAMERA_INTIAL_POSITION = { x: -25, y: 45, z: 45 };
 var TARGET_INITIAL_POSITION = { x: 0, y: 15, z: 0 };
 
@@ -13,6 +15,7 @@ var CameraControls = BaseModel.extend({
     this.addListeners();
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
     this.setCameraInitialPosition();
+    var hello = 5;
   },
   addListeners: function () {
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);

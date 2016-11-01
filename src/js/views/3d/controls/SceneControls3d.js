@@ -1,11 +1,12 @@
-import eventController from "../../controllers/eventController";
-import BaseModel from "../../models/BaseModel";
-import SceneLoader from "../3d/SceneLoader";
-import MovieTheaterView3d from "../3d/movieTheaterView3d";
 import TWEEN from "tween.js";
 import THREE from "three";
 
-var SceneControls = BaseModel.extend({
+import eventController from "../../../controllers/eventController";
+import BaseModel from "../../../models/BaseModel";
+import SceneLoader from "../SceneLoader";
+import MovieTheaterView3d from "../movieTheaterView3d";
+
+var SceneControls3d = BaseModel.extend({
   defaults:  {
     home: null
   },
@@ -111,4 +112,4 @@ var SceneControls = BaseModel.extend({
     return this;
   }
 });
-module.exports = SceneControls;
+module.exports = SceneControls3d;

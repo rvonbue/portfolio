@@ -12,9 +12,8 @@ var WebDevModel3d = SceneDetailsBaseModel3d.extend({
       {x: 0.5, y: 1.5, z: 1, color: "#0000FF", intensity: 3, distance: 2.5 }  //computer screen fake light
     ]);
     this.set("intialAmbientLights", {
-      ambient: ["#FFFFFF", 0], // color intensity
       directional: ["#FFFFFF", 0],  // color intensity,
-      hemisphere: ["#404040", "#9BE2FE", 0.05]  // skyColor, groundColor, intensity
+      hemisphere: ["#404040", "#FFFFFF", 0.15]  // skyColor, groundColor, intensity
     });
   }
 });

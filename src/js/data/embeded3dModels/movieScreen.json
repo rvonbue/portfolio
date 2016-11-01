@@ -1,0 +1,35 @@
+module.exports = {
+    "name": "Cube.033Geometry.4",
+    "normals": [0,0,1],
+    "metadata": {
+        "version": 3,
+        "normals": 1,
+        "materials": 1,
+        "vertices": 4,
+        "type": "Geometry",
+        "generator": "io_three",
+        "uvs": 1,
+        "faces": 1
+    },
+    "vertices": [-5.31428,1.52913,-3.80657,-5.31428,7.50785,-3.80657,5.31456,7.50785,-3.80657,5.31456,1.52913,-3.80657],
+    "materials": [{
+        "wireframe": false,
+        "depthTest": true,
+        "DbgColor": 15658734,
+        "DbgName": "movieScreen",
+        "shading": "phong",
+        "colorDiffuse": [0.64,0.64,0.64],
+        "colorAmbient": [0.64,0.64,0.64],
+        "specularCoef": 50,
+        "opacity": 1,
+        "blending": "NormalBlending",
+        "transparent": false,
+        "colorSpecular": [0.5,0.5,0.5],
+        "visible": true,
+        "DbgIndex": 0,
+        "depthWrite": true,
+        "colorEmissive": [0,0,0]
+    }],
+    "uvs": [[9.5e-05,0.898487,9.5e-05,9.5e-05,0.999905,9.5e-05,0.999905,0.898487]],
+    "faces": [43,1,0,3,2,0,0,1,2,3,0,0,0,0]
+}

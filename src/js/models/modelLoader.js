@@ -52,9 +52,10 @@ var ModelLoader = BaseModel.extend({
   },
   setNewTexture: function (mapObj, mat, options) {
     var texture = null;
+    var self = this;
     _.each(mapObj, function (mapURL, mapKey) {
       if (mapURL === null || mapURL === "null") return null;
-      mat[mapKey] = new THREE.TextureLoader().load( mapURL, function (texture) {
+      mat[mapKey] = new THREE.TextureLoader(self.manager).load( mapURL, function (texture) {
         if (options.repeatScale) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.repeat.set( options.repeatScale, options.repeatScale );
@@ -86,7 +87,7 @@ var ModelLoader = BaseModel.extend({
     }, this);
     return model;
   },
-  addVideoTexture: function () {
+  getVideoTexture: function () {
     var video = document.getElementById( 'video' );
 		var texture = new THREE.VideoTexture( video );
 		texture.minFilter = THREE.LinearFilter;

@@ -1,11 +1,12 @@
-import BaseView from "./BaseView";
 import THREE from "three";
 import TWEEN from "tween.js";
 import raf from "raf";
+
+import BaseView from "./BaseView";
 import eventController from "../controllers/eventController";
-import LightControls from "./controls/LightControls";
-import CameraControls from "./controls/cameraControls";
-import SceneControls from "./controls/sceneControls";
+import LightControls from "./3d/controls/LightControls";
+import CameraControls from "./3d/controls/cameraControls";
+import SceneControls3d from "./3d/controls/SceneControls3d";
 import StatsView from "./3d/statsView";
 
 var AppView3d = BaseView.extend({
@@ -19,6 +20,7 @@ var AppView3d = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
+    eventController.on(eventController.SET_RENDER_VIDEO_TEXTURE, this.setRenderVideoTexture, this);
     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).on("resize", this.resize);
   },
@@ -53,7 +55,7 @@ var AppView3d = BaseView.extend({
   },
   initControls: function () {
     var cameraControls = new CameraControls({ camera:this.camera, canvasEl:this.canvasEl });
-    this.sceneControls = new SceneControls({ camera:this.camera, scene:this.scene, canvasEl:this.canvasEl });
+    this.sceneControls = new SceneControls3d({ camera:this.camera, canvasEl:this.canvasEl });
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
@@ -78,6 +80,18 @@ var AppView3d = BaseView.extend({
     this.controls.update(this.clock.getDelta());
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
+    if (this.videoObject) {
+      if ( this.videoObject.video.readyState === this.videoObject.video.HAVE_ENOUGH_DATA )
+      	{
+      		this.videoObject.videoImageContext.drawImage( this.videoObject.video, 0, 0 );
+      		if ( this.videoObject.videoTexture )
+      			this.videoObject.videoTexture.needsUpdate = true;
+      	}
+    }
+  },
+  setRenderVideoTexture: function (videoObject) {
+    console.log("setRenderVideoTexture", videoObject);
+    this.videoObject = videoObject;
   },
   resize: function () {
     var size = this.getWidthHeight();

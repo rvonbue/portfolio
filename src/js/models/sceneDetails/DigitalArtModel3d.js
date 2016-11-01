@@ -7,16 +7,15 @@ import pageData from "../../data/pageData/digitalArt";
 var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   defaults: {
     name: "DigitalArtSD",
-    initialCameraPosition: { x:0, y: -0.75, z: 2.75 },
+    initialCameraPosition: { x:0, y: -0.75, z: 4.25 },
     initialCameraTarget: { x:0, y: 1, z: 0 },
     pointLights: [
-      { x: -2, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 },
-      { x: 0, y: 1, z: 1, color: "#FFFFFF", intensity: 7, distance: 2 },
-      { x: 2, y: 1, z: 1, color: "#0000FF", intensity: 7, distance: 2 }
+      { x: -2, y: 2.5, z: 2.5, color: "#FFFFFF", intensity: 4, distance: 5 },
+      { x: 0, y: 2.5, z: 2.5, color: "#FFFFFF", intensity: 4, distance: 5 },
+      { x: 2, y: 2.5, z: 2.5, color: "#FFFFFF", intensity: 4, distance: 5 }
     ],
     intialAmbientLights: {
-      ambient: ["#FFFFFF", 0], // color intensity
-      hemisphere: ["#9BE2FE", "#404040", 0.4],  // skyColor, groundColor, intensity
+      hemisphere: ["#FFFFFF", "#FFFFFF", 0.75],  // skyColor, groundColor, intensity
       directional: ["#FFFFFF", 0]  // color intensity,
     },
     projectIndex: 0
@@ -56,10 +55,15 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   },
   addArtEasels: function (modelLoader) {
     var interactiveObjects = [];
+    var zMod = -0.75;
     _.each(this.get("pointLights"), function (light, i) {
       var canvasMesh = this.getArtEasel(modelLoader);
-      canvasMesh.position.set( light.x, light.y, light.z);
+      canvasMesh.position.set( light.x, 0, light.z + zMod);
       canvasMesh.position.y = this.get("parentScenePosition").y;
+      // var posBool = Math.random() > 0.5 ? true : false;
+      // var randomRotation = (1.5 * Math.PI) / 180;
+      // if (posBool) randomRotation *= -1;
+      // canvasMesh.rotateY((2 * Math.PI) / 180 );
       canvasMesh.name = "photoswipe";
       canvasMesh.imageNum = i;
       this.get("object3d").add(canvasMesh);

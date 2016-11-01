@@ -3,6 +3,7 @@ import BaseModel3d from "../BaseModel3d";
 var SceneDetailsBaseModel3d = BaseModel3d.extend({
   defaults: {
     name: "Spinach",
+    video: null,
     pointLights: new Array,
     parentScenePosition: { x:0, y: 0, z: 0},
     initialCameraPosition: { x:0, y: 0, z: 0},
