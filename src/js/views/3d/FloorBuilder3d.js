@@ -88,7 +88,8 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
   setRaycasterMesh: function (sceneModel) {
     var text3d = sceneModel.get("text3d");
     var size = sceneModel.getSize(text3d);
-    var geometry = new THREE.PlaneGeometry( size.w, size.h );
+    var floorHeight = sceneModel.getSize();
+    var geometry = new THREE.PlaneGeometry( size.w, floorHeight.h );
     var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.FrontSide } );
     material.visible = false;
     material.alwaysHidden = true;

@@ -1,7 +1,7 @@
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 import canvas from "../../data/embeded3dModels/canvas.json";
 import easel from "../../data/embeded3dModels/easel.json";
-import THREE from "three";
+import { TextureLoader, Mesh } from "three";
 import pageData from "../../data/pageData/digitalArt";
 
 var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
@@ -28,17 +28,27 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   showHide: function (tBool, selectedParentScene) {
     SceneDetailsBaseModel3d.prototype.showHide.apply(this, arguments);
   },
+  getPSImages: function (numClicked) {
+    var photoSwipeImgArray = [];
+    for (var i = 0; i < this.get("interactiveObjects").length; i++ ) {
+      if (pageData.length > this.get("projectIndex") + i) {
+        var imgSrc = pageData[this.get("projectIndex") + i].imgSrc;
+        photoSwipeImgArray.push({ src: imgSrc, w: 1920, h: 1080 });
+      }
+    }
+    return photoSwipeImgArray;
+  },
   loadImagesEasel: function (forward) {
     var projectIndex = this.get("projectIndex");
-    var imgNum = 0;
+    // var imgNum = 0;
     _.each(this.get("interactiveObjects"), (mesh, i) => {
       var projectData = pageData[projectIndex + i];
       if (projectData) {
-        mesh.material.map = new THREE.TextureLoader().load( projectData.imgSrc);
-        imgNum++;
+        mesh.material.map = new TextureLoader().load( projectData.imgSrc);
+        // imgNum++;
       }
     });
-    this.set("projectIndex", projectIndex += forward ? imgNum : -imgNum); //add or subtract 3 from the how many images
+    // this.set("projectIndex", projectIndex += forward ? imgNum : -imgNum); //add or subtract 3 from the how many images
   },
   addInteractiveObjects: function (modelLoader) {
     this.addArtEasels(modelLoader);
@@ -46,10 +56,12 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   },
   addArtEasels: function (modelLoader) {
     var interactiveObjects = [];
-    _.each(this.get("pointLights"), function (light) {
+    _.each(this.get("pointLights"), function (light, i) {
       var canvasMesh = this.getArtEasel(modelLoader);
       canvasMesh.position.set( light.x, light.y, light.z);
       canvasMesh.position.y = this.get("parentScenePosition").y;
+      canvasMesh.name = "photoswipe";
+      canvasMesh.imageNum = i;
       this.get("object3d").add(canvasMesh);
       interactiveObjects.push(canvasMesh);
     }, this);
@@ -57,9 +69,9 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   },
   getArtEasel: function (modelLoader) {
     var model = modelLoader.parseJSON(canvas);
-    var canvasMesh = new THREE.Mesh( model.geometry, model.materials[0]); //only one material on the door
+    var canvasMesh = new Mesh( model.geometry, model.materials[0]); //only one material on the door
     var model2 = modelLoader.parseJSON(easel);
-    var easelMesh = new THREE.Mesh( model2.geometry, model2.materials[0]);
+    var easelMesh = new Mesh( model2.geometry, model2.materials[0]);
     canvasMesh.add(easelMesh);
     return canvasMesh;
   }

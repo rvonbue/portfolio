@@ -1,36 +1,47 @@
-.project-container {
-  width: 95%;
-  margin: 0px auto;
-  padding: 0px 8px;
+.web-dev {
+  position: relative;
+  width: 100%;
 }
+
+.project-container {
+  width: calc(~"100% -24px");
+  margin: 0px;
+  padding: 0 24px;
+  white-space: nowrap;
+}
+
 .project-title {
-  color: #062F4F;
+  color: @color-4;
   width: 100%;
   text-align: left;
   font-size: 200%;
   padding: 0px 0px 8px 0px;
 }
 .text-wrapper, .img-wrapper {
-  width: 48%;
+  width: 50%;
   display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  white-space: nowrap;
 }
 .text-wrapper {
-  margin: 0px;
   vertical-align: top;
+  text-align: left;
   P {
     font-size:150%;
+    padding-right: 5%;
+    white-space: normal;
   }
 }
 .img-wrapper {
-  margin: 0px;
-  padding: 0px;
-}
-.img-wrapper {
-
+  text-align: right;
+  margin-left: -3px;
   img {
     max-width: 100%;
     display: block;
-    margin: 0px auto;
+    float:right;
+    // margin: 0px auto;
   }
 }
 hr {
@@ -38,27 +49,30 @@ hr {
   margin: 45px auto 30px auto;
 	border-top: 4px double @color-4;
 	text-align: center;
-}
-hr:after {
-	content: '\25CE';
-	display: inline-block;
-	position: absolute;
-	// top: -15px;
-  margin-top:-15px;
-	padding: 2px 10px;
-	background: #FFFFFF;
-  border: 1px solid @color-4;
-	color: @color-4;
-	font-size: 18px;
-}
-hr.first {
-  width: 25%;
-  margin-top: 15px;
+
   &:after {
-    margin-left: -10px;
-    content: "1";
+  	content: '\25CE';
+  	display: inline-block;
+  	position: absolute;
+  	// top: -15px;
+    margin-top:-15px;
+  	padding: 2px 10px;
+  	background: #FFFFFF;
+    border: 1px solid @color-4;
+  	color: @color-4;
+  	font-size: 18px;
   }
+  &.first {
+    width: 25%;
+    margin-top: 15px;
+    &:after {
+      margin-left: -10px;
+      content: "1";
+    }
+  }
+
 }
+
 @media screen and (max-width: 768px) {
   .text-wrapper, .img-wrapper {
     width: 100%;
@@ -66,5 +80,27 @@ hr.first {
   }
   .img-wrapper {
     margin-top: 30px;
+  }
+  .text-wrapper {
+    p {
+      padding-right:0px;
+    }
+
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .text-wrapper, .img-wrapper {
+    width: 100%;
+    display: block;
+  }
+  .img-wrapper {
+    margin-top: 30px;
+  }
+  .text-wrapper {
+    p {
+      padding-right:0px;
+    }
+
   }
 }

@@ -1,10 +1,10 @@
 import BaseView2d from "./BaseView2d";
-import pageData from "../../data/pageData/WebDevProjects";
-import projectContainerHTML from "./WebDevViewTemplate.html";
+import pageData from "../../data/pageData/3dAnimation";
+import projectContainerHTML from "./ThreeDAnimationViewTemplate.html";
 
-var WebDevView2d = BaseView2d.extend({
-  className: "web-dev",
-  title: "Web Development",
+var ThreeDAnimationView = BaseView2d.extend({
+  className: "3d-animation",
+  title: "3D Animation",
   titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
   initialize: function () {
     BaseView2d.prototype.initialize.apply(this, arguments);
@@ -19,4 +19,4 @@ var WebDevView2d = BaseView2d.extend({
   }
 });
 
-module.exports = WebDevView2d;
+module.exports = ThreeDAnimationView;

@@ -1,9 +1,10 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
-import WebDevView2d from "./2d/WebDevView";
 var viewArray = [
-  WebDevView2d,
+  require("./2d/WebDevView"),
+  require("./2d/ThreeDAnimationView"),
+  require("./2d/DigitalArtView")
 ];
 
 var AppView2d = BaseView.extend({
@@ -14,7 +15,7 @@ var AppView2d = BaseView.extend({
     this.parentEl = options.parentEl;
     this.addListeners();
     this.bodyEl = $("<div class='view-body-2d'></div>");
-    this.setSection(0);
+    this.setSection(commandController.request(commandController.GET_SELECTED_SECTION));
   },
   addListeners: function () {
     eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
@@ -26,12 +27,12 @@ var AppView2d = BaseView.extend({
 
   },
   setSection: function (index) {
-    var newView = new viewArray[index];
-    this.bodyEl.append(newView.render().el);
+    this.currentView = new viewArray[index];
+    this.bodyEl.append(this.currentView.render().el);
   },
   switchPage: function (index) {
-    if (!index) index = commandController.request(commandController.GET_SELECTED_SECTION);
-    this.bodyEl.empty().append(new viewArray[index].render().el);
+    this.currentView.close();
+    this.setSection(index);
   },
   render: function () {
     this.$el.append(this.bodyEl);

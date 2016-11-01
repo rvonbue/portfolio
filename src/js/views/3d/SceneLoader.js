@@ -42,9 +42,9 @@ var SceneLoader = BaseView.extend({
      eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
      eventController.on(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
-     eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
      eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
      eventController.on(eventController.RESET_SCENE, this.resetScene, this);
+     this.setMouseHoverListeners(true);
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
@@ -52,9 +52,16 @@ var SceneLoader = BaseView.extend({
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
     eventController.off(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
-    eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
+
     eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
+  },
+  setMouseHoverListeners: function (turnOn) {
+    if (turnOn) {
+      eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
+    } else {
+      eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
+    }
   },
   resetScene: function () {
     this.sceneModelCollection.each(function (sceneModel) {
@@ -85,7 +92,17 @@ var SceneLoader = BaseView.extend({
   },
   clickSelectSceneModel: function (intersectObject) {
     if ( !intersectObject ) return;
-    this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: intersectObject.object.name }));
+    var sceneModel = this.isSceneSelected();
+    var intersectName = intersectObject.object.name;
+    if (sceneModel) {
+       eventController.trigger(eventController.OPEN_PHOTO_SWIPE,
+          sceneModel.get("sceneDetails").getPSImages(),
+          intersectObject.object.imageNum
+       );
+    } else {
+      this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: intersectName }));
+    }
+
   },
   navigationBarSelectSceneModel: function (index) {
     this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: navigationList[index] }));
@@ -130,7 +147,8 @@ var SceneLoader = BaseView.extend({
 
     if (sceneModel.get("selected")) {
       this.zoomToSelectedSceneModel(sceneModel);
-
+      console.log("interactiveObjects", sceneDetailsModel.get("interactiveObjects"));
+      eventController.trigger(eventController.RESET_RAYCASTER, sceneDetailsModel.get("interactiveObjects"));
     }
   },
   addSceneDetailsToScene: function (sceneDetailsModel) {
@@ -141,7 +159,7 @@ var SceneLoader = BaseView.extend({
     // }));
   },
   getSceneDetailsModel: function (modelObj) {
-    delete modelObj["name"]; // let models set their own names
+    delete modelObj["name"]; // let getSceneDetailsModel set their own names
     switch(modelObj.sceneModelName) { //floorName
       case navigationList[0]:
         return new WebDevModel3d(modelObj);
@@ -199,27 +217,25 @@ var SceneLoader = BaseView.extend({
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [sceneModel.get("object3d")]);
   },
   sceneModelLoaded: function (obj) {
-    var startingHeight = 14.75; //TODO: MAGIC NUMBER its the height of the bottom floor
-    var object3dArr = [];
     this.createFloors(obj.object3d);
-    var sceneModels = this.sceneModelCollection.where({ interactive: true });
 
-    sceneModels.forEach(function (scModel, i) { // position floors on top of each other
+    var object3dArr = this.sceneModelCollection.where({ interactive: true })
+    .map(function (scModel, i) { // position floors on top of each other
       var object3d = scModel.get("object3d");
-      object3d.position.set(0, i * scModel.getSize().h + startingHeight, 0);
-      object3dArr.push(object3d);
+      object3d.position.set(0, i * scModel.getSize().h + 14.75, 0); //TODO: MAGIC NUMBER its the height of the bottom floor
+      return object3d;
     });
+
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, object3dArr);
-    // eventController.trigger(eventController.SET_SPOTLIGHT_TARGET, sceneModels[sceneModels.length -1].get("text3d"));
     this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
   createFloors: function (object3d) {
     var floorView3d = new FloorBuilder3d();
     _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
-      var sceneModel = new SceneModel({ name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex: i }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
-
+      var sceneModel = this.sceneModelCollection.add(
+        { name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex:i } //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
+      );
       floorView3d.addFloorItems(sceneModel, this.modelLoader);
-      this.sceneModelCollection.add(sceneModel);
     }, this);
   },
   modelLoaded: function (obj) {
@@ -228,6 +244,7 @@ var SceneLoader = BaseView.extend({
     } else {
       this.addNonInteractive(obj);
     }
+
     ++this.TOTAL_MODELS_LOADED;
     this.checkAllModelsLoaded();
   },
@@ -236,6 +253,11 @@ var SceneLoader = BaseView.extend({
       this.animateSceneStart();
     }
   },
+  isSceneSelected: function () {
+    var selectedSceneModel = this.sceneModelCollection.findWhere({selected: true});
+    if (selectedSceneModel) return selectedSceneModel;
+    return false;
+  }
 });
 
 module.exports = SceneLoader;

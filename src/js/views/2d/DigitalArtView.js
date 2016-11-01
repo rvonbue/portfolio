@@ -1,10 +1,10 @@
 import BaseView2d from "./BaseView2d";
-import pageData from "../../data/pageData/WebDevProjects";
-import projectContainerHTML from "./WebDevViewTemplate.html";
+import pageData from "../../data/pageData/digitalArt";
+import projectContainerHTML from "./DigitalArtViewTemplate.html";
 
-var WebDevView2d = BaseView2d.extend({
-  className: "web-dev",
-  title: "Web Development",
+var DigitalArtView = BaseView2d.extend({
+  className: "digital-art",
+  title: "Digital Art",
   titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
   initialize: function () {
     BaseView2d.prototype.initialize.apply(this, arguments);
@@ -19,4 +19,4 @@ var WebDevView2d = BaseView2d.extend({
   }
 });
 
-module.exports = WebDevView2d;
+module.exports = DigitalArtView;

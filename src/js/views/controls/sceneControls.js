@@ -10,6 +10,7 @@ var SceneControls = BaseModel.extend({
     home: null
   },
   initialize: function (options) {
+    this.lastRaycastObjectId = 1325435;
     this.canvasEl = $(options.canvasEl);
     this.camera = options.camera;
     this.raycasterObjects = [];
@@ -45,11 +46,19 @@ var SceneControls = BaseModel.extend({
   },
   onMouseClick: function (evt) {
     var closestObject = this.shootRaycaster(evt);
-    // if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
+    if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
   },
   onMouseMove: function (evt) {
     evt.preventDefault();
-    eventController.trigger(eventController.HOVER_NAVIGATION, this.shootRaycaster(evt));
+    var raycastIntersect = this.shootRaycaster(evt);
+
+    if ((raycastIntersect && this.lastRaycastObjectId === raycastIntersect.object.id)  // if nothing intersected
+      || this.lastRaycastObjectId === 0 && !raycastIntersect ) {      // if intersected object is the same
+      return;
+    } else {
+      this.lastRaycastObjectId = raycastIntersect ? raycastIntersect.object.id : 0;
+      eventController.trigger(eventController.HOVER_NAVIGATION, raycastIntersect);
+    }
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
     this.mouse.x = ( (evt.clientX - this.raycasterOffset.x) / this.width ) * 2 - 1;

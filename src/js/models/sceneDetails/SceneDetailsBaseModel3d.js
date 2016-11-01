@@ -34,7 +34,10 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
   },
   addInteractiveObjects: function () {
 
-  }
+  },
+  getPSImages: function () {
+    return [];
+  },
 });
 
 module.exports = SceneDetailsBaseModel3d;
