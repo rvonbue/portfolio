@@ -9,19 +9,15 @@ var PhotoSwipeView = BaseView.extend({
   className: "photo-swipe",
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
+    this.parentEl = options.parentEl;
     this.addListeners();
   },
   addListeners: function () {
+    eventController.once(eventController.OPEN_PHOTO_SWIPE, this.render, this);
     eventController.on(eventController.OPEN_PHOTO_SWIPE, this.openPhotoSwipe, this);
-  },
-  render: function () {
-    this.$el.append(photoSwipeHtml);
-    this.pswpElement = this.$el.find(".pswp:first")[0];
-    return this;
   },
   openPhotoSwipe: function (imgArray, startIndex) {
     startIndex = startIndex || 0;
-    console.log("startIndex", startIndex)
     var pswpElement = document.querySelectorAll('.pswp')[0];
     var options = {
       // closeEl:true,
@@ -38,7 +34,12 @@ var PhotoSwipeView = BaseView.extend({
     // Initializes and opens PhotoSwipe
     var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, imgArray, options);
     gallery.init();
-  }
+  },
+  render: function () {
+    this.pswpElement = this.$el.find(".pswp:first")[0];
+    this.parentEl.append(photoSwipeHtml);
+    return this;
+  },
 });
 
 module.exports = PhotoSwipeView;

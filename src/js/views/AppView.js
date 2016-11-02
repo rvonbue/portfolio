@@ -1,10 +1,9 @@
 import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
-import NavigationBar from "./components/navigationBar";
 import AppView3d from "./AppView3d";
 import AppView2d from "./AppView2d";
+import NavigationBar from "./components/navigationBar";
 import PhotoSwipeView from "./components/PhotoSwipeView";
-// import videoTag from "./html/videoTag.html";
 
 var AppView = BaseView.extend({
   className: "appview-container",
@@ -54,8 +53,9 @@ var AppView = BaseView.extend({
   },
   render: function () {
     this.$el.append(new NavigationBar({ parentEl: this.$el }).render().el);
-    this.$el.append(new PhotoSwipeView().render().el);
     this.$el.append("<div class='sky-gradient'></div>");
+    var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
+
     // this.$el.append(videoTag);
     return this;
   }

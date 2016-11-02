@@ -9,7 +9,7 @@ var SceneModel = BaseModel3d.extend({
     "text3d": null,  // mesh
     "selected": false,
     "hover": false,
-    "loading": false,
+    "loading": false, //loading scene Details currently
     "ready": false,  //ready if sceneDetails are loaded
     "interactive": true,
     "doorsBool": false, // doors are close by default
@@ -17,12 +17,12 @@ var SceneModel = BaseModel3d.extend({
     "hoverLamps": null,     // array meshes
     "hoverLights": null,    // array of point lights
     "sceneDetails": null, // sceneDetailsModel
-    "sceneLights": null    // array
   },
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
     // this.showHide(false);
     // this.setFadeInMaterials();
+    console.log("NAME:", this.camelize(this.get("name")));
     this.once("change:selected", this.loadSceneDetails);
     this.once("change:sceneDetails", function (mesh) {
       this.set({ ready: true, loading: false });
@@ -172,6 +172,12 @@ var SceneModel = BaseModel3d.extend({
   },
   setSceneAsParent: function (mesh) {
     this.get("object3d").add(mesh);
+  },
+  camelize: function (str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+     if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+     return index == 0 ? match.toLowerCase() : match.toUpperCase();
+   });
   }
 });
 

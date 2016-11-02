@@ -1,0 +1,49 @@
+@button-size: 36px;
+
+.scene-detail-controls {
+  width: 100%;
+  position: absolute;
+  top:0px;
+  .noselect;
+  .body-controls {
+    width: @button-size * 3 + 25;
+    height:40px;
+    background-color: @color-1;
+    margin: 0px auto;
+    border: 1px solid @color-5;
+    border-top: none;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    overflow: hidden;
+  }
+  z-index: 105;
+}
+.button-container {
+  text-align: center;
+}
+.button-play, .button-pause, .button-right, .button-left, .button-home {
+  display: inline-block;
+  width: @button-size;
+  height: @button-size;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.button-play, .button-right, .button-left {
+  background-image: url(../sprites/ic_play_arrow_white_36px.svg);
+}
+.button-left {
+  -moz-transform: scaleX(-1);
+   -o-transform: scaleX(-1);
+   -webkit-transform: scaleX(-1);
+   transform: scaleX(-1);
+   filter: FlipH;
+   -ms-filter: "FlipH";
+}
+.button-pause {
+  background-image: url(../sprites/ic_pause_white_36px.svg);
+}
+.button-home {
+  background-image: url(../sprites/ic_home_white_36px.svg);
+}

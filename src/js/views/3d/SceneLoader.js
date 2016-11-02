@@ -1,5 +1,6 @@
 import THREE from "three";
 import TWEEN from "tween.js";
+
 import BaseView from "../BaseView";
 import eventController from "../../controllers/eventController";
 import navigationList from "../../data/navigationList";
@@ -48,7 +49,9 @@ var SceneLoader = BaseView.extend({
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
      eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
 
+     eventController.on(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishAnimatingToSceneDetails, this);
      eventController.on(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
+     eventController.on(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_DETAILS_LOADED, this.sceneDetailsLoaded, this);
@@ -62,6 +65,7 @@ var SceneLoader = BaseView.extend({
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
 
     eventController.off(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimatingToSceneDetails, this);
+    eventController.off(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
   },
   resetScene: function () {
     this.sceneModelCollection.each(function (sceneModel) {
@@ -115,12 +119,12 @@ var SceneLoader = BaseView.extend({
     var isOldModelNewModel = oldSceneModel && oldSceneModel.cid === newSceneModel.cid;
 
     if ( !newSceneModel.get("ready") && !newSceneModel.get("loading")){
+      eventController.trigger(eventController.RESET_RAYCASTER, []);   //reset Interactive objects to nothing will loading new ones
       this.loadSceneDetails(newSceneModel);
       this.zoomToSelectedSceneModel(newSceneModel);
     }
 
     if (isOldModelNewModel && oldSceneModel.get("sceneDetails")) { //same scene Selected just reset sceneDetails lighting,camera,raycaster
-      eventController.trigger(eventController.RESET_RAYCASTER, []);   //reset Interactive objects to nothing will loading new ones
       this.resetSceneDetails(oldSceneModel);
       return;
     }
@@ -138,6 +142,7 @@ var SceneLoader = BaseView.extend({
       var sceneDetails = sceneModel.get("sceneDetails");
       eventController.trigger(eventController.RESET_RAYCASTER, sceneDetails.get("interactiveObjects"));
       eventController.trigger(eventController.SET_RENDER_VIDEO_TEXTURE, sceneDetails.get("video"));
+      eventController.trigger(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, sceneModel.get("name"));
     }
     this.zoomToSelectedSceneModel(sceneModel);
   },
@@ -213,7 +218,12 @@ var SceneLoader = BaseView.extend({
   setInteractiveObjects: function (objects3d) {
     eventController.trigger(eventController.RESET_RAYCASTER, objects3d);
   },
+  cameraFinishAnimatingToSceneDetails: function () {
+    // var sceneModel = this.isSceneSelected();
+    // if (sceneModel) eventController.trigger(eventController.)
+  },
   cameraStartAnimatingToSceneDetails: function () {
+    console.log("start");
       this.hideSceneModel();
       var selectedSceneModel = this.sceneModelCollection.findWhere({ selected: true });
       selectedSceneModel.startScene();
@@ -275,6 +285,12 @@ var SceneLoader = BaseView.extend({
     var selectedSceneModel = this.sceneModelCollection.findWhere({selected: true});
     if (selectedSceneModel) return selectedSceneModel;
     return false;
+  },
+  sceneDetailsSelectObject: function (next) {
+    var sceneModel = this.isSceneSelected();
+    if ( sceneModel ) {
+      sceneModel.get("sceneDetails").selectNext(next);
+    }
   }
 });
 

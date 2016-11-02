@@ -27,6 +27,11 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   showHide: function (tBool, selectedParentScene) {
     SceneDetailsBaseModel3d.prototype.showHide.apply(this, arguments);
   },
+  selectNext: function (selectBool) {
+    var changeNum = selectBool ? 3 : -3;
+    this.set("projectIndex", this.get("projectIndex") + changeNum);
+    if (pageData[this.get("projectIndex")])  this.loadImagesEasel();
+  },
   getPSImages: function (numClicked) {
     var photoSwipeImgArray = [];
     for (var i = 0; i < this.get("interactiveObjects").length; i++ ) {
@@ -37,21 +42,23 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     }
     return photoSwipeImgArray;
   },
-  loadImagesEasel: function (forward) {
-    var projectIndex = this.get("projectIndex");
-    // var imgNum = 0;
-    _.each(this.get("interactiveObjects"), (mesh, i) => {
-      var projectData = pageData[projectIndex + i];
-      if (projectData) {
-        mesh.material.map = new TextureLoader().load( projectData.imgSrc);
-        // imgNum++;
-      }
-    });
-    // this.set("projectIndex", projectIndex += forward ? imgNum : -imgNum); //add or subtract 3 from the how many images
-  },
   addInteractiveObjects: function (modelLoader) {
     this.addArtEasels(modelLoader);
     this.loadImagesEasel(true);
+  },
+  loadImagesEasel: function (forward) {
+    // var imgNum = 0;
+    _.each(this.get("interactiveObjects"), (mesh, i) => {
+      var projectData = pageData[ this.get("projectIndex") + i];
+      if (projectData) {
+        mesh.material.map = new TextureLoader().load( projectData.imgSrc);
+        mesh.visible = true;
+        // imgNum++;
+      } else {
+        mesh.visible = false;
+      }
+    });
+    // this.set("projectIndex", projectIndex += forward ? imgNum : -imgNum); //add or subtract 3 from the how many images
   },
   addArtEasels: function (modelLoader) {
     var interactiveObjects = [];
@@ -60,10 +67,6 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
       var canvasMesh = this.getArtEasel(modelLoader);
       canvasMesh.position.set( light.x, 0, light.z + zMod);
       canvasMesh.position.y = this.get("parentScenePosition").y;
-      // var posBool = Math.random() > 0.5 ? true : false;
-      // var randomRotation = (1.5 * Math.PI) / 180;
-      // if (posBool) randomRotation *= -1;
-      // canvasMesh.rotateY((2 * Math.PI) / 180 );
       canvasMesh.name = "photoswipe";
       canvasMesh.imageNum = i;
       this.get("object3d").add(canvasMesh);

@@ -15,7 +15,6 @@ var BaseView = Backbone.View.extend({
   beforeRender: function(){
   },
   afterRender: function() {
-
   },
   onAttach: function() {
     _.each(this.childViews, function(childView){
@@ -29,7 +28,7 @@ var BaseView = Backbone.View.extend({
     _.each(this.childViews, function(childView){
       childView.removeEventHandlers();
     }, this);
-  },
+  }
 });
 
 module.exports = BaseView;

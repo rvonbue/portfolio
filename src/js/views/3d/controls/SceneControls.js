@@ -4,9 +4,8 @@ import THREE from "three";
 import eventController from "../../../controllers/eventController";
 import BaseModel from "../../../models/BaseModel";
 import SceneLoader from "../SceneLoader";
-import MovieTheaterView3d from "../movieTheaterView3d";
 
-var SceneControls3d = BaseModel.extend({
+var SceneControls = BaseModel.extend({
   defaults:  {
     home: null
   },
@@ -112,4 +111,4 @@ var SceneControls3d = BaseModel.extend({
     return this;
   }
 });
-module.exports = SceneControls3d;
+module.exports = SceneControls;

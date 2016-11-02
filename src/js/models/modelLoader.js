@@ -13,7 +13,7 @@ var ModelLoader = BaseModel.extend({
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
     this.manager.onProgress = function ( item, loaded, total ) {
-      console.log( item, loaded, total );
+      // console.log( item, loaded, total );
     };
   },
   loadModel: function (url, options, whichCallback) {
@@ -31,9 +31,9 @@ var ModelLoader = BaseModel.extend({
       var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(materials) );
       var modelDetails = { name: options.name, sceneModelName: options.sceneModelName, object3d: object3d };
       if ( options.sceneModelName ) {
-        // setTimeout(function () {
+        setTimeout(function () {
           eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
-        // }, 15);
+        }, 2000);
       } else {
         eventController.trigger(eventController.MODEL_LOADED, modelDetails);
       }

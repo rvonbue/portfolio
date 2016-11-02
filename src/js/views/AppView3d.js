@@ -6,8 +6,9 @@ import BaseView from "./BaseView";
 import eventController from "../controllers/eventController";
 import LightControls from "./3d/controls/LightControls";
 import CameraControls from "./3d/controls/cameraControls";
-import SceneControls3d from "./3d/controls/SceneControls3d";
-import StatsView from "./3d/statsView";
+import SceneControls from "./3d/controls/SceneControls";
+import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
+import StatsView from "./components/statsView";
 
 var AppView3d = BaseView.extend({
   className: "appView-3d",
@@ -55,7 +56,7 @@ var AppView3d = BaseView.extend({
   },
   initControls: function () {
     var cameraControls = new CameraControls({ camera:this.camera, canvasEl:this.canvasEl });
-    this.sceneControls = new SceneControls3d({ camera:this.camera, canvasEl:this.canvasEl });
+    this.sceneControls = new SceneControls({ camera:this.camera, canvasEl:this.canvasEl });
     this.controls = cameraControls.getControls();
   },
   addHelpers: function () {
@@ -90,7 +91,6 @@ var AppView3d = BaseView.extend({
     }
   },
   setRenderVideoTexture: function (videoObject) {
-    console.log("setRenderVideoTexture", videoObject);
     this.videoObject = videoObject;
   },
   resize: function () {
@@ -105,13 +105,12 @@ var AppView3d = BaseView.extend({
   },
   render: function () {
     this.statsView = new StatsView();
-    $("body").append(this.statsView.stats.domElement);
-    this.bodyEl = $("<div class='view-body-3d'></div>");
-    this.$el.append(this.bodyEl);
+    // $("body").append(this.statsView.stats.domElement);
+    // this.bodyEl = $("<div class='view-body-3d'></div>");
+    this.$el.append(new SceneDetailControlsView().render().el);
     var canvasEl = $("<canvas>");
-    this.bodyEl.append(canvasEl);
+    this.$el.append(canvasEl);
     this.canvasEl = canvasEl[0];
-    // $("body").append(new DatGuiView().render().el);
     return this;
   }
 });

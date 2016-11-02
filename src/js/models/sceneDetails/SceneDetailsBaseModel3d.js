@@ -39,6 +39,9 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
   getPSImages: function () {
     return [];
   },
+  selectNext: function () {
+
+  }
 });
 
 module.exports = SceneDetailsBaseModel3d;
