@@ -5,25 +5,91 @@
   position: absolute;
   top:0px;
   .noselect;
-  .body-controls {
-    width: @button-size * 3 + 25;
-    height:40px;
-    background-color: @color-1;
-    margin: 0px auto;
-    border: 1px solid @color-5;
-    border-top: none;
-    box-sizing: border-box;
-    border-radius: 8px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    overflow: hidden;
-  }
   z-index: 105;
+
+  &.slide-controls {
+    .button-container.slides {
+      display: block;
+    }
+  }
+  &.loading {
+    .button-container.loading {
+      display: block;
+    }
+  }
+  &.video-controls {
+    .button-container.video {
+      display: block;
+    }
+  }
+
 }
 .button-container {
   text-align: center;
+  height:40px;
+  max-width: 150px;
+  background-color: @color-1;
+  margin: 0px auto;
+  border: 1px solid @color-5;
+  border-top: none;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  // overflow: hidden;
+  &.loading {
+    display: none;
+    height: 100px;
+    // width: 130px;
+    span {
+      color: @color-5;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+  }
+  &.slides {
+    display: none;
+    width: @button-size * 3 + 25;
+    &:before {
+      content:"";
+      .slideshow-icon;
+      float:left;
+      margin-left: -@button-size - 10;
+    }
+  }
+  &.video {
+    display: none;
+    width: @button-size * 4 + 25;
+    &:before {
+      content:"";
+      .video-icon;
+      float:left;
+      margin-left: -@button-size - 10;
+    }
+  }
 }
-.button-play, .button-pause, .button-right, .button-left, .button-home {
+.loading-icon {
+  background-image: url(../sprites/loading.svg);
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.slideshow-icon {
+  background-image: url(../sprites/ic_slideshow_white_36px.svg);
+}
+.video-icon {
+  background-image: url(../sprites/ic_tv_white_36px.svg);
+}
+
+.slideshow-icon,
+.video-icon,
+.button-play,
+.button-pause,
+.button-right,
+.button-left,
+.button-home {
   display: inline-block;
   width: @button-size;
   height: @button-size;
@@ -46,4 +112,11 @@
 }
 .button-home {
   background-image: url(../sprites/ic_home_white_36px.svg);
+}
+#items-loading {
+  margin-left: 12px;
+}
+.loading-label {
+  margin: 12px auto;
+  display: inline-block;
 }

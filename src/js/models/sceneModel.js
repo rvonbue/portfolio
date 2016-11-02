@@ -5,6 +5,7 @@ import utils from "../util/utils";
 var SceneModel = BaseModel3d.extend({
   defaults: {
     "name": "Caesar_Salad",
+    "className": "myClass",
     "object3d": null, // mesh of the building floor
     "text3d": null,  // mesh
     "selected": false,

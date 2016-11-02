@@ -16,19 +16,37 @@ var SceneDetailControlsView = BaseView.extend({
   },
   initialize: function (options) {
     eventController.on(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
-    this.height = this.$el.height() || 45;
+    eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
+    this.navBarHeight = 45;
+    this.show("loading");
   },
   addListeners: function () {
   },
   removeListeners: function () {
   },
-  show: function (sceneModelName) {
-    console.log("show");
-    this.$el.attr("class", this.className + " " + sceneModelName);
-    this.$el.animate({ top: this.height }, animationSpeed);
+  setHeight:function () {
+
+  },
+  itemLoading: function (loaded, total) {
+    if (loaded === total) this.hide();
+    var loadingText = loaded + " / " + total;
+    this.loadingEl.text(loadingText);
+  },
+  // showLoading: function () {
+  //   this.$el.attr("class", this.className + " loading");
+  //   var halfHeight = 100 / 2 ;
+  //   console.log("height", window.innerHeight);
+  //   this.$el.animate({ top: window.innerHeight / 2 - halfHeight }, animationSpeed).show();
+  // },
+  // hideLoading: function () {
+  //   this.hide();
+  // },
+  show: function (sceneModelClassName) {
+    this.$el.attr("class", this.className + " " + sceneModelClassName);
+    this.$el.animate({ top: this.navBarHeight }, animationSpeed).show();
   },
   hide: function () {
-    this.$el.animate({ top: 0 }, animationSpeed);
+    this.$el.animate({ top: -80 }, animationSpeed).hide(animationSpeed);
   },
   resetSceneDetails: function () {
   },
@@ -40,6 +58,7 @@ var SceneDetailControlsView = BaseView.extend({
   },
   render: function () {
     this.$el.append(SceneDetailControlsHTML);
+    this.loadingEl = this.$el.find("#items-loading");
     return this;
   }
 });

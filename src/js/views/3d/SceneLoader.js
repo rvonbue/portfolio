@@ -109,7 +109,7 @@ var SceneLoader = BaseView.extend({
 
   },
   navigationBarSelectSceneModel: function (index) {
-    this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: navigationList[index] }));
+    this.toggleSelectedSceneModel(this.sceneModelCollection.findWhere({ name: navigationList[index].name }));
   },
   getSelectedScene: function () {
     return this.sceneModelCollection.findWhere({ selected: true });
@@ -142,7 +142,7 @@ var SceneLoader = BaseView.extend({
       var sceneDetails = sceneModel.get("sceneDetails");
       eventController.trigger(eventController.RESET_RAYCASTER, sceneDetails.get("interactiveObjects"));
       eventController.trigger(eventController.SET_RENDER_VIDEO_TEXTURE, sceneDetails.get("video"));
-      eventController.trigger(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, sceneModel.get("name"));
+      eventController.trigger(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, sceneModel.get("className"));
     }
     this.zoomToSelectedSceneModel(sceneModel);
   },
@@ -181,11 +181,11 @@ var SceneLoader = BaseView.extend({
   getSceneDetailsModel: function (modelObj) {
     delete modelObj["name"]; // let getSceneDetailsModel set their own names
     switch(modelObj.sceneModelName) { //floorName
-      case navigationList[0]:
+      case navigationList[0].name:
         return new WebDevModel3d(modelObj);
-      case navigationList[1]:
+      case navigationList[1].name:
         return new AnimationModel3d(modelObj);
-      case navigationList[2]:
+      case navigationList[2].name:
         return new DigitalArtModel3d(modelObj);
       default:
         return new SceneDetailsModel(modelObj);
@@ -256,10 +256,14 @@ var SceneLoader = BaseView.extend({
   },
   createFloors: function (object3d) {
     var floorView3d = new FloorBuilder3d();
-    _.each(_.clone(navigationList).reverse(), function (floorName, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
+    _.each(_.clone(navigationList).reverse(), function (navListObj, i) { // clone and reverse Navigation list so buidling stacks from bottom to top
       var sceneModel = this.sceneModelCollection.add(
-        { name:floorName, object3d:object3d.GdeepCloneMaterials(), floorIndex:i } //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
-      );
+        {
+          name: navListObj.name,
+          className: navListObj.className,
+          object3d:object3d.GdeepCloneMaterials(),
+          floorIndex:i
+        }); //THREE JS EXTEND WITH PROTOYTPE deep clone for materials
       floorView3d.addFloorItems(sceneModel, this.modelLoader);
     }, this);
 

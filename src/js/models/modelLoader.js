@@ -13,7 +13,9 @@ var ModelLoader = BaseModel.extend({
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
     this.manager.onProgress = function ( item, loaded, total ) {
-      // console.log( item, loaded, total );
+      console.log( item, loaded, total );
+      eventController.trigger(eventController.ITEM_LOADED, loaded, total);
+      if (loaded === total) eventController.trigger(eventController.ALL_ITEMS_LOADED);
     };
   },
   loadModel: function (url, options, whichCallback) {
@@ -78,7 +80,7 @@ var ModelLoader = BaseModel.extend({
     mat[k] = new THREE.Color(color);
   },
   parseJSON: function (json) {
-    var loader = new THREE.JSONLoader();
+    var loader = new THREE.JSONLoader(this.manager);
     var model = loader.parse(json);
     _.each(model.materials, function (mat) {
       if (materialMapList[mat.name]) {

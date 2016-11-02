@@ -30,8 +30,8 @@ var NavigationBar = BaseView.extend({
   cacheListEls: function () {
     var navEljq = this.$el.find("li");
     this.navEls = {};
-    _.each(navigationList, function (name, i) {
-      this.navEls[name] = $(navEljq[i]);
+    _.each(navigationList, function (navListObj, i) {
+      this.navEls[navListObj.name] = $(navEljq[i]);
     }, this);
   },
   getSelectedSection: function () {
@@ -107,8 +107,8 @@ var NavigationBar = BaseView.extend({
   getCssMenu: function () {
     var cssMenu = "<div id='cssmenu'><ul>";
 
-    _.each(navigationList, function(title){
-      cssMenu += this.template({displayTitle: title.toUpperCase()});
+    _.each(navigationList, function(navListObj){
+      cssMenu += this.template({displayTitle: navListObj.name.toUpperCase()});
     }, this);
 
     cssMenu += "</ul></div>";
