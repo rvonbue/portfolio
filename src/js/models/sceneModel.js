@@ -28,6 +28,7 @@ var SceneModel = BaseModel3d.extend({
     this.once("change:sceneDetails", function (mesh) {
       this.set({ ready: true, loading: true });
       this.get("sceneDetails").showHide(false, this.get("selected"));
+      this.setSceneAsParent(this.get("sceneDetails").get("object3d"));
     });
   },
   addModelListeners: function () {
@@ -169,10 +170,44 @@ var SceneModel = BaseModel3d.extend({
       this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
     }
   },
-  setFadeInMaterials:function () {
-    _.each(this.getAllMaterials(), function (mat) {
-      if (!mat.alwaysTransparent) mat.transparent = true;
+  setFadeInMaterials:function (allMaterials) {
+    _.each(allMaterials, function (mat) {
+      // if (!mat.alwaysTransparent) mat.transparent = true;
       mat.opacity = 0;
+      mat.transparent = true;
+    });
+  },
+  setFadeOutMaterials: function (allMaterials) {
+    _.each(allMaterials, function (mat) {
+      // if (!mat.alwaysTransparent) mat.transparent = true;
+      mat.transparent = true;
+      mat.opacity = 1;
+    });
+  },
+  fadeMaterials: function (opacityEnd) {
+    var allMaterials = this.getAllMaterials();
+    var self = this;
+
+    if (opacityEnd === 0) {
+      this.setFadeOutMaterials(allMaterials);
+    } else if (opacityEnd === 1) {
+      this.setFadeInMaterials(allMaterials);
+    }
+
+    _.each(allMaterials, function (mat) {
+      var tween = new TWEEN.Tween(mat)
+      .to({ opacity: opacityEnd }, utils.getAnimationSpeed().materialsFade)
+      .onComplete(function () {
+        if ( opacityEnd === 1  && !mat.alwaysTransparent ) {
+          mat.transparent = false;
+          self.set({ selected: true });
+        } else if (opacityEnd === 0) {
+          self.set({ selected: false });
+        }
+
+      })
+      .start();
+
     });
   },
   setSceneAsParent: function (mesh) {

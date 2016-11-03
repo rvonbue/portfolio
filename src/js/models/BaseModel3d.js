@@ -65,19 +65,36 @@ var BaseModel3d = Backbone.Model.extend({
   },
   getAllMaterials: function () {
     var object3d = this.get("object3d");
-    var objectMaterialsArr = _.clone(object3d.material.materials);
-    _.each(object3d.children, function (mesh) {
+    var sceneDetails = this.get("sceneDetails");
+    var sceneModelMeshes = this.getChildMeshes(this.getAllMeshes());
+    var objectMaterialsArr;
+
+    if (sceneDetails) {
+      var sdMeshes = this.getChildMeshes(sceneDetails.getAllMeshes());
+      objectMaterialsArr = [...sceneModelMeshes, ...sdMeshes];
+    } else {
+      objectMaterialsArr = sceneModelMeshes;
+    }
+
+    return _.uniq(objectMaterialsArr, false); // remove duplicate materials
+  },
+  getChildMeshes: function (childrenArr) {
+    var childMeshes = [];
+    _.each(childrenArr, function (mesh) {
       if (!mesh.material) return; // if not a light
       if (mesh.material.materials) { // if mesh has multiple materials
         _.each(mesh.material.materials, function (mat) {
           if (mat.alwaysHidden) return; // if raycaster mesh dont alter those materials
-          objectMaterialsArr.push(mat);
+          childMeshes.push(mat);
         });
       } else {
-        objectMaterialsArr.push(mesh.material);
+        childMeshes.push(mesh.material);
       }
     });
-    return _.uniq(objectMaterialsArr, false); // remove duplicate materials
+    return childMeshes;
+  },
+  getAllMeshes: function () {
+    return [this.get("object3d"), ...this.get("object3d").children];
   },
   resetAllMaterials: function () {
     _.each(this.getAllMaterials(), function (mat) {

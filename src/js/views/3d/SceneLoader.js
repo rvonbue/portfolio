@@ -126,20 +126,33 @@ var SceneLoader = BaseView.extend({
       return;
     }
 
-    this.unselectSceneModel(oldSceneModel);
-    newSceneModel.set({ selected:true });
+    if (oldSceneModel && newSceneModel) {
+        this.unselectSceneModel(oldSceneModel);
+        setTimeout(function () {
+          eventController.trigger(eventController.RESET_SCENE_DETAILS, newSceneModel);
+          newSceneModel.set({ selected:true });
+          newSceneModel.fadeMaterials(1);
+        }, utils.getAnimationSpeed().materialsFade);
+        return;
+    } else {
+      newSceneModel.set({ selected:true });
+      this.zoomToSelectedSceneModel(newSceneModel);
+    }
+
+
     // if (newSceneModel.isReady()) this.enteringSceneDetails(newSceneModel);
-    this.zoomToSelectedSceneModel(newSceneModel);
+
   },
   unselectSceneModel: function (sceneModel) {
-
     if (sceneModel) {
-      this.fadeMaterials(sceneModel.getAllMaterials() , 0);
-      sceneModel.set("selected", false);
+      sceneModel.fadeMaterials(0);
     }
   },
+  selectSceneModel: function () {
+
+  },
   resetSceneDetails: function (sceneModel) {
-    eventController.trigger(eventController.RESET_SCENE_DETAILS, sceneModel);  //resetSceneDetails lighting and camera
+    // eventController.trigger(eventController.RESET_SCENE_DETAILS, sceneModel);  //resetSceneDetails lighting and camera
     if (sceneModel.get("ready") && !sceneModel.get("loading")) {
       var sceneDetails = sceneModel.get("sceneDetails");
 
@@ -223,17 +236,6 @@ var SceneLoader = BaseView.extend({
       // this.fadeMaterials(sceneModel.getAllMaterials(), 0);
       sceneModel.showHide(false);
     }, this);
-  },
-  fadeMaterials: function (materials, opacityEnd) {
-    _.each(materials, function (material) {
-      material.transparent = true;
-      var tween = new TWEEN.Tween(material)
-      .to({ opacity: opacityEnd }, utils.getAnimationSpeed.fade)
-      .onComplete(function () {
-        if ( opacityEnd === 1  && !material.alwaysTransparent ) material.transparent = false;
-      })
-      .start();
-    });
   },
   getSceneModelInteractiveObjects: function () {
     var objects3d = this.sceneModelCollection

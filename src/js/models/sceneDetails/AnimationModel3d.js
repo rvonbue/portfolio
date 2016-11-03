@@ -22,12 +22,16 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   },
   addInteractiveObjects: function (modelLoader) {
     this.set("interactiveObjects", [this.getMovieScreen(modelLoader)]);
+    _.each(this.get("interactiveObjects"), function (mesh) {
+      this.get("object3d").add(mesh);
+    }, this);
   },
   getMovieScreen: function (modelLoader) {
     var model = modelLoader.parseJSON(movieScreenJson);
     var videoTexture = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
     var mesh = new Mesh( model.geometry, videoTexture); //only one material on the door;
     mesh.position.y += this.get("parentScenePosition").y;
+
     return mesh;
   }
 });
