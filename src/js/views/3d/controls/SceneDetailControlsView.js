@@ -9,6 +9,7 @@ var animationSpeed = utils.getAnimationSpeed().speed;
 
 var SceneDetailControlsView = BaseView.extend({
   className: "scene-detail-controls",
+  visible: false,
   events: {
     "click .button-left": "prevInteractiveObject",
     "click .button-home": "resetSceneDetails",
@@ -17,38 +18,49 @@ var SceneDetailControlsView = BaseView.extend({
   initialize: function (options) {
     eventController.on(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
     eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
+    eventController.on(eventController.ALL_ITEMS_LOADED, this.hideLoading, this);
+    eventController.on(eventController.ITEM_START_LOAD, this.showLoading, this);
     this.navBarHeight = 45;
-    this.show("loading");
+    // this.show("loading");
   },
   addListeners: function () {
   },
   removeListeners: function () {
   },
-  setHeight:function () {
-
-  },
   itemLoading: function (loaded, total) {
-    if (loaded === total) this.hide();
+    if (!this.visible) this.show("loading");
     var loadingText = loaded + " / " + total;
     this.loadingEl.text(loadingText);
   },
-  // showLoading: function () {
-  //   this.$el.attr("class", this.className + " loading");
-  //   var halfHeight = 100 / 2 ;
-  //   console.log("height", window.innerHeight);
-  //   this.$el.animate({ top: window.innerHeight / 2 - halfHeight }, animationSpeed).show();
-  // },
-  // hideLoading: function () {
-  //   this.hide();
-  // },
-  show: function (sceneModelClassName) {
-    this.$el.attr("class", this.className + " " + sceneModelClassName);
-    this.$el.animate({ top: this.navBarHeight }, animationSpeed).show();
+  showLoading: function () {
+    this.show("loading");
+    this.loading = true;
   },
-  hide: function () {
-    this.$el.animate({ top: -80 }, animationSpeed).hide(animationSpeed);
+  hideLoading: function () {
+    this.hide("loading");
+    this.loading = false;
+  },
+  show: function (sceneModelClassName) {
+    this.$el.attr("class", this.getNewClasses(sceneModelClassName));
+    // this.$el.animate({ top: this.navBarHeight }, 0).show();
+    this.$el.css("top", this.navBarHeight ).show();
+    this.visible= true;
+  },
+  hide: function (className) {
+    this.$el.removeClass(className);
+    var shouldHide = this.$el[0].classList.length <= 1;
+    if (shouldHide) {
+      // this.$el.animate({ top: -80 }, 0).hide();
+      this.$el.css("top", -80 ).hide();
+      this.visible= false;
+    }
+  },
+  getNewClasses: function (sceneModelClassName) {
+    var loading = this.loading ? " loading " : " ";
+    return this.className + loading + sceneModelClassName;
   },
   resetSceneDetails: function () {
+
   },
   nextInteractiveObject: function () {
     eventController.trigger(eventController.SCENE_DETAILS_SELECT_OBJECT, true);

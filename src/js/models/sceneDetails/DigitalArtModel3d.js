@@ -1,3 +1,4 @@
+import commandController from "../../controllers/commandController";
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 import canvas from "../../data/embeded3dModels/canvas.json";
 import easel from "../../data/embeded3dModels/easel.json";
@@ -51,7 +52,8 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     _.each(this.get("interactiveObjects"), (mesh, i) => {
       var projectData = pageData[ this.get("projectIndex") + i];
       if (projectData) {
-        mesh.material.map = new TextureLoader().load( projectData.imgSrc);
+        var newTexture = commandController.request(commandController.LOAD_IMAGE_TEXTURE, projectData.imgSrc);
+        mesh.material.map = newTexture;
         mesh.visible = true;
         // imgNum++;
       } else {

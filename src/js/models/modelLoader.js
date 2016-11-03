@@ -1,4 +1,5 @@
 import eventController from "../controllers/eventController";
+import commandController from "../controllers/commandController"
 import BaseModel from "./BaseModel";
 import THREE from "three";
 // import utils from "../util/utils";
@@ -8,15 +9,30 @@ var ModelLoader = BaseModel.extend({
   initialize: function () {
     BaseModel.prototype.initialize.apply(this, arguments);
     this.initLoadingManager();
+    this.addListeners();
+
+  },
+  addListeners: function () {
     eventController.on(eventController.LOAD_JSON_MODEL, this.loadModel, this);
+    commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
+    commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
   },
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
-    this.manager.onProgress = function ( item, loaded, total ) {
-      console.log( item, loaded, total );
-      eventController.trigger(eventController.ITEM_LOADED, loaded, total);
-      if (loaded === total) eventController.trigger(eventController.ALL_ITEMS_LOADED);
+    this.manager.onStart = function ( item, loaded, total) {
+      // console.log("loader on start----------------1----------")
+      eventController.trigger(eventController.ITEM_START_LOAD, loaded, total);
     };
+    this.manager.onProgress = function ( item, loaded, total ) {
+      eventController.trigger(eventController.ITEM_LOADED, loaded, total);
+    };
+
+    this.manager.onLoad = function ( item, loaded, total ) {
+      // setTimeout(function () {
+      eventController.trigger(eventController.ALL_ITEMS_LOADED);
+      // }, 1500);
+    };
+
   },
   loadModel: function (url, options, whichCallback) {
     var self = this;
@@ -33,9 +49,7 @@ var ModelLoader = BaseModel.extend({
       var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(materials) );
       var modelDetails = { name: options.name, sceneModelName: options.sceneModelName, object3d: object3d };
       if ( options.sceneModelName ) {
-        setTimeout(function () {
-          eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
-        }, 2000);
+        eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
       } else {
         eventController.trigger(eventController.MODEL_LOADED, modelDetails);
       }
@@ -89,12 +103,21 @@ var ModelLoader = BaseModel.extend({
     }, this);
     return model;
   },
-  getVideoTexture: function () {
-    var video = document.getElementById( 'video' );
-		var texture = new THREE.VideoTexture( video );
-		texture.minFilter = THREE.LinearFilter;
-		texture.magFilter = THREE.LinearFilter;
-    return texture;
+  getVideoTexture: function (src) {
+    var video = document.createElement( 'video' );
+    video.src = src;
+  	video.play();
+    video.loop = true;
+
+		var videoTexture = new THREE.VideoTexture( video );
+		videoTexture.minFilter = THREE.LinearFilter;
+		videoTexture.magFilter = THREE.LinearFilter;
+
+    var material = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true } );
+    return material
+  },
+  getImageTexture: function (imgSrc) {
+    return new THREE.TextureLoader(this.manager).load( imgSrc );
   }
 });
 

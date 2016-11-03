@@ -28,10 +28,16 @@ var CameraControls = BaseModel.extend({
     eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraSceneDetails, this);
   },
   zoomOnSceneModel: function (sceneModel) {
-    if (this.isAnimating()) TWEEN.removeAll();
+    console.log("zoomOnSceneModel-------CANCEL");
+    // if ( this.isAnimating() ) return;
+    console.log("zoomOnSceneModel");
+    TWEEN.removeAll();
     var newPositions = sceneModel.getCameraPosition();
     this.tweenToPosition( this.orbitControls.target, newPositions.target );  // move camera target or lookAt
-    this.tweenToPosition( this.orbitControls.object.position, newPositions.camera, sceneModel.get("ready") ); // animate move camera
+    this.tweenToPosition( this.orbitControls.object.position, newPositions.camera, !sceneModel.isReady() ); // animate move camera
+  },
+  tryAgain: function () {
+
   },
   getControls: function () {
     return this.orbitControls;
@@ -47,14 +53,37 @@ var CameraControls = BaseModel.extend({
     this.camera.position.set( CAMERA_INTIAL_POSITION.x, CAMERA_INTIAL_POSITION.y, CAMERA_INTIAL_POSITION.z);  // set Initial Camera Position
     this.orbitControls.target = new THREE.Vector3( TARGET_INITIAL_POSITION.x, TARGET_INITIAL_POSITION.y, TARGET_INITIAL_POSITION.z );
   },
-  tweenToPosition: function (oldPosition, newPosition, trigger) {
+  tweenToPosition: function (cameraOrTargetPos, newPosition, isCamera) {
     var animationSpeed = utils.getAnimationSpeed().cameraMove;
-    new TWEEN.Tween(oldPosition)
-    .to(newPosition, animationSpeed)
-    .easing(TWEEN.Easing.Circular.In)
-    .onStart( () => { if (trigger) eventController.trigger(eventController.CAMERA_START_ANIMATION); })
-    .onComplete( () => { if (trigger) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION); })
-    .start();
+    var middlePoint = _.clone(newPosition);
+    middlePoint.x = 0;
+    middlePoint.z = cameraOrTargetPos.z;
+
+
+    // if ( isCamera === true) {
+    //   var tweenStart = this.getTween(cameraOrTargetPos, middlePoint, 1000, !isCamera);
+    //   var tweenFinish = this.getTween(cameraOrTargetPos, newPosition, animationSpeed, isCamera);
+    //   tweenStart.chain( tweenFinish );
+    //   tweenStart.start();
+    // } else {
+      var tweenStart = this.getTween(cameraOrTargetPos, newPosition, animationSpeed, isCamera);
+      tweenStart.start();
+    // }
+  },
+  getTween: function (startPos, endPos , speed, isCamera) {
+    console.log("TWEEN")
+    var tween = new TWEEN.Tween(startPos)
+    .to(endPos, speed)
+    .easing(TWEEN.Easing.Circular.Out)
+    // .interpolation(TWEEN.Interpolation.CatmullRom)
+    .onStart( () => {
+      // if (isCamera) eventController.trigger(eventController.CAMERA_START_ANIMATION);
+    })
+    .onComplete( () => {
+      console.log("onCOmplete", new Date().getTime());
+      if (isCamera) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION);
+    });
+    return tween;
   },
   isAnimating: function () {
     return TWEEN.getAll().length > 0;

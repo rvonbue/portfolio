@@ -1,6 +1,7 @@
 // import eventController from "../controllers/eventController";
 import BaseModel3d from "./BaseModel3d";
 import utils from "../util/utils";
+import TWEEN from "tween.js";
 
 var SceneModel = BaseModel3d.extend({
   defaults: {
@@ -21,13 +22,12 @@ var SceneModel = BaseModel3d.extend({
   },
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
-    // this.showHide(false);
+    this.showHide(false);
     // this.setFadeInMaterials();
-    console.log("NAME:", this.camelize(this.get("name")));
     this.once("change:selected", this.loadSceneDetails);
     this.once("change:sceneDetails", function (mesh) {
-      this.set({ ready: true, loading: false });
-      this.get("sceneDetails").showHide(true, this.get("selected"));
+      this.set({ ready: true, loading: true });
+      this.get("sceneDetails").showHide(false, this.get("selected"));
     });
   },
   addModelListeners: function () {
@@ -39,7 +39,7 @@ var SceneModel = BaseModel3d.extend({
     this.off("change:hover", this.onChangeHover);
   },
   onChangeSelected: function () {
-    // this.toggleDoors();
+    // this.openDoors();
     var selectedBool = this.get("selected");
     this.showHide(selectedBool)
     this.toggleHoverLights(selectedBool);
@@ -57,6 +57,9 @@ var SceneModel = BaseModel3d.extend({
     this.resetAllMaterials();
     this.showHide(showHideBool);
   },
+  isReady: function () {
+    return this.get("ready") && !this.get("loading");
+  },
   showHide: function (visBool) { // show = true
     visBool = visBool ? visBool : this.get("selected");
     this.get("object3d").visible = visBool;
@@ -68,6 +71,7 @@ var SceneModel = BaseModel3d.extend({
     var sceneDetails = this.get("sceneDetails");
     if (sceneDetails) {
       sceneDetails.showHide(visBool, this.get("selected"));
+      // if (!visBool) sceneDetails.set("selected", false);
     }
   },
   startScene: function () {
@@ -75,7 +79,7 @@ var SceneModel = BaseModel3d.extend({
     this.toggleHoverLights(false);
   },
   getCameraPosition: function () {
-    return this.get("ready") ? this.getCameraPositionLoaded() : this.getCameraPositionLoading();
+    return this.isReady() ? this.getCameraPositionLoaded() : this.getCameraPositionLoading();
   },
   getCameraPositionLoading: function () {
     return { target: this.getCameraLoadingTarget(), camera: this.getCameraLoadingPosition() };
@@ -107,7 +111,7 @@ var SceneModel = BaseModel3d.extend({
     var length = Math.abs(mesh.geometry.boundingBox.max.z) + Math.abs(mesh.geometry.boundingBox.min.z);
     return { w: width, h: height, l: length };
   },
-  toggleDoors: function (doorBool) {
+  openDoors: function (doorBool) {
     if (this.get("doorsBool")) return;
     var doorWidth = 0.4;
     var totalDoors = this.get("doors").length;

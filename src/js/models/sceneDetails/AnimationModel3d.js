@@ -1,6 +1,7 @@
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 import movieScreenJson from "../../data/embeded3dModels/movieScreen.json";
 import { MeshBasicMaterial, Mesh, VideoTexture, LinearFilter, Texture, FRONTSIDE } from "three";
+import commandController from "../../controllers/commandController";
 
 var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   initialize: function () {
@@ -24,41 +25,11 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   },
   getMovieScreen: function (modelLoader) {
     var model = modelLoader.parseJSON(movieScreenJson);
-    var mesh = new Mesh( model.geometry, this.getVideoTexture()); //only one material on the door;
+    var videoTexture = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
+    var mesh = new Mesh( model.geometry, videoTexture); //only one material on the door;
     mesh.position.y += this.get("parentScenePosition").y;
     return mesh;
-  },
-  getVideoTexture: function () {
-    // create the video element
-	var video = document.createElement( 'video' );
-	// video.id = 'video';
-	// video.type = ' video/ogg; codecs="theora, vorbis" ';
-	video.src = "videos/california.mp4";
-	video.load();  // must call after setting/changing source
-	video.play();
-  video.loop = true;
-  console.log("video", video);
-
-	var videoImage = document.createElement( 'canvas' );
-	videoImage.width = 1280;
-	videoImage.height = 720;
-
-	var videoImageContext = videoImage.getContext( '2d' );
-	// background color if no video present
-	videoImageContext.fillStyle = '#000000';
-	videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
-
-	var videoTexture = new Texture( videoImage );
-	videoTexture.minFilter = LinearFilter;
-	videoTexture.magFilter = LinearFilter;
-
-  this.set("video",  {
-    video: video,
-    videoImageContext: videoImageContext,
-    videoTexture: videoTexture
-  });
-	return new MeshBasicMaterial( { map: videoTexture, overdraw: true } );
-}
+  }
 });
 
 module.exports = AnimationModel3d;

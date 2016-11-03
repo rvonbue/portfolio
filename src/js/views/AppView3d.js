@@ -21,7 +21,7 @@ var AppView3d = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
-    eventController.on(eventController.SET_RENDER_VIDEO_TEXTURE, this.setRenderVideoTexture, this);
+    // eventController.on(eventController.SET_RENDER_VIDEO_TEXTURE, this.setRenderVideoTexture, this);
     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).on("resize", this.resize);
   },
@@ -81,14 +81,14 @@ var AppView3d = BaseView.extend({
     this.controls.update(this.clock.getDelta());
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
-    if (this.videoObject) {
-      if ( this.videoObject.video.readyState === this.videoObject.video.HAVE_ENOUGH_DATA )
-      	{
-      		this.videoObject.videoImageContext.drawImage( this.videoObject.video, 0, 0 );
-      		if ( this.videoObject.videoTexture )
-      			this.videoObject.videoTexture.needsUpdate = true;
-      	}
-    }
+    // if (this.videoObject) {
+    //   if ( this.videoObject.video.readyState === this.videoObject.video.HAVE_ENOUGH_DATA )
+    //   	{
+    //   		this.videoObject.videoImageContext.drawImage( this.videoObject.video, 0, 0 );
+    //   		if ( this.videoObject.videoTexture )
+    //   			this.videoObject.videoTexture.needsUpdate = true;
+    //   	}
+    // }
   },
   setRenderVideoTexture: function (videoObject) {
     this.videoObject = videoObject;

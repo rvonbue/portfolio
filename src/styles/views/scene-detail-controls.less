@@ -16,6 +16,9 @@
     .button-container.loading {
       display: block;
     }
+    .button-container.video, .button-container.slides {
+      display: none;
+    }
   }
   &.video-controls {
     .button-container.video {
@@ -40,7 +43,9 @@
   &.loading {
     display: none;
     height: 100px;
+    position: relative;
     // width: 130px;
+    vertical-align: top;
     span {
       color: @color-5;
       text-transform: uppercase;
