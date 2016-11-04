@@ -10,7 +10,6 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
     initialCameraTarget: { x:0, y: 0, z: 0},
     interactiveObjects: new Array,
     intialAmbientLights:{
-      ambient: ["#FFFFFF", 0], // color intensity
       directional: ["#FFFFFF", 0],  // color intensity,
       hemisphere: ["#404040", "#9BE2FE", 0.1]  // skyColor, groundColor, intensity
     },

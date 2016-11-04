@@ -20,9 +20,6 @@ import eventController from "./controllers/eventController";
 import commandController from "./controllers/commandController";
 import AppView from "./views/AppView";
 import stylesheet from "../styles/index.less";
-console.log("stylesheet", )
-// require("../styles/style.js");
-// console.log("STYLESHEET:", stylesheet);
 
 THREE.Object3D.prototype.GdeepCloneMaterials = function() { //TODO: where to move this in the code http://stackoverflow.com/questions/22360936/will-three-js-object3d-clone-create-a-deep-copy-of-the-geometry
         var object = this.clone( new THREE.Object3D(), false );

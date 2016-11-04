@@ -21,7 +21,7 @@ var SceneDetailControlsView = BaseView.extend({
     eventController.on(eventController.ALL_ITEMS_LOADED, this.hideLoading, this);
     eventController.on(eventController.ITEM_START_LOAD, this.showLoading, this);
     this.navBarHeight = 45;
-    // this.show("loading");
+    this.showLoading();
   },
   addListeners: function () {
   },
@@ -29,7 +29,14 @@ var SceneDetailControlsView = BaseView.extend({
   },
   itemLoading: function (loaded, total) {
     if (!this.visible) this.show("loading");
-    var loadingText = loaded + " / " + total;
+    var loadingText;
+
+    if (loaded === total ) {
+      loadingText = "Models...";
+    } else {
+      loadingText = loaded + " / " + total;
+    }
+
     this.loadingEl.text(loadingText);
   },
   showLoading: function () {

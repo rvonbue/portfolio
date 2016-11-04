@@ -13,7 +13,7 @@ var LightControls = BaseView.extend({
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
     this.skyGradientElClickNum = 0;
-    $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
+    // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
     this.clickChangeSkyGradient();
     this.addLight();
     this.addListeners();
@@ -25,7 +25,7 @@ var LightControls = BaseView.extend({
     eventController.on(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
   },
   removeListeners: function () {
-    eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleAmbientLighting, this);
+    eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
     eventController.off(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
     eventController.off(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
@@ -64,10 +64,19 @@ var LightControls = BaseView.extend({
     this.skyGradientElClickNum++;
   },
   toggleWorldLighting: function (newLightSettings) {
+    if (!newLightSettings) return;
     _.each(this.worldLights, function (light) {
       if (light.type === "HemisphereLight"  ) this.setHemiLight(light, newLightSettings.hemisphere);
       if (light.type === "DirectionalLight" && newLightSettings.directional) this.setDirectionalLight(light, newLightSettings.directional);
     }, this);
+  },
+  getTween: function (startPos, endPos , speed, trigger) {
+    var tween = new TWEEN.Tween(startPos)
+    .to(endPos, speed)
+    .easing(TWEEN.Easing.Circular.Out)
+    .interpolation(TWEEN.Interpolation.Bezier)
+    .delay(50)
+    return tween;
   },
   setHemiLight: function (light, newLightSettings) {
     light.skyColor =  new THREE.Color(newLightSettings[0]);

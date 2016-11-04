@@ -1,7 +1,6 @@
 import utils from "../../util/utils";
 var colorPallete = utils.getColorPallete();
 
-console.log("colorPallete", colorPallete);
 module.exports = {
   roofTop: {
       maps: [

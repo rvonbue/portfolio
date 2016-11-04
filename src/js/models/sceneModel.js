@@ -23,10 +23,8 @@ var SceneModel = BaseModel3d.extend({
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
     this.showHide(false);
-    // this.setFadeInMaterials();
-    this.once("change:selected", this.loadSceneDetails);
-    this.once("change:sceneDetails", function (mesh) {
-      this.set({ ready: true, loading: true });
+    this.once("change:sceneDetails", function () {
+      this.set({ loading: true });
       this.get("sceneDetails").showHide(false, this.get("selected"));
       this.setSceneAsParent(this.get("sceneDetails").get("object3d"));
     });
@@ -40,7 +38,6 @@ var SceneModel = BaseModel3d.extend({
     this.off("change:hover", this.onChangeHover);
   },
   onChangeSelected: function () {
-    // this.openDoors();
     var selectedBool = this.get("selected");
     this.showHide(selectedBool)
     this.toggleHoverLights(selectedBool);
@@ -60,6 +57,13 @@ var SceneModel = BaseModel3d.extend({
   },
   isReady: function () {
     return this.get("ready") && !this.get("loading");
+  },
+  setSelectedDelay: function (nBool, delay) {
+    delay = delay || 500;
+    var self = this;
+    setTimeout(function () {
+      self.set("selected", nBool);
+    }, delay);
   },
   showHide: function (visBool) { // show = true
     visBool = visBool ? visBool : this.get("selected");
@@ -93,7 +97,7 @@ var SceneModel = BaseModel3d.extend({
     var objPos = this.getPosition();
     var size = this.getSize();
     var maxZ = this.get("object3d").geometry.boundingBox.max.z;
-    return { x: objPos.x, y: objPos.y + ((size.h / 2) * .65), z: maxZ };
+    return { x: objPos.x, y: objPos.y + ((size.h / 2) * .65), z: maxZ + 2 };
   },
   getCameraPositionLoaded: function () {
     var cameraPositionLoading = this.getCameraPositionLoading();
@@ -201,6 +205,7 @@ var SceneModel = BaseModel3d.extend({
         if ( opacityEnd === 1  && !mat.alwaysTransparent ) {
           mat.transparent = false;
           self.set({ selected: true });
+          self.startScene();
         } else if (opacityEnd === 0) {
           self.set({ selected: false });
         }
@@ -209,6 +214,9 @@ var SceneModel = BaseModel3d.extend({
       .start();
 
     });
+  },
+  getAmbientLighting: function () {
+    return this.get("sceneDetails") ? this.get("sceneDetails").get("intialAmbientLights") : null;
   },
   setSceneAsParent: function (mesh) {
     this.get("object3d").add(mesh);
