@@ -11,7 +11,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 1,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "chrome",
         "transparent": false,
@@ -28,7 +28,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 3,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "glass",
         "transparent": false,
@@ -45,7 +45,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 4,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "Material",
         "transparent": false,
@@ -62,7 +62,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 5,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "Material.002",
         "transparent": false,
@@ -79,7 +79,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 6,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "barStool",
         "transparent": false,
@@ -96,7 +96,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 7,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "yellowDiffuse",
         "transparent": false,
@@ -113,7 +113,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 8,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "sign",
         "transparent": false,
@@ -130,7 +130,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 9,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "Material.001",
         "transparent": false,
@@ -147,7 +147,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 0,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "concrete",
         "transparent": false,
@@ -164,7 +164,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 10,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "buildingFront",
         "transparent": false,
@@ -181,7 +181,7 @@
         "blending": "NormalBlending",
         "DbgIndex": 11,
         "visible": true,
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthWrite": true,
         "DbgName": "emit",
         "transparent": false,

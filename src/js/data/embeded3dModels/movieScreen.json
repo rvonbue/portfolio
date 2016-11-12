@@ -19,7 +19,7 @@ module.exports = {
         "DbgName": "movieScreen",
         "shading": "phong",
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "specularCoef": 50,
         "opacity": 1,
         "blending": "NormalBlending",

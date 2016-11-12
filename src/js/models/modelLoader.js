@@ -10,13 +10,13 @@ var ModelLoader = BaseModel.extend({
     BaseModel.prototype.initialize.apply(this, arguments);
     this.initLoadingManager();
     this.addListeners();
-
   },
   addListeners: function () {
     eventController.on(eventController.LOAD_JSON_MODEL, this.loadModel, this);
     commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
     commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
     commandController.reply(commandController.PARSE_JSON_MODEL, this.parseJSONModelGetMesh, this);
+    commandController.reply(commandController.LOAD_ENV_MAP, this.getReflectionCube, this);
   },
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
@@ -131,6 +131,37 @@ var ModelLoader = BaseModel.extend({
   },
   getImageTexture: function (imgSrc) {
     return new THREE.TextureLoader(this.manager).load( imgSrc );
+  },
+  getReflectionCube: function () {
+
+    var path = "textures/forbiddenCity/";
+    var format = '.jpg';
+    var urls = [
+        path + 'posx' + format, path + 'negx' + format,
+        path + 'posy' + format, path + 'negy' + format,
+        path + 'posz' + format, path + 'negz' + format
+      ];
+
+    var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( urls );
+		reflectionCube.format = THREE.RGBFormat;
+
+    // scene.background = reflectionCube;
+
+    return reflectionCube;
+  },
+  getRefractionCube: function () {
+    var path = "textures/forbiddenCity/";
+    var format = '.jpg';
+    var urls = [
+        path + 'posx' + format, path + 'negx' + format,
+        path + 'posy' + format, path + 'negy' + format,
+        path + 'posz' + format, path + 'negz' + format
+      ];
+
+    var refractionCube = new THREE.CubeTextureLoader().load( urls );
+				refractionCube.mapping = THREE.CubeRefractionMapping;
+				refractionCube.format = THREE.RGBFormat;
+    return refractionCube;
   }
 });
 

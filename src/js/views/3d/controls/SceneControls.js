@@ -22,6 +22,7 @@ var SceneControls = BaseModel.extend({
     this.raycaster.far = 125;
     this.raycaster.near = 0.25;
     this.loadInitialScene("home");
+    this.setSelectMesh();
   },
   addListeners: function () {
     var self = this;
@@ -31,6 +32,7 @@ var SceneControls = BaseModel.extend({
     this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+    eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneSelector, this);
   },
   removeListeners: function () {
     this.canvasEl.off("mousemove", function (evt) { self.onMouseMove(evt); });
@@ -38,6 +40,12 @@ var SceneControls = BaseModel.extend({
     this.canvasEl.off("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+  },
+  setSelectMesh: function () {
+    var geo = new THREE.OctahedronGeometry(0.25, 0);
+    var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
+    this.selectMesh = new THREE.Mesh( geo, material );
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },
   onResize: function (size) {
     this.height = size.h;
@@ -104,8 +112,10 @@ var SceneControls = BaseModel.extend({
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;
   },
-  getCurrentScene: function (name) {
-    return this.SceneModelCollection.findWhere({selected: true });
+  moveSceneSelector:function (selectedMesh) {
+    var center = _.clone(selectedMesh.geometry.boundingSphere.center);
+    center.y += selectedMesh.geometry.boundingSphere.radius + selectedMesh.position.y ;
+    this.selectMesh.position.set(center.x, center.y, center.z);
   },
   render: function () {
     return this;

@@ -24,8 +24,8 @@ var SceneModel = BaseModel3d.extend({
     this.showHide(false);
     this.once("change:sceneDetails", function () {
       this.set({ loading: true });
-      this.get("sceneDetails").showHide(false, this.get("selected"));
-      this.setSceneAsParent(this.get("sceneDetails").get("object3d"));
+      // this.get("sceneDetails").showHide(false, this.get("selected"));
+      // this.setSceneAsParent(this.get("sceneDetails").get("object3d"));
     });
   },
   addModelListeners: function () {

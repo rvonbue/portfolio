@@ -2,7 +2,7 @@ module.exports = {
   worldScale: 20,
   size: { width: null, height: null },
   getAnimationSpeed: function () {
-    return { materialsFade: 500, cameraMove: 3000, speed: 1000 };
+    return { materialsFade: 500, cameraMove: 500, speed: 1000 };
   },
   translateWidthHeight: function(w, h) {
     return { width: w  / this.worldScale, height: h / this.worldScale };

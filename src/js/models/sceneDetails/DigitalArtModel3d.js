@@ -7,7 +7,8 @@ import canvas from "../../data/embeded3dModels/canvas.json";
 import easel from "../../data/embeded3dModels/easel.json";
 
 var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
-  defaults: {
+  defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
+    {
     name: "DigitalArtSD",
     initialCameraPosition: { x:0, y: -0.75, z: 4.25 },
     initialCameraTarget: { x:0, y: 1, z: 0 },
@@ -21,22 +22,30 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
       directional: ["#FFFFFF", 0]  // color intensity,
     },
     projectIndex: 0
-  },
+  }),
   initialize: function (options) {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
+    this.set("modelUrls", [...this.get("modelUrls"), "artEasel" ]);
     // console.log("this", this);
+    // this.on("change:object3d", function () {
+    //   this.addArtEasels();
+    //   this.loadImagesEasel(true);
+    // })
   },
   showHide: function (tBool, selectedParentScene) {
     SceneDetailsBaseModel3d.prototype.showHide.apply(this, arguments);
   },
-  selectInteractiveObject: function (selectBool) {
-    var changeNum = selectBool ? 3 : -3;
-
+  selectNextObject: function () {
+    this.selectInteractiveObject(3);
+  },
+  selectPrevObject: function () {
+    this.selectInteractiveObject(-3);
+  },
+  selectInteractiveObject: function (changeNum) {
     if ( pageData[ this.get("projectIndex") + changeNum ] ) {
       this.set("projectIndex", this.get("projectIndex") + changeNum);
       this.loadImagesEasel();
     }
-
   },
   getPSImages: function (numClicked) {
     var photoSwipeImgArray = [];
@@ -50,20 +59,31 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
 
     return photoSwipeImgArray;
   },
-  addInteractiveObjects: function (modelLoader) {
-    this.addArtEasels(modelLoader);
-    this.loadImagesEasel(true);
+  // addInteractiveObjects: function (modelLoader) {
+    // SceneDetailsBaseModel3d.prototype.addInteractiveObjects.apply(this, arguments);
+  // },
+  loadSceneDetailModels: function (modelObj) {
+    this.set("totalLoaded", this.get("totalLoaded") + 1);
+
+    if (modelObj.name === "sceneDetails") {
+      this.set("object3d", modelObj.object3d);
+    } else {
+      // this.get("interactiveObjects").push(modelObj.object3d)
+      this.addArtEasels(modelObj.object3d);
+      this.loadImagesEasel(true);
+    }
+
+    this.allModelsLoaded();
   },
-  addArtEasels: function () {
+  addArtEasels: function (obj3d) {
     var interactiveObjects = [];
-    var zMod = -0.75;
+    // var zMod = -0.75;
 
     _.each(this.get("pointLights"), function (light, i) {
-      var canvasMesh = this.getArtEasel();
-      canvasMesh.position.set( light.x, 0, light.z + zMod);
-      canvasMesh.position.y = this.get("parentScenePosition").y;
+      var canvasMesh = obj3d.GdeepCloneMaterials();
+      canvasMesh.position.set( light.x, 0, light.z );
       canvasMesh.imageNum = i;
-      this.get("object3d").add(canvasMesh);
+      canvasMesh.clickType = "photoswipe";
       interactiveObjects.push(canvasMesh);
     }, this);
 
@@ -73,19 +93,12 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     _.each(this.get("interactiveObjects"), (mesh, i) => {
       var projectData = pageData[ this.get("projectIndex") + i];
       if (projectData) {
-        mesh.material.map = commandController.request(commandController.LOAD_IMAGE_TEXTURE, projectData.imgSrc);
+        mesh.material.materials[1].map = commandController.request(commandController.LOAD_IMAGE_TEXTURE, projectData.imgSrc);
         mesh.visible = true;
       } else {
         mesh.visible = false;
       }
     });
-  },
-  getArtEasel: function () {
-    var canvasMesh = commandController.request(commandController.PARSE_JSON_MODEL, canvas);
-    canvasMesh.name = "photoswipe";
-    var easelMesh = commandController.request(commandController.PARSE_JSON_MODEL, easel);
-    canvasMesh.add(easelMesh);
-    return canvasMesh;
   }
 });
 

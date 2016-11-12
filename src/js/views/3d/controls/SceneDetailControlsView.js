@@ -13,13 +13,18 @@ var SceneDetailControlsView = BaseView.extend({
   events: {
     "click .button-left": "prevInteractiveObject",
     "click .button-home": "resetSceneDetails",
-    "click .button-right": "nextInteractiveObject"
+    "click .button-right": "nextInteractiveObject",
+
+    "click .button-pause": "clickPause",
+    "click .button-play": "clickPlay",
+    "click .button-skip-next": "clickSkipNext",
   },
   initialize: function (options) {
     eventController.on(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
     eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
     eventController.on(eventController.ALL_ITEMS_LOADED, this.hideLoading, this);
     eventController.on(eventController.ITEM_START_LOAD, this.showLoading, this);
+    eventController.on(eventController.VIDEO_PLAY_PAUSE, this.togglePlayPause, this);
     this.navBarHeight = 45;
     this.showLoading();
   },
@@ -78,9 +83,24 @@ var SceneDetailControlsView = BaseView.extend({
   prevInteractiveObject: function () {
     eventController.trigger(eventController.SCENE_DETAILS_SELECT_OBJECT, false);
   },
+  togglePlayPause: function (playPauseBool) {
+    this.playEl.toggleClass("hide");
+    this.pauseEl.toggleClass("hide");
+  },
+  clickPause: function () {
+    eventController.trigger(eventController.VIDEO_PLAY_PAUSE, true);
+  },
+  clickPlay: function () {
+    eventController.trigger(eventController.VIDEO_PLAY_PAUSE, false);
+  },
+  clickSkipNext: function () {
+
+  },
   render: function () {
     this.$el.append(SceneDetailControlsHTML);
     this.loadingEl = this.$el.find("#items-loading");
+    this.playEl = this.$el.find(".button-play:first");
+    this.pauseEl = this.$el.find(".button-pause:first");
     return this;
   }
 });

@@ -34,7 +34,7 @@ var AppView3d = BaseView.extend({
     this.addListeners();
     var size = this.getWidthHeight();
     var scene = window.scene = this.scene = new THREE.Scene();
-    // scene.fog = new THREE.FogExp2( "#b82601", 0.02 );
+    // scene.fog = new THREE.FogExp2( "#b82601", 0.01 );
     this.initCamera(size);
 
     this.addHelpers();
@@ -81,14 +81,6 @@ var AppView3d = BaseView.extend({
     this.controls.update(this.clock.getDelta());
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
-    // if (this.videoObject) {
-    //   if ( this.videoObject.video.readyState === this.videoObject.video.HAVE_ENOUGH_DATA )
-    //   	{
-    //   		this.videoObject.videoImageContext.drawImage( this.videoObject.video, 0, 0 );
-    //   		if ( this.videoObject.videoTexture )
-    //   			this.videoObject.videoTexture.needsUpdate = true;
-    //   	}
-    // }
   },
   setRenderVideoTexture: function (videoObject) {
     this.videoObject = videoObject;

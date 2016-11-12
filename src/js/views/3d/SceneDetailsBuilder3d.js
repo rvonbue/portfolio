@@ -1,6 +1,6 @@
 import Base3dView from "./Base3dView";
 // import eventController from "../../controllers/eventController";
-import THREE from "three";
+import { PointLight } from "three";
 import utils from "../../util/utils";
 // import canvas from "../../data/embeded3dModels/canvas.json";
 // import easel from "../../data/embeded3dModels/easel.json";
@@ -9,9 +9,9 @@ var SceneDetailsBuilder3d = Base3dView.extend({  //setups up all the inside ligh
   initialize: function (options) {
     Base3dView.prototype.initialize.apply(this, arguments);
   },
-  setSceneDetails: function (sceneDetailsModel, modelLoader) {
+  setSceneDetails: function (sceneDetailsModel) {
     sceneDetailsModel.set("sceneLights", this.getPointLights(sceneDetailsModel));
-    sceneDetailsModel.addInteractiveObjects(modelLoader);
+    sceneDetailsModel.addInteractiveObjects();
   },
   getPointLights: function (sceneDetailsModel) {
     var positionY = sceneDetailsModel.get("parentScenePosition").y;
@@ -19,7 +19,7 @@ var SceneDetailsBuilder3d = Base3dView.extend({  //setups up all the inside ligh
     if (!lightArray.length) return lightArray;
 
     return lightArray.map(function (pl) {
-     var light = new THREE.PointLight( pl.color, pl.intensity, pl.distance, 2 );
+     var light = new PointLight( pl.color, pl.intensity, pl.distance, 2 );
      light.position.set(pl.x, pl.y + positionY, pl.z);
      return light;
    });

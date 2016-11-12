@@ -17,7 +17,16 @@ module.exports = {
       mapProps: { repeatScale: 1, shading: "flat" },
       // props: {color: colorPallete.lampLight.hex }
   },
-  computerScreen: {
+  computerScreen1: {
+      maps: [
+        { map: "textures/computerScreen.jpg" },
+        // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
+        // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
+      ],
+      mapProps: { repeatScale: 1, shading: "flat" },
+      // props: {color: "#0000FF" }
+  },
+  computerScreen2: {
       maps: [
         { map: "textures/computerScreen.jpg" },
         // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },

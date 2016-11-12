@@ -19,7 +19,7 @@
         "DbgName": "plasticBlack",
         "shading": "phong",
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "specularCoef": 50,
         "opacity": 1,
         "blending": "NormalBlending",
@@ -36,7 +36,7 @@
         "DbgName": "plushRed",
         "shading": "phong",
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "specularCoef": 50,
         "opacity": 1,
         "blending": "NormalBlending",
@@ -53,7 +53,7 @@
         "DbgName": "drywall",
         "shading": "phong",
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "specularCoef": 50,
         "opacity": 1,
         "blending": "NormalBlending",
