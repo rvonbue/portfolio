@@ -16,6 +16,7 @@ var ModelLoader = BaseModel.extend({
     eventController.on(eventController.LOAD_JSON_MODEL, this.loadModel, this);
     commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
     commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
+    commandController.reply(commandController.PARSE_JSON_MODEL, this.parseJSONModelGetMesh, this);
   },
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
@@ -34,9 +35,10 @@ var ModelLoader = BaseModel.extend({
     };
 
   },
-  loadModel: function (url, options, whichCallback) {
+  loadModel: function (url, options) {
     var self = this;
     var loader =  new THREE.JSONLoader(this.manager);
+
     loader.load(url, function ( geometry, materials ) {
         var bufferGeo = new THREE.BufferGeometry();
         bufferGeo.fromGeometry ( geometry );
@@ -46,8 +48,14 @@ var ModelLoader = BaseModel.extend({
             self.setMaterialMap(mat);
           }
       });
+
       var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(materials) );
-      var modelDetails = { name: options.name, sceneModelName: options.sceneModelName, object3d: object3d };
+      var modelDetails = {
+        name: options.name,
+        sceneModelName: options.sceneModelName,
+        object3d: object3d
+      };
+
       if ( options.sceneModelName ) {
         eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
       } else {
@@ -102,6 +110,11 @@ var ModelLoader = BaseModel.extend({
       }
     }, this);
     return model;
+  },
+  parseJSONModelGetMesh: function (json) {
+    console.log("json", json);
+    var model = this.parseJSON(json);
+    return new THREE.Mesh(model.geometry, model.materials[0]);
   },
   getVideoTexture: function (src) {
     var video = document.createElement( 'video' );

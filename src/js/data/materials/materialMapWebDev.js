@@ -65,5 +65,8 @@ module.exports = {
       { map: "textures/videoGameCabinet/videoGameCabinetEmmisive.png" },
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
+  },
+  blackGlass: {
+    props: { transparent: true, alwaysTransparent: true }
   }
 };

@@ -40,12 +40,12 @@ var SceneDetailControlsView = BaseView.extend({
     this.loadingEl.text(loadingText);
   },
   showLoading: function () {
-    this.show("loading");
     this.loading = true;
+    this.show("loading");
   },
   hideLoading: function () {
-    this.hide("loading");
     this.loading = false;
+    this.hide("loading");
   },
   show: function (sceneModelClassName) {
     this.$el.attr("class", this.getNewClasses(sceneModelClassName));
@@ -64,10 +64,13 @@ var SceneDetailControlsView = BaseView.extend({
   },
   getNewClasses: function (sceneModelClassName) {
     var loading = this.loading ? " loading " : " ";
-    return this.className + loading + sceneModelClassName;
+    if (sceneModelClassName === "loading") {
+      return this.$el[0].classList.value + loading;
+    }
+    return (this.className + loading + sceneModelClassName);
   },
   resetSceneDetails: function () {
-
+    eventController.trigger(eventController.RESET_SCENE, "3d");
   },
   nextInteractiveObject: function () {
     eventController.trigger(eventController.SCENE_DETAILS_SELECT_OBJECT, true);

@@ -2,6 +2,7 @@ import TWEEN from "tween.js";
 import THREE from "three";
 
 import eventController from "../../../controllers/eventController";
+import commandController from "../../../controllers/commandController";
 import BaseModel from "../../../models/BaseModel";
 import utils from "../../../util/utils"
 var OrbitControls = require('three-orbit-controls')(THREE);
@@ -10,6 +11,7 @@ var CAMERA_INTIAL_POSITION = { x: -25, y: 45, z: 45 };
 var TARGET_INITIAL_POSITION = { x: 0, y: 15, z: 0 };
 
 var CameraControls = BaseModel.extend({
+  animating: false,
   initialize: function (options) {
     this.camera = options.camera;
     this.addListeners();
@@ -22,11 +24,15 @@ var CameraControls = BaseModel.extend({
     eventController.on(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
     eventController.on(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
     eventController.on(eventController.SET_CAMERA_AND_TARGET, this.setCameraAndTarget, this);
+
+    commandController.reply(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
   },
   removeListeners: function () {
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
     eventController.off(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
     eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraSceneDetails, this);
+
+    commandController.stopReplying(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
   },
   zoomOnSceneModel: function (sceneModel, options) {
     var newPositions = sceneModel.getCameraPosition();
@@ -51,7 +57,7 @@ var CameraControls = BaseModel.extend({
         true
       );
       this.tweenNormal( this.orbitControls.target, newPositions.target);  // move camera target or lookAt
-    } 
+    }
 
   },
   zoomOnSceneDetails: function () {
@@ -86,21 +92,24 @@ var CameraControls = BaseModel.extend({
     tween.start();
   },
   getTween: function (startPos, endPos , speed, trigger) {
+    var self = this;
     var tween = new TWEEN.Tween(startPos)
     .to(endPos, speed)
     // .easing(TWEEN.Easing.Circular.Out)
     // .interpolation(TWEEN.Interpolation.Bezier)
     .onStart( () => {
+      self.animating = true;
       if (trigger) eventController.trigger(eventController.CAMERA_START_ANIMATION);
     })
     .onComplete( () => {
       // console.log("onCOmplete", new Date().getTime());
+      self.animating = false;
       if (trigger) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION);
     });
     return tween;
   },
   isAnimating: function () {
-    return TWEEN.getAll().length > 0;
+    return this.animating;
   },
   render: function () {
     return this;

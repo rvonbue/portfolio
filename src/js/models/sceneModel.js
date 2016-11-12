@@ -14,7 +14,6 @@ var SceneModel = BaseModel3d.extend({
     "loading": false, //loading scene Details currently
     "ready": false,  //ready if sceneDetails are loaded
     "interactive": true,
-    "doorsBool": false, // doors are close by default
     "doors": null,     //array of meshes
     "hoverLamps": null,     // array meshes
     "hoverLights": null,    // array of point lights
@@ -42,6 +41,11 @@ var SceneModel = BaseModel3d.extend({
     this.showHide(selectedBool)
     this.toggleHoverLights(selectedBool);
     // this.toggleTextVisiblilty(selectedBool);
+
+    if (!selectedBool || this.isReady() ) {
+      this.get("sceneDetails").set("selected", selectedBool);
+    }
+
   },
   onChangeHover: function () {
     // if (this.get("selected")) return;
@@ -61,8 +65,9 @@ var SceneModel = BaseModel3d.extend({
   setSelectedDelay: function (nBool, delay) {
     delay = delay || 500;
     var self = this;
+    self.set({ selected: nBool }, { silent: true });
     setTimeout(function () {
-      self.set("selected", nBool);
+      self.onChangeSelected();
     }, delay);
   },
   showHide: function (visBool) { // show = true
@@ -118,15 +123,15 @@ var SceneModel = BaseModel3d.extend({
   },
   openDoors: function (doorBool) {
     if (this.get("doorsBool")) return;
-    var doorWidth = 0.4;
+    var doorWidth = 1;
     var totalDoors = this.get("doors").length;
     _.each(this.get("doors"), function (doorMesh, i) {
       if (doorBool) { // open door
         if (i < totalDoors / 2) {
           if (i === 0) this.moveDoor(doorMesh, doorWidth);
-          if (i === 1) this.moveDoor(doorMesh, doorWidth * 2 );
+          if (i === 1) this.moveDoor(doorMesh, doorWidth * -2.5);
         } else {
-          if (i === 2) this.moveDoor(doorMesh, -doorWidth * 2 );
+          if (i === 2) this.moveDoor(doorMesh, -doorWidth );
           if (i === 3) this.moveDoor(doorMesh, -doorWidth );
         }
       }
@@ -176,7 +181,6 @@ var SceneModel = BaseModel3d.extend({
   },
   setFadeInMaterials:function (allMaterials) {
     _.each(allMaterials, function (mat) {
-      // if (!mat.alwaysTransparent) mat.transparent = true;
       mat.opacity = 0;
       mat.transparent = true;
     });
@@ -209,7 +213,6 @@ var SceneModel = BaseModel3d.extend({
         } else if (opacityEnd === 0) {
           self.set({ selected: false });
         }
-
       })
       .start();
 

@@ -2,18 +2,16 @@ import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import BaseView from "../BaseView";
 import navigationList from "../../data/navigationList";
-import cameraControlsGuiHTML from "../html/cameraControlsGUI.html";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",
-  template: _.template("<li><a><%= displayTitle %></a></li>"),
+  template: _.template("<li><a class='hvr-sweep-to-top'><%= displayTitle %></a></li>"),
   events: {
     "click li": "clickSelected",
     "mouseenter li": "enterHoverNavigationLi",
     "mouseleave li": "leaveHoverNavigationLi",
     "click .2d": "switchView2d",
     "click .3d": "switchView3d",
-    "click .resetCamera": "resetScene"
   },
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -23,6 +21,7 @@ var NavigationBar = BaseView.extend({
     this.addListeners();
   },
   addListeners: function () {
+    eventController.on(eventController.RESET_SCENE, this.resetScene, this);
     eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
     commandController.reply(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
@@ -102,7 +101,6 @@ var NavigationBar = BaseView.extend({
     _.each(this.navEls, function (el) {
       el.removeClass("hovered selected");
     });
-    eventController.trigger(eventController.RESET_SCENE, "3d");
   },
   getCssMenu: function () {
     var cssMenu = "<div id='cssmenu'><ul>";
@@ -115,7 +113,6 @@ var NavigationBar = BaseView.extend({
     return cssMenu;
   },
   render: function () {
-    this.$el.append(cameraControlsGuiHTML);
     this.$el.append(this.getCssMenu());
     this.$el.append("<div class='switch-views'><div class='2d'><a href='javascript:;'>2d</a></div><div class='3d'><a href='javascript:;'>3d</a></div></div>");
     this.cacheListEls();

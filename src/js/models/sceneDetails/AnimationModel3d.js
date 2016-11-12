@@ -1,6 +1,6 @@
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 import movieScreenJson from "../../data/embeded3dModels/movieScreen.json";
-import { MeshBasicMaterial, Mesh, VideoTexture, LinearFilter, Texture, FRONTSIDE } from "three";
+import { Mesh } from "three";
 import commandController from "../../controllers/commandController";
 
 var AnimationModel3d = SceneDetailsBaseModel3d.extend({
@@ -11,9 +11,7 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     this.set("initialCameraTarget", { x:0, y: 1, z: 0});
     this.set("pointLights", [
       {x: 6, y: 1, z: 2, color: "#FFFFFF", intensity: 1, distance: 2 },
-      // {x: 6, y: 1, z: 6.5, color: "#FFFFFF", intensity: 2, distance: 2 },
       {x: -6, y: 1, z: 2, color: "#FFFFFF", intensity: 1, distance: 2 },
-      // {x: -6, y: 1, z: 6.5, color: "#FFFFFF", intensity: 2, distance: 2 },
     ]);
     this.set("intialAmbientLights", {
       directional: ["#FFFFFF", 0],  // color intensity,

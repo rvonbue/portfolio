@@ -43,6 +43,7 @@
 #cssmenu ul li a {
   color: @css-menu-text-color;
   text-decoration: none;
+  cursor: pointer;
   display: block;
   padding: 15px 25px;
   font-family: 'Open Sans', sans-serif;
@@ -56,43 +57,43 @@
   -o-transition: color .25s;
   transition: color .25s;
 }
-#cssmenu ul li a:hover {
-  color: @css-menu-hover-color;
-  cursor: pointer;
-}
-#cssmenu ul li a:hover:before {
-  width: 100%;
-}
-#cssmenu ul li a:after {
-  content: "";
-  display: block;
-  position: absolute;
-  right: -3px;
-  top: 19px;
-  height: 6px;
-  width: 6px;
-  background: @color-4;
-  opacity: .5;
-}
-#cssmenu ul li a:before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 0;
-  background: #FFF;
-  -webkit-transition: width .25s;
-  -moz-transition: width .25s;
-  -ms-transition: width .25s;
-  -o-transition: width .25s;
-  transition: width .25s;
-}
-#cssmenu ul li.last > a:after,
-#cssmenu ul li:last-child > a:after {
-  display: none;
-}
+// #cssmenu ul li a:hover {
+//   color: @css-menu-hover-color;
+//   cursor: pointer;
+// }
+// #cssmenu ul li a:hover:before {
+//   width: 100%;
+// }
+// #cssmenu ul li a:after {
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   right: -3px;
+//   top: 19px;
+//   height: 6px;
+//   width: 6px;
+//   background: @color-4;
+//   opacity: .5;
+// }
+// #cssmenu ul li a:before {
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   left: 0;
+//   bottom: 0;
+//   height: 3px;
+//   width: 0;
+//   background: #FFF;
+//   -webkit-transition: width .25s;
+//   -moz-transition: width .25s;
+//   -ms-transition: width .25s;
+//   -o-transition: width .25s;
+//   transition: width .25s;
+// }
+// #cssmenu ul li.last > a:after,
+// #cssmenu ul li:last-child > a:after {
+//   display: none;
+// }
 #cssmenu ul li.active a {
   color: #333333;
 }

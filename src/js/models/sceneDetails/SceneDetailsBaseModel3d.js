@@ -3,7 +3,7 @@ import BaseModel3d from "../BaseModel3d";
 var SceneDetailsBaseModel3d = BaseModel3d.extend({
   defaults: {
     name: "Spinach",
-    video: null,
+    selected: false,
     pointLights: new Array,
     parentScenePosition: { x:0, y: 0, z: 0},
     initialCameraPosition: { x:0, y: 0, z: 0},
@@ -13,6 +13,7 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
       directional: ["#FFFFFF", 0],  // color intensity,
       hemisphere: ["#404040", "#9BE2FE", 0.1]  // skyColor, groundColor, intensity
     },
+    modelUrls: [],
   },
   initialize: function( options ) {
     BaseModel3d.prototype.initialize.apply(this, arguments);
@@ -33,6 +34,9 @@ var SceneDetailsBaseModel3d = BaseModel3d.extend({
     return [...this.get("sceneLights"), ...this.get("interactiveObjects"), this.get("object3d") ];
   },
   addInteractiveObjects: function () {
+
+  },
+  selectInteractiveObject: function () {
 
   },
   getPSImages: function () {
