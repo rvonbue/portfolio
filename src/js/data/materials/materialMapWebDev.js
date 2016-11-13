@@ -39,7 +39,7 @@ module.exports = {
       maps: [
         { map: "textures/computer/keyboard.jpg" },
         // { specularMap: "textures/computer/keyboard_SPEC.jpg" },
-        // { normalMap: "textures/computer/keyboard_NRM.jpg" }
+        { normalMap: "textures/computer/keyboard_NRM.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "smooth" },
   },

@@ -3,7 +3,6 @@ import THREE from "three";
 
 import eventController from "../../../controllers/eventController";
 import BaseModel from "../../../models/BaseModel";
-import SceneLoader from "../SceneLoader";
 
 var SceneControls = BaseModel.extend({
   defaults:  {
@@ -18,10 +17,7 @@ var SceneControls = BaseModel.extend({
     this.mouse = new THREE.Vector2();
     this.addListeners();
     // this.loadEnvironmentMap();
-    this.raycaster = new THREE.Raycaster();
-    this.raycaster.far = 125;
-    this.raycaster.near = 0.25;
-    this.loadInitialScene("home");
+    this.setRaycasterOptions();
     this.setSelectMesh();
   },
   addListeners: function () {
@@ -40,6 +36,11 @@ var SceneControls = BaseModel.extend({
     this.canvasEl.off("mouseup", function (evt) { self.onMouseClick(evt); });
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+  },
+  setRaycasterOptions: function () {
+    this.raycaster = new THREE.Raycaster();
+    this.raycaster.far = 125;
+    this.raycaster.near = 0.25;
   },
   setSelectMesh: function () {
     var geo = new THREE.OctahedronGeometry(0.25, 0);
@@ -85,13 +86,10 @@ var SceneControls = BaseModel.extend({
     });
     return closestObject;
   },
-  loadInitialScene: function (name) {
-    this.set(name, new SceneLoader({ name: name }));
-  },
   loadEnvironmentMap: function (reflectionCube) {
     var format = '.jpg';
     var path = "textures/forbiddenCity/";
-    var size = 65;
+    var size = 500;
     var urls = [
         path + 'posx' + format, path + 'negx' + format,
         path + 'posy' + format, path + 'negy' + format,
@@ -106,7 +104,7 @@ var SceneControls = BaseModel.extend({
   		}));
   	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
   	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
-    skyBox.position.y = size / 2;
+    // skyBox.position.y = -size / 4;
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
   },
   resetRaycaster: function (arr) {

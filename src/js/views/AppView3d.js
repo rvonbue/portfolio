@@ -7,6 +7,8 @@ import eventController from "../controllers/eventController";
 import LightControls from "./3d/controls/LightControls";
 import CameraControls from "./3d/controls/cameraControls";
 import SceneControls from "./3d/controls/SceneControls";
+import SceneLoader from "./3d/SceneLoader";
+import SceneSelector from "./3d/SceneSelector";
 import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
 import StatsView from "./components/statsView";
 
@@ -45,7 +47,7 @@ var AppView3d = BaseView.extend({
     // this.renderer.shadowMapEnabled = true;
     // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.initControls();
-
+    this.initSceneLoader();
     this.lightControls = new LightControls();
     this.resize();
     this.animate();
@@ -58,6 +60,10 @@ var AppView3d = BaseView.extend({
     var cameraControls = new CameraControls({ camera:this.camera, canvasEl:this.canvasEl });
     this.sceneControls = new SceneControls({ camera:this.camera, canvasEl:this.canvasEl });
     this.controls = cameraControls.getControls();
+  },
+  initSceneLoader: function () {
+    var sceneLoader = new SceneLoader();
+    var sceneSelector = new SceneSelector({ sceneModelCollection: sceneLoader.sceneModelCollection });
   },
   addHelpers: function () {
     var axisHelper = new THREE.AxisHelper( 11 );

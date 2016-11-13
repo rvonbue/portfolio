@@ -19,6 +19,9 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
       hemisphere: ["#404040", "#FFFFFF", 0.06]  // skyColor, groundColor, intensity
     }
   }),
+  initialize: function () {
+    this.addListeners();
+  },
   addListeners:function () {
     eventController.on(eventController.VIDEO_PLAY_PAUSE, this.toggleVideoPlayback, this );
   },
@@ -30,7 +33,6 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     this.set("interactiveObjects", [this.getMovieScreen()]);
   },
   toggleVideoPlayback: function () {
-    // console.log("toggleVideoPlayback", this.get("interactiveObjects"));
     var videoEl = this.get("interactiveObjects")[0].material.map.image;
 
     if (videoEl.paused) {
@@ -45,7 +47,7 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     var size = { w: 16 *.75, h: 9 *.75};
     var geometry = new PlaneGeometry( size.w, size.h );
     var videoTexture = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
-    var mesh = new Mesh( geometry, videoTexture);
+    var mesh = new Mesh( geometry, videoTexture );
     mesh.position.set(0, 5, -3);
     mesh.clickType = "video";
     return mesh;

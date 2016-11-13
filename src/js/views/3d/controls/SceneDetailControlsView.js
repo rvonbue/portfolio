@@ -53,6 +53,7 @@ var SceneDetailControlsView = BaseView.extend({
     this.hide("loading");
   },
   show: function (sceneModelClassName) {
+    console.log("show", sceneModelClassName);
     this.$el.attr("class", this.getNewClasses(sceneModelClassName));
     // this.$el.animate({ top: this.navBarHeight }, 0).show();
     this.$el.css("top", this.navBarHeight ).show();
@@ -88,10 +89,10 @@ var SceneDetailControlsView = BaseView.extend({
     this.pauseEl.toggleClass("hide");
   },
   clickPause: function () {
-    eventController.trigger(eventController.VIDEO_PLAY_PAUSE, true);
+    eventController.trigger(eventController.VIDEO_PLAY_PAUSE, false);
   },
   clickPlay: function () {
-    eventController.trigger(eventController.VIDEO_PLAY_PAUSE, false);
+    eventController.trigger(eventController.VIDEO_PLAY_PAUSE, true);
   },
   clickSkipNext: function () {
 
