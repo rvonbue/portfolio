@@ -10,12 +10,12 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
     name: "DigitalArtSD",
-    initialCameraPosition: { x:0, y: -0.75, z: 4.25 },
+    initialCameraPosition: { x:0, y: -1.25, z: 3.75 },
     initialCameraTarget: { x:0, y: 1, z: 0 },
     pointLights: [
-      { x: -2, y: 2.5, z: 2.5, color: "#FFFFFF", intensity: 4, distance: 5 },
-      { x: 0, y: 2.5, z: 2.5, color: "#FFFFFF", intensity: 4, distance: 5 },
-      { x: 2, y: 2.5, z: 2.5, color: "#FFFFFF", intensity: 4, distance: 5 }
+      { x: -3, y: 3.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 5 },
+      { x: 0, y: 3.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 6 },
+      { x: 3, y: 3.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 7 }
     ],
     intialAmbientLights: {
       hemisphere: ["#FFFFFF", "#FFFFFF", 0.75],  // skyColor, groundColor, intensity
@@ -81,7 +81,7 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
 
     _.each(this.get("pointLights"), function (light, i) {
       var canvasMesh = obj3d.GdeepCloneMaterials();
-      canvasMesh.position.set( light.x, 0, light.z );
+      canvasMesh.position.set( light.x, 0, 0 );
       canvasMesh.imageNum = i;
       canvasMesh.clickType = "photoswipe";
       interactiveObjects.push(canvasMesh);

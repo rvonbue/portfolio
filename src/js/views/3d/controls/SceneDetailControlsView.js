@@ -53,7 +53,6 @@ var SceneDetailControlsView = BaseView.extend({
     this.hide("loading");
   },
   show: function (sceneModelClassName) {
-    console.log("show", sceneModelClassName);
     this.$el.attr("class", this.getNewClasses(sceneModelClassName));
     // this.$el.animate({ top: this.navBarHeight }, 0).show();
     this.$el.css("top", this.navBarHeight ).show();
@@ -64,7 +63,7 @@ var SceneDetailControlsView = BaseView.extend({
     var shouldHide = this.$el[0].classList.length <= 1;
     if (shouldHide) {
       // this.$el.animate({ top: -80 }, 0).hide();
-      this.$el.css("top", -80 ).hide();
+      // this.$el.css("top", -80 ).hide();
       this.visible= false;
     }
   },

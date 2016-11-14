@@ -15,6 +15,7 @@ import SceneDetailsModel from "../../models/sceneDetails/SceneDetailsBaseModel3d
 import WebDevModel3d from "../../models/sceneDetails/WebDevModel3d";
 import AnimationModel3d from "../../models/sceneDetails/AnimationModel3d";
 import DigitalArtModel3d from "../../models/sceneDetails/DigitalArtModel3d";
+import ContactModel3d from "../../models/sceneDetails/ContactModel3d";
 
 var SceneLoader = BaseView.extend({
   name: null,
@@ -65,7 +66,7 @@ var SceneLoader = BaseView.extend({
     var sceneDetailsModel = sceneModel.get("sceneDetails");
 
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.getAllMeshes()); //add to stage so get they rendered
-
+    
     sceneModel.set({ loading: false, ready: true });
     sceneModel.get("sceneDetails").showHide(false , sceneModel.get("selected"));
     sceneModel.openDoors(true);
@@ -89,6 +90,8 @@ var SceneLoader = BaseView.extend({
         return new AnimationModel3d(modelObj);
       case navigationList[2].name:
         return new DigitalArtModel3d(modelObj);
+      case navigationList[4].name:
+        return new ContactModel3d(modelObj);
       default:
         return new SceneDetailsModel(modelObj);
     }

@@ -19,11 +19,6 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
     totalLoaded: 0,
     projectIndex: null
   },
-  initialize: function( options ) {
-    // BaseModel3d.prototype.initialize.apply(this, arguments);
-    // this.setInitialPosition();
-    // if (options.name) this.set("name", options.name);
-  },
   setInitialPosition: function (sceneModel) {
     var y = this.get("parentScenePosition").y;
     this.get("object3d").position.y = y;

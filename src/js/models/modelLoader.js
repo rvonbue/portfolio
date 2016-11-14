@@ -79,6 +79,11 @@ var ModelLoader = BaseModel.extend({
     var self = this;
     _.each(mapObj, function (mapURL, mapKey) {
       if (mapURL === null || mapURL === "null") return null;
+
+      if (mapKey ===" envMap") {
+        mat[mapKey] = this.getReflectionCube();
+        return;
+      }
       mat[mapKey] = new THREE.TextureLoader(self.manager).load( mapURL, function (texture) {
         if (options.repeatScale) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -86,7 +91,7 @@ var ModelLoader = BaseModel.extend({
           texture.shading = options.shading === "smooth" ? THREE.SmoothShading : THREE.FlatShading ;
         }
       });
-    });
+    }, this);
   },
   setMaterialAttributes: function (mat, props) {
     // console.log("mat:", mat);

@@ -40,7 +40,10 @@ var SceneLoader = BaseView.extend({
     eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
 
+    eventController.off(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishAnimating, this);
     eventController.off(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimating, this);
+    eventController.off(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
+    eventController.off(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
   },
   resetScene: function () {
     this.animating = false;
@@ -179,10 +182,10 @@ var SceneLoader = BaseView.extend({
   },
   toggleSelectedSceneDetails: function (oldSceneModel, newSceneModel) {
     var fadeTime = utils.getAnimationSpeed().materialsFade;
-    
+
     oldSceneModel.fadeMaterials(0);
     newSceneModel.setSelectedDelay(true, fadeTime);
-    this.resetSceneDetails(newSceneModel);
+    // this.resetSceneDetails(newSceneModel);
 
     setTimeout(function () {
       eventController.trigger(eventController.RESET_SCENE_DETAILS, newSceneModel);
@@ -201,8 +204,7 @@ var SceneLoader = BaseView.extend({
     this.hideSceneModel(); //hide all non selected sceneModels
   },
   cameraStartAnimating: function () {
-    // console.log("cameraStartAnimating");
-
+    console.log("cameraStartAnimating");
   },
   hideSceneModel: function () {
     var selectedFalse = this.sceneModelCollection.where({ selected: false });
