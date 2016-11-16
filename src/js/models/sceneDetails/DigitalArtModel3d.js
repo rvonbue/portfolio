@@ -10,16 +10,16 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
     name: "DigitalArtSD",
-    initialCameraPosition: { x:0, y: -1.25, z: 3.75 },
+    initialCameraPosition: { x:0, y: -1.25, z: 3.50 },
     initialCameraTarget: { x:0, y: 1, z: 0 },
     pointLights: [
-      { x: -3, y: 3.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 5 },
-      { x: 0, y: 3.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 6 },
-      { x: 3, y: 3.5, z: 2, color: "#FFFFFF", intensity: 3, distance: 7 }
+      { x: -3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 },
+      { x: 0, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 },
+      { x: 3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 }
     ],
     intialAmbientLights: {
-      hemisphere: ["#FFFFFF", "#FFFFFF", 0.75],  // skyColor, groundColor, intensity
-      directional: ["#FFFFFF", 0]  // color intensity,
+      hemisphere: ["#FFFFFF", "#FFFFFF", 1],  // skyColor, groundColor, intensity
+      directional: ["#FFFFFF", 0.2]  // color intensity,
     },
     projectIndex: 0
   }),
@@ -31,6 +31,7 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     //   this.addArtEasels();
     //   this.loadImagesEasel(true);
     // })
+    window.DIG = this;
   },
   showHide: function (tBool, selectedParentScene) {
     SceneDetailsBaseModel3d.prototype.showHide.apply(this, arguments);
@@ -84,6 +85,7 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
       canvasMesh.position.set( light.x, 0, 0 );
       canvasMesh.imageNum = i;
       canvasMesh.clickType = "photoswipe";
+      // canvasMesh.geometry.computeBoundingBox();
       interactiveObjects.push(canvasMesh);
     }, this);
 

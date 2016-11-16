@@ -79,9 +79,10 @@ var ModelLoader = BaseModel.extend({
     var self = this;
     _.each(mapObj, function (mapURL, mapKey) {
       if (mapURL === null || mapURL === "null") return null;
-
-      if (mapKey ===" envMap") {
-        mat[mapKey] = this.getReflectionCube();
+        // console.log("--------mapKey-------------", mapKey);
+      if (mapKey === "envMap") {
+        // console.log("--------mat-------------", mat);
+        mat[mapKey] = this.getRefractionCube();
         return;
       }
       mat[mapKey] = new THREE.TextureLoader(self.manager).load( mapURL, function (texture) {
@@ -139,7 +140,7 @@ var ModelLoader = BaseModel.extend({
   },
   getReflectionCube: function () {
 
-    var path = "textures/forbiddenCity/";
+    var path = "textures/cubeMap/beach/";
     var format = '.jpg';
     var urls = [
         path + 'posx' + format, path + 'negx' + format,
@@ -149,13 +150,13 @@ var ModelLoader = BaseModel.extend({
 
     var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( urls );
 		reflectionCube.format = THREE.RGBFormat;
-
+    console.log("reflectionCube", reflectionCube);
     // scene.background = reflectionCube;
 
     return reflectionCube;
   },
   getRefractionCube: function () {
-    var path = "textures/forbiddenCity/";
+    var path = "textures/cubeMap/beach/";
     var format = '.jpg';
     var urls = [
         path + 'posx' + format, path + 'negx' + format,
@@ -166,6 +167,7 @@ var ModelLoader = BaseModel.extend({
     var refractionCube = new THREE.CubeTextureLoader().load( urls );
 				refractionCube.mapping = THREE.CubeRefractionMapping;
 				refractionCube.format = THREE.RGBFormat;
+    console.log("refractionCube", refractionCube);
     return refractionCube;
   }
 });

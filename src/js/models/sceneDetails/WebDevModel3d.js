@@ -10,11 +10,12 @@ var WebDevModel3d = SceneDetailsBaseModel3d.extend({
     pointLights: [
       {x: 6, y: 2, z: 2, color: "#0000FF", intensity: 1.5, distance: 2.5 }, //video game lights
       {x: 5.65, y: 2, z: 2, color: "#fe3a08", intensity: 1.5, distance: 2.5 }, //video game  lights
-      {x: 0.5, y: 1.5, z: 1.5, color: "#0000FF", intensity: 3, distance: 1.5 }  //computer screen fake light
+      {x: 0.5, y: 1.5, z: 1.5, color: "#0000FF", intensity: 3, distance: 1.5 },  //computer screen fake light
+      // {x: 0.5, y: 1.5, z: 1.5, color: "#FFFFFF", intensity: 1, distance: 5 }
     ],
     intialAmbientLights: {
-      directional: ["#FFFFFF", 0],  // color intensity,
-      hemisphere: ["#404040", "#FFFFFF", 0.15]  // skyColor, groundColor, intensity
+      directional: ["#FFFFFF", 0.0],  // color intensity,
+      hemisphere: ["#404040", "#FFFFFF", 0.1]  // skyColor, groundColor, intensity
     },
     modelUrls: ["sceneDetails", "videoGameCabinet", "computerMonitor"],
   }),

@@ -53,12 +53,20 @@ var SceneLoader = BaseView.extend({
     this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
   setMouseMoveHoverSceneModel: function (intersect) {
-    if (!intersect && this.hoverModel) {
-      this.hoverModel.set("hover", false);
-      this.hoverModel = null;
-      return;
+    if (!this.isSceneSelected()) {
+      if (!intersect && this.hoverModel) {
+        this.hoverModel.set("hover", false);
+        this.hoverModel = null;
+        return;
+      }
+      if (intersect) this.setHoverSceneModel(this.sceneModelCollection.findWhere({ name: intersect.object.name }), true);
+    } else {
+      if (intersect) {
+        eventController.trigger(eventController.MOVE_SCENE_SELECTOR, intersect.object);
+      } else {
+        eventController.trigger(eventController.MOVE_SCENE_SELECTOR);
+      }
     }
-    if (intersect) this.setHoverSceneModel(this.sceneModelCollection.findWhere({ name: intersect.object.name }), true);
   },
   setHoverSceneModelNavBar: function (navListObj, hoverBool) {
     // if ( !this.isSceneSelected()) {

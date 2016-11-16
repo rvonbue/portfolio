@@ -75,7 +75,9 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
   },
-  blackGlass: {
-    props: { transparent: true, alwaysTransparent: true }
+  glass: {
+    maps: [{ envMap: "default" } ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacity:0.75}
   }
 };

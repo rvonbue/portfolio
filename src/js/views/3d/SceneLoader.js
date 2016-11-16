@@ -27,7 +27,7 @@ var SceneLoader = BaseView.extend({
     this.modelLoader = new ModelLoader();
     this.addListeners();
     var models = [
-      // { url: "models3d/ground.json", name: "ground" },
+      { url: "models3d/ground2.json", name: "ground" },
       { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
       { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME}
     ];
@@ -66,7 +66,7 @@ var SceneLoader = BaseView.extend({
     var sceneDetailsModel = sceneModel.get("sceneDetails");
 
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.getAllMeshes()); //add to stage so get they rendered
-    
+
     sceneModel.set({ loading: false, ready: true });
     sceneModel.get("sceneDetails").showHide(false , sceneModel.get("selected"));
     sceneModel.openDoors(true);
@@ -163,9 +163,9 @@ var SceneLoader = BaseView.extend({
     var sdObject;
 
     if ( sceneModel ) {
-      if (next) sdObject = sceneModel.get("sceneDetails").selectNextObject();
-      if (!next) sdObject = sceneModel.get("sceneDetails").selectPrevObject();
-      eventController.trigger(eventController.MOVE_SCENE_SELECTOR, sdObject);
+      if (next) sdMesh = sceneModel.get("sceneDetails").selectNextObject();
+      if (!next) sdMesh = sceneModel.get("sceneDetails").selectPrevObject();
+      eventController.trigger(eventController.MOVE_SCENE_SELECTOR, sdMesh);
     }
 
   },

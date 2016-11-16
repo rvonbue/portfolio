@@ -39,7 +39,8 @@ module.exports = {
       { specularMap: "textures/stucco/stucco_SPEC.jpg" },
       { normalMap: "textures/stucco/stucco_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 20, shading: "flat" }
+    mapProps: { repeatScale: 20, shading: "flat" },
+    props: { color: "#FFFFFF" }
   },
   woodBamboo:{
     maps: [

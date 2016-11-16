@@ -13,7 +13,7 @@ var LightControls = BaseView.extend({
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
     this.skyGradientElClickNum = 0;
-    // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
+    $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
     this.clickChangeSkyGradient();
     this.addLight();
     this.addListeners();

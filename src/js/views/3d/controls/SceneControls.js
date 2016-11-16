@@ -23,19 +23,23 @@ var SceneControls = BaseModel.extend({
   addListeners: function () {
     var self = this;
     var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 25);
+
     this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
     this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
+
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneSelector, this);
+    eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   removeListeners: function () {
     this.canvasEl.off("mousemove", function (evt) { self.onMouseMove(evt); });
     this.canvasEl.off("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     this.canvasEl.off("mouseup", function (evt) { self.onMouseClick(evt); });
+
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+    eventController.off(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   setRaycasterOptions: function () {
     this.raycaster = new THREE.Raycaster();
@@ -88,7 +92,7 @@ var SceneControls = BaseModel.extend({
   },
   loadEnvironmentMap: function (reflectionCube) {
     var format = '.jpg';
-    var path = "textures/forbiddenCity/";
+    var path = "textures/cubeMap/beach/";
     var size = 500;
     var urls = [
         path + 'posx' + format, path + 'negx' + format,
@@ -110,10 +114,27 @@ var SceneControls = BaseModel.extend({
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;
   },
-  moveSceneSelector:function (selectedMesh) {
+  moveSceneDetailsIcon:function (selectedMesh) {
+    if (!selectedMesh) {
+      this.selectMesh.visible = false;
+      return;
+    }
+    this.selectMesh.visible = true;
+    // var pos = new THREE.Vector3();
+    this.selectMesh.rotation.z += 0.01;
+
+    new TWEEN.Tween(this.selectMesh.rotation)
+    .to({ y: "+" + (Math.PI) }, 750)
+    .easing(TWEEN.Easing.Quartic.Out)
+    .start();
+
+    var pos =  _.clone(selectedMesh.position);
     var center = _.clone(selectedMesh.geometry.boundingSphere.center);
     center.y += selectedMesh.geometry.boundingSphere.radius + selectedMesh.position.y ;
-    this.selectMesh.position.set(center.x, center.y, center.z);
+    pos.x += center.x;
+    pos.y = center.y;
+    pos.z += center.z;
+    this.selectMesh.position.set(pos.x, pos.y, pos.z);
   },
   render: function () {
     return this;
