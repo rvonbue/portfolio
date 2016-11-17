@@ -16,7 +16,7 @@ module.exports = {
       color2: {hex: "#008000" },  //green
       color3: {hex: "#008000" },  //green
       lampLight: {hex: "#B82601", rgb: { r:0.72, g:0.15, b: 0.005 } },  //red //663399 purple
-      text: { hex:"#062f4f", rgb: { r:0.024, g:0.184, b: 0.31 } },
+      text: { hex:"#FFFFFF", rgb: { r:1, g:1, b: 1 } },
       world: {
         hemisphere: {
           sky:"#9be2fe",
@@ -25,7 +25,7 @@ module.exports = {
         },
         directional: {
           color: "#9be2fe",
-          intensity: 0.75
+          intensity: 1
         }
       }
     };

@@ -25,7 +25,4 @@ module.exports = {
   },
   girder: {
   },
-  glass: {
-    props: [{opacity: .25 }]
-  }
 };

@@ -49,5 +49,10 @@ module.exports = {
     ],
     mapProps: { repeatScale: 4, shading: "flat" },
     // props: {  color: "#474747" }
-  }
+  },
+  glass: {
+    maps: [{ envMap: "reflection" } ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacity:0.75}
+  },
 };

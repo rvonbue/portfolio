@@ -176,7 +176,7 @@ var SceneModel = BaseModel3d.extend({
       var textRGB = utils.getColorPallete().text.rgb;
       this.setEmissiveMaterial(textMaterial, textRGB.r, textRGB.g, textRGB.b );
     } else {
-      this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
+      // this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
     }
   },
   setFadeInMaterials:function (allMaterials) {

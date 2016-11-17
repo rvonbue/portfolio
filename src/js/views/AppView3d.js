@@ -40,7 +40,7 @@ var AppView3d = BaseView.extend({
     this.initCamera(size);
 
     this.addHelpers();
-    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas:this.canvasEl });
+    this.renderer = new THREE.WebGLRenderer({ antiAlias:false, canvas:this.canvasEl });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( 0x000000, 0 );

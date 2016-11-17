@@ -108,6 +108,7 @@ var SceneControls = BaseModel.extend({
   		}));
   	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
   	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+    skyBox.rotation.y = Math.PI / 6;
     // skyBox.position.y = -size / 4;
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
   },
@@ -121,11 +122,11 @@ var SceneControls = BaseModel.extend({
     }
     this.selectMesh.visible = true;
     // var pos = new THREE.Vector3();
-    this.selectMesh.rotation.z += 0.01;
+    this.selectMesh.rotation.set(+0.01, +0.01, +0.01);
 
     new TWEEN.Tween(this.selectMesh.rotation)
     .to({ y: "+" + (Math.PI) }, 750)
-    .easing(TWEEN.Easing.Quartic.Out)
+    .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
     var pos =  _.clone(selectedMesh.position);

@@ -2,6 +2,7 @@ import eventController from "../../controllers/eventController";
 import commandController from "../../controllers/commandController";
 import BaseView from "../BaseView";
 import navigationList from "../../data/navigationList";
+import switchViewHtml from "../html/switchView.html";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",
@@ -10,8 +11,8 @@ var NavigationBar = BaseView.extend({
     "click li": "clickSelected",
     "mouseenter li": "enterHoverNavigationLi",
     "mouseleave li": "leaveHoverNavigationLi",
-    "click .2d": "switchView2d",
-    "click .3d": "switchView3d",
+    "click .switch-2d": "switchView2d",
+    "click .switch-3d": "switchView3d",
   },
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -96,6 +97,7 @@ var NavigationBar = BaseView.extend({
   },
   switchView3d: function (what) {
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
+    eventController.trigger(eventController.RESET_SCENE, "3d");
   },
   resetScene: function () {
     _.each(this.navEls, function (el) {
@@ -114,7 +116,7 @@ var NavigationBar = BaseView.extend({
   },
   render: function () {
     this.$el.append(this.getCssMenu());
-    this.$el.append("<div class='switch-views'><div class='2d'><a href='javascript:;'>2d</a></div><div class='3d'><a href='javascript:;'>3d</a></div></div>");
+    this.$el.append(switchViewHtml);
     this.cacheListEls();
 
     return this;

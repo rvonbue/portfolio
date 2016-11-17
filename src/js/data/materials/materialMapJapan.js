@@ -40,7 +40,7 @@ module.exports = {
       { normalMap: "textures/stucco/stucco_NRM.jpg" }
     ],
     mapProps: { repeatScale: 20, shading: "flat" },
-    props: { color: "#FFFFFF" }
+    // props: { color: "#FFFFFF" }
   },
   woodBamboo:{
     maps: [

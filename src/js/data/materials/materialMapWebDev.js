@@ -75,9 +75,21 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
   },
-  glass: {
-    maps: [{ envMap: "default" } ],
-    mapProps: { repeatScale: 1, shading: "flat" },
-    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacity:0.75}
+  blackGlass: {
+    maps: [{ envMap: "reflection" } ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: { color: "#FFFFF", transparent: true, alwaysTransparent: true, opacity:0.50}
+  },
+  fern:  {
+    maps: [{ map: "textures/farn.png" } ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: { transparent: true, alwaysTransparent: true }
+  },
+  pot: {
+    props: { color: "#e2725b" }
+  },
+  powerButton: {
+      maps: [{ map: "textures/powerButton.jpg" } ],
+      mapProps: { repeatScale: 1, shading: "flat" },
   }
 };

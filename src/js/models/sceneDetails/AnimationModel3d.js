@@ -11,9 +11,10 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     initialCameraPosition: { x:0, y: 1.5, z: 4.5},
     initialCameraTarget: { x:0, y: 3.5, z: 0},
     pointLights: [
-      {x: 6, y: 1, z: 2, color: "#FFFFFF", intensity: 1, distance: 2 },
-      {x: -6, y: 1, z: 2, color: "#FFFFFF", intensity: 1, distance: 2 },
+      {x: 6, y: 1, z: 1.5, color: "#FFFFFF", intensity: 1, distance: 2 },
+      {x: -6, y: 1, z: 1, color: "#FFFFFF", intensity: 1, distance: 2 },
     ],
+    directionalLight: { color: "#FF0000", intensity: 1 },
     intialAmbientLights: {
       directional: ["#FFFFFF", 0],  // color intensity,
       hemisphere: ["#404040", "#FFFFFF", 0.06]  // skyColor, groundColor, intensity
