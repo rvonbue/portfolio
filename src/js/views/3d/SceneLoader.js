@@ -16,6 +16,7 @@ import WebDevModel3d from "../../models/sceneDetails/WebDevModel3d";
 import AnimationModel3d from "../../models/sceneDetails/AnimationModel3d";
 import DigitalArtModel3d from "../../models/sceneDetails/DigitalArtModel3d";
 import ContactModel3d from "../../models/sceneDetails/ContactModel3d";
+import AboutMeModel3d from "../../models/sceneDetails/AboutMeModel3d";
 
 var SceneLoader = BaseView.extend({
   name: null,
@@ -82,6 +83,8 @@ var SceneLoader = BaseView.extend({
         return new AnimationModel3d(modelObj);
       case navigationList[2].name:
         return new DigitalArtModel3d(modelObj);
+      case navigationList[3].name:
+        return new AboutMeModel3d(modelObj);
       case navigationList[4].name:
         return new ContactModel3d(modelObj);
       default:

@@ -65,7 +65,7 @@ var AppView3d = BaseView.extend({
     var sceneSelector = new SceneSelector({ sceneModelCollection: sceneLoader.sceneModelCollection });
   },
   addHelpers: function () {
-    var axisHelper = new THREE.AxisHelper( 11 );
+    var axisHelper = new THREE.AxisHelper( 50 );
     // axisHelper.position.y = 40;
     this.scene.add( axisHelper );
   },
