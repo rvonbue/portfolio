@@ -282,14 +282,17 @@ var SceneLoader = BaseView.extend({
     var selectedSceneModel = this.getSelectedScene();
     var timeOpenDoors, self = this;
 
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel.get("sceneDetails").getAllMeshes());
     sceneModel.showHide(true, true);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel.get("sceneDetails").getAllMeshes());
     this.resetSceneDetails(sceneModel, false);
 
     setTimeout( function () {
       timeOpenDoors = sceneModel.openDoors(true);
       setTimeout( function () {
-        if ( sceneModel.cid === selectedSceneModel.cid ) self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
+        if ( sceneModel.cid === selectedSceneModel.cid ) {
+          self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
+          self.hideSceneModels();
+        }
       }, timeOpenDoors);
     }, 1500);
   }
