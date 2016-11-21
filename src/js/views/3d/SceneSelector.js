@@ -143,7 +143,7 @@ var SceneLoader = BaseView.extend({
       console.log("isSameModel", isCameraAnimating);
       if (isCameraAnimating) return;
       if (oldSceneModel.isReady()) { // are sceneDetails loaded
-        this.resetSceneDetails(newSceneModel);
+        this.resetSceneDetails(newSceneModel, true);
         oldSceneModel.showHide(true);
       } else {
         this.zoomToSelectedSceneModel(oldSceneModel, {pathPoints: 2 });
@@ -154,7 +154,7 @@ var SceneLoader = BaseView.extend({
     if ( newSceneModel.isReady() && oldSceneModelisReady ) {
       console.log("newSceneModel.isReady() && oldSceneModelisReady");
       this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel); //fade to new sceneModel
-      this.resetSceneDetails(newSceneModel);
+      // this.resetSceneDetails(newSceneModel);
       return;
     }
     if ( !newSceneModel.isReady() && oldSceneModelisReady ) {
@@ -190,30 +190,32 @@ var SceneLoader = BaseView.extend({
         this.resetSceneDetails(selectedScene);
     }
   },
-  resetSceneDetails: function ( sceneModel ) {
+  resetSceneDetails: function ( sceneModel, moveCamera ) {
     eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneModel.getAmbientLighting());
     eventController.trigger(eventController.RESET_RAYCASTER, sceneModel.get("sceneDetails").get("interactiveObjects"));
     eventController.trigger(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, sceneModel.get("className"));
-    sceneModel.get("sceneDetails").set("selected", true);
+    if (moveCamera === true ) {
+      eventController.trigger(eventController.SET_CAMERA_AND_TARGET, sceneModel.getCameraPosition());
+    }
   },
   toggleSelectedSceneDetails: function (oldSceneModel, newSceneModel) {
     var fadeTime = utils.getAnimationSpeed().materialsFade;
-
+    var self = this;
+    console.log("toggleSelectedSceneDetails");
     oldSceneModel.fadeMaterials(0);
+    oldSceneModel.setSelectedDelay(false, fadeTime);
     newSceneModel.setSelectedDelay(true, fadeTime);
-    // this.resetSceneDetails(newSceneModel);
 
     setTimeout(function () {
-      eventController.trigger(eventController.RESET_SCENE_DETAILS, newSceneModel);
+      self.resetSceneDetails(newSceneModel, true);
       newSceneModel.fadeMaterials(1);
     }, fadeTime);
 
-    // eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, newSceneModel.getAmbientLighting());
   },
   zoomToSelectedSceneModel: function (sceneModel, options) {
     eventController.trigger(eventController.SCENE_MODEL_SELECTED, sceneModel, options);  //zoom to selected model
   },
-  hideSceneModel: function () {
+  hideSceneModels: function () {
     var selectedFalse = this.sceneModelCollection.where({ selected: false });
     _.each(selectedFalse, function (sceneModel) {
       // this.fadeMaterials(sceneModel.getAllMaterials(), 0);
@@ -282,7 +284,7 @@ var SceneLoader = BaseView.extend({
 
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel.get("sceneDetails").getAllMeshes());
     sceneModel.showHide(true, true);
-    this.resetSceneDetails(sceneModel, true);
+    this.resetSceneDetails(sceneModel, false);
 
     setTimeout( function () {
       timeOpenDoors = sceneModel.openDoors(true);

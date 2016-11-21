@@ -218,10 +218,10 @@ var SceneModel = BaseModel3d.extend({
       .onComplete(function () {
         if ( opacityEnd === 1  && !mat.alwaysTransparent ) {
           mat.transparent = false;
-          self.set({ selected: true });
-          self.startScene();
+          // self.set({ selected: true });
+          // self.startScene();
         } else if (opacityEnd === 0) {
-          self.set({ selected: false });
+          // self.set({ selected: false });
         }
       })
       .start();

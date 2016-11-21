@@ -81,7 +81,7 @@ var BaseModel3d = Backbone.Model.extend({
   getChildMeshes: function (childrenArr) {
     var childMeshes = [];
     _.each(childrenArr, function (mesh) {
-      if (!mesh.material) return; // if not a light
+      if (!mesh || !mesh.material) return; // if not a light
       if (mesh.material.materials) { // if mesh has multiple materials
         _.each(mesh.material.materials, function (mat) {
           if (mat.alwaysHidden) return; // if raycaster mesh dont alter those materials
