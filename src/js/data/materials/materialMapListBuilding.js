@@ -19,10 +19,10 @@ module.exports = {
       maps: [{ map: "textures/roof.jpg" }],
       props: { repeatScale: 0.25, shading: "flat" }
   },
-  grass: {
-    maps: [{ map: "textures/grass/grass.jpg" }],
-    props: { repeatScale: 0.25, shading: "flat" }
-  },
+  // grass: {
+  //   maps: [{ map: "textures/grass/grass.jpg" }],
+  //   props: { repeatScale: 0.25, shading: "flat" }
+  // },
   girder: {
   },
 };

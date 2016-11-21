@@ -52,29 +52,21 @@ var SceneLoader = BaseView.extend({
     var self = this;
     var sceneDetailsModel = this.getSceneDetailsModel(sceneModel);
     var sceneDetailsBuilder3d = new SceneDetailsBuilder3d();
+
     sceneDetailsBuilder3d.setSceneDetails(sceneDetailsModel);
     sceneModel.set("sceneDetails", sceneDetailsModel); //set sceneModel and toggle show/hide of sceneDetails Model
 
-
-    sceneDetailsModel.once("ALL_MODELS_LOADED", function () {
+    eventController.once("ALL_ITEMS_LOADED", function () {
+      console.log("all textures and Models Loaded");
       self.allItemsLoaded(sceneModel);
     });
 
   },
   allItemsLoaded: function (sceneModel) {
-    var isCameraAnimating = commandController.request(commandController.IS_CAMERA_ANIMATING);
-    var sceneDetailsModel = sceneModel.get("sceneDetails");
-
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneDetailsModel.getAllMeshes()); //add to stage so get they rendered
-
+    sceneModel.get("sceneDetails").showHide(false , false);
     sceneModel.set({ loading: false, ready: true });
-    sceneModel.get("sceneDetails").showHide(false , sceneModel.get("selected"));
-    sceneModel.openDoors(true);
 
-    if (isCameraAnimating) {
-      eventController.trigger(eventController.TOGGLE_SELECT_SCENE_MODEL);
-    }
-
+    eventController.trigger(eventController.SCENE_MODEL_READY, sceneModel);
   },
   getSceneDetailsModel: function (sceneModel) {
     // delete modelObj["name"]; // let getSceneDetailsModel set their own names

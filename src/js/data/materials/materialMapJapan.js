@@ -35,9 +35,9 @@ module.exports = {
   },
   stucco:{
     maps: [
-      { map: "textures/stucco/stucco_COLOR.jpg" },
-      { specularMap: "textures/stucco/stucco_SPEC.jpg" },
-      { normalMap: "textures/stucco/stucco_NRM.jpg" }
+      { map: "textures/stucco2/stucco_COLOR.jpg" },
+      { specularMap: "textures/stucco2/stucco_SPEC.jpg" },
+      { normalMap: "textures/stucco2/stucco_NRM.jpg" }
     ],
     mapProps: { repeatScale: 20, shading: "flat" },
     // props: { color: "#FFFFFF" }
@@ -48,13 +48,13 @@ module.exports = {
       { specularMap: "textures/woodBamboo/woodBamboo_SPEC.jpg" },
       { normalMap: "textures/woodBamboo/woodBamboo_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 1, shading: "flat" },
-    props: {  color: colorPallete.color3.hex, shininess: 10 }
+    mapProps: { repeatScale: 2, shading: "flat" },
+    props: {  color: colorPallete.color3.hex }
   },
   windowJapan: {
     maps: [
       { map: "textures//windowJapan/windowJapan_COLOR.jpg" },
-      { specularMap: "textures/windowJapan/windowJapan_SPEC.jpg" },
+      // { specularMap: "textures/windowJapan/windowJapan_SPEC.jpg" },
       { normalMap: "textures/windowJapan/windowJapan_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" }
@@ -68,7 +68,11 @@ module.exports = {
   },
   shutterJapan:{
      maps: [
-      {map: "textures/japanShutter.jpg"}
+      {
+        map: "textures/japanShutter/japanShutter_COLOR.jpg",
+        normalMap: "textures/japanShutter/japanShutter_NRM.jpg",
+        // specularMap: "textures/japanShutter/japanShutter_SPEC.jpg",
+      }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
   },

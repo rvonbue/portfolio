@@ -16,8 +16,8 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     ],
     directionalLight: { color: "#FF0000", intensity: 1 },
     intialAmbientLights: {
-      directional: ["#FFFFFF", 0],  // color intensity,
-      hemisphere: ["#404040", "#FFFFFF", 0.06]  // skyColor, groundColor, intensity
+      directional: { color: "#FFFFFF", intensity: 0},  // color intensity,
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.06 }  // skyColor, groundColor,
     }
   }),
   initialize: function () {

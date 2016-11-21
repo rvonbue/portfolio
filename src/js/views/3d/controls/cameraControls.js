@@ -7,8 +7,8 @@ import BaseModel from "../../../models/BaseModel";
 import utils from "../../../util/utils"
 var OrbitControls = require('three-orbit-controls')(THREE);
 
-var CAMERA_INTIAL_POSITION = { x: -25, y: 45, z: 45 };
-var TARGET_INITIAL_POSITION = { x: 0, y: 15, z: 0 };
+var CAMERA_INTIAL_POSITION = { x: -5, y: 33, z: 45 };
+var TARGET_INITIAL_POSITION = { x: 0, y: 20, z:-10 };
 
 var CameraControls = BaseModel.extend({
   animating: false,
@@ -17,7 +17,6 @@ var CameraControls = BaseModel.extend({
     this.addListeners();
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
     this.setCameraInitialPosition();
-    var hello = 5;
   },
   addListeners: function () {
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
@@ -35,33 +34,30 @@ var CameraControls = BaseModel.extend({
     commandController.stopReplying(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
   },
   zoomOnSceneModel: function (sceneModel, options) {
-    var newPositions = sceneModel.getCameraPosition();
-    var middlePoint = _.clone(newPositions.camera);
+    // TWEEN.removeAll();
 
-    if (options.tween === "cancel") {
-      console.log("zoomOnSceneModel-------CANCEL");
-      TWEEN.removeAll();
-    } else {
-      return;
-    }
+    var newPositions = sceneModel.getCameraPosition();
+    var middlePoint = this.getCameraMiddlePoint(newPositions.camera);
 
     if (options.pathPoints === 2) {
-      middlePoint = _.clone(newPositions.camera);
-      middlePoint.x = 0;
-      middlePoint.z = this.orbitControls.object.position.z;
 
+      this.tweenNormal( this.orbitControls.target, newPositions.target);  // move camera target or lookAt
       this.tweenMultiPoints( // animate move camera
         this.orbitControls.object.position,
         newPositions.camera,
         middlePoint,
         true
       );
-      this.tweenNormal( this.orbitControls.target, newPositions.target);  // move camera target or lookAt
+    } else {
+      this.tweenNormal( this.orbitControls.target, newPositions.target);
+      this.tweenNormal( this.orbitControls.object.position, newPositions.camera);
     }
-
   },
-  zoomOnSceneDetails: function () {
-
+  getCameraMiddlePoint: function (cameraPos) {
+     var middlePoint = _.clone(cameraPos);
+         middlePoint.x = 0;
+         middlePoint.z = this.orbitControls.object.position.z;
+     return middlePoint;
   },
   getControls: function () {
     return this.orbitControls;
@@ -81,7 +77,7 @@ var CameraControls = BaseModel.extend({
   },
   tweenMultiPoints: function (cameraOrTargetPos, newPosition, middlePoint, trigger) {
     var animationSpeed = utils.getAnimationSpeed().cameraMove;
-    var tweenStart = this.getTween(cameraOrTargetPos, middlePoint, 1500, false);
+    var tweenStart = this.getTween(cameraOrTargetPos, middlePoint, animationSpeed, false);
     var tweenFinish = this.getTween(cameraOrTargetPos, newPosition, animationSpeed, trigger);
     tweenStart.chain( tweenFinish );
     tweenStart.start();
@@ -95,8 +91,8 @@ var CameraControls = BaseModel.extend({
     var self = this;
     var tween = new TWEEN.Tween(startPos)
     .to(endPos, speed)
-    // .easing(TWEEN.Easing.Circular.Out)
-    // .interpolation(TWEEN.Interpolation.Bezier)
+    .easing(TWEEN.Easing.Circular.Out)
+    .interpolation(TWEEN.Interpolation.Bezier)
     .onStart( () => {
       self.animating = true;
       if (trigger) eventController.trigger(eventController.CAMERA_START_ANIMATION);

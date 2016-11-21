@@ -11,8 +11,9 @@ var NavigationBar = BaseView.extend({
     "click li": "clickSelected",
     "mouseenter li": "enterHoverNavigationLi",
     "mouseleave li": "leaveHoverNavigationLi",
-    "click .switch-2d": "switchView2d",
-    "click .switch-3d": "switchView3d",
+    "click #myonoffswitch": "clickSwitchViews",
+    // "click .switch-2d": "switchView2d",
+    // "click .switch-3d": "switchView3d",
   },
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -83,11 +84,20 @@ var NavigationBar = BaseView.extend({
     if (this.hoveredEl) this.hoveredEl.removeClass("hovered");
     this.hoveredEl = newSelectedEl.addClass("hovered");
   },
-  clickSelected: function (e) {
-    var currentTarget = $(e.currentTarget);
-    // if (currentTarget.hasClass("selected")) return; //same element click do not select again;
+  clickSelected: function (evt) {
+    var currentTarget = $(evt.currentTarget);
+    var name = navigationList[currentTarget.index("li")].name;
+
     this.swapSelectedEl(currentTarget);
-    eventController.trigger(eventController.SWITCH_PAGE, currentTarget.index());
+    eventController.trigger(eventController.SWITCH_PAGE, name);
+  },
+  clickSwitchViews: function (evt) {
+    var isChecked = this.$el.find("input:checked").length > 0 ? true : false;
+    if ( isChecked ) {
+      this.switchView3d();
+    } else {
+      this.switchView2d();
+    }
   },
   setSelectedFrom3d: function (sceneModel) {
     this.swapSelectedEl(this.navEls[sceneModel.name]);
@@ -95,7 +105,7 @@ var NavigationBar = BaseView.extend({
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");
   },
-  switchView3d: function (what) {
+  switchView3d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
     eventController.trigger(eventController.RESET_SCENE, "3d");
   },

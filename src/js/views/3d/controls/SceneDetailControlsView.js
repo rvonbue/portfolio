@@ -20,15 +20,16 @@ var SceneDetailControlsView = BaseView.extend({
     "click .button-skip-next": "clickSkipNext",
   },
   initialize: function (options) {
+    this.addListeners();
+    this.navBarHeight = 45;
+    this.showLoading();
+  },
+  addListeners: function () {
     eventController.on(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
     eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
     eventController.on(eventController.ALL_ITEMS_LOADED, this.hideLoading, this);
     eventController.on(eventController.ITEM_START_LOAD, this.showLoading, this);
     eventController.on(eventController.VIDEO_PLAY_PAUSE, this.togglePlayPause, this);
-    this.navBarHeight = 45;
-    this.showLoading();
-  },
-  addListeners: function () {
   },
   removeListeners: function () {
   },
@@ -75,7 +76,7 @@ var SceneDetailControlsView = BaseView.extend({
     return (this.className + loading + sceneModelClassName);
   },
   resetSceneDetails: function () {
-    eventController.trigger(eventController.RESET_SCENE, "3d");
+    eventController.trigger(eventController.RESET_SCENE);
   },
   nextInteractiveObject: function () {
     eventController.trigger(eventController.SCENE_DETAILS_SELECT_OBJECT, true);
@@ -101,6 +102,7 @@ var SceneDetailControlsView = BaseView.extend({
     this.loadingEl = this.$el.find("#items-loading");
     this.playEl = this.$el.find(".button-play:first");
     this.pauseEl = this.$el.find(".button-pause:first");
+    this.show("slide-controls");
     return this;
   }
 });

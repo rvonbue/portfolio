@@ -18,8 +18,8 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
       { x: 3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 }
     ],
     intialAmbientLights: {
-      hemisphere: ["#FFFFFF", "#FFFFFF", 1],  // skyColor, groundColor, intensity
-      directional: ["#FFFFFF", 0.2]  // color intensity,
+      directional: { color: "#FFFFFF", intensity: 0.0 },  // color intensity,
+      hemisphere: { groundColor: "#FFFFFF", skyColor: "#FFFFFF", intensity: 0.15 }  // skyColor, groundColor, intensity
     },
     projectIndex: 0
   }),

@@ -12,9 +12,9 @@ var LightControls = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
-    this.skyGradientElClickNum = 0;
+    this.skyGradientElClickNum = 20;
     // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
-    this.clickChangeSkyGradient();
+    this.clickChangeSkyGradient(9);
     this.addLight();
     this.addListeners();
   },
@@ -64,28 +64,28 @@ var LightControls = BaseView.extend({
     this.skyGradientElClickNum++;
   },
   toggleWorldLighting: function (newLightSettings) {
-    if (!newLightSettings) return;
+    // if (!newLightSettings) return;
     _.each(this.worldLights, function (light) {
       if (light.type === "HemisphereLight"  ) this.setHemiLight(light, newLightSettings.hemisphere);
-      if (light.type === "DirectionalLight" && newLightSettings.directional) this.setDirectionalLight(light, newLightSettings.directional);
+      if (light.type === "DirectionalLight")  this.setDirectionalLight(light, newLightSettings.directional);
     }, this);
   },
-  getTween: function (startPos, endPos , speed, trigger) {
-    var tween = new TWEEN.Tween(startPos)
-    .to(endPos, speed)
-    .easing(TWEEN.Easing.Circular.Out)
-    .interpolation(TWEEN.Interpolation.Bezier)
-    .delay(50)
+  getTween: function (light, endPos , speed) {
+    var tween = new TWEEN.Tween(light)
+    .to({ intensity: endPos }, speed)
     return tween;
   },
-  setHemiLight: function (light, newLightSettings) {
-    light.skyColor =  new THREE.Color(newLightSettings[0]);
-    light.groundColor = new THREE.Color(newLightSettings[1]);
-    light.intensity = newLightSettings[2];
+  setHemiLight: function (light, newLight) {
+    light.skyColor =  new THREE.Color(newLight.skyColor);
+    light.groundColor = new THREE.Color(newLight.groundColor);
+    var tween = this.getTween(light, newLight.intensity, utils.getAnimationSpeed().lightOut, light );
+    tween.start();
   },
-  setDirectionalLight: function (light, newLightSettings) {
-    light.color = light.hex = new THREE.Color(newLightSettings[0]);
-    light.intensity = newLightSettings[1];
+  setDirectionalLight: function (light, newLight) {
+    if (!newLight) return;
+    light.color = light.hex = new THREE.Color(newLight.color);
+    var tween = this.getTween(light, newLight.intensity, 1500);
+    tween.start();
   },
   addDirectionalLight: function () {
     var directionalLight = new THREE.DirectionalLight(
@@ -102,19 +102,6 @@ var LightControls = BaseView.extend({
     );
     this.worldLights.push(hemiLight);
   },
-  // raiseLights: function (lights) {
-  //
-  //   var position = { pointLight : 0 };
-  //   var target = { pointLight : 2 };
-  //
-  //   var tween2 = new TWEEN.Tween(position).to(target, 2000)
-  //   .easing(TWEEN.Easing.Quadratic.Out).onUpdate(function () {
-  //     _.each(lights, function (light) {
-  //       light.intensity = position.pointLight;
-  //     });
-  //   })
-  //   .start();
-  // },
   getWorldLight: function (lightType) {
     return _.findWhere(this.worldLights, {type: lightType});
   },

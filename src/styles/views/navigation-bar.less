@@ -14,10 +14,12 @@
 }
 .switch-views {
   position: absolute;
-  top: @navigation-bar-height;
-  right: 10px;
-  border: 1px solid @color-5;
+  // background-color: @color-1;
+  top: 0;
+  right: 8px;
+  // border: 1px solid @color-5;
   color: @color-5;
+  padding: 4px 8px;
   table {
     text-align: center;
   }
@@ -31,8 +33,10 @@
 
 .switch-view-label {
   color: @color-5;
-  display: block;
-  padding: 4px;
+  display: inline-block;
+  margin: 4px auto 8px auto;
+  max-width: 50px;
+  vertical-align: top;
 }
 .button-home {
   width: 10px;
@@ -46,29 +50,4 @@
   text-transform: uppercase;
   font-size: 14px;
   cursor: pointer;
-}
-
-.dropdown {
-    /*display: none;*/
-    position: absolute;
-    display: inline-block;
-    right: 95px;
-    top:10px;
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-}
-.dropdown-content {
-    display: none;
-    position: relative;
-    background-color: black;
-    /*min-width: 160px;*/
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 6px;
-    z-index: 1;
-    cursor: pointer;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
 }

@@ -28,6 +28,7 @@ module.exports = {
       //       },
       //   }),
 		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
+    // new webpack.ProvidePlugin({	"THREE": "three", "window.THREE": "three" }),
     new ExtractTextPlugin('allStyles.css'),
     ],
 	devServer: {

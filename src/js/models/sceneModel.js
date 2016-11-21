@@ -40,15 +40,15 @@ var SceneModel = BaseModel3d.extend({
     var selectedBool = this.get("selected");
     this.showHide(selectedBool)
     this.toggleHoverLights(selectedBool);
-    // this.toggleTextVisiblilty(selectedBool);
+    this.toggleTextVisiblilty(!selectedBool);
 
-    if (!selectedBool || this.isReady() ) {
-      this.get("sceneDetails").set("selected", selectedBool);
-    }
+    // if (!selectedBool || this.isReady() ) {
+    //   this.get("sceneDetails").set("selected", selectedBool);
+    // }
 
   },
   onChangeHover: function () {
-    // if (this.get("selected")) return;
+    if (this.get("selected")) return;
     this.toggleLampEmitMaterial();
     this.toggleHoverLights(this.get("hover"));
     this.toggleTextMaterial();
@@ -70,19 +70,25 @@ var SceneModel = BaseModel3d.extend({
       self.onChangeSelected();
     }, delay);
   },
-  showHide: function (visBool) { // show = true
-    visBool = visBool ? visBool : this.get("selected");
-    this.get("object3d").visible = visBool;
+  showHide: function (visBool, hideText) { // show = true
 
+    var text3d = this.get("text3d");
+    var sceneDetails = this.get("sceneDetails");
+    visBool = visBool ? visBool : this.get("selected");
+
+    this.get("object3d").visible = visBool;
     _.each(this.get("object3d").children, function (mesh) {
-        if ( mesh.type === "Mesh" && mesh.rayCasterMesh !== false ) mesh.visible = visBool; // do not turn on lights or raycaster
+        if ( mesh.type === "Mesh"
+        && mesh.rayCasterMesh !== false
+        && (text3d && text3d.id !== mesh.id)
+       ) {
+          mesh.visible = visBool; // do not turn on lights or raycaster
+        }
     });
 
-    var sceneDetails = this.get("sceneDetails");
-    if (sceneDetails) {
-      sceneDetails.showHide(visBool, this.get("selected"));
-      // if (!visBool) sceneDetails.set("selected", false);
-    }
+    if (text3d) text3d.visible = hideText ? !hideText : visBool;
+    if ( sceneDetails ) sceneDetails.showHide(visBool, this.get("selected"));
+
   },
   startScene: function () {
     this.toggleTextVisiblilty(false);
@@ -122,24 +128,28 @@ var SceneModel = BaseModel3d.extend({
     return { w: width, h: height, l: length };
   },
   openDoors: function (doorBool) {
-    if (this.get("doorsBool")) return;
-    var doorWidth = 1;
-    var totalDoors = this.get("doors").length;
+    if (this.get("doorsBool")) return 0;
+    var speed = 1000;
+    var doorWidth = 2;
+
     _.each(this.get("doors"), function (doorMesh, i) {
-      if (doorBool) { // open door
-        if (i < totalDoors / 2) {
-          if (i === 0) this.moveDoor(doorMesh, doorWidth);
-          if (i === 1) this.moveDoor(doorMesh, doorWidth * -2.5);
-        } else {
-          if (i === 2) this.moveDoor(doorMesh, -doorWidth );
-          if (i === 3) this.moveDoor(doorMesh, -doorWidth );
-        }
-      }
+      if ( i === 0 ) this.moveDoor(doorMesh, doorWidth / 2, speed );
+      if ( i === 1 ) this.moveDoor(doorMesh, doorWidth, speed );
+      if ( i === 2 ) this.moveDoor(doorMesh, -doorWidth, speed );
+      if ( i === 3 ) this.moveDoor(doorMesh, -doorWidth / 2, speed );
     }, this);
+
     this.set("doorsBool", true);
+
+    return speed;
   },
-  moveDoor: function (doorMesh, doorWidth) {
-    doorMesh.position.x += doorWidth;
+  moveDoor: function (doorMesh, doorWidth, speed) {
+    var initPosX = doorMesh.position.x;
+    var tween = new TWEEN.Tween(doorMesh.position)
+    .to({x: initPosX + doorWidth}, 2000)
+    .easing(TWEEN.Easing.Circular.Out)
+    .interpolation(TWEEN.Interpolation.Bezier)
+    .start();
   },
   toggleTextVisiblilty:function (tBool) {
     var textBool = tBool ? tBool : !this.get("selected");
@@ -176,7 +186,7 @@ var SceneModel = BaseModel3d.extend({
       var textRGB = utils.getColorPallete().text.rgb;
       this.setEmissiveMaterial(textMaterial, textRGB.r, textRGB.g, textRGB.b );
     } else {
-      // this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
+      this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
     }
   },
   setFadeInMaterials:function (allMaterials) {

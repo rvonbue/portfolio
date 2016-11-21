@@ -9,7 +9,7 @@
         "DbgName": "woodFine",
         "DbgIndex": 0,
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "transparent": false,
         "depthTest": true,
         "blending": "NormalBlending",
@@ -26,7 +26,7 @@
         "DbgName": "digitalArt1",
         "DbgIndex": 1,
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "transparent": false,
         "depthTest": true,
         "blending": "NormalBlending",
@@ -43,7 +43,7 @@
         "DbgName": "drywall",
         "DbgIndex": 2,
         "colorDiffuse": [0.64,0.64,0.64],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "transparent": false,
         "depthTest": true,
         "blending": "NormalBlending",

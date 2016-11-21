@@ -23,7 +23,6 @@ var AppView3d = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
-    // eventController.on(eventController.SET_RENDER_VIDEO_TEXTURE, this.setRenderVideoTexture, this);
     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     $(window).on("resize", this.resize);
   },
@@ -36,11 +35,11 @@ var AppView3d = BaseView.extend({
     this.addListeners();
     var size = this.getWidthHeight();
     var scene = window.scene = this.scene = new THREE.Scene();
-    // scene.fog = new THREE.FogExp2( "#000000", 0.01 );
+    // scene.fog = new THREE.FogExp2( "#FFFFFF", 0.01 );
     this.initCamera(size);
 
     this.addHelpers();
-    this.renderer = new THREE.WebGLRenderer({ antiAlias:false, canvas:this.canvasEl });
+    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas:this.canvasEl });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( 0x000000, 0 );
@@ -81,15 +80,20 @@ var AppView3d = BaseView.extend({
     }, this);
   },
   animate: function (time) {
-    raf( this.animate );
+    this.renderLoop = raf( this.animate );
     this.statsView.stats.begin();
     TWEEN.update(time);
     this.controls.update(this.clock.getDelta());
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
   },
-  setRenderVideoTexture: function (videoObject) {
-    this.videoObject = videoObject;
+  animateCSS3DRenderer: function (time) {
+    this.renderLoop = raf( this.animateCSS3DRenderer );
+    this.statsView.stats.begin();
+    TWEEN.update(time);
+    this.controls.update(this.clock.getDelta());
+    this.CSS3DRenderer.render(this.scene, this.camera);
+    this.statsView.stats.end();
   },
   resize: function () {
     var size = this.getWidthHeight();
@@ -100,6 +104,38 @@ var AppView3d = BaseView.extend({
   },
   getWidthHeight: function () {
     return {w: this.$el.width(), h: this.$el.height() }
+  },
+  switchRenderer: function () {
+    raf.cancel(this.renderLoop);
+    this.CSS3DRenderer = this.getCSS3DRenderer();
+    this.animateCSS3DRenderer();
+  },
+  getCSS3DRenderer: function () {
+    var renderer = new THREE.CSS3DRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.domElement.style.position = 'absolute';
+		renderer.domElement.style.top = 0;
+    var group = new THREE.Group();
+    group.add( new Element( 'G1YtpuA7XNs', 0, 0, 240, 0 ) );
+    scene.add( group );
+    return renderer;
+  },
+  getElement: function ( id, x, y, z, ry ) {
+				var div = document.createElement( 'div' );
+				div.style.width = '480px';
+				div.style.height = '360px';
+				div.style.backgroundColor = '#000';
+				var iframe = document.createElement( 'iframe' );
+				iframe.style.width = '480px';
+				iframe.style.height = '360px';
+				iframe.style.border = '0px';
+				iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+				div.appendChild( iframe );
+				var object = new THREE.CSS3DObject( div );
+				object.position.set( x, y, z );
+				object.rotation.y = ry;
+				return object;
+
   },
   render: function () {
     this.statsView = new StatsView();

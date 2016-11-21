@@ -14,8 +14,8 @@ var ContactModel3d = SceneDetailsBaseModel3d.extend({
     ],
     directionalLight: { color: "#FFFFFF", x:0, y:0, z:0 },
     intialAmbientLights: {
-      directional: ["#FFFFFF", 0.1],  // color intensity,
-      hemisphere: ["#404040", "#FFFFFF", 1]  // skyColor, groundColor, intensity
+      directional: { color: "#FFFFFF", intensity: 0.1 },  // color intensity,
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity:1 }  // skyColor, groundColor, intensity
     }
   }),
   initialize: function () {

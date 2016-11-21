@@ -1,9 +1,10 @@
 import BaseModel3d from "../BaseModel3d";
+import eventController from "../../controllers/eventController";
 
 var SceneDetailsBaseModel3d = Backbone.Model.extend({
   defaults: {
     name: "Spinach",
-    // selected: false,
+    selected: false,
     // ready: false,
     object3d: null,
     pointLights: new Array,
@@ -12,8 +13,8 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
     initialCameraTarget: { x:0, y: 0, z: 0},
     interactiveObjects: [],
     intialAmbientLights:{
-      directional: ["#FFFFFF", 0],  // color intensity,
-      hemisphere: ["#404040", "#9BE2FE", 0.1]  // skyColor, groundColor, intensity
+      directional: { color: "#FFFFFF", intensity: 0},  // color intensity,
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.06 } 
     },
     modelUrls: ["sceneDetails"],
     totalLoaded: 0,
@@ -25,9 +26,12 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
   },
   showHide: function (tBool, selectedParentScene) {
     var showHideBool = tBool && selectedParentScene;
+
+    this.set("selected", showHideBool);
     _.each(this.getAllMeshes(), function (mesh) {
       if ( mesh ) mesh.visible = showHideBool;
     });
+
   },
   getAllMeshes: function () {
     return [...this.get("sceneLights"), ...this.get("interactiveObjects"), this.get("object3d") ];
@@ -67,9 +71,7 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
         mesh.position.y += this.get("parentScenePosition").y;
       }, this);
 
-      this.trigger("ALL_MODELS_LOADED");
     }
-
   },
   setClickType: function (obj3d) {
     switch(obj3d.name) {

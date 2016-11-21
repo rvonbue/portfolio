@@ -27,8 +27,11 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     object3d.add(text3d);
   },
   getText3d: function (text) {
-    var material = new THREE.MeshPhongMaterial({ color: utils.getColorPallete().text.hex, emissive:  utils.getColorPallete().text.hex });
-    // material.emissive = new THREE.Color(utils.getFontColor().text);
+    var material = new THREE.MeshPhongMaterial({
+      color: utils.getColorPallete().text.hex,
+      // emissive:  utils.getColorPallete().text.hex
+     });
+
     var	textGeo = new THREE.TextGeometry( text, {
       font: new THREE.Font(fontData),
       height: 0.75,

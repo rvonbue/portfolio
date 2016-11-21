@@ -152,8 +152,6 @@ var ModelLoader = BaseModel.extend({
     var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( urls );
 		reflectionCube.format = THREE.RGBFormat;
     reflectionCube.mapping = THREE.CubeReflectionMapping;
-    console.log("reflectionCube", reflectionCube);
-    // scene.background = reflectionCube;
 
     return reflectionCube;
   },

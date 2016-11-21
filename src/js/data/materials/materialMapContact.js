@@ -32,15 +32,6 @@ module.exports = {
   yellowDiffuse: {
     props: { color: "#ECE78B" }
   },
-  ground: {
-    maps: [
-      { map: "textures/ground/ground_COLOR.jpg" },
-      { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-      { normalMap: "textures/ground/ground_NRM.jpg" }
-    ],
-    mapProps: { repeatScale: 10, shading: "smooth" },
-    // props: {  color: colorPallete.color2.hex }
-  },
   stucco2:{
     maps: [
       { map: "textures/stucco/stucco_COLOR.jpg" },

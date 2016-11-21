@@ -5,9 +5,7 @@ import eventController from "../../../controllers/eventController";
 import BaseModel from "../../../models/BaseModel";
 
 var SceneControls = BaseModel.extend({
-  defaults:  {
-    home: null
-  },
+  defaults: {},
   initialize: function (options) {
     this.lastRaycastObjectId = 1325435;
     this.canvasEl = $(options.canvasEl);
@@ -23,7 +21,7 @@ var SceneControls = BaseModel.extend({
   addListeners: function () {
     var self = this;
     var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 25);
-
+    
     this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
     this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
@@ -121,11 +119,10 @@ var SceneControls = BaseModel.extend({
       return;
     }
     this.selectMesh.visible = true;
-    // var pos = new THREE.Vector3();
-    this.selectMesh.rotation.set(+0.01, +0.01, +0.01);
+    // this.selectMesh.rotation.set(+0.01, +0.01, +0.01);
 
     new TWEEN.Tween(this.selectMesh.rotation)
-    .to({ y: "+" + (Math.PI) }, 750)
+    .to({ y: "+" + Math.PI }, 750)
     .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
