@@ -1,7 +1,6 @@
 import Base3dView from "./Base3dView";
-// import eventController from "../../controllers/eventController";
+import commandController from "../../controllers/commandController";
 import THREE from "three";
-import fontData from "../../data/fonts/roboto_regular.json";
 import utils from "../../util/utils";
 import door from "../../data/embeded3dModels/door.json";
 import lampLight from "../../data/embeded3dModels/lampLight.json";
@@ -17,32 +16,26 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     this.setRaycasterMesh(sceneModel);
   },
   addText: function (sceneModel) {
-    var text3d = this.getText3d(sceneModel.get("name"));
     var object3d = sceneModel.get("object3d");
-    sceneModel.set("text3d", text3d);
     var offsetY = 1.3;
+    var text3d = commandController.request(commandController.GET_TEXT_MESH , {
+      text: sceneModel.get("name"),
+      curveSegments: 4,
+      size: 2.5,
+      height: 0.75,
+      bevelSegments: 3,
+      bevelSize: 1.5,
+      bevelThickness: 2,
+      material: new THREE.MeshPhongMaterial({ color: utils.getColorPallete().text.hex })
+    });
+    sceneModel.set("text3d", text3d);
+
+
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.min.z - 2;
     text3d.position.y = (text3d.geometry.boundingBox.max.y - text3d.geometry.boundingBox.min.y) / 2 - offsetY;
     text3d.position.x = -((text3d.geometry.boundingBox.max.x - text3d.geometry.boundingBox.min.x) / 2);
-    object3d.add(text3d);
-  },
-  getText3d: function (text) {
-    var material = new THREE.MeshPhongMaterial({
-      color: utils.getColorPallete().text.hex,
-      // emissive:  utils.getColorPallete().text.hex
-     });
 
-    var	textGeo = new THREE.TextGeometry( text, {
-      font: new THREE.Font(fontData),
-      height: 0.75,
-      size: 2.5,
-      curveSegments: 4,
-      bevelThickness: 2,
-      bevelSize: 1.5,
-      bevelSegments: 3
-    });
-    textGeo.computeBoundingBox();
-    return new THREE.Mesh( textGeo, material );
+    object3d.add(text3d);
   },
   addDoors: function (modelLoader, sceneModel) {
     var model = modelLoader.parseJSON(door);

@@ -14,7 +14,7 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
     interactiveObjects: [],
     intialAmbientLights:{
       directional: { color: "#FFFFFF", intensity: 0},  // color intensity,
-      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.06 } 
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.06 }
     },
     modelUrls: ["sceneDetails"],
     totalLoaded: 0,

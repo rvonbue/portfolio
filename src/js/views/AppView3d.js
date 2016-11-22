@@ -68,6 +68,12 @@ var AppView3d = BaseView.extend({
     var axisHelper = new THREE.AxisHelper( 50 );
     // axisHelper.position.y = 40;
     this.scene.add( axisHelper );
+    var size = 10;
+    var step = 1;
+
+    var gridHelper = new THREE.GridHelper( size, step );
+    gridHelper.position.y = 20;
+    this.scene.add( gridHelper );
   },
   addModelsToScene: function (sceneModelArray) {
     _.each(sceneModelArray, function (object3d) {

@@ -1,10 +1,6 @@
 import commandController from "../../controllers/commandController";
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
-// import { Mesh } from "three";
-
 import pageData from "../../data/pageData/digitalArt";
-import canvas from "../../data/embeded3dModels/canvas.json";
-import easel from "../../data/embeded3dModels/easel.json";
 
 var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
@@ -21,17 +17,11 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
       directional: { color: "#FFFFFF", intensity: 0.0 },  // color intensity,
       hemisphere: { groundColor: "#FFFFFF", skyColor: "#FFFFFF", intensity: 0.15 }  // skyColor, groundColor, intensity
     },
-    projectIndex: 0
+    projectIndex: 0,
+    modelUrls: ["sceneDetails", "artEasel"]
   }),
   initialize: function (options) {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
-    this.set("modelUrls", [...this.get("modelUrls"), "artEasel" ]);
-    // console.log("this", this);
-    // this.on("change:object3d", function () {
-    //   this.addArtEasels();
-    //   this.loadImagesEasel(true);
-    // })
-    window.DIG = this;
   },
   showHide: function (tBool, selectedParentScene) {
     SceneDetailsBaseModel3d.prototype.showHide.apply(this, arguments);
@@ -60,16 +50,12 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
 
     return photoSwipeImgArray;
   },
-  // addInteractiveObjects: function (modelLoader) {
-    // SceneDetailsBaseModel3d.prototype.addInteractiveObjects.apply(this, arguments);
-  // },
   loadSceneDetailModels: function (modelObj) {
     this.set("totalLoaded", this.get("totalLoaded") + 1);
 
     if (modelObj.name === "sceneDetails") {
       this.set("object3d", modelObj.object3d);
-    } else {
-      // this.get("interactiveObjects").push(modelObj.object3d)
+    } else if(modelObj.name === "artEasel"){
       this.addArtEasels(modelObj.object3d);
       this.loadImagesEasel(true);
     }
@@ -78,14 +64,12 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
   },
   addArtEasels: function (obj3d) {
     var interactiveObjects = [];
-    // var zMod = -0.75;
 
     _.each(this.get("pointLights"), function (light, i) {
       var canvasMesh = obj3d.GdeepCloneMaterials();
       canvasMesh.position.set( light.x, 0, 0 );
       canvasMesh.imageNum = i;
       canvasMesh.clickType = "photoswipe";
-      // canvasMesh.geometry.computeBoundingBox();
       interactiveObjects.push(canvasMesh);
     }, this);
 

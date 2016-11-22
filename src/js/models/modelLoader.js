@@ -4,6 +4,8 @@ import BaseModel from "./BaseModel";
 import THREE from "three";
 // import utils from "../util/utils";
 import materialMapList from "../data/materials/combinedMaterials";
+import fontData from "../data/fonts/roboto_regular.json";
+import utils from "../util/utils";
 
 var ModelLoader = BaseModel.extend({
   initialize: function () {
@@ -14,9 +16,11 @@ var ModelLoader = BaseModel.extend({
   addListeners: function () {
     eventController.on(eventController.LOAD_JSON_MODEL, this.loadModel, this);
     commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
+    commandController.reply(commandController.LOAD_MATERIAL, this.getMaterial, this);
     commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
     commandController.reply(commandController.PARSE_JSON_MODEL, this.parseJSONModelGetMesh, this);
     commandController.reply(commandController.LOAD_ENV_MAP, this.getReflectionCube, this);
+    commandController.reply(commandController.GET_TEXT_MESH, this.getTextMesh, this);
   },
   initLoadingManager: function () {
     this.manager = new THREE.LoadingManager();
@@ -40,14 +44,11 @@ var ModelLoader = BaseModel.extend({
     var loader =  new THREE.JSONLoader(this.manager);
 
     loader.load(url, function ( geometry, materials ) {
-        var bufferGeo = new THREE.BufferGeometry();
-        bufferGeo.fromGeometry ( geometry );
-        bufferGeo.computeBoundingBox();
-        _.each(materials, function (mat) {
-          if (materialMapList[mat.name]) {
-            self.setMaterialMap(mat);
-          }
-      });
+      var bufferGeo = new THREE.BufferGeometry();
+          bufferGeo.fromGeometry ( geometry );
+          bufferGeo.computeBoundingBox();
+
+      materials.forEach(self.setMaterialMap.bind(self));
 
       var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(materials) );
       var modelDetails = {
@@ -65,18 +66,21 @@ var ModelLoader = BaseModel.extend({
     });
   },
   setMaterialMap: function (mat) {
+    if (!materialMapList[mat.name]) return;
+
     var self = this;
     var materialObj = materialMapList[mat.name];
+
     _.each(materialObj, function (prop, key) {
-      if (key === "maps") {
-        _.each(prop, function (mapObj) { self.setNewTexture(mapObj, mat, materialObj.mapProps); });
-      }
+      if (key === "maps") _.each(prop, function (mapObj) {
+        self.setNewTexture(mapObj, mat, materialObj.mapProps);
+      });
       if (key === "props") self.setMaterialAttributes(mat, prop);
-    }, this);
+    });
   },
   setNewTexture: function (mapObj, mat, options) {
     var texture = null;
-    var self = this;
+
     _.each(mapObj, function (mapURL, mapKey) {
       if (mapURL === null || mapURL === "null") return null;
         // console.log("--------mapKey-------------", mapKey);
@@ -86,7 +90,7 @@ var ModelLoader = BaseModel.extend({
         if (mapURL === "reflection" ) mat[mapKey] = this.getReflectionCube();
         return;
       }
-      mat[mapKey] = new THREE.TextureLoader(self.manager).load( mapURL, function (texture) {
+      mat[mapKey] = new THREE.TextureLoader(this.manager).load( mapURL, function (texture) {
         if (options.repeatScale) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           texture.repeat.set( options.repeatScale, options.repeatScale );
@@ -119,7 +123,6 @@ var ModelLoader = BaseModel.extend({
     return model;
   },
   parseJSONModelGetMesh: function (json) {
-    console.log("json", json);
     var model = this.parseJSON(json);
     return new THREE.Mesh(model.geometry, model.materials[0]);
   },
@@ -139,34 +142,51 @@ var ModelLoader = BaseModel.extend({
   getImageTexture: function (imgSrc) {
     return new THREE.TextureLoader(this.manager).load( imgSrc );
   },
-  getReflectionCube: function () {
+  getMaterial: function (imgSrc) {
+    var material = new THREE.MeshLambertMaterial({
+      map: new THREE.TextureLoader(this.manager).load( imgSrc )
+    });
+    return material;
+  },
+  getTextMesh: function (options) {
+    var material = options.material ? options.material : new THREE.MeshPhongMaterial({
+      color: utils.getColorPallete().text.hex,
+      envMap: this.getReflectionCube()
+      // emissive:  utils.getColorPallete().text.hex
+     });
 
+    var	textGeo = new THREE.TextGeometry( options.text || "defualt", {
+      font: new THREE.Font(fontData),
+      height: options.height || 0.75,
+      size: options.size || 2 ,
+      curveSegments: 4,
+      bevelThickness: 2,
+      bevelSize: 1.5,
+      bevelSegments: 3
+    });
+    textGeo.computeBoundingBox();
+    return new THREE.Mesh( textGeo, material );
+  },
+  getCubeImageUrls: function () {
     var path = "textures/cubeMap/forbiddenCity/";
     var format = '.jpg';
-    var urls = [
+    return [
         path + 'posx' + format, path + 'negx' + format,
         path + 'posy' + format, path + 'negy' + format,
         path + 'posz' + format, path + 'negz' + format
       ];
-
-    var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( urls );
-		reflectionCube.format = THREE.RGBFormat;
-    reflectionCube.mapping = THREE.CubeReflectionMapping;
+  },
+  getReflectionCube: function () {
+    var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( this.getCubeImageUrls() );
+		    reflectionCube.format  = THREE.RGBFormat;
+        reflectionCube.mapping = THREE.CubeReflectionMapping;
 
     return reflectionCube;
   },
   getRefractionCube: function () {
-    var path = "textures/cubeMap/forbiddenCity/";
-    var format = '.jpg';
-    var urls = [
-        path + 'posx' + format, path + 'negx' + format,
-        path + 'posy' + format, path + 'negy' + format,
-        path + 'posz' + format, path + 'negz' + format
-      ];
-
-    var refractionCube = new THREE.CubeTextureLoader().load( urls );
-				refractionCube.mapping = THREE.CubeRefractionMapping;
-				refractionCube.format = THREE.RGBFormat;
+    var refractionCube = new THREE.CubeTextureLoader().load( this.getCubeImageUrls() );
+				refractionCube.format  = THREE.RGBFormat;
+        refractionCube.mapping = THREE.CubeRefractionMapping;
 
     return refractionCube;
   }
