@@ -36,8 +36,8 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
 
     var interactiveObjects = [];
     var posterPos = { right:{
-        startPos: { x: -8, y: 6.5, z: -6.17, tallest: 0 },
-        boundary: { xMin: -8, yMax: 6.5, xMax: 9, yMin: 0 }
+        startPos: { x: -9, y: 6.25, z: -6.17, tallest: 0 },
+        boundary: { xMin: -9, yMax: 6.25, xMax: 9, yMin: 0 }
     }};
 
     aboutMeData.forEach(function (d, i) {
@@ -50,7 +50,10 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     this.set("interactiveObjects", interactiveObjects );
   },
   setClickData: function (mesh, d) {
-    mesh.clickData = d.linkUrl || "defualtLink";
+    mesh.clickData = {
+      action: "link",
+      url: d.linkUrl || "defualt----Link"
+    }
   },
   positionPoster: function (posterMesh, posterPos) {
     var startPos = posterPos.startPos, boundary = posterPos.boundary;
@@ -62,7 +65,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
 
     if ( x + size.width / 2 < boundary.xMax) {
       startPos.x += size.width + variance;
-      startPos.tallest = size.height > startPos.tallest ? size.height + variance : startPos.tallest;
+      startPos.tallest = size.height > startPos.tallest ? size.height: startPos.tallest;
     } else {
       startPos.x = boundary.xMin + size.width + variance;
       startPos.y -= startPos.tallest !== 0 ? startPos.tallest + variance : size.height + variance;
@@ -88,6 +91,8 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
       case "pillar":
         this.addPillars( modelObj.object3d );
         break;
+      case "githubBanner":
+        this.setClickData(modelObj.object3d, { linkUrl: "http://github.com/rvonbue" });
       default:
         this.get("interactiveObjects").push(modelObj.object3d);
     }
@@ -122,6 +127,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     var frontMaterial = commandController.request(commandController.LOAD_MATERIAL, src)
     var lMaterial = new MeshLambertMaterial();
     var materials = [ lMaterial, lMaterial, lMaterial, lMaterial, frontMaterial, lMaterial ];
+
     geometry.computeBoundingBox();
     return new Mesh( geometry, new MeshFaceMaterial( materials ) );
   },

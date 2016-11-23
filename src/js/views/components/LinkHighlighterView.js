@@ -1,8 +1,6 @@
-
 import eventController from "../../controllers/eventController";
 import BaseView from "../BaseView";
 import utils from "../../util/utils";
-var animationSpeed = utils.getAnimationSpeed().speed;
 
 var LinkHighlighterView = BaseView.extend({
   className: "link-bar",
@@ -16,11 +14,12 @@ var LinkHighlighterView = BaseView.extend({
     eventController.off(eventController.MOVE_SCENE_SELECTOR, this.showHide, this);
   },
   showHide: function (object3d) {
-    if ( !object3d || !object3d.clickData ) {
+    var amIaLink = object3d && object3d.clickData && (object3d.clickData.action === "link");
+    if ( !object3d || !amIaLink ) {
       this.hide()
       return;
     }
-    this.show( object3d.clickData );
+    this.show( object3d.clickData.url );
   },
   show: function (linkText) {
     this.$el.addClass("show");

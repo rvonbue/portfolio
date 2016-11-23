@@ -131,13 +131,17 @@
   left: 0px;
   z-index: 1000;
   transition: opacity @cssSpeed ease-in;
+  border: 1px solid @color-5;
+  border-left: 0px;
   &.show {
     opacity: 1;
   }
   a {
     display: block;
-    font-size: 150%;
+    font-size: 130%;
     padding: 8px 24px 8px 12px;
+    color: @color-5;
+    text-decoration: underline;
   }
 
 }

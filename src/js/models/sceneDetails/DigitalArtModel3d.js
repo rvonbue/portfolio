@@ -9,9 +9,9 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     initialCameraPosition: { x:0, y: -1.25, z: 3.50 },
     initialCameraTarget: { x:0, y: 1, z: 0 },
     pointLights: [
-      { x: -3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 },
-      { x: 0, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 },
-      { x: 3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 2, distance: 5 }
+      { x: -3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 3, distance: 5 },
+      { x: 0, y: 2, z: 1.5, color: "#FFFFFF", intensity: 3, distance: 5 },
+      { x: 3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 3, distance: 5 }
     ],
     intialAmbientLights: {
       directional: { color: "#FFFFFF", intensity: 0.0 },  // color intensity,
@@ -55,7 +55,7 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
 
     if (modelObj.name === "sceneDetails") {
       this.set("object3d", modelObj.object3d);
-    } else if(modelObj.name === "artEasel"){
+    } else if (modelObj.name === "artEasel") {
       this.addArtEasels(modelObj.object3d);
       this.loadImagesEasel(true);
     }
@@ -68,18 +68,24 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     _.each(this.get("pointLights"), function (light, i) {
       var canvasMesh = obj3d.GdeepCloneMaterials();
       canvasMesh.position.set( light.x, 0, 0 );
-      canvasMesh.imageNum = i;
-      canvasMesh.clickType = "photoswipe";
+      this.setClickData(canvasMesh, i);
+      canvasMesh.geometry.computeBoundingBox();
       interactiveObjects.push(canvasMesh);
     }, this);
 
     this.set("interactiveObjects", interactiveObjects);
   },
+  setClickData: function (canvasMesh, i) {
+    canvasMesh.clickData = { action: "photoswipe", imageNum: i };
+  },
   loadImagesEasel: function (forward) {
     _.each(this.get("interactiveObjects"), (mesh, i) => {
-      var projectData = pageData[ this.get("projectIndex") + i];
+      var projectData = pageData[ this.get("projectIndex") + i ];
       if (projectData) {
-        mesh.material.materials[1].map = commandController.request(commandController.LOAD_IMAGE_TEXTURE, projectData.imgSrc);
+        mesh.material.materials[1].map = commandController.request(
+          commandController.LOAD_IMAGE_TEXTURE,
+          projectData.thumbSrc
+        );
         mesh.visible = true;
       } else {
         mesh.visible = false;

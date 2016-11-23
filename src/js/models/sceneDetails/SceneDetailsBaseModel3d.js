@@ -55,7 +55,7 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
         this.set("object3d", modelObj.object3d );
         break;
       default:
-        this.setClickType(modelObj.object3d);
+        this.setClickData(modelObj.object3d);
         this.get("interactiveObjects").push(modelObj.object3d);
     }
 
@@ -71,17 +71,6 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
         mesh.position.y += this.get("parentScenePosition").y;
       }, this);
 
-    }
-  },
-  setClickType: function (obj3d) {
-    switch(obj3d.name) {
-      case "videoGameCabinet":
-        obj3d.clickType = "link";
-        obj3d.data = { link: "dolphinsVSharks.html" };
-        break;
-      default:
-        obj3d.clickType = "defaultClick";
-        break;
     }
   },
   selectNextObject:function () {

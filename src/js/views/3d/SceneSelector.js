@@ -55,16 +55,18 @@ var SceneLoader = BaseView.extend({
     var isSceneSelected =  this.isSceneSelected();
     if (!isSceneSelected) {
       if (!intersect && this.hoverModel) {
-        this.hoverModel.set("hover", false);
-        this.hoverModel = null;
+        this.clearHoverModel();
         return;
       }
       if (intersect) this.setHoverSceneModel(this.sceneModelCollection.findWhere({ name: intersect.object.name }), true);
     } else {
       var moveSelector = intersect ? intersect.object : null;
-      console.log("moveSelector: ", moveSelector);
       eventController.trigger(eventController.MOVE_SCENE_SELECTOR, moveSelector);
     }
+  },
+  clearHoverModel: function () {
+    this.hoverModel.set("hover", false);
+    this.hoverModel = null;
   },
   setHoverSceneModelNavBar: function (navListObj, hoverBool) {
     // if ( !this.isSceneSelected()) {
@@ -95,16 +97,19 @@ var SceneLoader = BaseView.extend({
   },
   clickSelectSceneDetails: function (intersectObject) {
     var sceneModel = this.isSceneSelected();
-    var sceneDetails = sceneModel.get("sceneDetails");
-    var clickType = intersectObject.object.clickType;
-    var name = intersectObject.object.name;
 
-    switch(clickType) {
+    switch(intersectObject.object.clickData.action) {
       case "photoswipe":
-        eventController.trigger(eventController.OPEN_PHOTO_SWIPE, sceneDetails.getPSImages(), intersectObject.object.imageNum);
+        eventController.trigger(eventController.OPEN_PHOTO_SWIPE,
+          sceneModel.get("sceneDetails").getPSImages(),
+          intersectObject.object.clickData.imageNum
+        );
         break;
       case "video":
         eventController.trigger(eventController.VIDEO_PLAY_PAUSE);
+        break;
+      case "link":
+        window.open(intersectObject.object.clickData.url);
         break;
       default:
         break;

@@ -90,26 +90,38 @@ var SceneControls = BaseModel.extend({
     return closestObject;
   },
   loadEnvironmentMap: function (reflectionCube) {
-    var format = '.jpg';
-    var path = "textures/cubeMap/beach/";
     var size = 500;
-    var urls = [
-        path + 'posx' + format, path + 'negx' + format,
-        path + 'posy' + format, path + 'negy' + format,
-        path + 'posz' + format, path + 'negz' + format
-      ];
-    var skyGeometry = new THREE.CubeGeometry( size, size, size );
+  	var materialArray = this.getMaterialArray();
+
+  	var skyBox = new THREE.Mesh(
+      new THREE.CubeGeometry( size, size, size ),
+      new THREE.MeshFaceMaterial( materialArray )
+    );
+
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
+  },
+  getMaterialArray: function () {
+    var urls = this.getUrls();
   	var materialArray = [];
+
   	for (var i = 0; i < 6; i++)
   		materialArray.push( new THREE.MeshBasicMaterial({
   			map: THREE.ImageUtils.loadTexture( urls[i] ),
   			side: THREE.BackSide
-  		}));
-  	var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
-  	var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
-    skyBox.rotation.y = Math.PI / 6;
-    // skyBox.position.y = -size / 4;
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
+		  })
+    );
+
+    return materialArray;
+  },
+  getUrls: function () {
+    var format = '.jpg';
+    var path = "textures/cubeMap/beach/";
+
+    return [
+      path + 'posx' + format, path + 'negx' + format,
+      path + 'posy' + format, path + 'negy' + format,
+      path + 'posz' + format, path + 'negz' + format
+    ];
   },
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;
@@ -121,15 +133,14 @@ var SceneControls = BaseModel.extend({
     }
     this.selectMesh.visible = true;
 
-    new TWEEN.Tween(this.selectMesh.rotation)
+    var tween = new TWEEN.Tween(this.selectMesh.rotation)
     .to({ y: "+" + Math.PI }, 750)
     .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
-    var pos = utils.getMeshCenterRadius(
-       _.clone(selectedMesh.position),
-       selectedMesh.geometry.boundingSphere
-    );
+    var pos = _.clone(selectedMesh.position);
+    var size = utils.getMeshWidthHeight(selectedMesh.geometry.boundingBox);
+    pos.y += size.height / 2;
 
     this.selectMesh.position.set(pos.x, pos.y, pos.z);
   },

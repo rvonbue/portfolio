@@ -50,8 +50,11 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     var videoTexture = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
     var mesh = new Mesh( geometry, videoTexture );
     mesh.position.set(0, 5, -3);
-    mesh.clickType = "video";
+    this.setClickType(mesh);
     return mesh;
+  },
+  setClickType: function (mesh) {
+    mesh.clickData = { action: "video" };
   }
 });
 
