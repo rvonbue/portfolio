@@ -3,6 +3,7 @@ import THREE from "three";
 
 import eventController from "../../../controllers/eventController";
 import BaseModel from "../../../models/BaseModel";
+import utils from "../../../util/utils";
 
 var SceneControls = BaseModel.extend({
   defaults: {},
@@ -21,7 +22,7 @@ var SceneControls = BaseModel.extend({
   addListeners: function () {
     var self = this;
     var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 25);
-    
+
     this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
     this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
     this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
@@ -119,19 +120,17 @@ var SceneControls = BaseModel.extend({
       return;
     }
     this.selectMesh.visible = true;
-    // this.selectMesh.rotation.set(+0.01, +0.01, +0.01);
 
     new TWEEN.Tween(this.selectMesh.rotation)
     .to({ y: "+" + Math.PI }, 750)
     .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
-    var pos =  _.clone(selectedMesh.position);
-    var center = _.clone(selectedMesh.geometry.boundingSphere.center);
-    center.y += selectedMesh.geometry.boundingSphere.radius + selectedMesh.position.y ;
-    pos.x += center.x;
-    pos.y = center.y;
-    pos.z += center.z;
+    var pos = utils.getMeshCenterRadius(
+       _.clone(selectedMesh.position),
+       selectedMesh.geometry.boundingSphere
+    );
+
     this.selectMesh.position.set(pos.x, pos.y, pos.z);
   },
   render: function () {

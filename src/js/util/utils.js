@@ -10,6 +10,20 @@ module.exports = {
   getFontColor: function () {
     return { text: "#062f4f" };
   },
+  getMeshWidthHeight: function (bounding) {
+    return {
+      width: Math.abs(bounding.min.x) + Math.abs(bounding.max.x),
+      height: Math.abs(bounding.min.y) + Math.abs(bounding.max.y)
+    };
+  },
+  getMeshCenterRadius: function (pos, bounding) {
+    var center = _.clone(bounding.center);
+    center.y += bounding.radius;
+    pos.x += center.x;
+    pos.y += center.y;
+    pos.z += center.z;
+    return pos;
+  },
   getColorPallete: function () {
     return {
       color1: {hex: "#b5651d" }, //brown

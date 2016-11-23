@@ -1,4 +1,10 @@
-module.exports = [{"src":"images/aboutMe/","name":"backbone","dimensions":{"height":160,"width":899,"type":"jpg"}},
-{"src":"images/aboutMe/","name":"less","dimensions":{"height":81,"width":199,"type":"jpg"}},
-{"src":"images/aboutMe/","name":"lodash","dimensions":{"height":2500,"width":2500,"type":"jpg"}},
-{"src":"images/aboutMe/","name":"underscore","dimensions":{"height":138,"width":792,"type":"jpg"}},];
+module.exports = [{"src":"images/aboutMe/","name":"backbone(backbonejs.org)","dimensions":{"width":200,"height":42,"type":"png"},"linkUrl":"backbonejs.org"},
+{"src":"images/aboutMe/","name":"blender(blender.org)","dimensions":{"width":200,"height":58,"type":"png"},"linkUrl":"blender.org"},
+{"src":"images/aboutMe/","name":"html5Badge(html5.org)","dimensions":{"width":200,"height":49,"type":"png"},"linkUrl":"html5.org"},
+{"src":"images/aboutMe/","name":"less(lesscss.org)","dimensions":{"width":199,"height":90,"type":"png"},"linkUrl":"lesscss.org"},
+{"src":"images/aboutMe/","name":"lodash(lodash.com)","dimensions":{"width":200,"height":200,"type":"png"},"linkUrl":"lodash.com"},
+{"src":"images/aboutMe/","name":"LogojQuery(jquery.com)","dimensions":{"width":200,"height":90,"type":"png"},"linkUrl":"jquery.com"},
+{"src":"images/aboutMe/","name":"ReactJS(facebook.github.io)","dimensions":{"width":200,"height":200,"type":"png"},"linkUrl":"facebook.github.io"},
+{"src":"images/aboutMe/","name":"threejs(threejs.org)","dimensions":{"width":200,"height":48,"type":"png"},"linkUrl":"threejs.org"},
+{"src":"images/aboutMe/","name":"underscore(underscorejs.org)","dimensions":{"width":200,"height":41,"type":"png"},"linkUrl":"underscorejs.org"},
+{"src":"images/aboutMe/","name":"webpack(webpack.github.io)","dimensions":{"width":200,"height":69,"type":"png"},"linkUrl":"webpack.github.io"},];

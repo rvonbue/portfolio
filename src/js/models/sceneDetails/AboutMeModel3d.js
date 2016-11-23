@@ -1,32 +1,33 @@
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
 import eventController from "../../controllers/eventController";
 import aboutMeData from "../../data/pageData/aboutMeData";
-import canvas from "../../data/embeded3dModels/canvas.json";
+// import canvas from "../../data/embeded3dModels/canvas.json";
 import { Mesh, BoxGeometry, MeshBasicMaterial, MeshLambertMaterial, MeshFaceMaterial, Vector3 } from "three";
+import utils from "../../util/utils";
 
 var AboutMe3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
     name: "aboutMe",
-    initialCameraPosition: { x:3, y: 0.25, z: 4},
-    initialCameraTarget: { x:-2, y: 2.25, z: -2},
+    initialCameraPosition: { x:0, y: 0.25, z: 1.5},
+    initialCameraTarget: { x:0, y: 2.25, z: -5},
     pointLights: [
-      {x: -2, y: 1.5, z: 1.5, color: "#FFFFFF", intensity: 1, distance: 5 },
-      {x: -2, y: 1.5, z: -1.5, color: "#FFFFFF", intensity: 1, distance: 5 },
-      {x: 1, y: 1.5, z: -2.5, color: "#FFFFFF", intensity: 1, distance: 5 }
+      { x: -4, y: 3, z: -1, color: "#FFFFFF", intensity: 0.50, distance: 8 },
+      { x: 0,  y: 3, z: -1, color: "#FFFFFF", intensity: 0.50, distance: 8 },
+      { x: 4,  y: 3, z: -1, color: "#FFFFFF", intensity: 0.50, distance: 8 }
     ],
-    pillarPos: [
-      { x: -5 , y:0, z: -1.5 },
-      { x: -1.5, y:0, z: -5 }
+    pillar: [
+      { x: -5, y: 0, z: -5.5, text: "JS" },
+      { x: 5,  y: 0, z: -5.5, text: "CSS" }
     ],
     intialAmbientLights: {
-      directional: { color: "#FFFFFF", intensity: 0.2 },  // color intensity,
+      directional: { color: "#FFFFFF", intensity: 0 },  // color intensity,
       hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 1 }  // skyColor, groundColor, intensity
     },
-    modelUrls: ["sceneDetails", "pillar"],
+    modelUrls: ["sceneDetails", "pillar", "githubBanner"],
   }),
-  MAX_IMAGE_WIDTH: 4,
-  MAX_IMAGE_HEIGHT: 2,
+  MAX_IMAGE_WIDTH: 3,
+  MAX_IMAGE_HEIGHT: 1.75,
   initialize: function () {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
   },
@@ -34,126 +35,105 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     SceneDetailsBaseModel3d.prototype.addInteractiveObjects.apply(this, arguments);
 
     var interactiveObjects = [];
-    var posterPos = {
-      right:{
-        startPos: { x: -5, y: 6, z: -6.17, tallest: 0 },
-        boundary: { xMin: -5, xMax:7, yMin: 2, yMax: 6 }
-      },
-      left:{
-        startPos: { x: -5.95, y: 6, z: -6.17, tallest: 0 },
-        boundary: { zMin: -6.17, zMax: 6, yMin: 2, yMax: 6 }
-      }
-    };
+    var posterPos = { right:{
+        startPos: { x: -8, y: 6.5, z: -6.17, tallest: 0 },
+        boundary: { xMin: -8, yMax: 6.5, xMax: 9, yMin: 0 }
+    }};
 
     aboutMeData.forEach(function (d, i) {
       var posterMesh = this.getArtCanvas(i);
-      if ( i % 2 === 0 ) {
-        this.positionPosterRight(posterMesh, posterPos.right);
-      } else {
-        this.positionPosterLeft(posterMesh, posterPos.left.startPos, posterPos.left.boundary);
-        posterMesh.rotation.y = Math.PI / 2;
-      }
+      this.setClickData(posterMesh, d);
+      this.positionPoster(posterMesh, posterPos.right);
       interactiveObjects.push(posterMesh);
     }, this);
 
     this.set("interactiveObjects", interactiveObjects );
   },
-  positionPosterLeft: function (posterMesh, startPos, boundary) {
-    var boundingBox = posterMesh.geometry.boundingBox;
-    var spacingWidth = .5;
-    var spacingHeight = .25;
-
-    var width = Math.abs(boundingBox.min.x) + Math.abs(boundingBox.max.x);
-    var height = Math.abs(boundingBox.min.y) + Math.abs(boundingBox.max.y);
-    var x = startPos.x ;
-
-    var random = Math.random();
-    var yVariance = random > 0.5 ? -random * spacingHeight : random * spacingHeight;
-    var y = startPos.y + yVariance - (height / 2);
-    var z = startPos.z + spacingWidth + (width / 2) ;
-
-    if ( z < boundary.zMax) {
-      startPos.z += width + spacingWidth;
-      startPos.tallest = height > startPos.tallest ? height : startPos.tallest;
-    } else {
-      startPos.z = z = boundary.zMin + width / 2;
-      startPos.y -= startPos.tallest;
-      y = startPos.y - (height / 2);
-      startPos.tallest = 0;
-    }
-    posterMesh.position.set(x,y,z);
-
+  setClickData: function (mesh, d) {
+    // console.log("modelObj", mesh);
+    // console.log("d", d);
+    mesh.clickData = d.linkUrl || "defualtLink";
   },
-  positionPosterRight: function (posterMesh, posterPos) {
-    var startPos = posterPos.startPos;
-    var boundary = posterPos.boundary;
-    var boundingBox = posterMesh.geometry.boundingBox;
-    var spacing = .5;
-    var spacingHeight = .25;
+  positionPoster: function (posterMesh, posterPos) {
+    var startPos = posterPos.startPos, boundary = posterPos.boundary;
+    var size = utils.getMeshWidthHeight(posterMesh.geometry.boundingBox);
+    var variance = this.getVariance();
+    var x = startPos.x + variance + size.width / 2;
+    var y = startPos.y + variance - (size.height / 2);
 
-    var width = Math.abs(boundingBox.min.x) + Math.abs(boundingBox.max.x);
-    var height = Math.abs(boundingBox.min.y) + Math.abs(boundingBox.max.y);
 
-    var x = startPos.x + width / 2;
-    var random = Math.random();
-    var yVariance = random > 0.5 ? -random * spacingHeight : random * spacingHeight;
-    var y = startPos.y + yVariance - (height / 2);
-    var z = startPos.z;
-
-    if ( x < boundary.xMax) {
-      startPos.x += width + spacing;
-      startPos.tallest = height > startPos.tallest ? height : startPos.tallest;
+    if ( x + size.width / 2 < boundary.xMax) {
+      startPos.x += size.width + variance;
+      startPos.tallest = size.height > startPos.tallest ? size.height + variance : startPos.tallest;
     } else {
-      startPos.x = x = boundary.xMin + width / 2;
-      startPos.y -= startPos.tallest;
-      y = startPos.y - (height / 2);
+      startPos.x = boundary.xMin + size.width + variance;
+      startPos.y -= startPos.tallest !== 0 ? startPos.tallest + variance : size.height + variance;
+      y = startPos.y;
+      x = boundary.xMin + ( size.width / 2 )+ variance;
       startPos.tallest = 0;
     }
+    posterMesh.position.set(x, y, startPos.z);
+  },
+  getVariance: function () {
+    var max = 0.5, min = 0.3;
+    var num = Math.random() * (max - min) + min;
 
-    posterMesh.position.set(x,y,z);
-
+    return num;
   },
   loadSceneDetailModels: function (modelObj) {
     this.set("totalLoaded", this.get("totalLoaded") + 1);
 
-    if (modelObj.name === "sceneDetails") {
-      this.set("object3d", modelObj.object3d);
-    } else if(modelObj.name === "pillar"){
-      this.addPillars(modelObj.object3d);
+    switch(modelObj.name) {
+      case "sceneDetails":
+        this.set("object3d", modelObj.object3d );
+        break;
+      case "pillar":
+        this.addPillars( modelObj.object3d );
+        break;
+      default:
+        this.get("interactiveObjects").push(modelObj.object3d);
     }
 
     this.allModelsLoaded();
   },
   addPillars: function (pillar1) {
-    var interactiveObjects = this.get("interactiveObjects");;
     var pillar, textMesh;
 
-    this.get("pillarPos").forEach( function (pillarPos, i) {
+    this.get("pillar").forEach( function (pillarD, i) {
+
       if ( i === 0 ) pillar = pillar1;
       if ( i !== 0 ) pillar = pillar1.GdeepCloneMaterials();
 
-      textMesh = this.getPillarText({ text: "JS", size: 0.5, height: 0.10 });
-      textMesh.position.y = pillar.geometry.boundingBox.max.y;
-      pillar.add(textMesh);
-      interactiveObjects.push(pillar);
-      pillar.position.set(pillarPos.x, pillarPos.y, pillarPos.z);
+      textMesh = this.getPillarText({
+        text: pillarD.text,
+        size: 0.5,
+        height: 0.10,
+        boundingBox: pillar.geometry.boundingBox
+      });
 
+      pillar.position.set(pillarD.x, pillarD.y, pillarD.z);
+      pillar.add(textMesh);
+      this.get("interactiveObjects").push(pillar);
     }, this);
 
   },
   getArtCanvas: function (index) {
     var canvasSize = this.getCanvasSize(aboutMeData[index].dimensions);
     var geometry = new BoxGeometry( canvasSize.width, canvasSize.height , 0.1);
-    var lMaterial = new MeshLambertMaterial();
-    geometry.computeBoundingBox();
     var src = aboutMeData[index].src + aboutMeData[index].name + "." + aboutMeData[index].dimensions.type;
     var frontMaterial = commandController.request(commandController.LOAD_MATERIAL, src)
+    var lMaterial = new MeshLambertMaterial();
     var materials = [ lMaterial, lMaterial, lMaterial, lMaterial, frontMaterial, lMaterial ];
-
-    return new Mesh( geometry, new MeshFaceMaterial( materials )  );
+    geometry.computeBoundingBox();
+    return new Mesh( geometry, new MeshFaceMaterial( materials ) );
   },
-  getPillarText: function (textVal) {
-    return commandController.request(commandController.GET_TEXT_MESH, textVal);
+  getPillarText: function (options) {
+    var text3d = commandController.request(commandController.GET_TEXT_MESH, options);
+    var size = utils.getMeshWidthHeight(text3d.geometry.boundingBox);
+        text3d.position.x -= size.width / 2;
+        text3d.position.y = options.boundingBox.max.y;
+
+    return text3d;
   },
   getCanvasSize: function (size) {
     var maxWidth = this.MAX_IMAGE_WIDTH; // Max width for the image
@@ -163,6 +143,9 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     var height = size.height;  // Current image height
     var newWidth, newHeight;
 
+    if (height === width) {
+      return { width: 1.2, height: 1.2 }
+    }
     // Check if the current width is larger than the max
     if (width > maxWidth) {
       ratio = maxWidth / width;   // get ratio for scaling image

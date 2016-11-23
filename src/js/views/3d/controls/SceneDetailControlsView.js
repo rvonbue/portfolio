@@ -35,14 +35,7 @@ var SceneDetailControlsView = BaseView.extend({
   },
   itemLoading: function (loaded, total) {
     if (!this.visible) this.show("loading");
-    var loadingText;
-
-    if (loaded === total ) {
-      loadingText = "Models...";
-    } else {
-      loadingText = loaded + " / " + total;
-    }
-
+    var loadingText = loaded === total ? "Models..." : loaded + " / " + total;
     this.loadingEl.text(loadingText);
   },
   showLoading: function () {
@@ -55,18 +48,13 @@ var SceneDetailControlsView = BaseView.extend({
   },
   show: function (sceneModelClassName) {
     this.$el.attr("class", this.getNewClasses(sceneModelClassName));
-    // this.$el.animate({ top: this.navBarHeight }, 0).show();
     this.$el.css("top", this.navBarHeight ).show();
     this.visible= true;
   },
   hide: function (className) {
     this.$el.removeClass(className);
     var shouldHide = this.$el[0].classList.length <= 1;
-    if (shouldHide) {
-      // this.$el.animate({ top: -80 }, 0).hide();
-      // this.$el.css("top", -80 ).hide();
-      this.visible= false;
-    }
+    if (shouldHide) this.visible= false;
   },
   getNewClasses: function (sceneModelClassName) {
     var loading = this.loading ? " loading " : " ";

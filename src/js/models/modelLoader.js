@@ -41,21 +41,21 @@ var ModelLoader = BaseModel.extend({
   },
   loadModel: function (url, options) {
     var self = this;
-    var loader =  new THREE.JSONLoader(this.manager);
+    var loader = new THREE.JSONLoader( this.manager );
+
+    var n = url.lastIndexOf('/');
+    var name = url.substring(n + 1).slice(0,-5);
 
     loader.load(url, function ( geometry, materials ) {
       var bufferGeo = new THREE.BufferGeometry();
           bufferGeo.fromGeometry ( geometry );
           bufferGeo.computeBoundingBox();
 
-      materials.forEach(self.setMaterialMap.bind(self));
+      materials.forEach( self.setMaterialMap.bind(self) );
 
       var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(materials) );
-      var modelDetails = {
-        name: options.name,
-        sceneModelName: options.sceneModelName,
-        object3d: object3d
-      };
+          object3d.name = name;
+      var modelDetails = self.getModelDetailsObj(object3d, options);
 
       if ( options.sceneModelName ) {
         eventController.trigger(eventController.SCENE_DETAILS_LOADED, modelDetails);
@@ -64,6 +64,13 @@ var ModelLoader = BaseModel.extend({
       }
 
     });
+  },
+  getModelDetailsObj: function ( object3d, options ) {
+    return {
+      name: options.name,
+      sceneModelName: options.sceneModelName,
+      object3d: object3d
+    };
   },
   setMaterialMap: function (mat) {
     if (!materialMapList[mat.name]) return;

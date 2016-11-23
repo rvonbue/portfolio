@@ -110,5 +110,8 @@ module.exports = {
   },
   plasticRed: {
     props: { color: "#FF0000" }
+  },
+  drywall: {
+    props: { color: "#EAEAE2" }
   }
 };

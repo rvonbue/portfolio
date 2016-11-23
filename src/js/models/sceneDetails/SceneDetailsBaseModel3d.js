@@ -49,14 +49,14 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
   },
   loadSceneDetailModels: function (modelObj) {
     this.set("totalLoaded", this.get("totalLoaded") + 1);
-    var obj3d = modelObj.object3d;
-    obj3d.name = modelObj.name;
 
-    if (modelObj.name === "sceneDetails") {
-      this.set("object3d", obj3d);
-    } else {
-      this.setClickType(obj3d);
-      this.get("interactiveObjects").push(obj3d);
+    switch(modelObj.name) {
+      case "sceneDetails":
+        this.set("object3d", modelObj.object3d );
+        break;
+      default:
+        this.setClickType(modelObj.object3d);
+        this.get("interactiveObjects").push(modelObj.object3d);
     }
 
     this.allModelsLoaded();

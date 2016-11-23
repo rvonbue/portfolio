@@ -56,7 +56,8 @@ var SceneLoader = BaseView.extend({
     this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
   setMouseMoveHoverSceneModel: function (intersect) {
-    if (!this.isSceneSelected()) {
+    var isSceneSelected =  this.isSceneSelected();
+    if (!isSceneSelected) {
       if (!intersect && this.hoverModel) {
         this.hoverModel.set("hover", false);
         this.hoverModel = null;
@@ -65,6 +66,7 @@ var SceneLoader = BaseView.extend({
       if (intersect) this.setHoverSceneModel(this.sceneModelCollection.findWhere({ name: intersect.object.name }), true);
     } else {
       var moveSelector = intersect ? intersect.object : null;
+      console.log("moveSelector: ", moveSelector);
       eventController.trigger(eventController.MOVE_SCENE_SELECTOR, moveSelector);
     }
   },
