@@ -16,7 +16,8 @@ gulp.task('build:AboutMeImages', function() {
   gulp.src('./src/images/aboutMe/**/*.{png,mov,mpg}')
   .pipe(imagemin({ progressive: true }))
   .pipe(imageResize({
-      width : 200,
+      width: 300,
+      background: "#FFFFFF"
     }))
   .pipe(gulp.dest('./bin/images/aboutMe'));
 });

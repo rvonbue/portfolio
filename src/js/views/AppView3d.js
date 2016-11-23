@@ -10,6 +10,7 @@ import SceneControls from "./3d/controls/SceneControls";
 import SceneLoader from "./3d/SceneLoader";
 import SceneSelector from "./3d/SceneSelector";
 import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
+import LinkHighlighterView from "./components/LinkHighlighterView";
 import StatsView from "./components/statsView";
 
 var AppView3d = BaseView.extend({
@@ -147,6 +148,7 @@ var AppView3d = BaseView.extend({
     this.statsView = new StatsView();
     // $("body").append(this.statsView.stats.domElement);
     this.$el.append(new SceneDetailControlsView().render().el);
+    this.$el.append(new LinkHighlighterView().render().el);
     var canvasEl = $("<canvas>");
     this.$el.append(canvasEl);
     this.canvasEl = canvasEl[0];

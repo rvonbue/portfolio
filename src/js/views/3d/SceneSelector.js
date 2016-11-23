@@ -26,8 +26,6 @@ var SceneLoader = BaseView.extend({
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
      eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
      eventController.on(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
-    //  eventController.on(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishAnimating, this);
-    //  eventController.on(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimating, this);
      eventController.on(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
      eventController.on(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
      eventController.on(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
@@ -42,8 +40,6 @@ var SceneLoader = BaseView.extend({
     eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
 
     eventController.off(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
-    // eventController.off(eventController.CAMERA_FINISHED_ANIMATION, this.cameraFinishAnimating, this);
-    // eventController.off(eventController.CAMERA_START_ANIMATION, this.cameraStartAnimating, this);
     eventController.off(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
     eventController.off(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
     eventController.off(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
