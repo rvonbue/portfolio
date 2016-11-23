@@ -4,6 +4,7 @@ module.exports = [{"src":"images/aboutMe/","name":"backbone(backbonejs.org)","di
 {"src":"images/aboutMe/","name":"less(lesscss.org)","dimensions":{"width":199,"height":90,"type":"png"},"linkUrl":"lesscss.org"},
 {"src":"images/aboutMe/","name":"lodash(lodash.com)","dimensions":{"width":200,"height":200,"type":"png"},"linkUrl":"lodash.com"},
 {"src":"images/aboutMe/","name":"LogojQuery(jquery.com)","dimensions":{"width":200,"height":90,"type":"png"},"linkUrl":"jquery.com"},
+{"src":"images/aboutMe/","name":"npm(npmjs.com)","dimensions":{"width":200,"height":200,"type":"png"},"linkUrl":"npmjs.com"},
 {"src":"images/aboutMe/","name":"ReactJS(facebook.github.io)","dimensions":{"width":200,"height":200,"type":"png"},"linkUrl":"facebook.github.io"},
 {"src":"images/aboutMe/","name":"threejs(threejs.org)","dimensions":{"width":200,"height":48,"type":"png"},"linkUrl":"threejs.org"},
 {"src":"images/aboutMe/","name":"underscore(underscorejs.org)","dimensions":{"width":200,"height":41,"type":"png"},"linkUrl":"underscorejs.org"},

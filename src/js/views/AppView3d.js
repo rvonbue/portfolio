@@ -146,7 +146,6 @@ var AppView3d = BaseView.extend({
   render: function () {
     this.statsView = new StatsView();
     // $("body").append(this.statsView.stats.domElement);
-    // this.bodyEl = $("<div class='view-body-3d'></div>");
     this.$el.append(new SceneDetailControlsView().render().el);
     var canvasEl = $("<canvas>");
     this.$el.append(canvasEl);

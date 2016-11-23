@@ -22,11 +22,11 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     ],
     intialAmbientLights: {
       directional: { color: "#FFFFFF", intensity: 0 },  // color intensity,
-      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 1 }  // skyColor, groundColor, intensity
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 1.2 }  // skyColor, groundColor, intensity
     },
     modelUrls: ["sceneDetails", "pillar", "githubBanner"],
   }),
-  MAX_IMAGE_WIDTH: 3,
+  MAX_IMAGE_WIDTH: 3, //world units
   MAX_IMAGE_HEIGHT: 1.75,
   initialize: function () {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
@@ -50,8 +50,6 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     this.set("interactiveObjects", interactiveObjects );
   },
   setClickData: function (mesh, d) {
-    // console.log("modelObj", mesh);
-    // console.log("d", d);
     mesh.clickData = d.linkUrl || "defualtLink";
   },
   positionPoster: function (posterMesh, posterPos) {

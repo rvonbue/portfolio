@@ -82,9 +82,6 @@ var SceneDetailControlsView = BaseView.extend({
   clickPlay: function () {
     eventController.trigger(eventController.VIDEO_PLAY_PAUSE, true);
   },
-  clickSkipNext: function () {
-
-  },
   render: function () {
     this.$el.append(SceneDetailControlsHTML);
     this.loadingEl = this.$el.find("#items-loading");

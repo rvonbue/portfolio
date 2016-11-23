@@ -14,17 +14,22 @@ gulp.task('build:AboutMeData', function() {
   .pipe(buffer())
   .pipe(es.map(function (file, cb) {
       var title = path.basename(file.relative);
+      var link = "defaultLink";
       //  title = title.substring(2).replace(/_/g, " ");
       title = title.substring(0, title.length - 4); //remove fileExtension
       var dimensions = sizeOf(file.contents);
 
       var regExp = /\(([^)]+)\)/;
       var matches = regExp.exec(title);
+      if (matches && matches.length > 1) {
+        link = matches[1];
+      }
+
       var json = {
         src: "images/aboutMe/",
         name: title,
         dimensions: dimensions,
-        linkUrl: matches[1],
+        linkUrl: link,
       };
 
       file.contents = new Buffer(JSON.stringify(json) + ",");
