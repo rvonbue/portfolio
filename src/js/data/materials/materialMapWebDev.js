@@ -15,25 +15,18 @@ module.exports = {
         { map: "textures/computer.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "flat" },
-      // props: {color: colorPallete.lampLight.hex }
   },
   computerScreen1: {
       maps: [
         { map: "textures/computerScreen.jpg" },
-        // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-        // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "flat" },
-      // props: {color: "#0000FF" }
   },
   computerScreen2: {
       maps: [
         { map: "textures/computerScreen.jpg" },
-        // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-        // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "flat" },
-      // props: {color: "#0000FF" }
   },
   keyboard: {
       maps: [
@@ -42,15 +35,6 @@ module.exports = {
         { normalMap: "textures/computer/keyboard_NRM.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "smooth" },
-  },
-  leather: {
-      maps: [
-        { map: "textures/leather.jpg" },
-        // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-        // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
-      ],
-      mapProps: { repeatScale: 10, shading: "smooth" },
-      // props: { color: colorPallete.lampLight.hex }
   },
   woodFine: {
       maps: [
@@ -91,5 +75,10 @@ module.exports = {
   powerButton: {
       maps: [{ map: "textures/powerButton.jpg" } ],
       mapProps: { repeatScale: 1, shading: "flat" },
-  }
+  },
+  // metal: {
+  //     maps: [{ normalMap: "textures/fabric/fabric_NRM.jpg" } ],
+  //     mapProps: { repeatScale: 50, shading: "flat" },
+  //     props: { color: "#713f12" }
+  // },
 };

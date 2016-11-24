@@ -39,7 +39,7 @@ module.exports = {
       { normalMap: "textures/stucco/stucco_NRM.jpg" }
     ],
     mapProps: { repeatScale: 4, shading: "flat" },
-    // props: {  color: "#474747" }
+    props: {  color: "#FFFFFF" }
   },
   glass: {
     maps: [{ envMap: "reflection" } ],

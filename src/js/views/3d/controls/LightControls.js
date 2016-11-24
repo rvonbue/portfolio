@@ -12,9 +12,9 @@ var LightControls = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
-    this.skyGradientElClickNum = 20;
+    this.skyGradientElClickNum = 10;
     // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
-    this.clickChangeSkyGradient(9);
+    this.clickChangeSkyGradient();
     this.addLight();
     this.addListeners();
   },
@@ -45,23 +45,40 @@ var LightControls = BaseView.extend({
   },
   getResetLightSettings: function () {
     return {
-      hemisphere: [worldColor.hemisphere.sky, worldColor.hemisphere.ground, worldColor.hemisphere.intensity],
-      directional: [worldColor.directional.color, worldColor.directional.intensity]
+      hemisphere: {
+        skyColor: worldColor.hemisphere.sky,
+        groundColor: worldColor.hemisphere.ground,
+        intensity: worldColor.hemisphere.intensity
+      },
+      directional: {
+        color: worldColor.directional.color,
+        intensity: worldColor.directional.intensity
+      }
     };
   },
   clickChangeSkyGradient: function (newLightSettings) {
     if (this.skyGradientElClickNum > 23) this.skyGradientElClickNum = 0 ;
-    var classNames = "sky-gradient" + " sky-gradient-" + this.skyGradientElClickNum;
-    this.skyGradientEl.attr("class", classNames);
+
     var sky = skyGradients[this.skyGradientElClickNum][0];
     var ground = skyGradients[this.skyGradientElClickNum][1];
-    this.toggleWorldLighting(
-      {
-        hemisphere: [sky, ground, worldColor.hemisphere.intensity],
-        directional: [sky, worldColor.directional.intensity]
-      }
-    );
+    var classNames = "sky-gradient" + " sky-gradient-" + this.skyGradientElClickNum;
+
+    this.toggleWorldLighting( this.getClickLighting(sky, ground));
+    this.skyGradientEl.attr("class", classNames);
     this.skyGradientElClickNum++;
+  },
+  getClickLighting: function (sky, ground) {
+    return {
+      hemisphere: {
+        skyColor: sky,
+        groundColor: ground,
+        intensity: worldColor.hemisphere.intensity
+      },
+      directional: {
+        color: sky,
+        intensity: worldColor.directional.intensity
+      }
+    };
   },
   toggleWorldLighting: function (newLightSettings) {
     // if (!newLightSettings) return;
@@ -75,11 +92,8 @@ var LightControls = BaseView.extend({
     .to({ intensity: endPos }, speed)
     return tween;
   },
-  setHemiLight: function (light, newLight) {
-    light.skyColor =  new THREE.Color(newLight.skyColor);
-    light.groundColor = new THREE.Color(newLight.groundColor);
-    var tween = this.getTween(light, newLight.intensity, utils.getAnimationSpeed().lightOut, light );
-    tween.start();
+  getWorldLight: function (lightType) {
+    return _.findWhere(this.worldLights, {type: lightType});
   },
   setDirectionalLight: function (light, newLight) {
     if (!newLight) return;
@@ -92,18 +106,23 @@ var LightControls = BaseView.extend({
       worldColor.directional.color,
       worldColor.directional.intensity
     )
+    directionalLight.position.set(-10 , 50 , 10);
     this.worldLights.push(directionalLight);
   },
+  setHemiLight: function (light, newLight) {
+    light.skyColor =  new THREE.Color(newLight.skyColor);
+    light.groundColor = new THREE.Color(newLight.groundColor);
+    var tween = this.getTween(light, newLight.intensity, utils.getAnimationSpeed().lightOut, light );
+    tween.start();
+  },
   addHemisphereLight: function () {
+
     var hemiLight = new THREE.HemisphereLight(
       worldColor.hemisphere.sky,
       worldColor.hemisphere.ground,
       worldColor.hemisphere.intensity
     );
     this.worldLights.push(hemiLight);
-  },
-  getWorldLight: function (lightType) {
-    return _.findWhere(this.worldLights, {type: lightType});
   },
   setSpotlightTarget: function (spotLightTarget) {
     var spotLight = this.getWorldLight("SpotLight");

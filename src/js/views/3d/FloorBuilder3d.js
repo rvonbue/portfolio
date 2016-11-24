@@ -30,6 +30,10 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     });
     sceneModel.set("text3d", text3d);
 
+    // var textOutline = text3d.clone();
+    //     textOutline.material =  new THREE.MeshBasicMaterial( { color: 0x00ff00, side: THREE.BackSide } );
+    //     textOutline.scale.multiplyScalar(1.05);
+    // text3d.add(textOutline);
 
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.min.z - 2;
     text3d.position.y = (text3d.geometry.boundingBox.max.y - text3d.geometry.boundingBox.min.y) / 2 - offsetY;

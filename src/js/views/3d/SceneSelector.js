@@ -109,7 +109,8 @@ var SceneLoader = BaseView.extend({
         eventController.trigger(eventController.VIDEO_PLAY_PAUSE);
         break;
       case "link":
-        window.open(intersectObject.object.clickData.url);
+      console.log("openLInk");
+        // window.open(intersectObject.object.clickData.url);
         break;
       default:
         break;

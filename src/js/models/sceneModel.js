@@ -58,6 +58,7 @@ var SceneModel = BaseModel3d.extend({
     this.set("hover", false);
     this.resetAllMaterials();
     this.showHide(showHideBool);
+    if (this.get("text3d")) this.toggleTextMaterial();
   },
   isReady: function () {
     return this.get("ready") && !this.get("loading");
@@ -177,6 +178,14 @@ var SceneModel = BaseModel3d.extend({
       this.setEmissiveMaterial(mat, lampLightRGB.r, lampLightRGB.g, lampLightRGB.b);
     } else {
       this.setEmissiveMaterial(mat, 0, 0, 0);
+    }
+  },
+  toggleEmmisiveMaterial: function (mat, color) {
+    if (this.get("hover") === true ) {
+      var textRGB = utils.getColorPallete().text.rgb;
+      this.setEmissiveMaterial(mat, color.r, color.g, color.b );
+    } else {
+      this.setEmissiveMaterial(mat, 0, 0, 0 );
     }
   },
   toggleTextMaterial: function () {

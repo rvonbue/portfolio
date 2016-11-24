@@ -115,7 +115,7 @@ var SceneControls = BaseModel.extend({
   },
   getUrls: function () {
     var format = '.jpg';
-    var path = "textures/cubeMap/beach/";
+    var path = "textures/cubeMap/forbiddenCity/";
 
     return [
       path + 'posx' + format, path + 'negx' + format,
