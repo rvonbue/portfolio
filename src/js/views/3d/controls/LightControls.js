@@ -12,7 +12,7 @@ var LightControls = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
-    this.skyGradientElClickNum = 10;
+    this.skyGradientElClickNum = 9;
     // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
     this.clickChangeSkyGradient();
     this.addLight();
@@ -106,7 +106,7 @@ var LightControls = BaseView.extend({
       worldColor.directional.color,
       worldColor.directional.intensity
     )
-    directionalLight.position.set(-10 , 50 , 10);
+    directionalLight.position.set(-100 , 50 , 10);
     this.worldLights.push(directionalLight);
   },
   setHemiLight: function (light, newLight) {
