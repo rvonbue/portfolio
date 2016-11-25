@@ -138,11 +138,14 @@ var SceneControls = BaseModel.extend({
     .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
-    var pos = _.clone(selectedMesh.position);
+    var center = selectedMesh.geometry.boundingSphere.center;
     var size = utils.getMeshWidthHeight(selectedMesh.geometry.boundingBox);
-    pos.y += size.height / 2;
 
-    this.selectMesh.position.set(pos.x, pos.y, pos.z);
+    this.selectMesh.position.set(
+      selectedMesh.position.x + center.x,
+      selectedMesh.position.y + center.y + (size.height / 2) + 0.5,
+      selectedMesh.position.z + center.z
+    );
   },
   render: function () {
     return this;

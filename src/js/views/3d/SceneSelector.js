@@ -16,8 +16,6 @@ var SceneLoader = BaseView.extend({
     this.addListeners();
   },
   addListeners: function () {
-     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
-
      // hover/click events from the 3d space
      eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
      eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
@@ -25,20 +23,21 @@ var SceneLoader = BaseView.extend({
      // hover/click events from the navigation bar
      eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
      eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
+
+     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
      eventController.on(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
      eventController.on(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
      eventController.on(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
      eventController.on(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
   },
   removeListeners: function () {
-    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
-
     eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
     eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
 
     eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
     eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
 
+    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
     eventController.off(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
     eventController.off(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
     eventController.off(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
@@ -46,9 +45,7 @@ var SceneLoader = BaseView.extend({
   },
   resetScene: function () {
     this.animating = false;
-    this.sceneModelCollection.each(function (sceneModel) {
-      sceneModel.reset(true);
-    });
+    this.sceneModelCollection.each(function (sceneModel) { sceneModel.reset(true); });
     this.setInteractiveObjects(this.getSceneModelInteractiveObjects());
   },
   setMouseMoveHoverSceneModel: function (intersect) {
@@ -284,17 +281,19 @@ var SceneLoader = BaseView.extend({
   },
   addSceneDetailsToScene: function (sceneModel) {
     var selectedSceneModel = this.getSelectedScene();
-    var timeOpenDoors, self = this;
+    var self = this;
 
     sceneModel.showHide(true, true);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel.get("sceneDetails").getAllMeshes());
     this.resetSceneDetails(sceneModel, false);
 
+    var timeOpenDoors;
     setTimeout( function () {
       timeOpenDoors = sceneModel.openDoors(true);
       setTimeout( function () {
         if ( sceneModel.cid === selectedSceneModel.cid ) {
           self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
+          sceneModel.toggleHoverLights(false);
           self.hideSceneModels();
         }
       }, timeOpenDoors);

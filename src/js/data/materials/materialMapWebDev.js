@@ -76,6 +76,13 @@ module.exports = {
       maps: [{ map: "textures/powerButton.jpg" } ],
       mapProps: { repeatScale: 1, shading: "flat" },
   },
+  rugPersian: {
+    maps:[
+      { map: "textures/rugPersian.png" }
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { transparent: true, alwaysTransparent: true }
+  }
   // metal: {
   //     maps: [{ normalMap: "textures/fabric/fabric_NRM.jpg" } ],
   //     mapProps: { repeatScale: 50, shading: "flat" },

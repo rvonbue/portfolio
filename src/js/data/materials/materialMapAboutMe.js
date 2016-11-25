@@ -12,5 +12,8 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: { color: "#FFFFFF", data: { link: "github.com/rvonbue" } }
+  },
+  fabricGold: {
+    props: { color: "#ffcc00" }
   }
 };

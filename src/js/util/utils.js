@@ -16,6 +16,9 @@ module.exports = {
       height: Math.abs(bounding.min.y) + Math.abs(bounding.max.y)
     };
   },
+  // getObjectPosition: function () {
+  //
+  // },
   getMeshCenterRadius: function (pos, bounding) {
     var center = _.clone(bounding.center);
     center.y += bounding.radius;
