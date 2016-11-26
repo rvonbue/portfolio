@@ -139,6 +139,7 @@ var SceneControls = BaseModel.extend({
     .start();
 
     var center = selectedMesh.geometry.boundingSphere.center;
+    if ( !selectedMesh.geometry.boundingBox ) selectedMesh.geometry.computeBoundingBox();
     var size = utils.getMeshWidthHeight(selectedMesh.geometry.boundingBox);
 
     this.selectMesh.position.set(

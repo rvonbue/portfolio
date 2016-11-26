@@ -171,7 +171,7 @@ var ModelLoader = BaseModel.extend({
       bevelSize: 1.5,
       bevelSegments: 3
     });
-    
+
     textGeo.computeBoundingBox();
     return new THREE.Mesh( textGeo, material );
   },

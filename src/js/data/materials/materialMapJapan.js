@@ -113,5 +113,8 @@ module.exports = {
   },
   drywall: {
     props: { color: "#EAEAE2" }
+  },
+  light: {
+    props: { color: "#FFFFFF", shading: "basic" }
   }
 };

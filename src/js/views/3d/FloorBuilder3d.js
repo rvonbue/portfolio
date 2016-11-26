@@ -61,13 +61,13 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
   },
   addLights: function (modelLoader, sceneModel) {
     var lampLightPos = {x:18, y: 3, z: 11, spacer: 7.2 };
+
     var model = modelLoader.parseJSON(lampLight);
-    var meshArray =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
-    this.duplicateMesh(meshArray, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
-    meshArray =[this.getNewHoverLight(3, 4)];
-    var lampLightPos2 = _.clone(lampLightPos);
-    // lampLightPos2.y -= 1;
-    this.duplicateMesh(meshArray, sceneModel, lampLightPos2, 4, "hoverLights");
+    var meshes =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
+    this.duplicateMesh(meshes, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
+
+    var pointLights =[this.getNewHoverLight(3, 4)];
+    this.duplicateMesh(pointLights, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
   },
   duplicateMesh: function (meshArray, sceneModel, startPosition, total, setModelProp) {
     for (var i = 0; i < total; i++ ) {
@@ -79,9 +79,8 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     this.parentToSceneModel(meshArray, sceneModel);
   },
   getNewHoverLight: function (intensity, distance ) {
-    var decay = 2;
     var color = utils.getColorPallete().lampLight.hex;
-    var light = new THREE.PointLight( color, intensity, distance, decay );
+    var light = new THREE.PointLight( color, intensity, distance, 2 ); // 2 = decay
     light.visible = false;
     return light;
   },
@@ -91,13 +90,14 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var floorHeight = sceneModel.getSize();
     var geometry = new THREE.PlaneGeometry( size.w, floorHeight.h );
     var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.FrontSide } );
-    material.visible = false;
-    material.alwaysHidden = true;
+        material.visible = false;
+        material.alwaysHidden = true;
+
     var rayCasterMesh = new THREE.Mesh( geometry, material );
-    rayCasterMesh.name = sceneModel.get("name");
-    rayCasterMesh.position.y = size.h / 2;
-    rayCasterMesh.position.z = text3d.position.z + (size.l * 1.1);
-    rayCasterMesh.rayCasterMesh = false;
+        rayCasterMesh.name = sceneModel.get("name");
+        rayCasterMesh.position.y = size.h / 2;
+        rayCasterMesh.position.z = text3d.position.z + (size.l * 1.1);
+        rayCasterMesh.rayCasterMesh = false;
     sceneModel.set("rayCasterMesh", rayCasterMesh);
     this.parentToSceneModel([rayCasterMesh], sceneModel);
   },
