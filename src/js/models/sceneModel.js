@@ -2,6 +2,7 @@
 import BaseModel3d from "./BaseModel3d";
 import utils from "../util/utils";
 import TWEEN from "tween.js";
+import { Color } from "three";
 
 var SceneModel = BaseModel3d.extend({
   defaults: {
@@ -49,16 +50,16 @@ var SceneModel = BaseModel3d.extend({
   },
   onChangeHover: function () {
     if (this.get("selected")) return;
-    this.toggleLampEmitMaterial();
+    this.toggleLampEmitMaterial(this.getLampLightMaterial());
     this.toggleHoverLights(this.get("hover"));
-    this.toggleTextMaterial();
+    this.toggleTextMaterial(this.get("text3d").material);
   },
   reset: function (showHideBool) {
     this.set("selected", false);
     this.set("hover", false);
     this.resetAllMaterials();
     this.showHide(showHideBool);
-    if (this.get("text3d")) this.toggleTextMaterial();
+    if (this.get("text3d")) this.toggleTextMaterial(this.get("text3d").material);
   },
   isReady: function () {
     return this.get("ready") && !this.get("loading");
@@ -72,22 +73,22 @@ var SceneModel = BaseModel3d.extend({
     }, delay);
   },
   showHide: function (visBool, hideText) { // show = true
-
+    visBool = visBool ? visBool : this.get("selected");
     var text3d = this.get("text3d");
     var sceneDetails = this.get("sceneDetails");
-    visBool = visBool ? visBool : this.get("selected");
+
 
     this.get("object3d").visible = visBool;
     _.each(this.get("object3d").children, function (mesh) {
         if ( mesh.type === "Mesh"
-        && mesh.rayCasterMesh !== false
-        && (text3d && text3d.id !== mesh.id)
+          && mesh.rayCasterMesh !== false
+          && (text3d && text3d.id !== mesh.id)
        ) {
           mesh.visible = visBool; // do not turn on lights or raycaster
         }
     });
 
-    if (text3d) text3d.visible = hideText ? !hideText : visBool;
+    if ( text3d ) text3d.visible = hideText ? !hideText : visBool;
     if ( sceneDetails ) sceneDetails.showHide(visBool, this.get("selected"));
 
   },
@@ -157,46 +158,26 @@ var SceneModel = BaseModel3d.extend({
     this.get("text3d").visible = textBool;
   },
   toggleHoverLights: function (hoverBool) {
-    _.each(this.get("hoverLights"), function (light) {
-      light.visible = hoverBool;
-    }, this);
+    _.each(this.get("hoverLights"), function (light) { light.visible = hoverBool; });
   },
-  setEmissiveMaterial: function (mat, r, g, b) {
-    mat.emissive.r = r;
-    mat.emissive.g = g;
-    mat.emissive.b = b;
+  setEmissiveMaterial: function (mat, color) {
+    console.log("MAT:--", mat);
+    mat.emissive = new Color(color);
   },
   getLampLightMaterial: function () {
     return _.find(this.get("hoverLamps")[0].material.materials, function(item) {
-        return item.name == "lampLightEmit";
+      return item.name == "lampLightEmit";
     });
   },
-  toggleLampEmitMaterial:function () {
-    var mat = this.getLampLightMaterial();
-    if (this.get("hover") === true ) {
-      var lampLightRGB = utils.getColorPallete().lampLight.rgb;
-      this.setEmissiveMaterial(mat, lampLightRGB.r, lampLightRGB.g, lampLightRGB.b);
-    } else {
-      this.setEmissiveMaterial(mat, 0, 0, 0);
-    }
+  toggleLampEmitMaterial:function (mat) {
+    var color = this.get("hover") ? 1 : 0.5;
+    mat.emissiveIntensity = color;
+    // this.setEmissiveMaterial(mat, color);
+    // 
   },
-  toggleEmmisiveMaterial: function (mat, color) {
-    if (this.get("hover") === true ) {
-      var textRGB = utils.getColorPallete().text.rgb;
-      this.setEmissiveMaterial(mat, color.r, color.g, color.b );
-    } else {
-      this.setEmissiveMaterial(mat, 0, 0, 0 );
-    }
-  },
-  toggleTextMaterial: function () {
-    var textMaterial = this.get("text3d").material;
-
-    if (this.get("hover") === true ) {
-      var textRGB = utils.getColorPallete().text.rgb;
-      this.setEmissiveMaterial(textMaterial, textRGB.r, textRGB.g, textRGB.b );
-    } else {
-      this.setEmissiveMaterial(textMaterial, 0, 0, 0 );
-    }
+  toggleTextMaterial: function (mat) {
+    var textColor = this.get("hover") ? utils.getColorPallete().text.color2 : utils.getColorPallete().text.color;
+    mat.emissive = new Color(textColor);
   },
   setFadeInMaterials:function (allMaterials) {
     _.each(allMaterials, function (mat) {
@@ -206,7 +187,6 @@ var SceneModel = BaseModel3d.extend({
   },
   setFadeOutMaterials: function (allMaterials) {
     _.each(allMaterials, function (mat) {
-      // if (!mat.alwaysTransparent) mat.transparent = true;
       mat.transparent = true;
       mat.opacity = 1;
     });

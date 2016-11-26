@@ -51,11 +51,11 @@ var SceneLoader = BaseView.extend({
     this.setSceneDetails(sceneModel);
   },
   buildSceneDetails: function (sceneModel) {
-    var self = this;
     var sceneDetailsModel = this.getSceneDetailsModel(sceneModel);
     var sceneDetailsBuilder3d = new SceneDetailsBuilder3d();
+        sceneDetailsBuilder3d.setSceneDetails(sceneDetailsModel);
 
-    sceneDetailsBuilder3d.setSceneDetails(sceneDetailsModel);
+    var self = this;
     sceneModel.set("sceneDetails", sceneDetailsModel); //set sceneModel and toggle show/hide of sceneDetails Model
 
     eventController.once("ALL_ITEMS_LOADED", function () {

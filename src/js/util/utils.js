@@ -33,17 +33,21 @@ module.exports = {
       color2: {hex: "#B82601" },  //green
       color3: {hex: "#062f4f" },
       color4: {hex: "#813772" },
-      lampLight: {hex: "#B82601", rgb: { r:0.72, g:0.15, b: 0.005 } },  //red //663399 purple
-      text: { hex:"#062f4f", rgb: { r:1, g:1, b: 1 } },
+      lampLight: { color: "#B82601" },  //red //663399 purple
+      text: { color:"#062f4f", color2: "#9be2fe"  },
       world: {
         hemisphere: {
           sky:"#9be2fe",
-          ground: "#9be2fe",
-          intensity: 0.25
+          ground: "#B82601",
+          intensity: 0.1
+        },
+        background: {
+          cssSkyGradient: 19 // 0 - 23 is valid
         },
         directional: {
           color: "#FFFFFF",
-          intensity: 1.1
+          intensity: 0.1,
+          position: {x: -100, y: 50, z: 20}
         }
       }
     };

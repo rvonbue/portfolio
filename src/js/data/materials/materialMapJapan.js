@@ -66,6 +66,14 @@ module.exports = {
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: {  transparent: true, alwaysTransparent: true }
   },
+  lampLightEmit: {
+    props: {
+      color: colorPallete.lampLight.color,
+      emissiveIntensity: 0.2,
+      emissive: colorPallete.lampLight.color
+      // specular: colorPallete.lampLight.color,
+     }
+  },
   shutterJapan:{
      maps: [
       {
@@ -75,13 +83,6 @@ module.exports = {
       }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
-  },
-  lampLightEmit: {
-    props: {
-      color: colorPallete.lampLight.hex,
-      // emissive: colorPallete.lampLight.hex,
-      // specular: colorPallete.lampLight.hex,
-     }
   },
   woodFloor: {
     maps: [

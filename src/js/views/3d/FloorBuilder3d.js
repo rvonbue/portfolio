@@ -18,6 +18,7 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
   addText: function (sceneModel) {
     var object3d = sceneModel.get("object3d");
     var offsetY = 1.3;
+    var textColor = utils.getColorPallete().text.color;
     var text3d = commandController.request(commandController.GET_TEXT_MESH , {
       text: sceneModel.get("name"),
       curveSegments: 4,
@@ -26,14 +27,12 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
       bevelSegments: 3,
       bevelSize: 1.5,
       bevelThickness: 2,
-      material: new THREE.MeshPhongMaterial({ color: utils.getColorPallete().text.hex })
+      material: new THREE.MeshPhongMaterial({
+        color: textColor,
+        emissive: textColor
+      })
     });
     sceneModel.set("text3d", text3d);
-
-    // var textOutline = text3d.clone();
-    //     textOutline.material =  new THREE.MeshBasicMaterial( { color: 0x00ff00, side: THREE.BackSide } );
-    //     textOutline.scale.multiplyScalar(1.05);
-    // text3d.add(textOutline);
 
     text3d.position.z = object3d.geometry.boundingBox.max.z - text3d.geometry.boundingBox.min.z - 2;
     text3d.position.y = (text3d.geometry.boundingBox.max.y - text3d.geometry.boundingBox.min.y) / 2 - offsetY;
@@ -79,9 +78,9 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     this.parentToSceneModel(meshArray, sceneModel);
   },
   getNewHoverLight: function (intensity, distance ) {
-    var color = utils.getColorPallete().lampLight.hex;
+    var color = new THREE.Color(utils.getColorPallete().lampLight.color);
     var light = new THREE.PointLight( color, intensity, distance, 2 ); // 2 = decay
-    light.visible = false;
+        light.visible = false;
     return light;
   },
   setRaycasterMesh: function (sceneModel) {
