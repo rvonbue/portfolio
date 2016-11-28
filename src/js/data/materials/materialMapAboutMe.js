@@ -19,7 +19,7 @@ module.exports = {
   displayGlass: {
     maps: [{ envMap: "basic" } ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacity:0.2 }
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, maxOpacity: 0.2, opacity: 0.2 }
   },
   resume: {
     maps:[

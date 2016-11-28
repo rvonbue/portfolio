@@ -173,7 +173,7 @@ var SceneModel = BaseModel3d.extend({
     var color = this.get("hover") ? 1 : 0.5;
     mat.emissiveIntensity = color;
     // this.setEmissiveMaterial(mat, color);
-    // 
+    //
   },
   toggleTextMaterial: function (mat) {
     var textColor = this.get("hover") ? utils.getColorPallete().text.color2 : utils.getColorPallete().text.color;
@@ -194,7 +194,7 @@ var SceneModel = BaseModel3d.extend({
   fadeMaterials: function (opacityEnd) {
     var allMaterials = this.getAllMaterials();
     var self = this;
-
+    var newOpacityEnd;
     if (opacityEnd === 0) {
       this.setFadeOutMaterials(allMaterials);
     } else if (opacityEnd === 1) {
@@ -202,13 +202,12 @@ var SceneModel = BaseModel3d.extend({
     }
 
     _.each(allMaterials, function (mat) {
+      newOpacityEnd = mat.opacityMax ? mat.opacityMax : opacityEnd;
       var tween = new TWEEN.Tween(mat)
-      .to({ opacity: opacityEnd }, utils.getAnimationSpeed().materialsFade)
+      .to({ opacity: newOpacityEnd }, utils.getAnimationSpeed().materialsFade)
       .onComplete(function () {
         if ( opacityEnd === 1  && !mat.alwaysTransparent ) {
           mat.transparent = false;
-          // self.set({ selected: true });
-          // self.startScene();
         } else if (opacityEnd === 0) {
           // self.set({ selected: false });
         }

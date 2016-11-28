@@ -13,7 +13,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
       initialCameraTarget: { x:0, y: 2.25, z: -5},
       pointLights: [
         { x: -4, y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 },
-        { x: -0.5,  y: 3, z: -2, color: "#FFFFFF", intensity: 0.50, distance: 5 },
+        { x: -0.5,  y: 6, z: -2, color: "#FFFFFF", intensity: 0.50, distance: 5 },
         { x: 4,  y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 }
     ],
     pillar: [
