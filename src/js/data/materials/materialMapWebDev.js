@@ -60,9 +60,9 @@ module.exports = {
     mapProps: { repeatScale: 1, shading: "smooth" },
   },
   blackGlass: {
-    maps: [{ envMap: "reflection" } ],
-    mapProps: { repeatScale: 1, shading: "smooth" },
-    props: { color: "#FFFFF", transparent: true, alwaysTransparent: true, opacity:0.50}
+    maps: [{ envMap: "webDev" } ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacity:0.75 }
   },
   fern:  {
     maps: [{ map: "textures/farn.png" } ],
@@ -73,7 +73,7 @@ module.exports = {
     props: { color: "#e2725b" }
   },
   powerButton: {
-      maps: [{ map: "textures/powerButton.jpg" } ],
+      maps: [{ map: "textures/computer/powerButton.jpg" } ],
       mapProps: { repeatScale: 1, shading: "flat" },
   },
   rugPersian: {
@@ -82,6 +82,10 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { transparent: true, alwaysTransparent: true }
+  },
+  allBooks: {
+    maps: [{ normalMap: "textures/allBooks.jpg" } ],
+    mapProps: { repeatScale: 1, shading: "smooth" }
   }
   // metal: {
   //     maps: [{ normalMap: "textures/fabric/fabric_NRM.jpg" } ],

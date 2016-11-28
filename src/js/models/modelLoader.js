@@ -93,10 +93,11 @@ var ModelLoader = BaseModel.extend({
         // console.log("--------mapKey-------------", mapKey);
       if (mapKey === "envMap") {
         // console.log("--------mat-------------", mat);
-        if (mapURL === "refraction" ) mat[mapKey] = this.getRefractionCube();
-        if (mapURL === "reflection" ) mat[mapKey] = this.getReflectionCube();
+        // if (mapURL === "refraction" ) mat[mapKey] = this.getRefractionCube();
+         mat[mapKey] = this.getReflectionCube(mapURL);
         return;
-      }
+      };
+
       mat[mapKey] = new THREE.TextureLoader(this.manager).load( mapURL, function (texture) {
         if (options.repeatScale) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -110,14 +111,11 @@ var ModelLoader = BaseModel.extend({
     // console.log("mat:", mat);
     _.each(props, function (p,k) {
       if (k === "color" || k === "emissive" || k === "specular" ) {
-        this.setMaterialColor(mat, k, p);
+        mat[k] = new THREE.Color(p);
       } else {
         mat[k] = p; // set all other attributes by key and property
       }
     }, this);
-  },
-  setMaterialColor: function (mat, k, color) {
-    mat[k] = new THREE.Color(color);
   },
   parseJSON: function (json) {
     var loader = new THREE.JSONLoader(this.manager);
@@ -158,7 +156,7 @@ var ModelLoader = BaseModel.extend({
   getTextMesh: function (options) {
     var material = options.material ? options.material : new THREE.MeshPhongMaterial({
       color: utils.getColorPallete().text.hex,
-      envMap: this.getReflectionCube()
+      // envMap: this.getReflectionCube()
       // emissive:  utils.getColorPallete().text.hex
      });
 
@@ -175,17 +173,17 @@ var ModelLoader = BaseModel.extend({
     textGeo.computeBoundingBox();
     return new THREE.Mesh( textGeo, material );
   },
-  getCubeImageUrls: function () {
-    var path = "textures/cubeMap/forbiddenCity/";
-    var format = '.jpg';
+  getCubeImageUrls: function (modelUrlBase) {
+    var path = "textures/cubeMap/" + modelUrlBase + "/";
+    var format = '.png';
     return [
-        path + 'posx' + format, path + 'negx' + format,
-        path + 'posy' + format, path + 'negy' + format,
-        path + 'posz' + format, path + 'negz' + format
-      ];
+      path + 'posx' + format, path + 'negx' + format,
+      path + 'posy' + format, path + 'negy' + format,
+      path + 'posz' + format, path + 'negz' + format
+    ];
   },
-  getReflectionCube: function () {
-    var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( this.getCubeImageUrls() );
+  getReflectionCube: function (modelUrlBase) {
+    var reflectionCube = new THREE.CubeTextureLoader(this.manager).load( this.getCubeImageUrls(modelUrlBase) );
 		    reflectionCube.format  = THREE.RGBFormat;
         reflectionCube.mapping = THREE.CubeReflectionMapping;
 

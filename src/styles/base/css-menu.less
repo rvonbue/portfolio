@@ -107,13 +107,19 @@
 #cssmenu.align-right li:first-child a:after {
   display: none;
 }
-@media screen and (max-width: 768px) {
-  #cssmenu ul li {
-    float: none;
-    display: block;
-  }
+
+@media screen and (max-width: @breakPoint1) {
+  // #cssmenu ul li {
+  //   float: none;
+  //   display: block;
+  // }
+  // #cssmenu {
+  //   max-width: 325px;
+  //   margin: 0px auto 0px 75px;
+  // }
   #cssmenu ul li a {
     width: 100%;
+    padding: 15px 8px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

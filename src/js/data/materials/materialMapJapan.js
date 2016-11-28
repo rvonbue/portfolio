@@ -116,6 +116,10 @@ module.exports = {
     props: { color: "#EAEAE2" }
   },
   light: {
-    props: { color: "#FFFFFF", shading: "basic" }
+    props: {
+     color: "#FFFFFF",
+     emisssive: "#FFFFFF",
+     shading: "basic"
+   }
   }
 };

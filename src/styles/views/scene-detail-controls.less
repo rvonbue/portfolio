@@ -5,7 +5,7 @@
   position: absolute;
   top:0px;
   .noselect;
-  z-index: 105;
+  z-index: 50000;
 
   &.slide-controls {
     .button-container.slides {
@@ -30,9 +30,10 @@
 .button-container {
   text-align: center;
   height:40px;
-  // max-width: 150px;
+  position: absolute;
   background-color: @color-1;
-  margin: 0px auto;
+  margin-right: 0px;
+  right: 0px;
   border: 1px solid @color-4;
   border-top: none;
   box-sizing: border-box;

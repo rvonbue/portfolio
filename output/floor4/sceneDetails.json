@@ -205,18 +205,14 @@
         "specularCoef": 50
     },{
         "depthWrite": true,
-        "colorSpecular": [0.5,0.5,0.5],
         "shading": "phong",
         "DbgColor": 15658734,
         "visible": true,
         "DbgName": "blackGlass",
         "DbgIndex": 17,
-        "colorDiffuse": [0.64,0.64,0.64],
-
-        "transparent": false,
+        "transparent": true,
         "depthTest": true,
         "blending": "NormalBlending",
-        "colorEmissive": [0,0,0],
         "opacity": 1,
         "wireframe": false,
         "specularCoef": 50

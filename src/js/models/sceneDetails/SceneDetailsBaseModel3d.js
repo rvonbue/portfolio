@@ -115,6 +115,9 @@ var SceneDetailsBaseModel3d = Backbone.Model.extend({
   getPSImages: function () {
     return [];
   },
+  setClickData: function () {
+    console.log("DEFAULT");
+  }
 });
 
 module.exports = SceneDetailsBaseModel3d;

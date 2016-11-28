@@ -15,5 +15,16 @@ module.exports = {
   },
   fabricGold: {
     props: { color: "#ffcc00" }
+  },
+  displayGlass: {
+    maps: [{ envMap: "basic" } ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacity:0.2 }
+  },
+  resume: {
+    maps:[
+      {map: "textures/resume.png" }
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" },
   }
 };

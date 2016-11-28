@@ -8,23 +8,23 @@ import utils from "../../util/utils";
 var AboutMe3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
-    name: "aboutMe",
-    initialCameraPosition: { x:0, y: 0.25, z: 1.5},
-    initialCameraTarget: { x:0, y: 2.25, z: -5},
-    pointLights: [
-      { x: -4, y: 3, z: -1, color: "#FFFFFF", intensity: 0.50, distance: 8 },
-      { x: 0,  y: 3, z: -1, color: "#FFFFFF", intensity: 0.50, distance: 8 },
-      { x: 4,  y: 3, z: -1, color: "#FFFFFF", intensity: 0.50, distance: 8 }
+      name: "aboutMe",
+      initialCameraPosition: { x:0, y: 0.25, z: 1.5},
+      initialCameraTarget: { x:0, y: 2.25, z: -5},
+      pointLights: [
+        { x: -4, y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 },
+        { x: -0.5,  y: 3, z: -2, color: "#FFFFFF", intensity: 0.50, distance: 5 },
+        { x: 4,  y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 }
     ],
     pillar: [
       { x: -5, y: 0, z: -5.5, text: "JS" },
       { x: 5,  y: 0, z: -5.5, text: "CSS" }
     ],
     intialAmbientLights: {
-      directional: { color: "#FFFFFF", intensity: 0 },  // color intensity,
-      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 1.2 }  // skyColor, groundColor, intensity
+      directional: { color: "#FFFFFF", intensity: 0.5 },  // color intensity,
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.5 }  // skyColor, groundColor, intensity
     },
-    modelUrls: ["sceneDetails", "pillar", "githubBanner"],
+    modelUrls: ["sceneDetails", "pillar", "githubBanner", "glassCabinet"],
   }),
   MAX_IMAGE_WIDTH: 3, //world units
   MAX_IMAGE_HEIGHT: 1.75,
