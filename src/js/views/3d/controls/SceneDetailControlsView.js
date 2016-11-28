@@ -48,7 +48,7 @@ var SceneDetailControlsView = BaseView.extend({
   },
   show: function (sceneModelClassName) {
     this.$el.attr("class", this.getNewClasses(sceneModelClassName));
-    this.$el.css("top", this.navBarHeight ).show();
+    this.$el.show();
     this.visible= true;
   },
   hide: function (className) {

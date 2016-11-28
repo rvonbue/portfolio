@@ -56,44 +56,12 @@
   -ms-transition: color .25s;
   -o-transition: color .25s;
   transition: color .25s;
+
+  &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
+    display: none;
+    border: none;
+  }
 }
-// #cssmenu ul li a:hover {
-//   color: @css-menu-hover-color;
-//   cursor: pointer;
-// }
-// #cssmenu ul li a:hover:before {
-//   width: 100%;
-// }
-// #cssmenu ul li a:after {
-//   content: "";
-//   display: block;
-//   position: absolute;
-//   right: -3px;
-//   top: 19px;
-//   height: 6px;
-//   width: 6px;
-//   background: @color-4;
-//   opacity: .5;
-// }
-// #cssmenu ul li a:before {
-//   content: "";
-//   display: block;
-//   position: absolute;
-//   left: 0;
-//   bottom: 0;
-//   height: 3px;
-//   width: 0;
-//   background: #FFF;
-//   -webkit-transition: width .25s;
-//   -moz-transition: width .25s;
-//   -ms-transition: width .25s;
-//   -o-transition: width .25s;
-//   transition: width .25s;
-// }
-// #cssmenu ul li.last > a:after,
-// #cssmenu ul li:last-child > a:after {
-//   display: none;
-// }
 #cssmenu ul li.active a {
   color: #333333;
 }
@@ -108,15 +76,36 @@
   display: none;
 }
 
+// &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
+//   display: block;
+//   border: none;
+// }
+.css-icons0 {
+  background-image: url(../sprites/ic_developer_mode_white_48px.svg);
+}
+.css-icons1 {
+  background-image: url(../sprites/ic_video_library_white_48px.svg);
+}
+.css-icons2 {
+  background-image: url(../sprites/ic_web_white_48px.svg);
+}
+.css-icons3 {
+  background-image: url(../sprites/ic_contacts_white_48px.svg);
+}
+.css-icons4 {
+  background-image: url(../sprites/ic_contact_mail_white_48px.svg);
+}
+
 @media screen and (max-width: @breakPoint1) {
   // #cssmenu ul li {
-  //   float: none;
-  //   display: block;
+  //   &:nth-child(2) {
+  //     background-color: yellow !important;
+  //   }
   // }
-  // #cssmenu {
-  //   max-width: 325px;
-  //   margin: 0px auto 0px 75px;
-  // }
+  #cssmenu {
+    max-width: 500px;
+    margin: 0px auto;
+  }
   #cssmenu ul li a {
     width: 100%;
     padding: 15px 8px;
@@ -124,6 +113,10 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border-bottom: 1px solid #fb998c;
+
+    &.normal {
+      display: none;
+    }
   }
   #cssmenu ul li.last > a,
   #cssmenu ul li:last-child > a {
@@ -134,5 +127,13 @@
   }
   #cssmenu ul li a:before {
     display: none;
+  }
+  #cssmenu ul li a {
+    &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      margin: 4px 18px;
+    }
   }
 }

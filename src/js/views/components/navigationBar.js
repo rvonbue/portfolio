@@ -6,7 +6,7 @@ import switchViewHtml from "../html/switchView.html";
 
 var NavigationBar = BaseView.extend({
   className: "navigation-bar",
-  template: _.template("<li><a class='hvr-sweep-to-top'><%= displayTitle %></a></li>"),
+  template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
   events: {
     "click li": "clickSelected",
     "mouseenter li": "enterHoverNavigationLi",
@@ -117,8 +117,8 @@ var NavigationBar = BaseView.extend({
   getCssMenu: function () {
     var cssMenu = "<div id='cssmenu'><ul>";
 
-    _.each(navigationList, function(navListObj){
-      cssMenu += this.template({displayTitle: navListObj.name.toUpperCase()});
+    _.each(navigationList, function(navListObj, i){
+      cssMenu += this.template({displayTitle: navListObj.name.toUpperCase(), i});
     }, this);
 
     cssMenu += "</ul></div>";

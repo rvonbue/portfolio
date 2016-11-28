@@ -65,7 +65,7 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var meshes =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
     this.duplicateMesh(meshes, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
 
-    var pointLights =[this.getNewHoverLight(3, 4)];
+    var pointLights =[this.getNewHoverLight(3, 6)];
     this.duplicateMesh(pointLights, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
   },
   duplicateMesh: function (meshArray, sceneModel, startPosition, total, setModelProp) {

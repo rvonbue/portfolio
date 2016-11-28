@@ -1,12 +1,18 @@
-@button-size: 36px;
+@button-size: 48px;
 
 .scene-detail-controls {
-  width: 100%;
-  position: absolute;
-  top:0px;
   .noselect;
-  z-index: 50000;
-
+  width: 100%;
+  height: 48px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 0px;
+  background-color: rgba(1,1,1,0.25);
+  border-top: @color-1;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  
   &.slide-controls {
     .button-container.slides {
       display: block;
@@ -31,16 +37,15 @@
   text-align: center;
   height:40px;
   position: absolute;
-  background-color: @color-1;
-  margin-right: 0px;
+  margin: 0px auto;
   right: 0px;
-  border: 1px solid @color-4;
+  // border: 1px solid @color-4;
   border-top: none;
   box-sizing: border-box;
   border-radius: 8px;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
-  // overflow: hidden;
+  position: relative;
   &.loading {
     display: none;
     height: 100px;
@@ -93,10 +98,10 @@
   white-space: nowrap;
 }
 .button-play, .button-right, .button-left {
-  background-image: url(../sprites/ic_play_arrow_white_36px.svg);
+  background-image: url(../sprites/ic_play_arrow_white_48px.svg);
 
   &:hover {
-    background-image: url(../sprites/ic_play_arrow_black_36px.svg);
+    background-image: url(../sprites/ic_play_arrow_black_48px.svg);
   }
 }
 .button-left, .button-skip-prev {
@@ -111,7 +116,7 @@
   background-image: url(../sprites/ic_pause_white_36px.svg);
 }
 .button-home {
-  background-image: url(../sprites/ic_home_white_36px.svg);
+  background-image: url(../sprites/ic_home_white_48px.svg);
 }
 .button-skip-next, .button-skip-prev {
   background-image: url(../sprites/ic_skip_next_white_36px.svg);
@@ -145,4 +150,15 @@
     text-decoration: underline;
   }
 
+}
+
+@media screen and (max-width: @breakPoint1) {
+  .scene-detail-controls {
+    // top: 59px !important;
+  }
+  .switch-views {
+    .switch-view-label {
+      display: none;
+    }
+  }
 }
