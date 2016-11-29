@@ -1,0 +1,43 @@
+.switch-views {
+  position: fixed;
+  // background-color: @color-1;
+  right: 8px;
+  top: 0px;
+  color: @color-5;
+  padding: 4px 8px;
+  z-index: 1001;
+  table {
+    text-align: center;
+  }
+}
+
+.switch-view-button {
+  color: #FAEBD7;
+  display: inline-block;
+  padding: 0px 12px 3px 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.switch-view-label {
+  display: none;
+  color: @color-5;
+  display: inline-block;
+  margin: 4px auto 8px auto;
+  max-width: 50px;
+  vertical-align: top;
+}
+
+@media screen and (max-width: @breakPoint1) {
+  .switch-view-label {
+    display: none;
+  }
+  .switch-views {
+    // display: none;
+    bottom: 0px;
+    top: auto;
+  }
+
+}

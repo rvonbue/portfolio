@@ -1,15 +1,17 @@
 @import "./scene-detail-controls.less";
+@import "./switch-views.less";
 
-canvas {
-  position: absolute;
-  left: 0px;
-  top: @navigation-bar-height;
-  z-index: 100;
-}
 .appView-3d {
   width: 100%;
   height: calc(~'100% - @{navigation-bar-height}');
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  overflow: hidden;
+}
+
+@media screen and (max-width: @breakPoint1) {
+  .appView-3d {
+    height: calc(~'100% - @{navigation-bar-height-mobile}');
+  }
 }

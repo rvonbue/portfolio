@@ -25,12 +25,14 @@ var AppView3d = BaseView.extend({
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
-    $(window).on("resize", this.resize);
+    var throttledResize = _.throttle(this.resize, 250);
+    $(window).on("resize", throttledResize);
   },
   removeListeners: function () {
     eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.off(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
-    $(window).off("resize", this.resize);
+    $(window).off("resize", throttledResize);
+    // $(window).off("resize", this.resize);
   },
   initScene: function () {
     this.addListeners();
@@ -66,15 +68,15 @@ var AppView3d = BaseView.extend({
     var sceneSelector = new SceneSelector({ sceneModelCollection: sceneLoader.sceneModelCollection });
   },
   addHelpers: function () {
-    var axisHelper = new THREE.AxisHelper( 50 );
+    // var axisHelper = new THREE.AxisHelper( 50 );
     // axisHelper.position.y = 40;
-    this.scene.add( axisHelper );
-    var size = 10;
-    var step = 1;
-
-    var gridHelper = new THREE.GridHelper( size, step );
-    gridHelper.position.y = 20;
-    this.scene.add( gridHelper );
+    // this.scene.add( axisHelper );
+    // var size = 10;
+    // var step = 1;
+    //
+    // var gridHelper = new THREE.GridHelper( size, step );
+    // gridHelper.position.y = 20;
+    // this.scene.add( gridHelper );
   },
   addModelsToScene: function (sceneModelArray) {
     _.each(sceneModelArray, function (object3d) {
@@ -110,7 +112,7 @@ var AppView3d = BaseView.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   getWidthHeight: function () {
-    return {w: this.$el.width(), h: this.$el.height() }
+    return {w: this.$el.outerWidth(true), h: this.$el.outerHeight(true) }
   },
   switchRenderer: function () {
     raf.cancel(this.renderLoop);
@@ -137,7 +139,7 @@ var AppView3d = BaseView.extend({
         iframe.style.height = '360px';
         iframe.style.border = '0px';
         iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
-        
+
     div.appendChild( iframe );
     var object = new THREE.CSS3DObject( div );
     object.position.set( x, y, z );
