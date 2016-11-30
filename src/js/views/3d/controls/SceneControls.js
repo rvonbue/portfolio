@@ -46,9 +46,12 @@ var SceneControls = BaseModel.extend({
     this.raycaster.near = 0.25;
   },
   setSelectMesh: function () {
-    var geo = new THREE.OctahedronGeometry(0.25, 0);
-    var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
-    this.selectMesh = new THREE.Mesh( geo, material );
+    // var geo = new THREE.OctahedronGeometry(0.25, 0);
+    // var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
+    // this.selectMesh = new THREE.Mesh( geo, material );
+    this.selectMesh = new THREE.PointLight( "#FFFFFF", 1, 5, 2 );
+    // spotlight.position.z += 0.75;
+    // this.selectMesh.add(spotlight);
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },
   onResize: function (size) {
@@ -126,27 +129,38 @@ var SceneControls = BaseModel.extend({
   resetRaycaster: function (arr) {
     this.raycasterObjects = arr;
   },
+  cancelSelectMeshTimer: function () {
+    if (this.selectMeshTimer) {
+      clearTimeout(this.selectMeshTimer);
+      this.selectMeshTimer = null;
+    }
+
+  },
+  getMeshCenter: function (selectedMesh) {
+    var center = selectedMesh.geometry.boundingSphere.center;
+    return {
+      x: selectedMesh.position.x + center.x,
+      y: selectedMesh.position.y + center.y,
+      z: selectedMesh.position.z + center.z + 1
+    };
+  },
   moveSceneDetailsIcon:function (selectedMesh) {
+    this.cancelSelectMeshTimer();
+
     if (!selectedMesh) {
-      this.selectMesh.visible = false;
+      var self = this;
+      this.selectMeshTimer = setTimeout( function () {
+        self.selectMesh.visible = false;
+      }, 1000);
       return;
     }
     this.selectMesh.visible = true;
 
-    var tween = new TWEEN.Tween(this.selectMesh.rotation)
-    .to({ y: "+" + Math.PI }, 750)
-    .easing(TWEEN.Easing.Exponential.InOut)
+    var tween = new TWEEN.Tween(this.selectMesh.position)
+    .to(this.getMeshCenter(selectedMesh), 500)
+    .easing(TWEEN.Easing.Exponential.Out)
     .start();
 
-    var center = selectedMesh.geometry.boundingSphere.center;
-    if ( !selectedMesh.geometry.boundingBox ) selectedMesh.geometry.computeBoundingBox();
-    var size = utils.getMeshWidthHeight(selectedMesh.geometry.boundingBox);
-
-    this.selectMesh.position.set(
-      selectedMesh.position.x + center.x,
-      selectedMesh.position.y + center.y + (size.height / 2) + 0.5,
-      selectedMesh.position.z + center.z
-    );
   },
   render: function () {
     return this;

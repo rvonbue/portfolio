@@ -193,8 +193,9 @@ var SceneModel = BaseModel3d.extend({
   },
   fadeMaterials: function (opacityEnd) {
     var allMaterials = this.getAllMaterials();
-    var self = this;
+    // var self = this;
     var newOpacityEnd;
+
     if (opacityEnd === 0) {
       this.setFadeOutMaterials(allMaterials);
     } else if (opacityEnd === 1) {

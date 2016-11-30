@@ -104,6 +104,7 @@ var SceneLoader = BaseView.extend({
         break;
       case "video":
         eventController.trigger(eventController.VIDEO_PLAY_PAUSE);
+        // eventController.trigger(eventController.CSS_RENDERER);
         break;
       case "link":
       console.log("openLInk");
@@ -196,7 +197,8 @@ var SceneLoader = BaseView.extend({
     eventController.trigger(eventController.RESET_RAYCASTER, sceneModel.get("sceneDetails").get("interactiveObjects"));
     eventController.trigger(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, sceneModel.get("className"));
     if (moveCamera === true ) {
-      eventController.trigger(eventController.SET_CAMERA_AND_TARGET, sceneModel.getCameraPosition());
+      var cameraPosition = sceneModel.getCameraPosition();
+      eventController.trigger(eventController.SET_CAMERA_AND_TARGET, cameraPosition.camera, cameraPosition.target, false);
     }
   },
   toggleSelectedSceneDetails: function (oldSceneModel, newSceneModel) {
@@ -294,7 +296,7 @@ var SceneLoader = BaseView.extend({
         if ( sceneModel.cid === selectedSceneModel.cid ) {
           self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
           sceneModel.toggleHoverLights(false);
-          self.hideSceneModels();
+          // self.hideSceneModels();
         }
       }, timeOpenDoors);
     }, 1500);

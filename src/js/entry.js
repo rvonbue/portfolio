@@ -21,7 +21,6 @@ import commandController from "./controllers/commandController";
 import AppView from "./views/AppView";
 import stylesheet from "../styles/index.less";
 
-
 THREE.Object3D.prototype.GdeepCloneMaterials = function() { //TODO: where to move this in the code http://stackoverflow.com/questions/22360936/will-three-js-object3d-clone-create-a-deep-copy-of-the-geometry
         var object = this.clone( new THREE.Object3D(), false );
 
@@ -38,15 +37,15 @@ THREE.Object3D.prototype.GdeepCloneMaterials = function() { //TODO: where to mov
         return object;
     };
 
-    THREE.Mesh.prototype.GdeepCloneMaterials = function( object, recursive ) {
-        if ( object === undefined ) {
-            object = new THREE.Mesh( this.geometry, this.material.clone() );
-        }
+THREE.Mesh.prototype.GdeepCloneMaterials = function( object, recursive ) {
+  if ( object === undefined ) {
+      object = new THREE.Mesh( this.geometry, this.material.clone() );
+  }
 
-        THREE.Object3D.prototype.GdeepCloneMaterials.call( this, object, recursive );
+  THREE.Object3D.prototype.GdeepCloneMaterials.call( this, object, recursive );
 
-        return object;
-    };
+return object;
+};
 
 function isCanvasSupported () {
   var elem = document.createElement("canvas");

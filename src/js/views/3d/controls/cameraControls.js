@@ -29,7 +29,7 @@ var CameraControls = BaseModel.extend({
   removeListeners: function () {
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
     eventController.off(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
-    eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraSceneDetails, this);
+    eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
 
     commandController.stopReplying(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
   },
@@ -62,9 +62,24 @@ var CameraControls = BaseModel.extend({
   getControls: function () {
     return this.orbitControls;
   },
-  setCameraAndTarget: function (nPos) {
-    this.orbitControls.target = new THREE.Vector3( nPos.target.x, nPos.target.y, nPos.target.z );
-    this.orbitControls.object.position.set(nPos.camera.x,nPos.camera.y,nPos.camera.z);
+  setCameraAndTarget: function (cameraPos, targetPos, animate) {
+    TWEEN.removeAll();
+    var camera = this.getCamera();
+    var target = this.getTarget();
+    
+    if (!animate) {
+      if ( cameraPos ) camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
+      if ( targetPos ) target = new THREE.Vector3( targetPos.x, targetPos.y, targetPos.z );
+    } else {
+      if ( cameraPos ) this.tweenNormal( this.orbitControls.object.position, cameraPos);
+      if ( targetPos ) this.tweenNormal( this.orbitControls.target, targetPos);
+    }
+  },
+  getTarget: function () {
+    return this.orbitControls.target;
+  },
+  getCamera: function () {
+    return this.orbitControls.object;
   },
   setCameraToSceneDetails: function (sceneModel) {
     var nPos = sceneModel.getCameraPosition();
@@ -91,7 +106,7 @@ var CameraControls = BaseModel.extend({
     var self = this;
     var tween = new TWEEN.Tween(startPos)
     .to(endPos, speed)
-    .easing(TWEEN.Easing.Circular.Out)
+    .easing(TWEEN.Easing.Quartic.Out)
     .interpolation(TWEEN.Interpolation.Bezier)
     .onStart( () => {
       self.animating = true;

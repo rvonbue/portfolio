@@ -13,7 +13,8 @@ module.exports = {
   getMeshWidthHeight: function (bounding) {
     return {
       width: Math.abs(bounding.min.x) + Math.abs(bounding.max.x),
-      height: Math.abs(bounding.min.y) + Math.abs(bounding.max.y)
+      height: Math.abs(bounding.min.y) + Math.abs(bounding.max.y),
+      depth: Math.abs(bounding.min.z) + Math.abs(bounding.max.z),
     };
   },
   // getObjectPosition: function () {
@@ -34,20 +35,20 @@ module.exports = {
       color3: {hex: "#062f4f" },
       color4: {hex: "#813772" },
       lampLight: { color: "#B82601" },  //red //663399 purple
-      text: { color:"#062f4f", color2: "#9be2fe"  },
+      text: { color:"#0090FF", color2: "#00cece"  },
       world: {
-        hemisphere: {
-          sky:"#9be2fe",
-          ground: "#B82601",
-          intensity: 0.1
-        },
         background: {
           cssSkyGradient: 19 // 0 - 23 is valid
         },
+        hemisphere: {
+          sky:"#9be2fe",
+          ground: "#656565",
+          intensity: 0.18
+        },
         directional: {
-          color: "#FFFFFF",
-          intensity: 0.1,
-          position: {x: -100, y: 50, z: 20}
+          color: "#9be2fe",
+          intensity: 0.3,
+          position: {x: 100, y: 50, z: 20}
         }
       }
     };
