@@ -1,6 +1,8 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
+import NavigationBar from "./components/navigationBar";
+
 var viewArray = [
   require("./2d/WebDevView"),
   require("./2d/ThreeDAnimationView"),
@@ -15,7 +17,7 @@ var AppView2d = BaseView.extend({
     this.parentEl = options.parentEl;
     this.addListeners();
     this.bodyEl = $("<div class='view-body-2d'></div>");
-    this.setSection(commandController.request(commandController.GET_SELECTED_SECTION));
+    this.setSection(this.getSectionView());
   },
   addListeners: function () {
     eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
@@ -24,9 +26,10 @@ var AppView2d = BaseView.extend({
     eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   getSectionView: function () {
-
+    return commandController.request(commandController.GET_SELECTED_SECTION);
   },
   setSection: function (index) {
+    index = index ? index : 0;
     this.currentView = new viewArray[index];
     this.bodyEl.append(this.currentView.render().el);
   },
@@ -35,6 +38,7 @@ var AppView2d = BaseView.extend({
     this.setSection(index);
   },
   render: function () {
+    this.$el.append(new NavigationBar({ parentEl: this.$el }).render().el);
     this.$el.append(this.bodyEl);
     return this;
   }

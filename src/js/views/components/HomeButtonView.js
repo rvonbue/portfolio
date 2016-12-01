@@ -46,7 +46,7 @@ var HomeButtonView = BaseView.extend({
     var navList = navigationList[clickedIndex];
 
     if ( navList ) {
-      eventController.trigger(eventController.SWITCH_PAGE, navigationList[clickedIndex].name );
+      eventController.trigger(eventController.SWITCH_PAGE, clickedIndex );
     } else {
       this.resetSceneDetails();
     }
