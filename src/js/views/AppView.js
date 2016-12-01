@@ -2,7 +2,6 @@ import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import AppView3d from "./AppView3d";
 import AppView2d from "./AppView2d";
-// import NavigationBar from "./components/navigationBar";
 import PhotoSwipeView from "./components/PhotoSwipeView";
 import SwitchView from "./components/SwitchView";
 
@@ -23,20 +22,14 @@ var AppView = BaseView.extend({
   switchViews: function (whichView) {
     switch (whichView) {
       case "2d":
-        if (this.appView3d) this.appView3d.hide();
-        if (!this.appView2d) {
-          this.renderView2d();
-        } else {
-          this.appView2d.show();
-        }
+        if ( this.appView3d ) this.appView3d.hide();
+        if ( !this.appView2d ) this.renderView2d();
+        if ( this.appView2d ) this.appView2d.show();
         break;
       case "3d":
-        if (this.appView2d) this.appView2d.hide();
-        if (!this.appView3d) {
-          this.renderView3d();
-        } else {
-          this.appView3d.show();
-        }
+        if ( this.appView2d ) this.appView2d.hide();
+        if ( !this.appView3d ) this.renderView3d();
+        if ( this.appView3d ) this.appView3d.show();
         break;
       default:
     }
@@ -54,8 +47,6 @@ var AppView = BaseView.extend({
   },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
-
-    // this.$el.append(new NavigationBar({ parentEl: this.$el }).render().el);
     this.$el.append(new SwitchView({}).render().el);
     this.$el.append("<div class='sky-gradient'></div>");
     return this;

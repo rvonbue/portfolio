@@ -13,11 +13,16 @@ var LoadingBarView = Backbone.View.extend({
     this.toggleEl(true);
   },
   addListeners: function () {
+    console.log("addListeners:LoadingBarView");
     eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
     eventController.on(eventController.ALL_ITEMS_LOADED, this.loadComplete, this);
     eventController.on(eventController.ITEM_START_LOAD, this.show, this);
   },
   removeListeners: function () {
+    console.log("removeListeners:LoadingBarView");
+    eventController.off(eventController.ITEM_LOADED, this.itemLoading, this);
+    eventController.off(eventController.ALL_ITEMS_LOADED, this.loadComplete, this);
+    eventController.off(eventController.ITEM_START_LOAD, this.show, this);
   },
   toggleSize: function () {
     this.$el.toggleClass("minimize");

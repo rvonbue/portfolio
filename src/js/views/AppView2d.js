@@ -15,14 +15,15 @@ var AppView2d = BaseView.extend({
   initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
     this.parentEl = options.parentEl;
-    this.addListeners();
     this.bodyEl = $("<div class='view-body-2d'></div>");
     this.setSection(this.getSectionView());
   },
   addListeners: function () {
+    console.log("addListeners:AppView2d");
     eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   removeListeners: function () {
+    console.log("removeListeners:AppView2d");
     eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   getSectionView: function () {
@@ -38,7 +39,9 @@ var AppView2d = BaseView.extend({
     this.setSection(index);
   },
   render: function () {
-    this.$el.append(new NavigationBar({ parentEl: this.$el }).render().el);
+    var navigationBar = new NavigationBar({ parentEl: this.$el });
+    this.childViews.push(navigationBar);
+    this.$el.append(navigationBar.render().el);
     this.$el.append(this.bodyEl);
     return this;
   }

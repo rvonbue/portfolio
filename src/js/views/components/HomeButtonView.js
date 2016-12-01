@@ -21,6 +21,12 @@ var HomeButtonView = BaseView.extend({
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
   },
+  addListeners: function () {
+    this.delegateEvents();
+  },
+  removeListeners: function () {
+    this.undelegateEvents();
+  },
   startLeaveTimer: function () {
     var self = this;
 

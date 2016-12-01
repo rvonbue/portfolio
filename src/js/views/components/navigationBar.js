@@ -16,13 +16,20 @@ var NavigationBar = BaseView.extend({
     _.bindAll(this, "getSelectedSection");
     this.parentEl = options.parentEl;
     this.height = 45;
-    this.addListeners();
   },
   addListeners: function () {
+    console.log("addListeners:NavigationBar");
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
     eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
     commandController.reply(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
+  },
+  removeListeners: function () {
+    console.log("removeListeners:NavigationBar");
+    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
+    eventController.off(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
+    eventController.off(eventController.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
+    commandController.stopReplying(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
   },
   cacheListEls: function () {
     var navEljq = this.$el.find("li");

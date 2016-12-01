@@ -24,27 +24,15 @@ var SceneDetailControlsView = BaseView.extend({
     this.navBarHeight = 45;
   },
   addListeners: function () {
+    console.log("addListeners:SceneDetailControlsView");
     eventController.on(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
-    // eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
-    // eventController.on(eventController.ALL_ITEMS_LOADED, this.hideLoading, this);
-    // eventController.on(eventController.ITEM_START_LOAD, this.showLoading, this);
     eventController.on(eventController.VIDEO_PLAY_PAUSE, this.togglePlayPause, this);
   },
   removeListeners: function () {
+    console.log("removeListeners:SceneDetailControlsView");
+    eventController.off(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
+    eventController.off(eventController.VIDEO_PLAY_PAUSE, this.togglePlayPause, this);
   },
-  // itemLoading: function (loaded, total) {
-  //   if (!this.visible) this.show("loading");
-  //   var loadingText = loaded === total ? "Models..." : loaded + " / " + total;
-  //   this.loadingEl.text(loadingText);
-  // },
-  // showLoading: function () {
-  //   this.loading = true;
-  //   this.show("loading");
-  // },
-  // hideLoading: function () {
-  //   this.loading = false;
-  //   this.hide("loading");
-  // },
   show: function (sceneModelClassName) {
     this.$el.attr("class", this.getNewClasses(sceneModelClassName));
     this.$el.show();
@@ -83,7 +71,6 @@ var SceneDetailControlsView = BaseView.extend({
   },
   render: function () {
     this.$el.append(SceneDetailControlsHTML);
-    // this.loadingEl = this.$el.find("#items-loading");
     this.playEl = this.$el.find(".button-play:first");
     this.pauseEl = this.$el.find(".button-pause:first");
     this.show("slide-controls");
