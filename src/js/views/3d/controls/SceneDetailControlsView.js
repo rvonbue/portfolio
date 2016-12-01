@@ -12,6 +12,7 @@ var SceneDetailControlsView = BaseView.extend({
   visible: false,
   events: {
     "click .button-left": "prevInteractiveObject",
+    "click .button-home": "resetSceneDetails",
     "click .button-right": "nextInteractiveObject",
 
     "click .button-pause": "clickPause",
@@ -61,6 +62,9 @@ var SceneDetailControlsView = BaseView.extend({
       return this.$el[0].classList.value + loading;
     }
     return (this.className + loading + sceneModelClassName);
+  },
+  resetSceneDetails: function () {
+    eventController.trigger(eventController.RESET_SCENE);
   },
   nextInteractiveObject: function () {
     eventController.trigger(eventController.SCENE_DETAILS_SELECT_OBJECT, true);

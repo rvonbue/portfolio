@@ -87,7 +87,8 @@
 .button-pause,
 .button-right,
 .button-left,
-.button-home,
+.button-toggle-close,
+.button-close,
 .button-skip-next,
 .button-skip-prev {
   display: inline-block;
@@ -114,14 +115,28 @@
 .button-pause {
   background-image: url(../sprites/ic_pause_white_36px.svg);
 }
-.button-home {
+.home-button-container {
   position: absolute;
-  width: 36px;
-  height: 36px;
-  top: 4px;
-  right: 100px;
-  background-image: url(../sprites/ic_home_white_36px.svg);
+  bottom: 45px;
+  width: 100%;
 }
+
+.button-home {
+  width: 48px;
+  height: 48px;
+  // top: 4px;
+  background-image: url(../sprites/ic_home_white_48px.svg);
+}
+.button-toggle-close {
+  .button-home;
+  display: block;
+  &.open {
+    background-image: url("../sprites/ic_close_white_48px.svg");
+  }
+  margin: 0px auto;
+  // background-image: url("../sprites/ic_close_white_48px.svg");
+}
+
 .button-skip-next, .button-skip-prev {
   background-image: url(../sprites/ic_skip_next_white_36px.svg);
 }

@@ -14,7 +14,7 @@ import LinkHighlighterView from "./components/LinkHighlighterView";
 import HomeButtonView from "./components/HomeButtonView";
 
 import StatsView from "./components/statsView";
-import { CSS3DRenderer, CSS3DObject, Scene } from 'css3drenderer';
+// import { CSS3DRenderer, CSS3DObject, Scene } from 'css3drenderer';
 // import css3drenderer from 'css3drenderer';
 // console.log("THREE: ", THREE);
 // console.log("THREE:css3drenderer ", css3drenderer);
