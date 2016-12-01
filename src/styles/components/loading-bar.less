@@ -1,0 +1,76 @@
+.loading-bar {
+  .noselect;
+  position: absolute;
+  top: 12px;
+  left: 0px;
+  display: none;
+  height: 100%;
+  width: 100%;
+  z-index: 1001;
+
+  span {
+    color: @color-5;
+    text-transform: uppercase;
+    font-weight: 900;
+    text-align: center;
+  }
+  &.minimize {
+    width: auto;
+    height: auto;
+    .loading-container {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      min-width: 200px;
+      height: 40px;
+    }
+    .loading-icon {
+      display: none;
+    }
+    .loading-icon-alt {
+      display: inline-block;
+      float: left;
+    }
+    .loading-label {
+      display: inline-block;
+      margin-top: 13px;
+    }
+  }
+  &.show {
+    display: block;
+  }
+}
+.loading-container {
+  position: relative;
+  width: 150px;
+  margin: 0px auto;
+  border: 2px solid @color-5;
+  background-color: @color-1;
+  border-radius: 8px;
+}
+
+.loading-icon {
+  background-image: url(../sprites/gears_big.gif);
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 24px auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.loading-icon-alt {
+  background-image: url(../sprites/gear.gif);
+  display: none;
+  width: 50px;
+  height: 50px;
+  margin: -5px auto 0px auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#items-loading {
+  margin-left: 0px;
+}
+.loading-label {
+  margin: 12px auto;
+  display: block;
+}

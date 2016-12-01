@@ -41,7 +41,7 @@ var HomeButtonView = BaseView.extend({
     var menuItems = navigationList.map( function (name, i ) {
       return {
         icon: "css-icons" + i,
-        title: name.name
+        // title: name.name
        };
     });
     menuItems.push( { icon: "button-home" });
@@ -60,6 +60,7 @@ var HomeButtonView = BaseView.extend({
     var menuItems = this.getMenuItems();
     this.menu= CMenu("#menu1")
     .config({
+      // background: "rgba(0,0,0,0)",
       background: "#000000",
       backgroundHover: "#B82601",
       totalAngle: 180,

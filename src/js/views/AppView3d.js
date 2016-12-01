@@ -10,6 +10,7 @@ import SceneControls from "./3d/controls/SceneControls";
 import SceneLoader from "./3d/SceneLoader";
 import SceneSelector from "./3d/SceneSelector";
 import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
+import LoadingBarView from "./components/LoadingBarView";
 import LinkHighlighterView from "./components/LinkHighlighterView";
 import HomeButtonView from "./components/HomeButtonView";
 
@@ -166,6 +167,7 @@ var AppView3d = BaseView.extend({
     this.statsView = new StatsView();
     // $("body").append(this.statsView.stats.domElement);
     this.$el.append(new SceneDetailControlsView().render().el);
+    this.$el.append(new LoadingBarView().render().el);
     this.$el.append(new LinkHighlighterView().render().el);
     this.$el.append(new HomeButtonView().render().el);
 
