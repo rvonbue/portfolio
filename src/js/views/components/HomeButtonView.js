@@ -7,15 +7,32 @@ import CMenu from "../../libs/circular-menu.js";
 
 var HomeButtonView = BaseView.extend({
   className: "home-button-container",
+  LEAVE_TIMER: 1500,
   events: {
     "click .button-toggle-close": "toggleMenu",
     "click .button-toggle-close.open": "resetSceneDetails",
     // "mouseenter .button-home": "hoverHome",
+    "mouseleave #menu1": "startLeaveTimer",
+    "mouseenter ul>li": "cancelLeaveTimer",
     "click #menu1": "closeMenu",
     "click ul>li>a": "clickme"
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
+  },
+  startLeaveTimer: function () {
+    var self = this;
+    this.leaveTimer = setTimeout( function () {
+      self.closeMenu();
+    }, this.LEAVE_TIMER);
+    console.log("startLeaveTimer");
+  },
+  cancelLeaveTimer: function () {
+    console.log("cancelLeaveTimer");
+    if ( this.leaveTimer ) {
+      clearTimeout(this.leaveTimer);
+      this.leaveTimer = null;
+    }
   },
   clickme: function (evt) {
     var clickedIndex = $(evt.currentTarget).closest("li").index();
@@ -31,9 +48,9 @@ var HomeButtonView = BaseView.extend({
   },
   closeMenu: function () {
     this.toggleMenu(false);
+    this.cancelLeaveTimer();
   },
   resetSceneDetails: function () {
-    console.log("resetSceneDetails");
     eventController.trigger(eventController.RESET_SCENE);
   },
   getMenuItems: function () {
@@ -41,7 +58,6 @@ var HomeButtonView = BaseView.extend({
     var menuItems = navigationList.map( function (name, i ) {
       return {
         icon: "css-icons" + i,
-        // title: name.name
        };
     });
     menuItems.push( { icon: "button-home" });
