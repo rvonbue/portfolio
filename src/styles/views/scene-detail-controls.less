@@ -12,16 +12,8 @@
   padding: 0px;
   overflow: hidden;
 
-  &.slide-controls {
-    .button-container.slides {
-      display: block;
-    }
-  }
-  &.video-controls {
-    .button-container.video {
-      display: block;
-    }
-  }
+  &.slide-controls { .button-container.slides { display: block; } }
+  &.video-controls { .button-container.video { display: block; }  }
 
 }
 .button-container {
@@ -77,6 +69,14 @@
     background-image: url(../sprites/ic_play_arrow_black_48px.svg);
   }
 }
+.button-right {
+  position: absolute;
+  right: 0px;
+}
+.button-left {
+  position: absolute;
+  left: 0px;
+}
 .button-left, .button-skip-prev {
   -moz-transform: scaleX(-1);
    -o-transform: scaleX(-1);
@@ -90,24 +90,23 @@
 }
 .home-button-container {
   position: absolute;
-  bottom: 45px;
+  bottom: 0px;
   width: 100%;
+  z-index: 1001;
+  pointer-events: none;
 }
 
 .button-home {
   width: 48px;
   height: 48px;
-  // top: 4px;
   background-image: url(../sprites/ic_home_white_48px.svg);
 }
 .button-toggle-close {
   .button-home;
   display: block;
-  &.open {
-    background-image: url("../sprites/ic_close_white_48px.svg");
-  }
   margin: 0px auto;
-  // background-image: url("../sprites/ic_close_white_48px.svg");
+  pointer-events: all;
+  &.open { background-image: url("../sprites/ic_close_white_48px.svg"); }
 }
 
 .button-skip-next, .button-skip-prev {

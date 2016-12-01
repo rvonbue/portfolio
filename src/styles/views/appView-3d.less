@@ -1,5 +1,6 @@
 @import "./scene-detail-controls.less";
 @import "./switch-views.less";
+@import "./buttons.less";
 
 .appView-3d {
   width: 100%;
@@ -10,15 +11,10 @@
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   overflow: hidden;
-
-  // canvas {
-  //   position: absolute;
-  //   top: 45px;
-  // }
 }
 
 @media screen and (max-width: @breakPoint1) {
-  .appView-3d {
-    height: calc(~'100% - @{navigation-bar-height-mobile}');
-  }
+  // .appView-3d {
+  //   height: calc(~'100% - @{navigation-bar-height-mobile}');
+  // }
 }

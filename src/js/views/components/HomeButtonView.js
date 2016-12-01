@@ -12,8 +12,9 @@ var HomeButtonView = BaseView.extend({
     "click .button-toggle-close": "toggleMenu",
     "click .button-toggle-close.open": "resetSceneDetails",
     // "mouseenter .button-home": "hoverHome",
-    "mouseleave #menu1": "startLeaveTimer",
-    "mouseenter ul>li": "cancelLeaveTimer",
+    // "mouseleave #menu1": "startLeaveTimer",
+    "mouseenter ul>li": "enterMenuItem",
+    "mouseleave ul>li": "startLeaveTimer",
     "click #menu1": "closeMenu",
     "click ul>li>a": "clickme"
   },
@@ -22,13 +23,19 @@ var HomeButtonView = BaseView.extend({
   },
   startLeaveTimer: function () {
     var self = this;
+
     this.leaveTimer = setTimeout( function () {
       self.closeMenu();
     }, this.LEAVE_TIMER);
-    console.log("startLeaveTimer");
+
+    this.leaveHoverNavigationLi();
+  },
+  enterMenuItem: function (evt) {
+    this.cancelLeaveTimer();
+    var index = $(evt.currentTarget).index();
+    this.enterHoverNavigationLi(index);
   },
   cancelLeaveTimer: function () {
-    console.log("cancelLeaveTimer");
     if ( this.leaveTimer ) {
       clearTimeout(this.leaveTimer);
       this.leaveTimer = null;
@@ -69,11 +76,20 @@ var HomeButtonView = BaseView.extend({
     var width = this.buttonToggleCloseEl.width() /2;
     return {
       left: position.left + ( this.buttonToggleCloseEl.width() /2 ),
-      top: position.top + ( this.buttonToggleCloseEl.height() / 2 )
+      top: position.top + ( this.buttonToggleCloseEl.height() / 2 ) - 35 //magic number
     };
   },
+  enterHoverNavigationLi: function (index) {
+    eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, navigationList[index] , true );
+  },
+  leaveHoverNavigationLi: function () {
+    eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR);
+  },
+  nearestPowerOfTwo: function ( value ) {
+	   return Math.pow( 2, Math.round( Math.log( value ) / Math.LN2 ) );
+	},
   getCircularMenu: function () {
-    var menuItems = this.getMenuItems();
+    // var menuItems = this.getMenuItems();
     this.menu= CMenu("#menu1")
     .config({
       // background: "rgba(0,0,0,0)",
@@ -83,7 +99,7 @@ var HomeButtonView = BaseView.extend({
       position: "top",
       hideAfterClick : false,
       diameter: 400,
-      menus: menuItems
+      menus: this.getMenuItems()
     });
 
     this.menu.styles({ "border-top": "5px solid #ccc" });
@@ -96,21 +112,24 @@ var HomeButtonView = BaseView.extend({
   showMenu: function () {
     var menuPosition = this.getMenuPosition();
     this.menu.show([menuPosition.left, menuPosition.top]);
+    this.buttonToggleCloseEl.addClass("open");
+    this.menu.open = true;
+  },
+  hideMenu: function () {
+    this.menu.hide();
+    this.menu.open = false;
+    this.buttonToggleCloseEl.removeClass("open");
+    this.leaveHoverNavigationLi();
   },
   toggleMenu: function (hideBool) {
     this.shouldCreateMenu();
-    console.log("toggleMenu");
+
     if (this.isMenuVisible() || hideBool === false) {
-      console.log("toggleMenu:hide");
-      this.menu.hide();
-      this.menu.open = false;
-      this.buttonToggleCloseEl.removeClass("open");
+      this.hideMenu();
     } else {
-      console.log("toggleMenu:show");
       this.showMenu();
-      this.buttonToggleCloseEl.addClass("open");
-      this.menu.open = true;
     }
+    this.cancelLeaveTimer();
   },
   shouldCreateMenu: function () {
     if ( !this.menu ) {

@@ -66,9 +66,14 @@ var SceneLoader = BaseView.extend({
     this.hoverModel = null;
   },
   setHoverSceneModelNavBar: function (navListObj, hoverBool) {
-    // if ( !this.isSceneSelected()) {
+    if ( navListObj) {
      this.setHoverSceneModel(this.sceneModelCollection.findWhere({ name: navListObj.name }), hoverBool);
-    // }
+   } else {
+     var hoveredScenes = this.sceneModelCollection.where({ hover: true });
+     _.each( hoveredScenes, function (model) {
+       model.set("hover", false);
+     });
+   }
   },
   setHoverSceneModel: function (newHoverModel, hoverBool) { // hoverBool = true when hover is true
     if (!newHoverModel) return;
