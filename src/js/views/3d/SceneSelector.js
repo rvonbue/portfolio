@@ -148,7 +148,7 @@ var SceneSelector = BaseView.extend({
       return;
     }
     if ( isSameModel ) { // same model selected
-      console.log("isSameModel", isCameraAnimating);
+      console.log("1 --- isSameModel", isCameraAnimating);
       if (isCameraAnimating) return;
       if (oldSceneModel.isReady()) { // are sceneDetails loaded
         this.resetSceneDetails(newSceneModel, true, true ,false);
@@ -160,26 +160,26 @@ var SceneSelector = BaseView.extend({
     }
 
     if ( newSceneModel.isReady() && oldSceneModelisReady ) {
-      console.log("newSceneModel.isReady() && oldSceneModelisReady");
+      console.log("2 ---  newSceneModel.isReady() && oldSceneModelisReady");
       this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel, false); //fade to new sceneModel
       // this.resetSceneDetails(newSceneModel);
       return;
     }
     if ( !newSceneModel.isReady() && oldSceneModelisReady ) {
-      console.log("!newSceneModel.isReady() && oldSceneModelisReady");
+      console.log("3 --- !newSceneModel.isReady() && oldSceneModelisReady");
       this.goToSceneModelNotReady(oldSceneModel, newSceneModel, false, false);
       return;
     }
 
     if ( !newSceneModel.isReady() && !oldSceneModel ) {
-      console.log("!newSceneModel.isReady() && !oldSceneModel");
+      console.log("4 --- !newSceneModel.isReady() && !oldSceneModel");
       newSceneModel.set({ selected: true });
       this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 2 });
       return;
     }
 
 
-    console.log("-------END------");
+    console.log("5 --- -------END------");
     newSceneModel.set({ selected: true });
     this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 1 });
   },
@@ -287,7 +287,8 @@ var SceneSelector = BaseView.extend({
   },
   sceneModelReady: function (sceneModel) {
     var isCameraAnimating = commandController.request(commandController.IS_CAMERA_ANIMATING);
-    console.log("isCameraAnimating", isCameraAnimating);
+    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel.get("sceneDetails").getAllMeshes());
+
     if (isCameraAnimating) {
       eventController.once(eventController.CAMERA_FINISHED_ANIMATION, function () {
         this.addSceneDetailsToScene(sceneModel);
@@ -300,22 +301,29 @@ var SceneSelector = BaseView.extend({
   addSceneDetailsToScene: function (sceneModel) {
     var selectedSceneModel = this.getSelectedScene();
     var self = this;
-    console.log("addSceneDetailsToScene", sceneModel);
-    sceneModel.showHide(true, true);
-    eventController.trigger(eventController.ADD_MODEL_TO_SCENE, sceneModel.get("sceneDetails").getAllMeshes());
-    this.resetSceneDetails(sceneModel, false, false, true);
+    var isSameModel = selectedSceneModel && (selectedSceneModel.cid === sceneModel.cid);
+
+    if ( isSameModel ) {
+      sceneModel.get("sceneDetails").showHide(true);
+      this.resetSceneDetails(sceneModel, false, false, true);
+    }
 
     var timeOpenDoors;
     setTimeout( function () {
       timeOpenDoors = sceneModel.openDoors(true);
       setTimeout( function () {
-        if ( sceneModel.cid === selectedSceneModel.cid ) {
-          self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
-          sceneModel.toggleHoverLights(false);
+        if ( isSameModel ) {
+          this.setCameraTarget(sceneModel, true, false);
+          // self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
+          sceneModel.enteringScene();
           // self.hideSceneModels();
         }
       }, timeOpenDoors);
     }, 1500);
+  },
+  setCameraTarget: function (sceneModel, animate, trigger) {
+    var pos = sceneModel.getCameraPosition();
+    eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, animate, trigger );
   }
 });
 

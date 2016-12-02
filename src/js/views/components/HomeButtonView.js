@@ -9,10 +9,9 @@ var HomeButtonView = BaseView.extend({
   className: "home-button-container",
   LEAVE_TIMER: 1500,
   events: {
+    "dblclick" : "resetSceneDetails",
     "click .button-toggle-close": "toggleMenu",
     "click .button-toggle-close.open": "resetSceneDetails",
-    // "mouseenter .button-home": "hoverHome",
-    // "mouseleave #menu1": "startLeaveTimer",
     "mouseenter ul>li": "enterMenuItem",
     "mouseleave ul>li": "startLeaveTimer",
     "click #menu1": "closeMenu",
@@ -94,28 +93,23 @@ var HomeButtonView = BaseView.extend({
   nearestPowerOfTwo: function ( value ) {
 	   return Math.pow( 2, Math.round( Math.log( value ) / Math.LN2 ) );
 	},
-  getCircularMenu: function () {
-    // var menuItems = this.getMenuItems();
-    var windowWidth = $(window).width();
-    var diameter = windowWidth < 400 ? windowWidth : 400;
-    diameter = Math.max(diameter, 200);
+  getCircularMenu: function (diameter) {
     this.menu = CMenu("#menu1")
-    .config({
-      // background: "rgba(0,0,0,0)",
-      background: "#000000",
-      backgroundHover: "#B82601",
-      totalAngle: 180,
-      position: "top",
-      hideAfterClick : false,
-      diameter: diameter,
-      menus: this.getMenuItems()
-    });
+      .config({
+        // background: "rgba(0,0,0,0)",
+        background: "#000000",
+        backgroundHover: "#B82601",
+        totalAngle: 180,
+        position: "top",
+        hideAfterClick : false,
+        diameter: diameter,
+        menus: this.getMenuItems()
+      });
 
     this.menu.styles({ "border-top": "5px solid #ccc" });
 
   },
   isMenuVisible: function () {
-    // console.log("isMenuVisible: ", this.menu.open);
     return this.menu.open;
   },
   showMenu: function () {
@@ -142,7 +136,10 @@ var HomeButtonView = BaseView.extend({
   },
   shouldCreateMenu: function () {
     if ( !this.menu ) {
-      this.getCircularMenu();
+      var windowWidth = $(window).width();
+      var diameter = windowWidth < 400 ? windowWidth : 400;
+      diameter = Math.max(diameter, 200);
+      this.getCircularMenu(diameter);
       this.showMenu();
       this.menu.open = false;
     }

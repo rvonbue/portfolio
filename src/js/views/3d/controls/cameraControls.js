@@ -18,22 +18,6 @@ var CameraControls = BaseModel.extend({
     this.orbitControls = new OrbitControls(this.camera, options.canvasEl);
     this.setCameraInitialPosition();
   },
-  addListeners: function () {
-    eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
-    eventController.on(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
-    eventController.on(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
-    eventController.on(eventController.SET_CAMERA_AND_TARGET, this.setCameraAndTarget, this);
-
-    commandController.reply(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
-  },
-  removeListeners: function () {
-    eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
-    eventController.off(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
-    eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
-    eventController.off(eventController.SET_CAMERA_AND_TARGET, this.setCameraAndTarget, this);
-
-    commandController.stopReplying(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
-  },
   zoomOnSceneModel: function (sceneModel, options) {
     // TWEEN.removeAll();
 
@@ -105,19 +89,32 @@ var CameraControls = BaseModel.extend({
     .interpolation(TWEEN.Interpolation.Bezier)
     .onStart( () => {
       self.animating = true;
-      console.log("trigger", trigger);
       if (trigger) eventController.trigger(eventController.CAMERA_START_ANIMATION);
     })
     .onComplete( () => {
-      // console.log("onCOmplete", new Date().getTime());
       self.animating = false;
-      console.log("trigger", trigger);
       if (trigger) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION);
     });
     return tween;
   },
   isAnimating: function () {
     return this.animating;
+  },
+  addListeners: function () {
+    eventController.on(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
+    eventController.on(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
+    eventController.on(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
+    eventController.on(eventController.SET_CAMERA_AND_TARGET, this.setCameraAndTarget, this);
+
+    commandController.reply(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
+  },
+  removeListeners: function () {
+    eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
+    eventController.off(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
+    eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
+    eventController.off(eventController.SET_CAMERA_AND_TARGET, this.setCameraAndTarget, this);
+
+    commandController.stopReplying(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
   },
   render: function () {
     return this;

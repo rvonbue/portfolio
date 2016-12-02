@@ -25,8 +25,6 @@ var SceneModel = BaseModel3d.extend({
     this.showHide(false);
     this.once("change:sceneDetails", function () {
       this.set({ loading: true });
-      // this.get("sceneDetails").showHide(false, this.get("selected"));
-      // this.setSceneAsParent(this.get("sceneDetails").get("object3d"));
     });
   },
   addModelListeners: function () {
@@ -41,12 +39,6 @@ var SceneModel = BaseModel3d.extend({
     var selectedBool = this.get("selected");
     this.showHide(selectedBool)
     this.toggleHoverLights(selectedBool);
-    this.toggleTextVisiblilty(!selectedBool);
-
-    // if (!selectedBool || this.isReady() ) {
-    //   this.get("sceneDetails").set("selected", selectedBool);
-    // }
-
   },
   onChangeHover: function () {
     if (this.get("selected")) return;
@@ -88,12 +80,11 @@ var SceneModel = BaseModel3d.extend({
         }
     });
 
-    if ( text3d ) text3d.visible = hideText ? !hideText : visBool;
+    // if ( text3d ) text3d.visible = hideText ? !hideText : visBool;
     if ( sceneDetails ) sceneDetails.showHide(visBool, this.get("selected"));
 
   },
-  startScene: function () {
-    this.toggleTextVisiblilty(false);
+  enteringScene: function () {
     this.toggleHoverLights(false);
   },
   getCameraPosition: function () {
@@ -131,7 +122,9 @@ var SceneModel = BaseModel3d.extend({
     return { w: width, h: height, l: length };
   },
   openDoors: function (doorBool) {
-    if (this.get("doorsBool")) return 0;
+    this.toggleTextVisiblilty();
+    if (this.get("doorsBool")) return;
+
     var speed = 1000;
     var doorWidth = 2;
 
@@ -154,92 +147,67 @@ var SceneModel = BaseModel3d.extend({
     .interpolation(TWEEN.Interpolation.Bezier)
     .start();
   },
-  getNewTween: function (from, to) {
-    return new TWEEN.Tween(from)
-    .to(to, 2000)
-    .easing(TWEEN.Easing.Circular.Out)
-    .interpolation(TWEEN.Interpolation.Bezier);
-  },
-  toggleTextVisiblilty:function (tBool) {
-    var textBool = tBool ? tBool : !this.get("selected");
-    var textMat = this.get("text3d").material;
-    this.setFadeOutMaterials([textMat]);
-    var tween = this.getNewTween();
-        tween.start();
-    console.log("textMat: ", textMat);
-    this.get("text3d").visible = textBool;
+  toggleTextVisiblilty:function () {
+    console.log("toggleTextVisiblilty", this.get("text3d").material);
+    this.fadeMaterial(this.get("text3d").material, 0, 1500);
   },
   toggleHoverLights: function (hoverBool) {
     _.each(this.get("hoverLights"), function (light) { light.visible = hoverBool; });
   },
   setEmissiveMaterial: function (mat, color) {
-    console.log("MAT:--", mat);
     mat.emissive = new Color(color);
   },
   getLampLightMaterial: function () {
     return _.find(this.get("hoverLamps")[0].material.materials, function(item) {
-      return item.name == "lampLightEmit";
+      return item.name === "lampLightEmit";
     });
   },
   toggleLampEmitMaterial:function (mat) {
-    var color = this.get("hover") ? 1 : 0.5;
-    mat.emissiveIntensity = color;
-    // this.setEmissiveMaterial(mat, color);
-    //
+    var hoverIntensity = this.get("hover") ? 1 : 0.5;
+    mat.emissiveIntensity = hoverIntensity;
   },
   toggleTextMaterial: function (mat) {
     var textColor = this.get("hover") ? utils.getColorPallete().text.color2 : utils.getColorPallete().text.color;
     mat.emissive = new Color(textColor);
   },
-  setFadeInMaterials:function (allMaterials) {
-    _.each(allMaterials, function (mat) {
+  setFadeInMaterial:function (mat) {
       mat.opacity = 0;
       mat.transparent = true;
-    });
   },
-  setFadeOutMaterials: function (allMaterials) {
-    _.each(allMaterials, function (mat) {
+  setFadeOutMaterial: function (mat) {
       mat.transparent = true;
       mat.opacity = 1;
-    });
   },
-  fadeMaterials: function (opacityEnd) {
-    var allMaterials = this.getAllMaterials();
-    // var self = this;
-    var newOpacityEnd;
+  fadeMaterials: function (opacityEnd, materials) {
+    var allMaterials = materials ? materials : this.getAllMaterials();
 
-    if (opacityEnd === 0) {
-      this.setFadeOutMaterials(allMaterials);
-    } else if (opacityEnd === 1) {
-      this.setFadeInMaterials(allMaterials);
-    }
+    allMaterials.forEach(function (mat) {
+      this.fadeMaterial(mat, opacityEnd, utils.getAnimationSpeed().materialsFade);
+    }, this);
 
-    _.each(allMaterials, function (mat) {
-      newOpacityEnd = mat.opacityMax ? mat.opacityMax : opacityEnd;
-      var tween = new TWEEN.Tween(mat)
-      .to({ opacity: newOpacityEnd }, utils.getAnimationSpeed().materialsFade)
-      .onComplete(function () {
-        if ( opacityEnd === 1  && !mat.alwaysTransparent ) {
-          mat.transparent = false;
-        } else if (opacityEnd === 0) {
-          // self.set({ selected: false });
-        }
-      })
-      .start();
+  },
+  fadeMaterial: function (mat, opacityEnd, tweenSpeed) {
+    var newOpacityEnd = mat.opacityMax ? mat.opacityMax : opacityEnd;
+    newOpacityEnd === 0 ? this.setFadeOutMaterial(mat) : this.setFadeInMaterial(mat);
 
-    });
+    var tween = new TWEEN.Tween(mat)
+        .easing(TWEEN.Easing.Circular.Out)
+        .interpolation(TWEEN.Interpolation.Bezier)
+        .to({ opacity: newOpacityEnd }, tweenSpeed)
+        .onComplete(function () {
+          if ( opacityEnd === 1  && !mat.alwaysTransparent ) {
+            mat.transparent = false;
+          } else if (opacityEnd === 0) {
+            // self.set({ selected: false });
+          }
+        })
+        .start();
   },
   getAmbientLighting: function () {
     return this.get("sceneDetails") ? this.get("sceneDetails").get("intialAmbientLights") : null;
   },
   setSceneAsParent: function (mesh) {
     this.get("object3d").add(mesh);
-  },
-  camelize: function (str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
-     if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
-     return index == 0 ? match.toLowerCase() : match.toUpperCase();
-   });
   }
 });
 
