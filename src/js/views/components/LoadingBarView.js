@@ -6,20 +6,18 @@ import loadingBarViewHTML from "../html/LoadingBarView.html";
 var LoadingBarView = Backbone.View.extend({
   className: "loading-bar",
   events: {
-    "click .loading-container": "toggleSize",
+    "click ": "toggleSize",
   },
   initialize: function (options) {
     this.addListeners();
     this.toggleEl(true);
   },
-  addListeners: function () {
-    console.log("addListeners:LoadingBarView");
+  addListeners: function () { console.log("addListeners:LoadingBarView");
     eventController.on(eventController.ITEM_LOADED, this.itemLoading, this);
     eventController.on(eventController.ALL_ITEMS_LOADED, this.loadComplete, this);
     eventController.on(eventController.ITEM_START_LOAD, this.show, this);
   },
-  removeListeners: function () {
-    console.log("removeListeners:LoadingBarView");
+  removeListeners: function () { console.log("removeListeners:LoadingBarView");
     eventController.off(eventController.ITEM_LOADED, this.itemLoading, this);
     eventController.off(eventController.ALL_ITEMS_LOADED, this.loadComplete, this);
     eventController.off(eventController.ITEM_START_LOAD, this.show, this);
@@ -31,14 +29,14 @@ var LoadingBarView = Backbone.View.extend({
     var isReadyText = "READY!";
     var isLoadingText = "Loading: " + loaded + " / " + total;
     var loadingText = loaded === total ? isReadyText : isLoadingText;
+
     this.loadingEl.text(isLoadingText);
   },
   loadComplete: function () {
-    this.$el.addClass("minimize");
-    this.$el.delay(2000).fadeOut(1000);
+    this.$el.removeClass("show");
   },
   show: function () {
-    this.$el.addClass("show");
+    this.$el.attr("class", "loading-bar show");
   },
   hide: function () {
     this.$el.removeClass("show");

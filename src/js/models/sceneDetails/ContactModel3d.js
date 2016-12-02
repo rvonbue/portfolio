@@ -5,8 +5,8 @@ var ContactModel3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
     name: "ContactModel3dSceneDetails",
-    initialCameraPosition: { x:-3, y: 0, z: 6.5},
-    initialCameraTarget: { x:-3, y: 2, z: 0},
+    initialCameraPosition: { x:0, y: 0, z: 6.5},
+    initialCameraTarget: { x:0, y: 2, z: 0},
     pointLights: [
       // {x: 0, y: 5, z: 5, color: "#FFFFFF", intensity: 5, distance: 10 },
       {x: 3, y: 5, z: 5, color: "#FF0000", intensity: 5, distance: 10 },

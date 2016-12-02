@@ -122,7 +122,7 @@ var SceneModel = BaseModel3d.extend({
     return { w: width, h: height, l: length };
   },
   openDoors: function (doorBool) {
-    this.toggleTextVisiblilty();
+    this.fadeOutText();
     if (this.get("doorsBool")) return;
 
     var speed = 1000;
@@ -147,8 +147,7 @@ var SceneModel = BaseModel3d.extend({
     .interpolation(TWEEN.Interpolation.Bezier)
     .start();
   },
-  toggleTextVisiblilty:function () {
-    console.log("toggleTextVisiblilty", this.get("text3d").material);
+  fadeOutText:function () {
     this.fadeMaterial(this.get("text3d").material, 0, 1500);
   },
   toggleHoverLights: function (hoverBool) {
@@ -208,6 +207,10 @@ var SceneModel = BaseModel3d.extend({
   },
   setSceneAsParent: function (mesh) {
     this.get("object3d").add(mesh);
+  },
+  hideOutsideDetails: function () {
+    this.get("text3d").visible = false;
+    this.get("object3d").visible = false;
   }
 });
 

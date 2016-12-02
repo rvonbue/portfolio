@@ -15,34 +15,6 @@ var SceneSelector = BaseView.extend({
     window.smc = this.sceneModelCollection = options.sceneModelCollection;
     this.addListeners();
   },
-  addListeners: function () {
-     // hover/click events from the 3d space
-     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
-     eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
-
-     // hover/click events from the navigation bar
-     eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
-     eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
-
-     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
-     eventController.on(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
-     eventController.on(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
-     eventController.on(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
-     eventController.on(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
-  },
-  removeListeners: function () {
-    eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
-    eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
-
-    eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
-    eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
-
-    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
-    eventController.off(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
-    eventController.off(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
-    eventController.off(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
-    eventController.off(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
-  },
   resetScene: function () {
     this.animating = false;
     this.sceneModelCollection.each(function (sceneModel) { sceneModel.reset(true); });
@@ -137,51 +109,54 @@ var SceneSelector = BaseView.extend({
     var isCameraAnimating = commandController.request(commandController.IS_CAMERA_ANIMATING);
     var isFirstClick = oldSceneModel && !isSameModel && newSceneModel.get("selected") ? true : false;
     var oldSceneModelisReady = oldSceneModel && oldSceneModel.isReady();
-    var newSCeneModelisReady = newSceneModel.isReady();
+    var newSceneModelisReady = newSceneModel.isReady();
 
     this.shouldLoadSceneDetails(newSceneModel);
 
     if (isCameraAnimating) {
       if (oldSceneModel) oldSceneModel.set({ "selected": false }, { silent: true });
       newSceneModel.set("selected", true);
-      this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 2 });
+      this.zoomToSelectedSceneModel(newSceneModel);
       return;
     }
-    if ( isSameModel ) { // same model selected
-      console.log("1 --- isSameModel", isCameraAnimating);
+
+    if ( isSameModel ) { console.log("1 --- isSameModel", isCameraAnimating); // same model selected
       if (isCameraAnimating) return;
-      if (oldSceneModel.isReady()) { // are sceneDetails loaded
-        this.resetSceneDetails(newSceneModel, true, true ,false);
-        oldSceneModel.showHide(true);
-      } else {
-        this.zoomToSelectedSceneModel(oldSceneModel, {pathPoints: 2 });
-      }
+      this.resetSceneDetails(newSceneModel, true, true ,false);
+      oldSceneModel.showHide(true);
       return;
     }
 
-    if ( newSceneModel.isReady() && oldSceneModelisReady ) {
-      console.log("2 ---  newSceneModel.isReady() && oldSceneModelisReady");
-      this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel, false); //fade to new sceneModel
-      // this.resetSceneDetails(newSceneModel);
+    if ( newSceneModelisReady && oldSceneModelisReady ) { console.log("2 ---  newSceneModel.isReady() && oldSceneModelisReady");
+      this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel, false);
+      this.hideSceneModels(newSceneModel);
       return;
     }
-    if ( !newSceneModel.isReady() && oldSceneModelisReady ) {
-      console.log("3 --- !newSceneModel.isReady() && oldSceneModelisReady");
-      this.goToSceneModelNotReady(oldSceneModel, newSceneModel, false, false);
+    if ( !newSceneModelisReady && oldSceneModelisReady ) { console.log("3 --- !newSceneModelisReady && oldSceneModelisReady");
+      var pos = newSceneModel.getCameraPosition();
+      this.swapSelectedModels(oldSceneModel, newSceneModel);
+      this.showSceneModels();
+      eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, false, false );
       return;
     }
 
-    if ( !newSceneModel.isReady() && !oldSceneModel ) {
-      console.log("4 --- !newSceneModel.isReady() && !oldSceneModel");
+    if ( !newSceneModelisReady && !oldSceneModel ) {
+      console.log("4 --- !newSceneModelisReady && !oldSceneModel");
+
       newSceneModel.set({ selected: true });
-      this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 2 });
+      this.zoomToSelectedSceneModel(newSceneModel);
+
       return;
     }
 
 
     console.log("5 --- -------END------");
-    newSceneModel.set({ selected: true });
-    this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 1 });
+    // newSceneModel.set({ selected: true });
+    // this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 1 });
+  },
+  swapSelectedModels: function (oldSceneModel, newSceneModel) {
+    oldSceneModel.setSelectedDelay(false, 500);
+    newSceneModel.setSelectedDelay(true, 500);
   },
   shouldLoadSceneDetails: function (newSceneModel) {
     if ( !newSceneModel.get("ready") && !newSceneModel.get("loading")) {
@@ -198,12 +173,11 @@ var SceneSelector = BaseView.extend({
         this.resetSceneDetails(selectedScene, true, false, false);
     }
   },
-  goToSceneModelNotReady: function (oldSceneModel, newSceneModel, animate, trigger) {
-    var pos = newSceneModel.getCameraPosition();
-    oldSceneModel.setSelectedDelay(false, 500);
-    newSceneModel.setSelectedDelay(true, 500);
-    eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, animate, trigger );
-  },
+  // goToSceneModelNotReady: function (oldSceneModel, newSceneModel, animate, trigger) {
+  //   var pos = newSceneModel.getCameraPosition();
+  //   this.swapSelectedModels(oldSceneModel, newSceneModel);
+  //   eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, animate, trigger );
+  // },
   resetSceneDetails: function ( sceneModel, moveCamera, animateCamera, trigger ) {
     eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneModel.getAmbientLighting());
     eventController.trigger(eventController.RESET_RAYCASTER, sceneModel.get("sceneDetails").get("interactiveObjects"));
@@ -221,9 +195,9 @@ var SceneSelector = BaseView.extend({
   toggleSelectedSceneDetails: function (oldSceneModel, newSceneModel, trigger) {
     var fadeTime = utils.getAnimationSpeed().materialsFade;
     var self = this;
+
     oldSceneModel.fadeMaterials(0);
-    oldSceneModel.setSelectedDelay(false, fadeTime);
-    newSceneModel.setSelectedDelay(true, fadeTime);
+    this.swapSelectedModels(oldSceneModel, newSceneModel);
 
     setTimeout(function () {
       self.resetSceneDetails(newSceneModel, true, false, trigger);
@@ -234,17 +208,23 @@ var SceneSelector = BaseView.extend({
   zoomToSelectedSceneModel: function (sceneModel, options) {
     eventController.trigger(eventController.SCENE_MODEL_SELECTED, sceneModel, options);  //zoom to selected model
   },
-  hideSceneModels: function () {
+  hideSceneModels: function (selectedSceneModel) {
     var selectedFalse = this.sceneModelCollection.where({ selected: false });
     _.each(selectedFalse, function (sceneModel) {
-      // this.fadeMaterials(sceneModel.getAllMaterials(), 0);
       sceneModel.showHide(false);
     }, this);
+    selectedSceneModel.hideOutsideDetails();
+  },
+  showSceneModels: function () {
+    this.sceneModelCollection.forEach(function (sceneModel) {
+        sceneModel.showHide(true);
+    });
   },
   getSceneModelInteractiveObjects: function () {
     var objects3d = this.sceneModelCollection
     .where({interactive: true})
     .map(function (model) { return model.get('rayCasterMesh'); });
+
     return objects3d;
   },
   setInteractiveObjects: function (objects3d) {
@@ -302,9 +282,10 @@ var SceneSelector = BaseView.extend({
     var selectedSceneModel = this.getSelectedScene();
     var self = this;
     var isSameModel = selectedSceneModel && (selectedSceneModel.cid === sceneModel.cid);
+    var sceneDetails = sceneModel.get("sceneDetails");
 
     if ( isSameModel ) {
-      sceneModel.get("sceneDetails").showHide(true);
+      sceneDetails.showHide(true);
       this.resetSceneDetails(sceneModel, false, false, true);
     }
 
@@ -313,10 +294,11 @@ var SceneSelector = BaseView.extend({
       timeOpenDoors = sceneModel.openDoors(true);
       setTimeout( function () {
         if ( isSameModel ) {
-          this.setCameraTarget(sceneModel, true, false);
-          // self.zoomToSelectedSceneModel(sceneModel, {pathPoints: 1 });
+          eventController.once(eventController.CAMERA_FINISHED_ANIMATION, function () {
+              self.hideSceneModels(selectedSceneModel);
+          });
+          self.setCameraTarget(sceneModel, true, true);
           sceneModel.enteringScene();
-          // self.hideSceneModels();
         }
       }, timeOpenDoors);
     }, 1500);
@@ -324,6 +306,34 @@ var SceneSelector = BaseView.extend({
   setCameraTarget: function (sceneModel, animate, trigger) {
     var pos = sceneModel.getCameraPosition();
     eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, animate, trigger );
+  },
+  addListeners: function () {
+     // hover/click events from the 3d space
+     eventController.on(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
+     eventController.on(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
+
+     // hover/click events from the navigation bar
+     eventController.on(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
+     eventController.on(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
+
+     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
+     eventController.on(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
+     eventController.on(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
+     eventController.on(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
+     eventController.on(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
+  },
+  removeListeners: function () {
+    eventController.off(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, this.clickSelectSceneModel, this);
+    eventController.off(eventController.HOVER_NAVIGATION, this.setMouseMoveHoverSceneModel, this);
+
+    eventController.off(eventController.SWITCH_PAGE, this.navigationBarSelectSceneModel, this);
+    eventController.off(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, this.setHoverSceneModelNavBar, this);
+
+    eventController.off(eventController.RESET_SCENE, this.resetScene, this);
+    eventController.off(eventController.CLICK_RESET_SCENE_DETAILS, this.clickResetSceneDetails, this);
+    eventController.off(eventController.SCENE_DETAILS_SELECT_OBJECT, this.sceneDetailsSelectObject, this);
+    eventController.off(eventController.TOGGLE_SELECT_SCENE_MODEL, this.toggleSelect, this);
+    eventController.off(eventController.SCENE_MODEL_READY, this.sceneModelReady, this);
   }
 });
 

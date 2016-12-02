@@ -1,11 +1,14 @@
 .loading-bar {
   .noselect;
   position: absolute;
-  left: 0px;
-  display: none;
+  display: block;
   height: 100%;
   width: 100%;
+  left: 0px;
   z-index: 1001;
+  opacity: 0;
+  transition: opacity @fadeOutTime;
+  pointer-events: none;
 
   span {
     color: @color-5;
@@ -37,6 +40,8 @@
   }
   &.show {
     display: block;
+    opacity: 1;
+    pointer-events: all;
   }
 }
 .loading-container {

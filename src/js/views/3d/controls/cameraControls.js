@@ -24,19 +24,14 @@ var CameraControls = BaseModel.extend({
     var newPositions = sceneModel.getCameraPosition();
     var middlePoint = this.getCameraMiddlePoint(newPositions.camera);
 
-    if (options.pathPoints === 2) {
-
-      this.tweenNormal( this.orbitControls.target, newPositions.target, false);  // move camera target or lookAt
-      this.tweenMultiPoints( // animate move camera
-        this.orbitControls.object.position,
-        newPositions.camera,
-        middlePoint,
-        true
-      );
-    } else {
-      this.tweenNormal( this.orbitControls.target, newPositions.target, false);
-      this.tweenNormal( this.orbitControls.object.position, newPositions.camera, false);
-    }
+    this.tweenNormal( this.orbitControls.target, newPositions.target, false);  // move camera target or lookAt
+    this.tweenMultiPoints( // animate move camera
+      this.orbitControls.object.position,
+      newPositions.camera,
+      middlePoint,
+      true
+    );
+    
   },
   getCameraMiddlePoint: function (cameraPos) {
      var middlePoint = _.clone(cameraPos);
