@@ -110,7 +110,8 @@ var SceneModel = BaseModel3d.extend({
     var objPos = this.getPosition();
     var size = this.getSize();
     var maxZ = this.get("object3d").geometry.boundingBox.max.z;
-    return { x: objPos.x, y: objPos.y + ((size.h / 2) * .65), z: maxZ + 2 };
+    var distFromFront = 5;
+    return { x: objPos.x, y: objPos.y + ((size.h / 2) * .65), z: maxZ + distFromFront };
   },
   getCameraPositionLoaded: function () {
     var cameraPositionLoading = this.getCameraPositionLoading();
@@ -153,8 +154,19 @@ var SceneModel = BaseModel3d.extend({
     .interpolation(TWEEN.Interpolation.Bezier)
     .start();
   },
+  getNewTween: function (from, to) {
+    return new TWEEN.Tween(from)
+    .to(to, 2000)
+    .easing(TWEEN.Easing.Circular.Out)
+    .interpolation(TWEEN.Interpolation.Bezier);
+  },
   toggleTextVisiblilty:function (tBool) {
     var textBool = tBool ? tBool : !this.get("selected");
+    var textMat = this.get("text3d").material;
+    this.setFadeOutMaterials([textMat]);
+    var tween = this.getNewTween();
+        tween.start();
+    console.log("textMat: ", textMat);
     this.get("text3d").visible = textBool;
   },
   toggleHoverLights: function (hoverBool) {

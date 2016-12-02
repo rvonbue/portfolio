@@ -15,15 +15,6 @@ var BaseView = Backbone.View.extend({
     this.addChildViewEventHandlers();
     this.parentEl.addClass(this.parentClass);
   },
-  beforeRender: function(){
-  },
-  afterRender: function() {
-  },
-  // onAttach: function() {
-  //   _.each(this.childViews, function(childView){
-  //     childView.onAttach();
-  //   }, this);
-  // },
   addChildViewEventHandlers: function () {
     _.each(this.childViews, function(childView){
       childView.addListeners();

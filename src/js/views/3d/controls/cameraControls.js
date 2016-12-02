@@ -30,6 +30,7 @@ var CameraControls = BaseModel.extend({
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.zoomOnSceneModel, this);
     eventController.off(eventController.RESET_SCENE, this.setCameraInitialPosition, this);
     eventController.off(eventController.RESET_SCENE_DETAILS, this.setCameraToSceneDetails, this);
+    eventController.off(eventController.SET_CAMERA_AND_TARGET, this.setCameraAndTarget, this);
 
     commandController.stopReplying(commandController.IS_CAMERA_ANIMATING, this.isAnimating, this)
   },
@@ -41,7 +42,7 @@ var CameraControls = BaseModel.extend({
 
     if (options.pathPoints === 2) {
 
-      this.tweenNormal( this.orbitControls.target, newPositions.target);  // move camera target or lookAt
+      this.tweenNormal( this.orbitControls.target, newPositions.target, false);  // move camera target or lookAt
       this.tweenMultiPoints( // animate move camera
         this.orbitControls.object.position,
         newPositions.camera,
@@ -49,8 +50,8 @@ var CameraControls = BaseModel.extend({
         true
       );
     } else {
-      this.tweenNormal( this.orbitControls.target, newPositions.target);
-      this.tweenNormal( this.orbitControls.object.position, newPositions.camera);
+      this.tweenNormal( this.orbitControls.target, newPositions.target, false);
+      this.tweenNormal( this.orbitControls.object.position, newPositions.camera, false);
     }
   },
   getCameraMiddlePoint: function (cameraPos) {
@@ -62,24 +63,18 @@ var CameraControls = BaseModel.extend({
   getControls: function () {
     return this.orbitControls;
   },
-  setCameraAndTarget: function (cameraPos, targetPos, animate) {
+  setCameraAndTarget: function (cameraPos, targetPos, animate, trigger) {
     TWEEN.removeAll();
-    var camera = this.getCamera();
-    var target = this.getTarget();
-    
+    var camera = this.orbitControls.object;
+    var target = this.orbitControls;
+
     if (!animate) {
       if ( cameraPos ) camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
-      if ( targetPos ) target = new THREE.Vector3( targetPos.x, targetPos.y, targetPos.z );
+      if ( targetPos ) this.orbitControls.target = new THREE.Vector3( targetPos.x, targetPos.y, targetPos.z );
     } else {
-      if ( cameraPos ) this.tweenNormal( this.orbitControls.object.position, cameraPos);
-      if ( targetPos ) this.tweenNormal( this.orbitControls.target, targetPos);
+      if ( cameraPos ) this.tweenNormal( camera.position, cameraPos, trigger);
+      if ( targetPos ) this.tweenNormal( this.orbitControls.target, targetPos, trigger);
     }
-  },
-  getTarget: function () {
-    return this.orbitControls.target;
-  },
-  getCamera: function () {
-    return this.orbitControls.object;
   },
   setCameraToSceneDetails: function (sceneModel) {
     var nPos = sceneModel.getCameraPosition();
@@ -97,12 +92,12 @@ var CameraControls = BaseModel.extend({
     tweenStart.chain( tweenFinish );
     tweenStart.start();
   },
-  tweenNormal: function (cameraOrTargetPos, newPosition) {
+  tweenNormal: function (cameraOrTargetPos, newPosition, trigger) {
     var animationSpeed = utils.getAnimationSpeed().cameraMove;
-    var tween = this.getTween(cameraOrTargetPos, newPosition, animationSpeed, false);
+    var tween = this.getTween(cameraOrTargetPos, newPosition, animationSpeed, trigger);
     tween.start();
   },
-  getTween: function (startPos, endPos , speed, trigger) {
+  getTween: function (startPos, endPos, speed, trigger) {
     var self = this;
     var tween = new TWEEN.Tween(startPos)
     .to(endPos, speed)
@@ -110,11 +105,13 @@ var CameraControls = BaseModel.extend({
     .interpolation(TWEEN.Interpolation.Bezier)
     .onStart( () => {
       self.animating = true;
+      console.log("trigger", trigger);
       if (trigger) eventController.trigger(eventController.CAMERA_START_ANIMATION);
     })
     .onComplete( () => {
       // console.log("onCOmplete", new Date().getTime());
       self.animating = false;
+      console.log("trigger", trigger);
       if (trigger) eventController.trigger(eventController.CAMERA_FINISHED_ANIMATION);
     });
     return tween;

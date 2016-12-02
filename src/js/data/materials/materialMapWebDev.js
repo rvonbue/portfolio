@@ -62,7 +62,7 @@ module.exports = {
   blackGlass: {
     maps: [{ envMap: "webDev" } ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.75, opacity:0.75 }
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.5, opacity:0.5 }
   },
   fern:  {
     maps: [{ map: "textures/farn.png" } ],

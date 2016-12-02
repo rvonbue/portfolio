@@ -22,10 +22,10 @@ var HomeButtonView = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
   },
   addListeners: function () {
-    this.delegateEvents();
+    // this.delegateEvents();
   },
   removeListeners: function () {
-    this.undelegateEvents();
+    // this.undelegateEvents();
   },
   startLeaveTimer: function () {
     var self = this;
@@ -50,6 +50,7 @@ var HomeButtonView = BaseView.extend({
   clickme: function (evt) {
     var clickedIndex = $(evt.currentTarget).closest("li").index();
     var navList = navigationList[clickedIndex];
+    this.toggleMenu(false);
 
     if ( navList ) {
       eventController.trigger(eventController.SWITCH_PAGE, clickedIndex );
@@ -57,7 +58,6 @@ var HomeButtonView = BaseView.extend({
       this.resetSceneDetails();
     }
 
-    this.toggleMenu(false);
   },
   closeMenu: function () {
     this.toggleMenu(false);
@@ -96,7 +96,10 @@ var HomeButtonView = BaseView.extend({
 	},
   getCircularMenu: function () {
     // var menuItems = this.getMenuItems();
-    this.menu= CMenu("#menu1")
+    var windowWidth = $(window).width();
+    var diameter = windowWidth < 400 ? windowWidth : 400;
+    diameter = Math.max(diameter, 200);
+    this.menu = CMenu("#menu1")
     .config({
       // background: "rgba(0,0,0,0)",
       background: "#000000",
@@ -104,7 +107,7 @@ var HomeButtonView = BaseView.extend({
       totalAngle: 180,
       position: "top",
       hideAfterClick : false,
-      diameter: 400,
+      diameter: diameter,
       menus: this.getMenuItems()
     });
 

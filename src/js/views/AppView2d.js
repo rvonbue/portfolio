@@ -6,6 +6,8 @@ import NavigationBar from "./components/navigationBar";
 var viewArray = [
   require("./2d/WebDevView"),
   require("./2d/ThreeDAnimationView"),
+  require("./2d/DigitalArtView"),
+  require("./2d/DigitalArtView"),
   require("./2d/DigitalArtView")
 ];
 

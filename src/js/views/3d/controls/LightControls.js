@@ -82,10 +82,14 @@ var LightControls = BaseView.extend({
   },
   toggleWorldLighting: function (newLightSettings) {
     // if (!newLightSettings) return;
-    _.each(this.worldLights, function (light) {
-      if (light.type === "HemisphereLight"  ) this.setHemiLight(light, newLightSettings.hemisphere);
-      if (light.type === "DirectionalLight")  this.setDirectionalLight(light, newLightSettings.directional);
-    }, this);
+    if (newLightSettings) {
+      _.each(this.worldLights, function (light) {
+        if (light.type === "HemisphereLight"  ) this.setHemiLight(light, newLightSettings.hemisphere);
+        if (light.type === "DirectionalLight")  this.setDirectionalLight(light, newLightSettings.directional);
+      }, this);
+    } else {
+      this.resetScene();
+    }
   },
   getTween: function (light, endPos , speed) {
     var tween = new TWEEN.Tween(light)

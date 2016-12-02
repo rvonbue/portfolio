@@ -20,14 +20,14 @@ var NavigationBar = BaseView.extend({
   addListeners: function () {
     console.log("addListeners:NavigationBar");
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
-    eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
+    // eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
     eventController.on(eventController.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
     commandController.reply(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
   },
   removeListeners: function () {
     console.log("removeListeners:NavigationBar");
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
-    eventController.off(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
+    // eventController.off(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
     eventController.off(eventController.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
     commandController.stopReplying(commandController.GET_SELECTED_SECTION, this.getSelectedSection);
   },
@@ -42,34 +42,30 @@ var NavigationBar = BaseView.extend({
     if (this.selectedEl) return this.selectedEl.index();
     return 0;
   },
-  updateHoverNavigationFrom3d: function (closestObject) {
-
-    if (!closestObject || (closestObject && !this.navEls[closestObject.object.name])) {
-      var updateCursor = closestObject ? true : false;
-      this.updateHoverMouseCursor(updateCursor);
-      this.unsetHoverEl();
-      return;
-    }
-
-    if (this.hoveredEl && closestObject ) {
-      this.swapHoveredEl(this.navEls[closestObject.object.name]);
-    } else if (this.hoveredEl) {
-      this.unsetHoverEl();
-    } else {
-      this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
-    }
-
-    var hoveredBool = this.hoveredEl ? true : false;
-    this.updateHoverMouseCursor(hoveredBool);
-  },
+  // updateHoverNavigationFrom3d: function (closestObject) {
+  //   console.log("updateHoverNavigationFrom3d");
+  //   if (!closestObject || (closestObject && !this.navEls[closestObject.object.name])) {
+  //     var updateCursor = closestObject ? true : false;
+  //     this.updateHoverMouseCursor(updateCursor);
+  //     this.unsetHoverEl();
+  //     return;
+  //   }
+  //
+  //   if (this.hoveredEl && closestObject ) {
+  //     this.swapHoveredEl(this.navEls[closestObject.object.name]);
+  //   } else if (this.hoveredEl) {
+  //     this.unsetHoverEl();
+  //   } else {
+  //     this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
+  //   }
+  //
+  //   var hoveredBool = this.hoveredEl ? true : false;
+  // },
   unsetHoverEl: function () {
     if (this.hoveredEl) {
       this.hoveredEl.removeClass("hovered");
       this.hoveredEl = null;
     }
-  },
-  updateHoverMouseCursor: function (hoveredBool) {
-    this.parentEl.toggleClass("hovered", hoveredBool);
   },
   enterHoverNavigationLi: function (evt) {
     eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR, navigationList[$(evt.currentTarget).index()] , true );
@@ -89,6 +85,7 @@ var NavigationBar = BaseView.extend({
   },
   clickSelected: function (evt) {
     var currentTarget = $(evt.currentTarget);
+    var index = currentTarget.index("li");
     var name = navigationList[currentTarget.index("li")].name;
 
     this.swapSelectedEl(currentTarget);

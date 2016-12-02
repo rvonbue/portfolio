@@ -80,13 +80,27 @@ var AppView3d = BaseView.extend({
     this.camera.lookAt(new THREE.Vector3( 1, 10, 0 ));
   },
   initControls: function () {
-    var cameraControls = new CameraControls({ camera:this.camera, canvasEl:this.canvasEl });
-    this.sceneControls = new SceneControls({ camera:this.camera, canvasEl:this.canvasEl });
-    this.controls = cameraControls.getControls();
+
+    var newChildViews = [
+      new CameraControls({ camera:this.camera, canvasEl:this.canvasEl }),
+      new SceneControls({ camera:this.camera, canvasEl:this.canvasEl })
+    ];
+
+    this.controls = newChildViews[0].getControls();
+    this.addChildViews(newChildViews);
   },
   initSceneLoader: function () {
     var sceneLoader = new SceneLoader();
-    var sceneSelector = new SceneSelector({ sceneModelCollection: sceneLoader.sceneModelCollection });
+
+    var newChildViews = [
+      sceneLoader,
+      new SceneSelector({ sceneModelCollection: sceneLoader.sceneModelCollection })
+    ];
+
+    this.addChildViews(newChildViews);
+  },
+  addChildViews: function (childViews) {
+    this.childViews = this.childViews.concat(childViews);
   },
   addHelpers: function () {
     // var axisHelper = new THREE.AxisHelper( 50 );

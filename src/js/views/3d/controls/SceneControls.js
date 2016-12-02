@@ -6,12 +6,14 @@ import BaseModel from "../../../models/BaseModel";
 import utils from "../../../util/utils";
 
 var SceneControls = BaseModel.extend({
-  defaults: {},
+  defaults: {
+    raycasterObjects: [],
+  },
   initialize: function (options) {
+    _.bindAll(this, "onMouseClick", "onMouseMove");
     this.lastRaycastObjectId = 1325435;
     this.canvasEl = $(options.canvasEl);
     this.camera = options.camera;
-    this.raycasterObjects = [];
     this.raycasterOffset = { x: 1, y: 47 };  //ozzffset of canvas;
     this.mouse = new THREE.Vector2();
     this.addListeners();
@@ -20,21 +22,19 @@ var SceneControls = BaseModel.extend({
     this.setSelectMesh();
   },
   addListeners: function () {
-    var self = this;
-    var throttledMouseMove = _.throttle(_.bind(self.onMouseMove, self), 25);
-
-    this.canvasEl.on("mousemove", function (evt) { throttledMouseMove(evt); });
-    this.canvasEl.on("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    this.canvasEl.on("mouseup", function (evt) { self.onMouseClick(evt); });
+    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
+    this.canvasEl.on("mousemove", this.throttledMouseMove);
+    this.canvasEl.on("mouseleave", this.triggerHoverNav);
+    this.canvasEl.on("mouseup", this.onMouseClick);
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
     eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   removeListeners: function () {
-    this.canvasEl.off("mousemove", function (evt) { self.onMouseMove(evt); });
-    this.canvasEl.off("mouseleave", function (evt) { eventController.trigger(eventController.HOVER_NAVIGATION, null) });
-    this.canvasEl.off("mouseup", function (evt) { self.onMouseClick(evt); });
+    this.canvasEl.off("mousemove", this.throttledMouseMove);
+    this.canvasEl.off("mouseleave", this.triggerHoverNav);
+    this.canvasEl.off("mouseup",this.onMouseClick);
 
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
@@ -44,6 +44,9 @@ var SceneControls = BaseModel.extend({
     this.raycaster = new THREE.Raycaster();
     this.raycaster.far = 125;
     this.raycaster.near = 0.25;
+  },
+  triggerHoverNav: function () {
+    eventController.trigger(eventController.HOVER_NAVIGATION, null);
   },
   setSelectMesh: function () {
     // var geo = new THREE.OctahedronGeometry(0.25, 0);
@@ -72,14 +75,19 @@ var SceneControls = BaseModel.extend({
       return;
     } else {
       this.lastRaycastObjectId = raycastIntersect ? raycastIntersect.object.id : 0;
+      this.updateHoverMouseCursor(raycastIntersect);
       eventController.trigger(eventController.HOVER_NAVIGATION, raycastIntersect);
     }
+  },
+  updateHoverMouseCursor: function (raycastIntersect) {
+    var hoveredBool = raycastIntersect ? true : false;
+    this.canvasEl.toggleClass("hovered-3d", hoveredBool);
   },
   shootRaycaster: function (evt) { //shoots a ray at all the interactive objects
     this.mouse.x = ( (evt.clientX - this.raycasterOffset.x) / this.width ) * 2 - 1;
 		this.mouse.y = - ( (evt.clientY - this.raycasterOffset.y ) / this.height ) * 2 + 1;
     this.raycaster.setFromCamera( this.mouse, this.camera );
-    return this.findClosestObject(this.raycaster.intersectObjects( this.raycasterObjects ));
+    return this.findClosestObject(this.raycaster.intersectObjects( this.get("raycasterObjects") ));
   },
   findClosestObject: function (intersects) {
     var closestObject = null;
@@ -127,7 +135,7 @@ var SceneControls = BaseModel.extend({
     ];
   },
   resetRaycaster: function (arr) {
-    this.raycasterObjects = arr;
+    this.set("raycasterObjects", arr);
   },
   cancelSelectMeshTimer: function () {
     if (this.selectMeshTimer) {
