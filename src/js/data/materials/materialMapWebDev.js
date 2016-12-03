@@ -3,36 +3,36 @@ var colorPallete = utils.getColorPallete();
 
 module.exports = {
   cityNight: {
-    maps: [{ map: "textures/cityNightAlt1.jpg" }],
+    maps: [{ map: "textures/webDev/cityNightAlt1.jpg" }],
     mapProps: { repeatScale: 1, shading: "flat" },
   },
   coinSlot: {
-    maps: [{ map: "textures/videoGameCabinet/coinSlot.png" }],
+    maps: [{ map: "textures/webDev/videoGameCabinet/coinSlot.png" }],
     mapProps: { repeatScale: 1, shading: "flat" },
   },
   computer: {
       maps: [
-        { map: "textures/computer.jpg" }
+        { map: "textures/webDev/computer/computer.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "flat" },
   },
-  computerScreen1: {
-      maps: [
-        { map: "textures/computerScreen.jpg" },
-      ],
-      mapProps: { repeatScale: 1, shading: "flat" },
-  },
-  computerScreen2: {
-      maps: [
-        { map: "textures/computerScreen.jpg" },
-      ],
-      mapProps: { repeatScale: 1, shading: "flat" },
-  },
+  // computerScreen1: {
+  //     maps: [
+  //       { map: "textures/computerScreen.jpg" },
+  //     ],
+  //     mapProps: { repeatScale: 1, shading: "flat" },
+  // },
+  // computerScreen2: {
+  //     maps: [
+  //       { map: "textures/computerScreen.jpg" },
+  //     ],
+  //     mapProps: { repeatScale: 1, shading: "flat" },
+  // },
   keyboard: {
       maps: [
-        { map: "textures/computer/keyboard.jpg" },
+        { map: "textures/webDev/computer/keyboard_COLOR.jpg" },
         // { specularMap: "textures/computer/keyboard_SPEC.jpg" },
-        { normalMap: "textures/computer/keyboard_NRM.jpg" }
+        { normalMap: "textures/webDev/computer/keyboard_NRM.jpg" }
       ],
       mapProps: { repeatScale: 1, shading: "smooth" },
   },
@@ -47,15 +47,15 @@ module.exports = {
   },
   videoGameCabinet: {
     maps: [
-      { map: "textures/videoGameCabinet/videoGameCabinet_COLOR.jpg" },
-      { specularMap: "textures/videoGameCabinet/videoGameCabinet_SPECA.jpg" },
+      { map: "textures/webDev/videoGameCabinet/videoGameCabinet_COLOR.jpg" },
+      { specularMap: "textures/webDev/videoGameCabinet/videoGameCabinet_SPECA.jpg" },
       // { normalMap: "textures/videoGameCabinet/videoGameCabinet_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
   },
   videoGameCabinetEmmisive: {
     maps: [
-      { map: "textures/videoGameCabinet/videoGameCabinetEmmisive.png" },
+      { map: "textures/webDev/videoGameCabinet/videoGameCabinetEmmisive.png" },
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
   },
@@ -65,7 +65,7 @@ module.exports = {
     props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.5, opacity:0.5 }
   },
   fern:  {
-    maps: [{ map: "textures/farn.png" } ],
+    maps: [{ map: "textures/webDev/fern.png" } ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: { transparent: true, alwaysTransparent: true }
   },
@@ -73,23 +73,18 @@ module.exports = {
     props: { color: "#e2725b" }
   },
   powerButton: {
-      maps: [{ map: "textures/computer/powerButton.jpg" } ],
+      maps: [{ map: "textures/webDev/computer/powerButton.jpg" } ],
       mapProps: { repeatScale: 1, shading: "flat" },
   },
   rugPersian: {
     maps:[
-      { map: "textures/rugPersian.png" }
+      { map: "textures/webDev/rugPersian.png" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { transparent: true, alwaysTransparent: true }
   },
   allBooks: {
-    maps: [{ normalMap: "textures/allBooks.jpg" } ],
+    maps: [{ map: "textures/webDev/allBooks.jpg" } ],
     mapProps: { repeatScale: 1, shading: "smooth" }
   }
-  // metal: {
-  //     maps: [{ normalMap: "textures/fabric/fabric_NRM.jpg" } ],
-  //     mapProps: { repeatScale: 50, shading: "flat" },
-  //     props: { color: "#713f12" }
-  // },
 };

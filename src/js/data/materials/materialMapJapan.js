@@ -90,7 +90,8 @@ module.exports = {
       { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" },
       { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 1.5, shading: "flat" },
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { specularCoef: 10 }
   },
   bannerLogo: {
     maps: [
@@ -115,11 +116,18 @@ module.exports = {
   drywall: {
     props: { color: "#EAEAE2" }
   },
-  light: {
+  overheadLight: {
     props: {
-     color: "#FFFFFF",
-     emisssive: "#FFFFFF",
-     shading: "basic"
+    color: "#FFFFFF",
+    emisssive: "#FFFFFF",
+    shading: "basic"
    }
-  }
+ },
+  gradient: {
+    maps: [
+      { map: "textures/gradient.jpg" }
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { transparent: false }
+  },
 };

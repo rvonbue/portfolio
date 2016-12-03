@@ -115,6 +115,8 @@ var AppView3d = BaseView.extend({
   },
   addModelsToScene: function (sceneModelArray) {
     _.each(sceneModelArray, function (object3d) {
+      // console.log("object3d", object3d);
+      this.statsView.updateFaceCount(object3d);
       this.scene.add(object3d);
     }, this);
   },
@@ -191,7 +193,7 @@ var AppView3d = BaseView.extend({
   },
   render: function () {
     this.statsView = new StatsView();
-    $("body").append(this.statsView.stats.domElement);
+    $("body").append(this.statsView.render().el);
     this.childViews = [
       new SceneDetailControlsView(),
       new LoadingBarView(),

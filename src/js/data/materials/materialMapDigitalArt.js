@@ -35,6 +35,14 @@ module.exports = {
     ],
     mapProps: { repeatScale:10, shading: "flat" },
   },
+  textureWall: {
+    maps: [
+      { map: "textures/wall.jpg" },
+      // { specularMap: "textures/woodFloor2/woodFloor_SPEC.jpg" },
+      // { normalMap: "textures/woodFloor2/woodFloor_NRM.jpg" }
+    ],
+    mapProps: { repeatScale:1, shading: "smooth" },
+  },
   offWhite: {
     props: { color: "#FFFFFF"}
   }

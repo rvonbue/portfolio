@@ -151,8 +151,8 @@ var SceneSelector = BaseView.extend({
 
 
     console.log("5 --- -------END------");
-    // newSceneModel.set({ selected: true });
-    // this.zoomToSelectedSceneModel(newSceneModel, {pathPoints: 1 });
+    newSceneModel.set({ selected: true });
+    this.zoomToSelectedSceneModel(newSceneModel);
   },
   swapSelectedModels: function (oldSceneModel, newSceneModel) {
     oldSceneModel.setSelectedDelay(false, 500);

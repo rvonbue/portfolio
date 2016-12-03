@@ -9,13 +9,13 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
     initialCameraPosition: { x:0, y: -1.25, z: 3.50 },
     initialCameraTarget: { x:0, y: 1, z: 0 },
     pointLights: [
-      { x: -3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 3, distance: 5 },
-      { x: 0, y: 2, z: 1.5, color: "#FFFFFF", intensity: 3, distance: 5 },
-      { x: 3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 3, distance: 5 }
+      { x: -3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 1.5, distance: 5 },
+      { x: 0, y: 2, z: 1.5, color: "#FFFFFF", intensity: 1.5, distance: 5 },
+      { x: 3, y: 2, z: 1.5, color: "#FFFFFF", intensity: 1.5, distance: 5 }
     ],
     intialAmbientLights: {
       directional: { color: "#FFFFFF", intensity: 0.0 },  // color intensity,
-      hemisphere: { groundColor: "#FFFFFF", skyColor: "#FFFFFF", intensity: 0.15 }  // skyColor, groundColor, intensity
+      hemisphere: { groundColor: "#FFFFFF", skyColor: "#FFFFFF", intensity: 0.25 }  // skyColor, groundColor, intensity
     },
     projectIndex: 0,
     modelUrls: ["sceneDetails", "artEasel"]

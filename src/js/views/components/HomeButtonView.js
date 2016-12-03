@@ -90,9 +90,9 @@ var HomeButtonView = BaseView.extend({
   leaveHoverNavigationLi: function () {
     eventController.trigger(eventController.HOVER_SCENE_MODEL_FROM_NAV_BAR);
   },
-  nearestPowerOfTwo: function ( value ) {
-	   return Math.pow( 2, Math.round( Math.log( value ) / Math.LN2 ) );
-	},
+  // nearestPowerOfTwo: function ( value ) {
+	//    return Math.pow( 2, Math.round( Math.log( value ) / Math.LN2 ) );
+	// },
   getCircularMenu: function (diameter) {
     this.menu = CMenu("#menu1")
       .config({
