@@ -20,7 +20,7 @@ module.exports = {
         "opacity":1,
         "visible":true,
         "depthTest":true,
-        "colorDiffuse":[0.64,0.64,0.64],
+        "colorDiffuse":[1,0,0],
         "DbgName":"lampLightEmit",
         "transparent":false,
         "DbgColor":15597568,

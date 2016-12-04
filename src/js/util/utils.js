@@ -34,7 +34,7 @@ module.exports = {
       color2: {hex: "#B82601" },  //green
       color3: {hex: "#062f4f" },
       color4: {hex: "#813772" },
-      lampLight: { color: "#B82601" },  //red //663399 purple
+      lampLight: { color: "#B82601", colorEmissive: "#B82601"},  //red //663399 purple
       text: { color:"#0090FF", color2: "#00cece"  },
       world: {
         background: {
@@ -46,9 +46,9 @@ module.exports = {
           intensity: 0.18
         },
         directional: {
-          color: "#9be2fe",
-          intensity: 0.3,
-          position: {x: 100, y: 50, z: 20}
+          color: "#FFFFFF",
+          intensity: 0.5, //0.3
+          position: {x: 50, y: 50, z: 20}
         }
       }
     };

@@ -3,7 +3,7 @@ import commandController from "../../controllers/commandController";
 import THREE from "three";
 import utils from "../../util/utils";
 import door from "../../data/embeded3dModels/door.json";
-import lampLight from "../../data/embeded3dModels/lampLight.json";
+import lampLight from "../../data/embeded3dModels/lampLight3.json";
 
 var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and meshes for each individual floor
   initialize: function () {
@@ -61,9 +61,10 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
   addLights: function (modelLoader, sceneModel) {
     var lampLightPos = {x:18, y: 3, z: 11, spacer: 7.2 };
 
-    var model = modelLoader.parseJSON(lampLight);
-    var meshes =[new THREE.Mesh( model.geometry, new THREE.MultiMaterial(model.materials))];
-    this.duplicateMesh(meshes, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
+    var lampModel = modelLoader.parseJSON(lampLight);
+    console.log("model.materials", lampModel.materials);
+    var lampLightMeshes =[new THREE.Mesh( lampModel.geometry, new THREE.MultiMaterial(lampModel.materials))];
+    this.duplicateMesh(lampLightMeshes, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
 
     var pointLights =[this.getNewHoverLight(3, 6)];
     this.duplicateMesh(pointLights, sceneModel, _.clone(lampLightPos), 4, "hoverLights");

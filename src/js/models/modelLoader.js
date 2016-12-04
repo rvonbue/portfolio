@@ -2,6 +2,7 @@ import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController"
 import BaseModel from "./BaseModel";
 import THREE from "three";
+import MaterialLibrary from "./MaterialLibrary";
 // import utils from "../util/utils";
 import materialMapList from "../data/materials/combinedMaterials";
 import fontData from "../data/fonts/roboto_regular.json";
@@ -10,6 +11,7 @@ import utils from "../util/utils";
 var ModelLoader = BaseModel.extend({
   initialize: function () {
     BaseModel.prototype.initialize.apply(this, arguments);
+    this.materialLibrary = new MaterialLibrary();
     this.initLoadingManager();
     this.addListeners();
   },

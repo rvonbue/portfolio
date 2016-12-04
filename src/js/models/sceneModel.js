@@ -36,15 +36,21 @@ var SceneModel = BaseModel3d.extend({
     this.off("change:hover", this.onChangeHover);
   },
   onChangeSelected: function () {
+
     var selectedBool = this.get("selected");
+
     this.showHide(selectedBool)
     this.toggleHoverLights(selectedBool);
+
   },
   onChangeHover: function () {
-    if (this.get("selected")) return;
-    this.toggleLampEmitMaterial(this.getLampLightMaterial());
-    this.toggleHoverLights(this.get("hover"));
-    this.toggleTextMaterial(this.get("text3d").material);
+
+    if ( this.get("selected") ) return;
+
+    this.toggleLampEmitMaterial( this.getLampLightMaterial() );
+    this.toggleHoverLights( this.get("hover") );
+    this.toggleTextMaterial( this.get("text3d").material );
+
   },
   reset: function (showHideBool) {
     this.set("selected", false);
@@ -151,7 +157,9 @@ var SceneModel = BaseModel3d.extend({
     this.fadeMaterial(this.get("text3d").material, 0, 1500);
   },
   toggleHoverLights: function (hoverBool) {
-    _.each(this.get("hoverLights"), function (light) { light.visible = hoverBool; });
+    _.each(this.get("hoverLights"), function (light) {
+      light.visible = hoverBool;
+    });
   },
   setEmissiveMaterial: function (mat, color) {
     mat.emissive = new Color(color);

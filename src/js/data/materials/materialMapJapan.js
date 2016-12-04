@@ -66,11 +66,27 @@ module.exports = {
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: {  transparent: true, alwaysTransparent: true }
   },
+  lanternNew: {
+    maps: [
+      {map: "textures/lantern4.png"},
+    ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: {
+      color: "#FFFFFF",
+      transparent: true,
+      alwaysTransparent: true,
+   }
+  },
   lampLightEmit: {
+    // maps: [
+    //   {emissiveMap: "textures/lanternEmissiveMap.png"},
+    // ],
+    // mapProps: { repeatScale: 1, shading: "smooth" },
     props: {
       color: colorPallete.lampLight.color,
+      specular: colorPallete.lampLight.color,
+      emissive: colorPallete.lampLight.colorEmissive,
       emissiveIntensity: 0.2,
-      emissive: colorPallete.lampLight.color
       // specular: colorPallete.lampLight.color,
      }
   },
@@ -108,7 +124,10 @@ module.exports = {
     props: { transparent: false }
   },
   plasticBlack: {
-    props: { color: "#24282a" }
+    props: {
+      color: "#24282a",
+      // specular: colorPallete.lampLight.color
+    }
   },
   plasticRed: {
     props: { color: "#FF0000" }

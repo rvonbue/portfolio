@@ -5,7 +5,7 @@ import BaseView from "../BaseView";
 import eventController from "../../controllers/eventController";
 import navigationList from "../../data/navigationList";
 import SceneModelCollection from "../../collections/SceneModelCollection";
-import ModelLoader from "../../models/modelLoader";
+import ModelLoader from "../../models/ModelLoader";
 import utils from "../../util/utils";
 
 import FloorBuilder3d from "./FloorBuilder3d";
