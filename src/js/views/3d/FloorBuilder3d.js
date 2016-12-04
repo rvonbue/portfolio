@@ -26,7 +26,7 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
       height: 0.75,
       bevelSegments: 3,
       bevelSize: 1.5,
-      bevelThickness: 2,
+      bevelThickness: 10,
       material: new THREE.MeshPhongMaterial({
         color: textColor,
         emissive: textColor

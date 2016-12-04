@@ -5,6 +5,9 @@ module.exports = {
   cityNight: {
     maps: [{ map: "textures/webDev/cityNightAlt1.jpg" }],
     mapProps: { repeatScale: 1, shading: "flat" },
+    props: {
+      shadingType: "MeshBasicMaterial"
+    }
   },
   coinSlot: {
     maps: [{ map: "textures/webDev/videoGameCabinet/coinSlot.png" }],

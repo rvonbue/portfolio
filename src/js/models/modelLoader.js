@@ -3,7 +3,6 @@ import commandController from "../controllers/commandController"
 import BaseModel from "./BaseModel";
 import THREE from "three";
 import MaterialLibrary from "./MaterialLibrary";
-// import utils from "../util/utils";
 import materialMapList from "../data/materials/combinedMaterials";
 import fontData from "../data/fonts/roboto_regular.json";
 import utils from "../util/utils";
@@ -50,7 +49,7 @@ var ModelLoader = BaseModel.extend({
 
       var newMaterials = self.getMeshMaterials(materials);
       materials = null;
-      
+
       var object3d = new THREE.Mesh( bufferGeo, new THREE.MeshFaceMaterial(newMaterials) );
           object3d.name = name;
 
@@ -84,7 +83,6 @@ var ModelLoader = BaseModel.extend({
   parseJSON: function (json) {
     var loader = new THREE.JSONLoader(this.manager);
     var model = loader.parse(json);
-    // console.log("-------model.materials-----length--", model.materials.length);
     model.materials = this.getMeshMaterials(model.materials);
 
     return model;

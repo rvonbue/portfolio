@@ -2,19 +2,6 @@ import utils from "../../util/utils";
 var colorPallete = utils.getColorPallete();
 
 module.exports = {
-  roofTop: {
-      maps: [
-        { map: "textures/paintedWoodGreen/woodPlanksPainted_COLOR.jpg" },
-        { specularMap: "textures/paintedWoodGreen/woodPlanksPainted_SPEC.jpg" },
-        { normalMap: "textures/paintedWoodGreen/woodPlanksPainted_NRM.jpg" }
-      ],
-      mapProps: { repeatScale: 0.75, shading: "flat" }
-  },
-  roofLog: {
-      maps: [{ map: "textures/paintedWoodGreen/woodPlanksPainted.jpg" }],
-      mapProps: { repeatScale: 1, shading: "smooth" },
-      props: { color: "#b5651d"}
-  },
   woodBeamPrimary: {
       maps: [
         { map: "textures/woodBare/woodBare_COLOR.jpg" },
@@ -52,22 +39,15 @@ module.exports = {
     props: {
       color: colorPallete.color3.hex,
       shininess: 50,
+      // shadingType: "MeshBasicMaterial"
      }
   },
   windowJapan: {
     maps: [
       { map: "textures//windowJapan/windowJapan_COLOR.jpg" },
-      // { specularMap: "textures/windowJapan/windowJapan_SPEC.jpg" },
       { normalMap: "textures/windowJapan/windowJapan_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" }
-  },
-  lampLight: {
-    maps: [
-      {map: "textures/characterJapan.png"}
-    ],
-    mapProps: { repeatScale: 1, shading: "smooth" },
-    props: {  transparent: true, alwaysTransparent: true }
   },
   lanternNew: {
     maps: [
@@ -110,20 +90,13 @@ module.exports = {
       { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: { specularCoef: 10 }
+    props: { shininess: 10 }
   },
   bannerLogo: {
     maps: [
       { map: "textures/bannerLogoAlt.png" }
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
-    props: { transparent: false }
-  },
-  grass: {
-    maps: [
-      { map: "textures/grass256.jpg" }
-    ],
-    mapProps: { repeatScale: 1, shading: "flat" },
     props: { transparent: false }
   },
   plasticBlack: {
@@ -142,7 +115,7 @@ module.exports = {
     props: {
     color: "#FFFFFF",
     emisssive: "#FFFFFF",
-    typeShading: "MeshBasicMaterial"
+    shadingType: "MeshBasicMaterial"
    }
  },
   gradient: {

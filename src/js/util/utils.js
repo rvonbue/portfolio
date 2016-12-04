@@ -38,16 +38,16 @@ module.exports = {
       text: { color:"#0090FF", color2: "#00cece"  },
       world: {
         background: {
-          cssSkyGradient: 19 // 0 - 23 is valid
+          cssSkyGradient: 5 // 0 - 23 is valid
         },
         hemisphere: {
           sky:"#9be2fe",
           ground: "#656565",
-          intensity: 0.18
+          intensity: 0.1
         },
         directional: {
           color: "#FFFFFF",
-          intensity: 0.5, //0.3
+          intensity: 0.45, //0.3
           position: {x: 50, y: 50, z: 20}
         }
       }

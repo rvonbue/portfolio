@@ -108,8 +108,18 @@ var SceneControls = BaseModel.extend({
       new THREE.CubeGeometry( size, size, size ),
       new THREE.MeshFaceMaterial( materialArray )
     );
-
+    // scene.background = skyBox;
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [skyBox]);
+  },
+  getUrls: function () {
+    var format = '.jpg';
+    var path = "textures/cubeMap/aboveClouds/";
+
+    return [
+      path + 'posx' + format, path + 'negx' + format,
+      path + 'posy' + format, path + 'negy' + format,
+      path + 'posz' + format, path + 'negz' + format
+    ];
   },
   getMaterialArray: function () {
     var urls = this.getUrls();
@@ -117,22 +127,12 @@ var SceneControls = BaseModel.extend({
 
   	for (var i = 0; i < 6; i++)
   		materialArray.push( new THREE.MeshBasicMaterial({
-  			map: THREE.ImageUtils.loadTexture( urls[i] ),
+  			map: new THREE.TextureLoader().load( urls[i] ),
   			side: THREE.BackSide
 		  })
     );
 
     return materialArray;
-  },
-  getUrls: function () {
-    var format = '.jpg';
-    var path = "textures/cubeMap/forbiddenCity/";
-
-    return [
-      path + 'posx' + format, path + 'negx' + format,
-      path + 'posy' + format, path + 'negy' + format,
-      path + 'posz' + format, path + 'negz' + format
-    ];
   },
   resetRaycaster: function (arr) {
     this.set("raycasterObjects", arr);

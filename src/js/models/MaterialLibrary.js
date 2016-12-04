@@ -4,96 +4,93 @@ import BaseModel from "./BaseModel";
 import THREE from "three";
 import materialMapList from "../data/materials/combinedMaterials";
 // // import utils from "../util/utils";
-// import materialMapList from "../data/materials/combinedMaterials";
-// import fontData from "../data/fonts/roboto_regular.json";
-// import utils from "../util/utils";
-// var {}
-
 
 var MaterialLibrary = BaseModel.extend({
   initialize: function () {
     BaseModel.prototype.initialize.apply(this, arguments);
 
-    this.materials = [
-      new THREE.MeshPhongMaterial,
-      new THREE.MeshLambertMaterial,
-      new THREE.MeshStandardMaterial,
-      new THREE.MultiMaterial,
-      new THREE.MeshBasicMaterial
-    ];
     this.materialCollection = [];
     this.addListeners();
-    console.log("Material Library", this);
   },
   addListeners: function () {
     commandController.reply(commandController.LOAD_ENV_MAP, this.getReflectionCube, this);
     commandController.reply(commandController.LOAD_MATERIAL, this.loadMaterial, this);
-    commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
     commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
   },
   getMaterial: function (oldMat) {
-    // console.log("mat:::", oldMat);
     var matFromLib = this.doesMaterialExist(oldMat);
     var newMaterial;
 
-    if ( !matFromLib ) {
+    if ( !matFromLib ) { // if material doesn't exist
       matFromLib = this.makeNewMaterial(oldMat);
       this.materialCollection.push(matFromLib);
       newMaterial =  matFromLib;
     } else {
-      newMaterial = oldMat;
+      newMaterial = matFromLib;
     }
 
-    this.setMaterialMap(newMaterial);
+    this.setMaterialProperties(newMaterial);
 
     return newMaterial;
   },
   makeNewMaterial: function (mat) {
-    var hasShadingType = materialMapList[mat.name] && materialMapList[mat.name].typeShading ? true : false;
-    var shadingType = hasShadingType ? materialMapList[mat.name].typeShading : false;
+    var matmaplist = materialMapList[mat.name];
+    var hasProps = matmaplist && matmaplist.props;
+    var hasShadingType = hasProps && matmaplist.props.shadingType ? true : false;
+    var shadingType = hasShadingType ? matmaplist.props.shadingType : false;
 
     if ( hasShadingType ) {
-      console.log("hasShadingType:", hasShadingType);
       return new THREE[shadingType]({ name: mat.name });
     } else {
       return new THREE[mat.type]({ name: mat.name });
     }
 
   },
-  setMaterialMap: function (mat) {
+  setMaterialProperties: function (mat) {
     if (!materialMapList[mat.name]) return;
 
     var self = this;
     var materialObj = materialMapList[mat.name];
 
-    _.each(materialObj, function (prop, key) {
-      if (key === "maps") _.each(prop, function (mapObj) {
-        self.setNewTexture(mapObj, mat, materialObj.mapProps);
-      });
-      if (key === "props") self.setMaterialAttributes(mat, prop);
+    _.each(materialObj, function (value, key) {
+
+      if (key === "maps") {
+        _.each(value, function (mapObj) {
+          self.setNewTexture(mapObj, mat, materialObj.mapProps);
+        });
+      }
+
+      if (key === "props") {
+        self.setMaterialAttributes(mat, value);
+      }
+
     });
   },
   setNewTexture: function (mapObj, mat, options) {
     var texture = null;
 
     _.each(mapObj, function (mapURL, mapKey) {
-      if (mapURL === null || mapURL === "null") return null;
-        // console.log("--------mapKey-------------", mapKey);
-      if (mapKey === "envMap") {
-        // console.log("--------mat-------------", mat);
-        // if (mapURL === "refraction" ) mat[mapKey] = this.getRefractionCube();
-         mat[mapKey] = this.getReflectionCube(mapURL);
-        return;
-      };
 
-      mat[mapKey] = new THREE.TextureLoader(this.manager).load( mapURL, function (texture) {
-        if (options.repeatScale) {
-          texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-          texture.repeat.set( options.repeatScale, options.repeatScale );
-          texture.shading = options.shading === "smooth" ? THREE.SmoothShading : THREE.FlatShading ;
-        }
-      });
+      switch(mapKey) {
+        case "envMap":
+          mat[mapKey] = this.getReflectionCube(mapURL);
+          break;
+        default:
+          mat[mapKey] = this.getImageTexture(mapURL, options);
+      }
+
     }, this);
+
+  },
+  getImageTexture: function (mapURL, options) {
+    var texture = new THREE.TextureLoader(this.get("manager")).load( mapURL, function (texture) {
+      if (options.repeatScale) {
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set( options.repeatScale, options.repeatScale );
+        texture.shading = options.shading === "smooth" ? THREE.SmoothShading : THREE.FlatShading ;
+      }
+    });
+    return texture;
   },
   setMaterialAttributes: function (mat, props) {
     // console.log("mat:", mat);
@@ -107,12 +104,9 @@ var MaterialLibrary = BaseModel.extend({
   },
   doesMaterialExist: function (oldMat) {
     var newMaterial = false;
+    var matInCollection = this.materialCollection[oldMat.name];
 
-    _.each(this.materialCollection, function (mat) {
-      if ( mat.name === oldMat.name ) {
-        newMaterial = mat;
-      }
-    });
+    if (matInCollection) newMaterial = matInCollection;
 
     return newMaterial;
   },
@@ -120,7 +114,6 @@ var MaterialLibrary = BaseModel.extend({
     var material = new THREE.MeshLambertMaterial({
       map: new THREE.TextureLoader(this.get("manager")).load( imgSrc )
     });
-    console.log("loadMaterial", imgSrc);
     return material;
   },
   getCubeImageUrls: function (modelUrlBase) {
@@ -158,9 +151,6 @@ var MaterialLibrary = BaseModel.extend({
 
     var material = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true } );
     return material
-  },
-  getImageTexture: function (imgSrc) {
-    return new THREE.TextureLoader(this.get("manager")).load( imgSrc );
   }
 });
 
