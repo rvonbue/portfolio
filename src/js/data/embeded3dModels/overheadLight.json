@@ -14,7 +14,7 @@ module.exports = {
     "name": "Circle.001Geometry.2",
     "uvs": [],
     "materials": [{
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthTest": true,
         "depthWrite": true,
         "wireframe": false,
@@ -31,7 +31,7 @@ module.exports = {
         "DbgName": "light",
         "transparent": false
     },{
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "depthTest": true,
         "depthWrite": true,
         "wireframe": false,

@@ -62,7 +62,6 @@ var FloorBuilder3d = Base3dView.extend({  //setups up all the outside lights and
     var lampLightPos = {x:18, y: 3, z: 11, spacer: 7.2 };
 
     var lampModel = modelLoader.parseJSON(lampLight);
-    console.log("model.materials", lampModel.materials);
     var lampLightMeshes =[new THREE.Mesh( lampModel.geometry, new THREE.MultiMaterial(lampModel.materials))];
     this.duplicateMesh(lampLightMeshes, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
 

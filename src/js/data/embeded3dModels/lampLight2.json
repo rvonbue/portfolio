@@ -27,7 +27,7 @@ module.exports = {
         "DbgColor": 15658734,
         "DbgIndex": 0,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "lampLightEmit",
         "blending": "NormalBlending",
         "transparent": false
@@ -44,7 +44,7 @@ module.exports = {
         "DbgColor": 15597568,
         "DbgIndex": 1,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "lanternNew",
         "blending": "NormalBlending",
         "transparent": false
@@ -61,7 +61,7 @@ module.exports = {
         "DbgColor": 60928,
         "DbgIndex": 2,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "plasticBlack",
         "blending": "NormalBlending",
         "transparent": false

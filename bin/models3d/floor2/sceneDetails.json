@@ -27,7 +27,7 @@
         "DbgColor": 238,
         "DbgIndex": 3,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "woodFloor2",
         "blending": "NormalBlending",
         "transparent": false
@@ -44,7 +44,7 @@
         "DbgColor": 60928,
         "DbgIndex": 2,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "offWhite",
         "blending": "NormalBlending",
         "transparent": false
@@ -61,7 +61,7 @@
         "DbgColor": 61166,
         "DbgIndex": 5,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "textureWall",
         "blending": "NormalBlending",
         "transparent": false
@@ -78,7 +78,7 @@
         "DbgColor": 15658496,
         "DbgIndex": 4,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "drywall",
         "blending": "NormalBlending",
         "transparent": false
@@ -95,7 +95,7 @@
         "DbgColor": 15597568,
         "DbgIndex": 1,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "overheadLight",
         "blending": "AdditiveBlending",
         "transparent": false
@@ -112,7 +112,7 @@
         "DbgColor": 15658734,
         "DbgIndex": 0,
         "colorEmissive": [0,0,0],
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "DbgName": "plasticBlack",
         "blending": "NormalBlending",
         "transparent": false

@@ -124,7 +124,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     var canvasSize = this.getCanvasSize(aboutMeData[index].dimensions);
     var geometry = new BoxGeometry( canvasSize.width, canvasSize.height , 0.1);
     var src = aboutMeData[index].src + aboutMeData[index].name + "." + aboutMeData[index].dimensions.type;
-    var frontMaterial = commandController.request(commandController.LOAD_MATERIAL, src)
+    var frontMaterial = commandController.request(commandController.LOAD_MATERIAL, src);
     var lMaterial = new MeshLambertMaterial();
     var materials = [ lMaterial, lMaterial, lMaterial, lMaterial, frontMaterial, lMaterial ];
 
@@ -168,7 +168,10 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
        height = height * ratio;    // Reset height to match scaled image
     }
     return { width: newWidth, height: newHeight };
-  }
+  },
+  getAllMeshes: function () {
+    return [...this.get("sceneLights"), ...this.get("interactiveObjects"), this.get("object3d") ];
+  },
 });
 
 module.exports = AboutMe3d;

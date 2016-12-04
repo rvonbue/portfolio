@@ -11,7 +11,7 @@
         "visible": true,
         "transparent": false,
         "blending": "NormalBlending",
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "opacity": 1,
         "depthTest": true,
         "wireframe": false,
@@ -28,7 +28,7 @@
         "visible": true,
         "transparent": false,
         "blending": "NormalBlending",
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "opacity": 1,
         "depthTest": true,
         "wireframe": false,
@@ -45,7 +45,7 @@
         "visible": true,
         "transparent": false,
         "blending": "NormalBlending",
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "opacity": 1,
         "depthTest": true,
         "wireframe": false,
@@ -62,7 +62,7 @@
         "visible": true,
         "transparent": false,
         "blending": "NormalBlending",
-        "colorAmbient": [0.64,0.64,0.64],
+        
         "opacity": 1,
         "depthTest": true,
         "wireframe": false,
