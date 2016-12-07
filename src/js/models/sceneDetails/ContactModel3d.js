@@ -17,7 +17,7 @@ var ContactModel3d = SceneDetailsBaseModel3d.extend({
       directional: { color: "#FFFFFF", intensity: 0.1 },  // color intensity,
       hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity:1 }  // skyColor, groundColor, intensity
     },
-    modelUrls: [ "sceneDetails", "businessCard" ]
+    modelUrls: [ "sceneDetails" ]
   }),
   initialize: function () {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);

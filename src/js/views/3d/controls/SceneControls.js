@@ -10,7 +10,7 @@ var SceneControls = BaseModel.extend({
     raycasterObjects: [],
   },
   initialize: function (options) {
-    _.bindAll(this, "onMouseClick", "onMouseMove");
+    _.bindAll(this, "onMouseClick", "onMouseMove", "onMouseDown");
     this.lastRaycastObjectId = 1325435;
     this.canvasEl = $(options.canvasEl);
     this.camera = options.camera;
@@ -26,6 +26,8 @@ var SceneControls = BaseModel.extend({
     this.canvasEl.on("mousemove", this.throttledMouseMove);
     this.canvasEl.on("mouseleave", this.triggerHoverNav);
     this.canvasEl.on("mouseup", this.onMouseClick);
+    this.canvasEl.on("mousedown", this.onMouseDown);
+
 
     eventController.on(eventController.ON_RESIZE, this.onResize, this);
     eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
@@ -35,6 +37,7 @@ var SceneControls = BaseModel.extend({
     this.canvasEl.off("mousemove", this.throttledMouseMove);
     this.canvasEl.off("mouseleave", this.triggerHoverNav);
     this.canvasEl.off("mouseup",this.onMouseClick);
+    this.canvasEl.off("mousedown", this.onMouseDown);
 
     eventController.off(eventController.ON_RESIZE, this.onResize, this);
     eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
@@ -62,7 +65,20 @@ var SceneControls = BaseModel.extend({
     this.width = size.w;
     this.raycasterOffset = { x: 1, y: this.canvasEl.offset().top };
   },
+  onMouseDown: function (evt) {
+    this.clickStartPos = {x: evt.pageX | evt.clientX, y: evt.pageY | evt.clientY };
+  },
   onMouseClick: function (evt) {
+    var dragTolerance = 10;
+    var x = evt.pageX | evt.clientX;
+    var y = evt.pageY | evt.clientY;
+
+
+    var xDiff = Math.abs(this.clickStartPos.x - x);
+    var yDiff = Math.abs(this.clickStartPos.y - y);
+
+    if ( xDiff > dragTolerance || yDiff > dragTolerance) return;
+
     var closestObject = this.shootRaycaster(evt);
     if ( closestObject ) eventController.trigger(eventController.MOUSE_CLICK_SELECT_OBJECT_3D, closestObject);
   },

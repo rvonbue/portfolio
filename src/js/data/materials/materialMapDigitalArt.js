@@ -16,12 +16,15 @@ module.exports = {
       { normalMap: "textures/leather/leather_NRM.jpg" }
     ],
     mapProps: { repeatScale: 5, shading: "smooth" },
-    props: { color: "#2e1a07"}
+    props: {
+      color: "#cbc773",
+      "colorSpecular": [0.559829,0.559829,0.559829]
+    }
   },
   sofaWood: {
     maps: [
       { map: "textures/woodBare/woodBare_COLOR.jpg" },
-      { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
+      // { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
       // { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
     ],
     mapProps: { repeatScale: 5, shading: "smooth" },
@@ -45,5 +48,20 @@ module.exports = {
   },
   offWhite: {
     props: { color: "#FFFFFF"}
+  },
+  flowerYellow: {
+    props: { color: "#fff747", shadingType: "MeshLambertMaterial"}
+  },
+  flowerGreen: {
+    props: { color: "#4c8f00", shadingType: "MeshLambertMaterial"}
+  },
+  flowerWhite: {
+    props: { color: "#FFFFFF", shadingType: "MeshLambertMaterial"}
+  },
+  vase: {
+    maps: [
+      { map: "textures/digitalArt/chinaBottleSeamless.png" }
+    ],
+    mapProps: { repeatScale: 2, shading: "smooth" },
   }
 };

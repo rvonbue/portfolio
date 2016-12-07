@@ -47,7 +47,7 @@ module.exports = {
         },
         directional: {
           color: "#FFFFFF",
-          intensity: 0.45, //0.3
+          intensity: 0.3, //0.3
           position: {x: 50, y: 50, z: 20}
         }
       }

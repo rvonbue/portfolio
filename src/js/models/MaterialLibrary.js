@@ -16,6 +16,7 @@ var MaterialLibrary = BaseModel.extend({
     commandController.reply(commandController.LOAD_ENV_MAP, this.getReflectionCube, this);
     commandController.reply(commandController.LOAD_MATERIAL, this.loadMaterial, this);
     commandController.reply(commandController.LOAD_VIDEO_TEXTURE, this.getVideoTexture, this);
+    commandController.reply(commandController.LOAD_IMAGE_TEXTURE, this.getImageTexture, this);
   },
   getMaterial: function (oldMat) {
     var matFromLib = this.doesMaterialExist(oldMat);
@@ -28,7 +29,6 @@ var MaterialLibrary = BaseModel.extend({
     } else {
       newMaterial = matFromLib;
     }
-
     this.setMaterialProperties(newMaterial);
 
     return newMaterial;
@@ -84,7 +84,7 @@ var MaterialLibrary = BaseModel.extend({
   },
   getImageTexture: function (mapURL, options) {
     var texture = new THREE.TextureLoader(this.get("manager")).load( mapURL, function (texture) {
-      if (options.repeatScale) {
+      if (options && options.repeatScale) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set( options.repeatScale, options.repeatScale );
         texture.shading = options.shading === "smooth" ? THREE.SmoothShading : THREE.FlatShading ;

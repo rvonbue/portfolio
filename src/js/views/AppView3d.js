@@ -103,9 +103,9 @@ var AppView3d = BaseView.extend({
     this.childViews = this.childViews.concat(childViews);
   },
   addHelpers: function () {
-    // var axisHelper = new THREE.AxisHelper( 50 );
-    // axisHelper.position.y = 40;
-    // this.scene.add( axisHelper );
+    var axisHelper = new THREE.AxisHelper( 50 );
+    axisHelper.position.y = 40;
+    this.scene.add( axisHelper );
     // var size = 10;
     // var step = 1;
     //

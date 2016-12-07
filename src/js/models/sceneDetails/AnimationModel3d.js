@@ -8,16 +8,20 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
     name: "AnimationModel3dSceneDetails",
-    initialCameraPosition: { x:0, y: 1.5, z: 4.5},
-    initialCameraTarget: { x:0, y: 3.5, z: 0},
+    initialCameraPosition: { x:0, y: 0, z: -3},
+    initialCameraTarget: { x:0, y: 1.5, z: -10},
     pointLights: [
-      {x: 6, y: 1, z: 1.5, color: "#FFFFFF", intensity: 1, distance: 2 },
-      {x: -6, y: 1, z: 1, color: "#FFFFFF", intensity: 1, distance: 2 },
+      {x: -6, y: 1, z: -1, color: "#FFFFFF", intensity: 1, distance: 2 },
+      {x: -6, y: 2, z: -8, color: "#FFFFFF", intensity: 1, distance: 4 },
+      {x: -6, y: 2, z: -14, color: "#FFFFFF", intensity: 1, distance: 4 },
+      {x: 6,  y: 1, z: -1, color: "#FFFFFF", intensity: 1, distance: 2 },
+      {x: 6,  y: 2, z: -8, color: "#FFFFFF", intensity: 1, distance: 4 },
+      {x: 6,  y: 2, z: -14, color: "#FFFFFF", intensity: 1, distance: 4 },
     ],
-    directionalLight: { color: "#FF0000", intensity: 1 },
+    // directionalLight: { color: "#FF0000", intensity: 1 },
     intialAmbientLights: {
       directional: { color: "#FFFFFF", intensity: 0},  // color intensity,
-      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.06 }  // skyColor, groundColor,
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.1 }  // skyColor, groundColor,
     }
   }),
   initialize: function () {
@@ -45,11 +49,11 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     return videoEl.paused;
   },
   getMovieScreen: function () {
-    var size = { w: 16 *.75, h: 9 *.75};
+    var size = { w: 16 *.6, h: 9 *.6};
     var geometry = new PlaneGeometry( size.w, size.h );
     var videoTexture = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
     var mesh = new Mesh( geometry, videoTexture );
-    mesh.position.set(0, 5, -3);
+    mesh.position.set(0, 3.25, -15.5);
     this.setClickType(mesh);
     return mesh;
   },
