@@ -8,8 +8,13 @@ module.exports = {
       { specularMap: "textures/fabric/fabric_SPEC.jpg" },
       { normalMap: "textures/fabric/fabric_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 8, shading: "flat" },
-    props: {color: "#FF0000" }
+    mapProps: {
+      repeatScale: 8,
+      shading: "flat"
+    },
+    props: {
+      color: "#FF0000"
+    }
   },
   goldFloralSeamless: {
     maps: [
@@ -17,7 +22,10 @@ module.exports = {
       // { normalMap: "textures/fabric/fabric_NRM.jpg" }
       // { specularMap: "textures/fabric/fabric_SPEC.jpg" },
     ],
-    mapProps: { repeatScale: 1, shading: "flat" },
+    mapProps: {
+      repeatScale: 1,
+      shading: "flat"
+    },
     // props: {color: "#FF0000" }
   },
   leather: {
@@ -26,7 +34,10 @@ module.exports = {
   //     // { specularMap: "textures/leather/leather_SPEC.jpg" },
   //     // { normalMap: "textures/leather/leather_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 5, shading: "flat" },
+    mapProps: {
+      repeatScale: 5,
+      shading: "flat"
+    },
     props: {
       color: "#FFFFFF",
     }
@@ -37,17 +48,38 @@ module.exports = {
       // { specularMap: "textures/leather/leather_SPEC.jpg" },
       // { normalMap: "textures/leather/leather_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 5, shading: "flat" },
+    mapProps: {
+      repeatScale: 5,
+      shading: "flat"
+    },
       // props: {color: "#FF0000" }
   },
   wallTan: {
-    props: { color: "#CCB68D", shadingType: "MeshLambertMaterial"}
+    props: {
+      shadingType: "MeshLambertMaterial",
+      color: "#CCB68D"
+    }
   },
   movieLight: {
     maps: [
       { map: "textures/3dAnimation/movieLight.png" },
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: {shadingType: "MeshBasicMaterial", emissiveIntensity: 0.8, color:"#FFFFFF", colorEmissive: "#FFFFFF"}
+    props: {
+      shadingType: "MeshBasicMaterial",
+      color:"#FFFFFF",
+      colorEmissive: "#FFFFFF",
+      emissiveIntensity: 0.3,
+     }
+  },
+  goldRedSeamless: {
+    maps: [
+      { map: "textures/3dAnimation/goldRedSeamless/goldRedSeamless.png" },
+    ],
+    mapProps: { repeatScale: 20, shading: "flat" },
+    props: {
+      shadingType: "MeshPhongMaterial",
+     }
+
   }
 };

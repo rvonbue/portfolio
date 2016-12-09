@@ -61,16 +61,15 @@ module.exports = {
    }
   },
   lampLightEmit: {
-    // maps: [
-    //   {emissiveMap: "textures/lanternEmissiveMap.png"},
-    // ],
-    // mapProps: { repeatScale: 1, shading: "smooth" },
+    maps: [
+      { map: "textures/lanternRed.png"},
+    ],
+    mapProps: { repeatScale: 1, shading: "smooth" },
     props: {
       color: colorPallete.lampLight.color,
       specular: colorPallete.lampLight.color,
       emissive: colorPallete.lampLight.colorEmissive,
       emissiveIntensity: 0.2,
-      // specular: colorPallete.lampLight.color,
      }
   },
   shutterJapan:{
@@ -86,8 +85,8 @@ module.exports = {
   woodFloor: {
     maps: [
       { map: "textures/woodFloor/woodFloor_COLOR.jpg" },
-      { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" },
-      { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" }
+      { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" },
+      { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { shininess: 10 }
