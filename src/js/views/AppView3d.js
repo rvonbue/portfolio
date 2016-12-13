@@ -13,7 +13,7 @@ import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
 import LoadingBarView from "./components/LoadingBarView";
 import LinkHighlighterView from "./components/LinkHighlighterView";
 import HomeButtonView from "./components/HomeButtonView";
-
+import DatGuiView from "./3d/DatGuiView";
 import StatsView from "./components/statsView";
 // import { CSS3DRenderer, CSS3DObject, Scene } from 'css3drenderer';
 // import css3drenderer from 'css3drenderer';
@@ -191,9 +191,14 @@ var AppView3d = BaseView.extend({
     this.renderer.setSize( size.w, size.h );
     eventController.trigger(eventController.ON_RESIZE, size);
   },
-  render: function () {
+  renderDev: function () {
     this.statsView = new StatsView();
     $("body").append(this.statsView.render().el);
+    var datGui = new DatGuiView();
+        datGui.render();
+  },
+  render: function () {
+
     this.childViews = [
       new SceneDetailControlsView(),
       new LoadingBarView(),
@@ -208,6 +213,8 @@ var AppView3d = BaseView.extend({
     var canvasEl = $("<canvas>");
     this.$el.append(canvasEl);
     this.canvasEl = canvasEl[0];
+    this.renderDev();
+
     return this;
   }
 });
