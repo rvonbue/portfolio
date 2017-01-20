@@ -1,0 +1,52 @@
+.intro-view {
+  max-width: 650px;
+  width: 50%;
+  min-height: 250px;
+  margin: 0px auto;
+  padding-top: 48px;
+  p {
+    margin: 8px;
+    font-size: 150%;
+  }
+}
+.btn {
+  background: #4f4f4f;
+  background-image: -webkit-linear-gradient(top, #4f4f4f, #000000);
+  background-image: -moz-linear-gradient(top, #4f4f4f, #000000);
+  background-image: -ms-linear-gradient(top, #4f4f4f, #000000);
+  background-image: -o-linear-gradient(top, #4f4f4f, #000000);
+  background-image: linear-gradient(to bottom, #4f4f4f, #000000);
+  -webkit-border-radius: 30;
+  -moz-border-radius: 30;
+  border-radius: @borderRadius;
+  color: #ffffff;
+  font-size: 30px;
+  padding: 10px 20px 10px 20px;
+  margin-right: 20px;
+  text-decoration: none;
+  width: 50px;
+  display: inline-block;
+  cursor: pointer;
+  border: 2px solid @color-5;
+  .BoxShadowHelper(1);
+}
+
+.btn:hover {
+  background: #b82501;
+  text-decoration: none;
+  .BoxShadowHelper(3);
+}
+
+.intro-switch-2d, .intro-switch-3d {
+  text-transform: uppercase;
+}
+
+.button-container-2 {
+  width: 100%;
+  margin: 24px auto;
+  text-align: center;
+  border-top: none;
+  box-sizing: border-box;
+  border-radius: @borderRadius;
+  position: relative;
+}

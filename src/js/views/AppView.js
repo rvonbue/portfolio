@@ -4,6 +4,7 @@ import AppView3d from "./AppView3d";
 import AppView2d from "./AppView2d";
 import PhotoSwipeView from "./components/PhotoSwipeView";
 import SwitchView from "./components/SwitchView";
+import IntroView from "./components/IntroView";
 
 var AppView = BaseView.extend({
   className: "appview-container",
@@ -16,8 +17,9 @@ var AppView = BaseView.extend({
   },
   initScene: function () {
     // this.renderView2d();
-    this.renderView3d();
+    // this.renderView3d();
     // this.switchViews("2d");
+    this.$el.append(new IntroView().render().el);
   },
   switchViews: function (whichView) {
     switch (whichView) {
@@ -48,7 +50,7 @@ var AppView = BaseView.extend({
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
     this.$el.append(new SwitchView({}).render().el);
-    this.$el.append("<div class='sky-gradient'></div>");
+    this.$el.append("<div class='sky-gradient sky-gradient-13'></div>");
     return this;
   }
 });

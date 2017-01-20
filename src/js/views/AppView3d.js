@@ -30,14 +30,12 @@ var AppView3d = BaseView.extend({
     this.clock = new THREE.Clock();
   },
   addListeners: function () {
-    console.log("addListeners:AppView3d",this.renderLoop);
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     eventController.on(eventController.CSS_RENDERER, this.switchRenderer, this);
     $(window).on("resize", this.resize);
   },
   removeListeners: function () {
-    console.log("removeListeners:AppView3d");
     eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.off(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
     eventController.off(eventController.CSS_RENDERER, this.switchRenderer, this);
@@ -62,7 +60,7 @@ var AppView3d = BaseView.extend({
     // scene.fog = new THREE.FogExp2( "#FFFFFF", 0.01 );
     this.initCamera(size);
 
-    this.addHelpers();
+    // this.addHelpers();
     this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas:this.canvasEl });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
