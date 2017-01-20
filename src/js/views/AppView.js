@@ -2,6 +2,7 @@ import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import AppView3d from "./AppView3d";
 import AppView2d from "./AppView2d";
+
 import PhotoSwipeView from "./components/PhotoSwipeView";
 import SwitchView from "./components/SwitchView";
 import IntroView from "./components/IntroView";
@@ -16,24 +17,18 @@ var AppView = BaseView.extend({
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
   },
   initScene: function () {
-    // this.renderView2d();
-    // this.renderView3d();
-    // this.switchViews("2d");
     this.$el.append(new IntroView().render().el);
   },
   switchViews: function (whichView) {
-    switch (whichView) {
-      case "2d":
+    if (whichView === "2d") {
         if ( this.appView3d ) this.appView3d.hide();
-        if ( !this.appView2d ) this.renderView2d();
-        if ( this.appView2d ) this.appView2d.show();
-        break;
-      case "3d":
-        if ( this.appView2d ) this.appView2d.hide();
-        if ( !this.appView3d ) this.renderView3d();
-        if ( this.appView3d ) this.appView3d.show();
-        break;
-      default:
+
+        if ( !this.appView2d ) { this.renderView2d(); }
+        else { this.appView2d.show(); }
+    } else if (whichView === "3d") {
+      if ( this.appView2d ) this.appView2d.hide();
+      if ( !this.appView3d ) { this.renderView3d(); }
+      else  { this.appView3d.show(); }
     }
   },
   renderView2d: function () {

@@ -10,17 +10,17 @@ var SwitchView = BaseView.extend({
     "click .intro-switch-3d": "switchView3d",
   },
   initialize: function () {
+    var self = this;
     BaseView.prototype.initialize.apply(this, arguments);
-
+    eventController.once(eventController.SWITCH_VIEWS, function () {
+      self.destroy();
+    });
   },
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");
-    this.destroy();
   },
   switchView3d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
-    eventController.trigger(eventController.RESET_SCENE, "3d");
-    this.destroy();
   },
   destroy: function () {
     this.undelegateEvents();
