@@ -713,8 +713,13 @@ table {
   /* Non-prefixed version, currently
                                   not supported by any browser */
 }
-.button-container.video .hide {
-  display: none;
+
+.button-container.video {
+  bottom: 20px;
+  &.hide {
+    display: none;
+  }
+
 }
 /*! PhotoSwipe main CSS by Dmitry Semenov | photoswipe.com | MIT license */
 /*

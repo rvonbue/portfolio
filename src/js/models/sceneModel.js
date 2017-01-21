@@ -86,7 +86,7 @@ var SceneModel = BaseModel3d.extend({
         }
     });
 
-    // if ( text3d ) text3d.visible = hideText ? !hideText : visBool;
+    if ( text3d ) text3d.visible = hideText ? !hideText : visBool;
     if ( sceneDetails ) sceneDetails.showHide(visBool, this.get("selected"));
 
   },

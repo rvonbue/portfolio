@@ -7,6 +7,8 @@ import PhotoSwipeView from "./components/PhotoSwipeView";
 import SwitchView from "./components/SwitchView";
 import IntroView from "./components/IntroView";
 
+import utils from "../util/utils";
+
 var AppView = BaseView.extend({
   className: "appview-container",
   initialize: function () {
@@ -45,7 +47,9 @@ var AppView = BaseView.extend({
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
     this.$el.append(new SwitchView({}).render().el);
-    this.$el.append("<div class='sky-gradient sky-gradient-13'></div>");
+    var startSkyColor = utils.getColorPallete().world.background.cssSkyGradient;
+    var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
+    this.$el.append(skyGradientDiv);
     return this;
   }
 });

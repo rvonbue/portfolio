@@ -1,4 +1,4 @@
-@button-size: 48px;
+@buttonSize: 48px;
 
 .scene-detail-controls {
   .noselect;
@@ -13,7 +13,12 @@
   overflow: hidden;
 
   &.slide-controls { .button-container.slides { display: block; } }
-  &.video-controls { .button-container.video { display: block; }  }
+  &.video-controls {
+    .button-container.video {
+      display: block;
+      bottom: 40px;
+    }
+  }
 
 }
 .button-container {
@@ -53,10 +58,12 @@
 .button-pause,
 .button-right,
 .button-left,
-.button-toggle-close,
+.button-toggle-menu,
 .button-close,
 .button-skip-next,
-.button-skip-prev {
+.button-skip-prev,
+.button-home,
+.button-menu {
   display: inline-block;
   width: @button-size;
   height: @button-size;
@@ -87,7 +94,7 @@
    -ms-filter: "FlipH";
 }
 .button-pause {
-  background-image: url(../sprites/ic_pause_white_36px.svg);
+  background-image: url(../sprites/ic_pause_white_48px.svg);
 }
 .home-button-container {
   position: absolute;
@@ -98,12 +105,13 @@
 }
 
 .button-home {
-  width: 48px;
-  height: 48px;
   background-image: url(../sprites/ic_home_white_48px.svg);
 }
-.button-toggle-close {
-  .button-home;
+.button-menu {
+  background-image: url(../sprites/ic_list_white_48px.svg);
+}
+.button-toggle-menu {
+  .button-menu;
   display: block;
   margin: 0px auto;
   pointer-events: all;
@@ -111,7 +119,7 @@
 }
 
 .button-skip-next, .button-skip-prev {
-  background-image: url(../sprites/ic_skip_next_white_36px.svg);
+  background-image: url(../sprites/ic_skip_next_white_48px.svg);
 }
 .link-bar {
   background-color: @color-1;

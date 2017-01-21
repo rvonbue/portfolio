@@ -15,11 +15,11 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     initialCameraPosition: { x:0, y: 0, z: -3},
     initialCameraTarget: { x:0, y: 1.5, z: -10},
     pointLights: [
-      {x: -6, y: 6, z: -1, color: color, intensity: intensity, distance: distance },
-      {x: -6, y: 6, z: -7, color: color, intensity: intensity, distance: distance },
+      {x: -6, y: 6, z: -1,  color: color, intensity: intensity, distance: distance },
+      {x: -6, y: 6, z: -7,  color: color, intensity: intensity, distance: distance },
       {x: -6, y: 6, z: -12, color: color, intensity: intensity, distance: distance },
-      {x: 6,  y: 6, z: -1, color: color, intensity: intensity, distance: distance },
-      {x: 6,  y: 6, z: -7, color: color, intensity: intensity, distance: distance },
+      {x: 6,  y: 6, z: -1,  color: color, intensity: intensity, distance: distance },
+      {x: 6,  y: 6, z: -7,  color: color, intensity: intensity, distance: distance },
       {x: 6,  y: 6, z: -12, color: color, intensity: intensity, distance: distance },
     ],
     intialAmbientLights: {

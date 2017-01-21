@@ -184,6 +184,7 @@ var AppView3d = BaseView.extend({
   },
   resize: function () {
     var size = this.getWidthHeight();
+    console.log("SIZE:", size);
     this.camera.aspect = size.w / size.h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize( size.w, size.h );
@@ -192,8 +193,8 @@ var AppView3d = BaseView.extend({
   renderDev: function () {
     this.statsView = new StatsView();
     $("body").append(this.statsView.render().el);
-    var datGui = new DatGuiView();
-        datGui.render();
+    // var datGui = new DatGuiView();
+    //     datGui.render();
   },
   render: function () {
 

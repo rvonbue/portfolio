@@ -24,12 +24,10 @@ var SceneDetailControlsView = BaseView.extend({
     this.navBarHeight = 45;
   },
   addListeners: function () {
-    console.log("addListeners:SceneDetailControlsView");
     eventController.on(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
     eventController.on(eventController.VIDEO_PLAY_PAUSE, this.togglePlayPause, this);
   },
   removeListeners: function () {
-    console.log("removeListeners:SceneDetailControlsView");
     eventController.off(eventController.TOGGLE_SCENE_DETAILS_CONTROLS, this.show, this);
     eventController.off(eventController.VIDEO_PLAY_PAUSE, this.togglePlayPause, this);
   },

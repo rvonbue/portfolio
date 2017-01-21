@@ -63,7 +63,8 @@ var SceneControls = BaseModel.extend({
   onResize: function (size) {
     this.height = size.h;
     this.width = size.w;
-    this.raycasterOffset = { x: 1, y: this.canvasEl.offset().top };
+    var canvasOffsetY = 0; //  this.canvasEl.offset().top);
+    this.raycasterOffset = { x: 1, y: canvasOffsetY };
   },
   onMouseDown: function (evt) {
     this.clickStartPos = {x: evt.pageX | evt.clientX, y: evt.pageY | evt.clientY };

@@ -10,8 +10,8 @@ var HomeButtonView = BaseView.extend({
   LEAVE_TIMER: 1500,
   events: {
     "dblclick" : "resetSceneDetails",
-    "click .button-toggle-close": "toggleMenu",
-    "click .button-toggle-close.open": "resetSceneDetails",
+    "click .button-toggle-menu": "toggleMenu",
+    "click .button-toggle-menu.open": "resetSceneDetails",
     "mouseenter ul>li": "enterMenuItem",
     "mouseleave ul>li": "startLeaveTimer",
     "click #menu1": "closeMenu",
@@ -76,7 +76,7 @@ var HomeButtonView = BaseView.extend({
     return menuItems;
   },
   getMenuPosition: function () {
-    this.buttonToggleCloseEl  = this.$el.find(".button-toggle-close");
+    this.buttonToggleCloseEl  = this.$el.find(".button-toggle-menu");
     var position = this.buttonToggleCloseEl.offset();
     var width = this.buttonToggleCloseEl.width() /2;
     return {
@@ -145,7 +145,7 @@ var HomeButtonView = BaseView.extend({
     }
   },
   render: function () {
-    this.$el.append("<div class='button-toggle-close'></div>");
+    this.$el.append("<div class='button-toggle-menu' title='Toggle Navigation Menu'></div>");
     this.$el.append("<div id='menu1'></div>");
     return this;
   }
