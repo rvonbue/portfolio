@@ -4,7 +4,7 @@ var colorPallete = utils.getColorPallete();
 module.exports = {
   ground: {
     maps: [
-      { map: "textures/grass/grass_COLOR.jpg" },
+      { map: "textures/grass/grass.jpg" },
       // { specularMap: "textures/grass/grass_SPEC.jpg" },
       // { normalMap: "textures/grass/grass_NRM.jpg" }
     ],

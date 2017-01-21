@@ -184,7 +184,6 @@ var AppView3d = BaseView.extend({
   },
   resize: function () {
     var size = this.getWidthHeight();
-    console.log("SIZE:", size);
     this.camera.aspect = size.w / size.h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize( size.w, size.h );

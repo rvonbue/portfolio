@@ -53,7 +53,7 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   },
   getMovieScreen: function () {
     var size = { w: 16 *.6, h: 9 *.6};
-    var mat = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
+    var mat = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/cyclesDemo.mp4");
     var mesh = new Mesh( new PlaneGeometry( size.w, size.h ), mat );
     mesh.position.set(0, 3.25, -15.5);
     this.setClickType(mesh);

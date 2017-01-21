@@ -83,7 +83,7 @@ var SceneSelector = BaseView.extend({
         eventController.trigger(eventController.VIDEO_PLAY_PAUSE);
         break;
       case "link":
-      console.log("openLInk");
+      console.log("openLink");
         // window.open(intersectObject.object.clickData.url);
         break;
       default:
@@ -139,17 +139,26 @@ var SceneSelector = BaseView.extend({
       return;
     }
 
-    if ( !newSceneModelisReady && !oldSceneModel ) {
-      console.log("4 --- !newSceneModelisReady && !oldSceneModel");
-
+    if ( !newSceneModelisReady && !oldSceneModel ) { console.log("4 --- !newSceneModelisReady && !oldSceneModel");
       newSceneModel.set({ selected: true });
       this.zoomToSelectedSceneModel(newSceneModel);
-
       return;
     }
 
 
-    console.log("5 --- -------END------");
+
+    if ( newSceneModelisReady && !oldSceneModel ) { console.log("5 --- -------END------");
+      // this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel, false);
+      // this.hideSceneModels(newSceneModel);
+      // newSceneModel.setSelectedDelay(true, 1);
+      newSceneModel.set({ selected: true });
+      this.hideSceneModels(newSceneModel);
+      this.resetSceneDetails(newSceneModel, true, false ,false);
+
+      return;
+    }
+
+    console.log("6 --- -------END------");
     newSceneModel.set({ selected: true });
     this.zoomToSelectedSceneModel(newSceneModel);
   },
@@ -172,11 +181,6 @@ var SceneSelector = BaseView.extend({
         this.resetSceneDetails(selectedScene, true, false, false);
     }
   },
-  // goToSceneModelNotReady: function (oldSceneModel, newSceneModel, animate, trigger) {
-  //   var pos = newSceneModel.getCameraPosition();
-  //   this.swapSelectedModels(oldSceneModel, newSceneModel);
-  //   eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, animate, trigger );
-  // },
   resetSceneDetails: function ( sceneModel, moveCamera, animateCamera, trigger ) {
     eventController.trigger(eventController.TOGGLE_AMBIENT_LIGHTING, sceneModel.getAmbientLighting());
     eventController.trigger(eventController.RESET_RAYCASTER, sceneModel.get("sceneDetails").get("interactiveObjects"));
@@ -212,6 +216,7 @@ var SceneSelector = BaseView.extend({
     _.each(selectedFalse, function (sceneModel) {
       sceneModel.showHide(false);
     }, this);
+    console.log("hideSceneModels: ", selectedSceneModel);
     selectedSceneModel.hideOutsideDetails();
   },
   showSceneModels: function () {

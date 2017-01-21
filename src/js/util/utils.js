@@ -17,9 +17,6 @@ module.exports = {
       depth: Math.abs(bounding.min.z) + Math.abs(bounding.max.z),
     };
   },
-  // getObjectPosition: function () {
-  //
-  // },
   getMeshCenterRadius: function (pos, bounding) {
     var center = _.clone(bounding.center);
     center.y += bounding.radius;
@@ -42,7 +39,7 @@ module.exports = {
         },
         hemisphere: {
           sky:"#9be2fe",
-          ground: "#656565",
+          ground: "#FFFFFF",
           intensity: 0.1
         },
         directional: {

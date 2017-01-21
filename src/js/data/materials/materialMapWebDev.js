@@ -4,7 +4,7 @@ var basePath = "textures/webDev/";
 
 module.exports = {
   cityNight: {
-    maps: [{ map: basePath + "cityNightAlt1.jpg" }],
+    maps: [{ map: basePath + "cityNightAlt2.jpg" }],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: {
       shadingType: "MeshBasicMaterial"
@@ -80,9 +80,9 @@ module.exports = {
       maps: [{ map: basePath + "computer/powerButton.jpg" } ],
       mapProps: { repeatScale: 1, shading: "flat" },
   },
-  rugPersian: {
+  rugPersianHalf: {
     maps:[
-      { map: basePath + "rugPersian.png" }
+      { map: basePath + "rugPersianHalf.png" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { transparent: true, alwaysTransparent: true }

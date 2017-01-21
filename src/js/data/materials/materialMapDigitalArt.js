@@ -60,7 +60,7 @@ module.exports = {
   },
   vase: {
     maps: [
-      { map: "textures/digitalArt/chinaBottleSeamless.png" }
+      { map: "textures/chinaBottleSeamless.png" }
     ],
     mapProps: { repeatScale: 2, shading: "smooth" },
   }

@@ -98,12 +98,6 @@ var LightControls = BaseView.extend({
   getWorldLight: function (lightType) {
     return _.findWhere(this.worldLights, {type: lightType});
   },
-  setDirectionalLight: function (light, newLight) {
-    if (!newLight) return;
-    light.color = light.hex = new THREE.Color(newLight.color);
-    var tween = this.getTween(light, newLight.intensity, 1500);
-    tween.start();
-  },
   addDirectionalLight: function () {
     var directionalLight = new THREE.DirectionalLight(
       worldColor.directional.color,
@@ -114,11 +108,19 @@ var LightControls = BaseView.extend({
     directionalLight.position.set(pos.x, pos.y, pos.z);
     this.worldLights.push(directionalLight);
   },
+  setDirectionalLight: function (light, newLight) {
+    if (!newLight) return;
+    light.color = light.hex = new THREE.Color(newLight.color);
+    light.intensity = newLight.intensity;
+    // var tween = this.getTween(light, newLight.intensity, 1500);
+    // tween.start();
+  },
   setHemiLight: function (light, newLight) {
     light.skyColor =  new THREE.Color(newLight.skyColor);
     light.groundColor = new THREE.Color(newLight.groundColor);
-    var tween = this.getTween(light, newLight.intensity, utils.getAnimationSpeed().lightOut, light );
-    tween.start();
+    light.intensity = newLight.intensity;
+    // var tween = this.getTween(light, newLight.intensity, utils.getAnimationSpeed().lightOut, light );
+    // tween.start();
   },
   addHemisphereLight: function () {
 
