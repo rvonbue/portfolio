@@ -17,7 +17,19 @@ module.exports = {
     ],
     mapProps: { repeatScale: 5, shading: "smooth" },
     props: {
-      color: "#cbc773",
+      color: "#E0D6C7",
+      "colorSpecular": [0.559829,0.559829,0.559829]
+    }
+  },
+  button: {
+    maps: [
+      { map: "textures/leather/leather_COLOR.jpg" },
+      { specularMap: "textures/leather/leather_SPEC.jpg" },
+      { normalMap: "textures/leather/leather_NRM.jpg" }
+    ],
+    mapProps: { repeatScale: 5, shading: "smooth" },
+    props: {
+      color: "#bc9055",
       "colorSpecular": [0.559829,0.559829,0.559829]
     }
   },

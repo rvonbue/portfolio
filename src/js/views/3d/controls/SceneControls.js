@@ -155,6 +155,7 @@ var SceneControls = BaseModel.extend({
     this.set("raycasterObjects", arr);
   },
   cancelSelectMeshTimer: function () {
+    
     if (this.selectMeshTimer) {
       clearTimeout(this.selectMeshTimer);
       this.selectMeshTimer = null;

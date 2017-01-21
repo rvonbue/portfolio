@@ -40,7 +40,7 @@ module.exports = {
         hemisphere: {
           sky:"#9be2fe",
           ground: "#FFFFFF",
-          intensity: 0.1
+          intensity: 0.05
         },
         directional: {
           color: "#FFFFFF",

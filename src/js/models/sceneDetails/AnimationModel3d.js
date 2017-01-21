@@ -12,7 +12,7 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
     {
     name: "AnimationModel3dSceneDetails",
-    initialCameraPosition: { x:0, y: 0, z: -3},
+    initialCameraPosition: { x:0, y: 0, z:  1 },
     initialCameraTarget: { x:0, y: 1.5, z: -10},
     pointLights: [
       {x: -6, y: 6, z: -1,  color: color, intensity: intensity, distance: distance },
@@ -55,7 +55,7 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
     var size = { w: 16 *.6, h: 9 *.6};
     var mat = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/cyclesDemo.mp4");
     var mesh = new Mesh( new PlaneGeometry( size.w, size.h ), mat );
-    mesh.position.set(0, 3.25, -15.5);
+    mesh.position.set(0, 3.25, -8);
     this.setClickType(mesh);
     return mesh;
   },

@@ -131,6 +131,7 @@ var SceneSelector = BaseView.extend({
       this.hideSceneModels(newSceneModel);
       return;
     }
+
     if ( !newSceneModelisReady && oldSceneModelisReady ) { console.log("3 --- !newSceneModelisReady && oldSceneModelisReady");
       var pos = newSceneModel.getCameraPosition();
       this.swapSelectedModels(oldSceneModel, newSceneModel);
@@ -144,8 +145,6 @@ var SceneSelector = BaseView.extend({
       this.zoomToSelectedSceneModel(newSceneModel);
       return;
     }
-
-
 
     if ( newSceneModelisReady && !oldSceneModel ) { console.log("5 --- -------END------");
       // this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel, false);
@@ -216,7 +215,6 @@ var SceneSelector = BaseView.extend({
     _.each(selectedFalse, function (sceneModel) {
       sceneModel.showHide(false);
     }, this);
-    console.log("hideSceneModels: ", selectedSceneModel);
     selectedSceneModel.hideOutsideDetails();
   },
   showSceneModels: function () {

@@ -7,27 +7,26 @@ import utils from "../../util/utils";
 
 var AboutMe3d = SceneDetailsBaseModel3d.extend({
   defaults: _.extend({},SceneDetailsBaseModel3d.prototype.defaults,
-    {
-      name: "aboutMe",
-      initialCameraPosition: { x:0, y: 0.25, z: 1.5},
-      initialCameraTarget: { x:0, y: 2.25, z: -5},
-      pointLights: [
-        { x: -4, y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 },
-        { x: -0.5,  y: 6, z: -2, color: "#FFFFFF", intensity: 0.50, distance: 5 },
-        { x: 4,  y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 }
+  {
+    name: "aboutMe",
+    initialCameraPosition: { x:0, y: 0.25, z: 2.5},
+    initialCameraTarget: { x:0, y: 2.25, z: -5},
+    pointLights: [
+      { x: -4.9, y: 3, z: -1.8, color: "#FFFFFF", intensity: 1, distance: 8 },
+      { x:  4.9, y: 3, z: -1.8, color: "#FFFFFF", intensity: 1, distance: 8 }
     ],
     pillar: [
       { x: -5, y: 0, z: -5.5, text: "JS" },
       { x: 5,  y: 0, z: -5.5, text: "CSS" }
     ],
     intialAmbientLights: {
-      directional: { color: "#FFFFFF", intensity: 0.5 },  // color intensity,
-      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.5 }  // skyColor, groundColor, intensity
+      directional: { color: "#FFFFFF", intensity: 0.4 },  // color intensity,
+      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.4 }  // skyColor, groundColor, intensity
     },
     modelUrls: ["sceneDetails", "pillar", "githubBanner", "glassCabinet"],
   }),
-  MAX_IMAGE_WIDTH: 3, //world units
-  MAX_IMAGE_HEIGHT: 1.75,
+  MAX_IMAGE_WIDTH: 2.5, //world units
+  MAX_IMAGE_HEIGHT: 1.25,
   initialize: function () {
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
   },
@@ -36,8 +35,8 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
 
     var interactiveObjects = [];
     var posterPos = { right:{
-        startPos: { x: -9, y: 6.25, z: -6.17, tallest: 0 },
-        boundary: { xMin: -9, yMax: 6.25, xMax: 9, yMin: 0 }
+        startPos: { x: -9, y: 5.25, z: -4.25, tallest: 0 },
+        boundary: { xMin: -9, yMax: 5.25, xMax: 9, yMin: 0 }
     }};
 
     aboutMeData.forEach(function (d, i) {
@@ -53,7 +52,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     mesh.clickData = {
       action: "link",
       url: d.linkUrl || "default----Link"
-    }
+    };
   },
   positionPoster: function (posterMesh, posterPos) {
     var startPos = posterPos.startPos, boundary = posterPos.boundary;
@@ -124,7 +123,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
   },
   getArtCanvas: function (index) {
     var canvasSize = this.getCanvasSize(aboutMeData[index].dimensions);
-    var geometry = new BoxGeometry( canvasSize.width, canvasSize.height , 0.1);
+    var geometry = new BoxGeometry( canvasSize.width, canvasSize.height , 0.05);
     var src = aboutMeData[index].src + aboutMeData[index].name + "." + aboutMeData[index].dimensions.type;
     var frontMaterial = commandController.request(commandController.LOAD_MATERIAL, src);
     var lMaterial = new MeshLambertMaterial();
