@@ -698,6 +698,34 @@ table {
   left: 0;
   right: 0;
 }
+/**
+ * A mixin which helps you to add depth to elements according to the Google Material Design spec:
+ * http://www.google.com/design/spec/layout/layout-principles.html#layout-principles-dimensionality
+ *
+ * Please note that the values given in the specification cannot be used as is. To create the same visual experience
+ * the blur parameter has to be doubled.
+ *
+ * Author: Florian Kutschera (@gefangenimnetz), Conceptboard GmbH (@conceptboardapp)
+ *
+ * Example usage:
+ *
+ * .card {
+ *     width: 95px;
+ *     height: 95px;
+ *     background: #f4f4f4;
+ *     -webkit-transition: all 250ms;
+ *     -moz-transition: all 250ms;
+ *     transition: all 250ms;
+ *     .BoxShadowHelper(1);
+ *     &:hover {
+ *         .BoxShadowHelper(3);
+ *         -webkit-transform: translateY(-5px);
+ *         -moz-transform: translateY(-5px);
+ *         transform: translateY(-5px);
+ *     }
+ * }
+ *
+ */
 .noselect {
   -webkit-touch-callout: none;
   /* iOS Safari */
@@ -713,13 +741,8 @@ table {
   /* Non-prefixed version, currently
                                   not supported by any browser */
 }
-
-.button-container.video {
-  bottom: 20px;
-  &.hide {
-    display: none;
-  }
-
+.button-container.video .hide {
+  display: none;
 }
 /*! PhotoSwipe main CSS by Dmitry Semenov | photoswipe.com | MIT license */
 /*
@@ -1188,6 +1211,12 @@ table {
 .sky-gradient-23 {
   background: linear-gradient(to bottom, #00000c 80%, #150800 100%);
 }
+.onoffswitch:hover .onoffswitch-inner:before {
+  background-color: #B82601;
+}
+.onoffswitch:hover .onoffswitch-inner:after {
+  background-color: #B82601;
+}
 .onoffswitch {
   position: relative;
   width: 75px;
@@ -1205,7 +1234,7 @@ table {
   overflow: hidden;
   cursor: pointer;
   border: 2px solid #FFFFFF;
-  border-radius: 20px;
+  border-radius: 2px;
 }
 .onoffswitch-inner {
   display: block;
@@ -1257,6 +1286,56 @@ table {
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
   right: 0px;
+}
+.intro-view {
+  max-width: 650px;
+  width: 50%;
+  min-height: 250px;
+  margin: 0px auto;
+  padding-top: 48px;
+}
+.intro-view p {
+  margin: 8px;
+  font-size: 150%;
+}
+.btn {
+  background: #4f4f4f;
+  background-image: -webkit-linear-gradient(top, #4f4f4f, #000000);
+  background-image: -moz-linear-gradient(top, #4f4f4f, #000000);
+  background-image: -ms-linear-gradient(top, #4f4f4f, #000000);
+  background-image: -o-linear-gradient(top, #4f4f4f, #000000);
+  background-image: linear-gradient(to bottom, #4f4f4f, #000000);
+  -webkit-border-radius: 30;
+  -moz-border-radius: 30;
+  border-radius: 2px;
+  color: #ffffff;
+  font-size: 30px;
+  padding: 10px 20px 10px 20px;
+  margin-right: 20px;
+  text-decoration: none;
+  width: 50px;
+  display: inline-block;
+  cursor: pointer;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.btn:hover {
+  background: #b82501;
+  text-decoration: none;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.intro-switch-2d,
+.intro-switch-3d {
+  text-transform: uppercase;
+}
+.button-container-2 {
+  width: 100%;
+  margin: 24px auto;
+  text-align: center;
+  border-top: none;
+  box-sizing: border-box;
+  border-radius: 2px;
+  position: relative;
 }
 #cssmenu {
   width: auto;
@@ -1568,6 +1647,7 @@ hr.first:after {
 }
 .scene-detail-controls.video-controls .button-container.video {
   display: block;
+  bottom: 40px;
 }
 .button-container {
   position: absolute;
@@ -1603,10 +1683,12 @@ hr.first:after {
 .button-pause,
 .button-right,
 .button-left,
-.button-toggle-close,
+.button-toggle-menu,
 .button-close,
 .button-skip-next,
-.button-skip-prev {
+.button-skip-prev,
+.button-home,
+.button-menu {
   display: inline-block;
   width: 48px;
   height: 48px;
@@ -1641,7 +1723,7 @@ hr.first:after {
   -ms-filter: "FlipH";
 }
 .button-pause {
-  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik02IDE5aDRWNUg2djE0em04LTE0djE0aDRWNWgtNHoiLz4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KPC9zdmc+);
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik02IDE5aDRWNUg2djE0em04LTE0djE0aDRWNWgtNHoiLz4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KPC9zdmc+);
 }
 .home-button-container {
   position: absolute;
@@ -1651,24 +1733,28 @@ hr.first:after {
   pointer-events: none;
 }
 .button-home {
-  width: 48px;
-  height: 48px;
   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xMCAyMHYtNmg0djZoNXYtOGgzTDEyIDMgMiAxMmgzdjh6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
 }
-.button-toggle-close {
+.button-menu {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0zIDEzaDJ2LTJIM3Yyem0wIDRoMnYtMkgzdjJ6bTAtOGgyVjdIM3Yyem00IDRoMTR2LTJIN3Yyem0wIDRoMTR2LTJIN3Yyek03IDd2MmgxNFY3SDd6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
+}
+.button-toggle-menu {
+  display: inline-block;
   width: 48px;
   height: 48px;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xMCAyMHYtNmg0djZoNXYtOGgzTDEyIDMgMiAxMmgzdjh6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
+  cursor: pointer;
+  white-space: nowrap;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0zIDEzaDJ2LTJIM3Yyem0wIDRoMnYtMkgzdjJ6bTAtOGgyVjdIM3Yyem00IDRoMTR2LTJIN3Yyem0wIDRoMTR2LTJIN3Yyek03IDd2MmgxNFY3SDd6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
   display: block;
   margin: 0px auto;
   pointer-events: all;
 }
-.button-toggle-close.open {
+.button-toggle-menu.open {
   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xOSA2LjQxTDE3LjU5IDUgMTIgMTAuNTkgNi40MSA1IDUgNi40MSAxMC41OSAxMiA1IDE3LjU5IDYuNDEgMTkgMTIgMTMuNDEgMTcuNTkgMTkgMTkgMTcuNTkgMTMuNDEgMTJ6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
 }
 .button-skip-next,
 .button-skip-prev {
-  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik02IDE4bDguNS02TDYgNnYxMnpNMTYgNnYxMmgyVjZoLTJ6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik02IDE4bDguNS02TDYgNnYxMnpNMTYgNnYxMmgyVjZoLTJ6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
 }
 .link-bar {
   background-color: #000000;
@@ -1791,6 +1877,7 @@ h1 {
   display: block;
   text-align: center;
   padding: 24px 0px;
+  color: #FFFFFF;
 }
 h2 {
   font-size: 150%;
@@ -1825,4 +1912,7 @@ input {
 }
 header {
   position: relative;
+}
+p {
+  color: #FFFFFF;
 }

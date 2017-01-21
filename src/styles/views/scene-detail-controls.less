@@ -6,17 +6,15 @@
   height: @bottomBarHeight;
   position: absolute;
   z-index: 1000;
-  bottom: 0px;
-  background-color: rgba(1,1,1,0.150);
   margin: 0px;
   padding: 0px;
   overflow: hidden;
-
+  bottom: 0px;
   &.slide-controls { .button-container.slides { display: block; } }
   &.video-controls {
     .button-container.video {
       display: block;
-      bottom: 40px;
+      // margin-left: 50px;
     }
   }
 
@@ -31,17 +29,16 @@
   text-align: center;
   border-top: none;
   box-sizing: border-box;
-  border-radius: 8px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+  border-radius: @borderRadius;
   position: relative;
+  width: 150px;
   &.slides {
     display: none;
-    width: @button-size * 3 + 25;
+    // width: 150px;
   }
   &.video {
     display: none;
-    width: @button-size * 4 + 25;
+    // width: 50px;
   }
 }
 
@@ -70,19 +67,24 @@
   cursor: pointer;
   white-space: nowrap;
 }
-.button-play, .button-right, .button-left {
-  background-image: url(../sprites/ic_play_arrow_white_48px.svg);
-
+.button-play {
+  float: left;
+  background-image: url(../sprites/ic_play_circle_outline_white_48px.svg);
   &:hover {
-    background-image: url(../sprites/ic_play_arrow_black_48px.svg);
+    background-image: url(../sprites/ic_play_circle_outline_hover_48px.svg);
+  }
+}
+.button-right, .button-left {
+  background-image: url(../sprites/ic_play_arrow_white_48px.svg);
+  position: absolute;
+  &:hover {
+    background-image: url(../sprites/ic_play_arrow_hover_48px.svg);
   }
 }
 .button-right {
-  position: absolute;
   right: 0px;
 }
 .button-left {
-  position: absolute;
   left: 0px;
 }
 .button-left, .button-skip-prev {
@@ -94,7 +96,11 @@
    -ms-filter: "FlipH";
 }
 .button-pause {
-  background-image: url(../sprites/ic_pause_white_48px.svg);
+  background-image: url(../sprites/ic_pause_circle_outline_white_48px.svg);
+  float: left;
+  &:hover {
+    background-image: url(../sprites/ic_pause_circle_outline_hover_48px.svg);
+  }
 }
 .home-button-container {
   position: absolute;
@@ -109,6 +115,9 @@
 }
 .button-menu {
   background-image: url(../sprites/ic_list_white_48px.svg);
+  &:hover {
+    background-image: url(../sprites/ic_list_hover_48px.svg);
+  }
 }
 .button-toggle-menu {
   .button-menu;
