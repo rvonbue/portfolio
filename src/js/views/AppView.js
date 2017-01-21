@@ -19,7 +19,18 @@ var AppView = BaseView.extend({
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
   },
   initScene: function () {
-    this.$el.append(new IntroView().render().el);
+    var startView = null;
+    if (localStorage) startView = localStorage.getItem('startView');
+
+    if ( startView ) {
+      if ( startView === "2d") {
+         this.switchViews("2d");
+      } else if ( startView === "3d" ){
+        this.switchViews("3d");
+      }
+    } else  {
+        this.$el.append(new IntroView().render().el);
+    }
   },
   switchViews: function (whichView) {
     if (whichView === "2d") {

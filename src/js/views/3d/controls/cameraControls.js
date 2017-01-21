@@ -7,7 +7,7 @@ import BaseModel from "../../../models/BaseModel";
 import utils from "../../../util/utils"
 var OrbitControls = require('three-orbit-controls')(THREE);
 
-var CAMERA_INTIAL_POSITION = { x: -5, y: 33, z: 45 };
+var CAMERA_INTIAL_POSITION = { x: -5, y: 33, z: 50 };
 var TARGET_INITIAL_POSITION = { x: 0, y: 20, z:-10 };
 
 var CameraControls = BaseModel.extend({
@@ -31,7 +31,7 @@ var CameraControls = BaseModel.extend({
       middlePoint,
       true
     );
-    
+
   },
   getCameraMiddlePoint: function (cameraPos) {
      var middlePoint = _.clone(cameraPos);

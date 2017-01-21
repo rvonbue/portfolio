@@ -18,9 +18,11 @@ var SwitchView = BaseView.extend({
   },
   switchView2d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "2d");
+    if ( localStorage ) localStorage.setItem('startView', "2d");
   },
   switchView3d: function () {
     eventController.trigger(eventController.SWITCH_VIEWS, "3d");
+    if ( localStorage ) localStorage.setItem('startView', "3d");
   },
   destroy: function () {
     this.undelegateEvents();

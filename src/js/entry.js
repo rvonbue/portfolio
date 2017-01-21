@@ -47,6 +47,7 @@ THREE.Mesh.prototype.GdeepCloneMaterials = function( object, recursive ) {
 return object;
 };
 
+
 function isCanvasSupported () {
   var elem = document.createElement("canvas");
   return !!(elem.getContext && elem.getContext("2d"));

@@ -52,7 +52,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
   setClickData: function (mesh, d) {
     mesh.clickData = {
       action: "link",
-      url: d.linkUrl || "defualt----Link"
+      url: d.linkUrl || "default----Link"
     }
   },
   positionPoster: function (posterMesh, posterPos) {
@@ -93,6 +93,8 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
         break;
       case "githubBanner":
         this.setClickData(modelObj.object3d, { linkUrl: "http://github.com/rvonbue" });
+      case "glassCabinet":
+        this.setClickData(modelObj.object3d, { linkUrl: "./other/resume.txt" });
       default:
         this.get("interactiveObjects").push(modelObj.object3d);
     }

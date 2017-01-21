@@ -81,7 +81,6 @@ var SceneSelector = BaseView.extend({
         break;
       case "video":
         eventController.trigger(eventController.VIDEO_PLAY_PAUSE);
-        // eventController.trigger(eventController.CSS_RENDERER);
         break;
       case "link":
       console.log("openLInk");

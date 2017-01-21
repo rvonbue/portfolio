@@ -57051,7 +57051,18 @@
 	    _eventController2.default.on(_eventController2.default.SWITCH_VIEWS, this.switchViews, this);
 	  },
 	  initScene: function initScene() {
-	    this.$el.append(new _IntroView2.default().render().el);
+	    var startView = null;
+	    if (localStorage) startView = localStorage.getItem('startView');
+
+	    if (startView) {
+	      if (startView === "2d") {
+	        this.switchViews("2d");
+	      } else if (startView === "3d") {
+	        this.switchViews("3d");
+	      }
+	    } else {
+	      this.$el.append(new _IntroView2.default().render().el);
+	    }
 	  },
 	  switchViews: function switchViews(whichView) {
 	    if (whichView === "2d") {
@@ -58644,7 +58655,6 @@
 	  addLight: function addLight() {
 	    this.addHemisphereLight();
 	    this.addDirectionalLight();
-	    // this.addSpotLights();
 	    _eventController2.default.trigger(_eventController2.default.ADD_MODEL_TO_SCENE, this.worldLights);
 	  },
 	  resetScene: function resetScene() {
@@ -58732,31 +58742,6 @@
 
 	    var hemiLight = new _three2.default.HemisphereLight(worldColor.hemisphere.sky, worldColor.hemisphere.ground, worldColor.hemisphere.intensity);
 	    this.worldLights.push(hemiLight);
-	  },
-	  setSpotlightTarget: function setSpotlightTarget(spotLightTarget) {
-	    var spotLight = this.getWorldLight("SpotLight");
-	    spotLight.target = spotLightTarget;
-	  },
-	  addSpotLights: function addSpotLights() {
-	    // color, intensity, distance, angle, penumbra, decay
-	    var color = "0xffffff";
-	    var sphereSize = 1;
-	    var spotlights = [
-	    // this.getNewSpotlight( 2.5, 4.5, 8, color),
-	    this.getNewSpotlight(0, 30, 35, color)];
-
-	    _.each(spotlights, function (light) {
-	      this.worldLights.push(light);
-	      this.scene.add(light);
-	      this.scene.add(new _three2.default.SpotLightHelper(light, sphereSize));
-	    }, this);
-	  },
-	  getNewSpotlight: function getNewSpotlight(x, y, z, color) {
-	    //color, intensity, distance, angle, penumbra, decay )
-	    var spotLight = new _three2.default.SpotLight(color, 50, 70, Math.PI / 6, 0, 2);
-	    spotLight.position.set(x, y, z);
-	    spotLight.castShadow = true;
-	    return spotLight;
 	  }
 	});
 
@@ -58871,7 +58856,7 @@
 
 	var OrbitControls = __webpack_require__(46)(_three2.default);
 
-	var CAMERA_INTIAL_POSITION = { x: -5, y: 33, z: 45 };
+	var CAMERA_INTIAL_POSITION = { x: -5, y: 33, z: 50 };
 	var TARGET_INITIAL_POSITION = { x: 0, y: 20, z: -10 };
 
 	var CameraControls = _BaseModel2.default.extend({
@@ -60194,9 +60179,9 @@
 	    // var geo = new THREE.OctahedronGeometry(0.25, 0);
 	    // var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
 	    // this.selectMesh = new THREE.Mesh( geo, material );
-	    this.selectMesh = new _three2.default.PointLight("#FFFFFF", 1, 5, 2);
-	    // spotlight.position.z += 0.75;
-	    // this.selectMesh.add(spotlight);
+	    var color = _utils2.default.getColorPallete().color2.hex;
+	    this.selectMesh = new _three2.default.PointLight(color, 5, 2, 2);
+	    this.selectMesh.position.y += 5;
 	    _eventController2.default.trigger(_eventController2.default.ADD_MODEL_TO_SCENE, [this.selectMesh]);
 	  },
 	  onResize: function onResize(size) {
@@ -60403,9 +60388,7 @@
 	    this.sceneModelCollection = new _SceneModelCollection2.default();
 	    this.modelLoader = new _ModelLoader2.default();
 	    this.addListeners();
-	    var models = [{ url: "models3d/ground2.json", name: "ground" },
-	    // { url: "models3d/roof.json", name: "roof" },
-	    { url: "models3d/japanBottomFloor.json", name: "bottomFloor" }, { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME }];
+	    var models = [{ url: "models3d/ground2.json", name: "ground" }, { url: "models3d/moon.json", name: "moon" }, { url: "models3d/japanBottomFloor.json", name: "bottomFloor" }, { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME }];
 	    _.each(models, function (modelsArrObj) {
 	      _eventController2.default.trigger(_eventController2.default.LOAD_JSON_MODEL, modelsArrObj.url, { name: modelsArrObj.name, sceneModelName: null }); //load scene Models
 	    }, this);
@@ -61420,15 +61403,24 @@
 
 	module.exports = {
 	  ground: {
-	    maps: [{ map: "textures/grass/grass_COLOR.jpg" }, { specularMap: "textures/grass/grass_SPEC.jpg" }, { normalMap: "textures/grass/grass_NRM.jpg" }],
-	    mapProps: { repeatScale: 10, shading: "flat", shininess: 99 }
+	    maps: [{ map: "textures/grass/grass_COLOR.jpg" }],
+	    mapProps: { repeatScale: 10, shading: "flat", shininess: 75 }
 	  },
 	  hedge: {
-	    maps: [{ map: "textures/grass/hedge1_COLOR.jpg" }, { specularMap: "textures/grass/hedge1_SPEC.jpg" },
+	    maps: [{ map: "textures/grass/hedge1_COLOR.jpg" },
+	    // { specularMap: "textures/grass/hedge1_SPEC.jpg" },
 	    // { normalMap: "textures/grass/hedge1_NRM.jpg" },
 	    { bumpMap: "textures/grass/hedge1_DISP.jpg" }],
 	    mapProps: { repeatScale: 5, shading: "smooth" },
 	    props: { bumpScale: 0.4 }
+	  },
+	  moon: {
+	    maps: [{ map: "textures/moon256x128.jpg" }],
+	    mapProps: { repeatScale: 1, shading: "smooth", shininess: 15 },
+	    props: {
+	      shadingType: "MeshBasicMaterial",
+	      color: colorPallete.color2.hex
+	    }
 	  }
 	};
 
@@ -62749,7 +62741,7 @@
 	  setClickData: function setClickData(mesh, d) {
 	    mesh.clickData = {
 	      action: "link",
-	      url: d.linkUrl || "defualt----Link"
+	      url: d.linkUrl || "default----Link"
 	    };
 	  },
 	  positionPoster: function positionPoster(posterMesh, posterPos) {
@@ -62791,6 +62783,8 @@
 	        break;
 	      case "githubBanner":
 	        this.setClickData(modelObj.object3d, { linkUrl: "http://github.com/rvonbue" });
+	      case "glassCabinet":
+	        this.setClickData(modelObj.object3d, { linkUrl: "./other/resume.txt" });
 	      default:
 	        this.get("interactiveObjects").push(modelObj.object3d);
 	    }
@@ -62990,7 +62984,6 @@
 	        break;
 	      case "video":
 	        _eventController2.default.trigger(_eventController2.default.VIDEO_PLAY_PAUSE);
-	        // eventController.trigger(eventController.CSS_RENDERER);
 	        break;
 	      case "link":
 	        console.log("openLInk");
@@ -73291,9 +73284,11 @@
 	  },
 	  switchView2d: function switchView2d() {
 	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "2d");
+	    if (localStorage) localStorage.setItem('startView', "2d");
 	  },
 	  switchView3d: function switchView3d() {
 	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "3d");
+	    if (localStorage) localStorage.setItem('startView', "3d");
 	  },
 	  destroy: function destroy() {
 	    this.undelegateEvents();

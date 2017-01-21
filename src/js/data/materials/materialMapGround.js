@@ -8,7 +8,7 @@ module.exports = {
       // { specularMap: "textures/grass/grass_SPEC.jpg" },
       // { normalMap: "textures/grass/grass_NRM.jpg" }
     ],
-    mapProps: { repeatScale: 10, shading: "flat", shininess: 99 },
+    mapProps: { repeatScale: 10, shading: "flat", shininess: 75 },
     // props: {  color: colorPallete.color2.hex }
   },
   hedge: {
@@ -20,5 +20,17 @@ module.exports = {
     ],
     mapProps: { repeatScale: 5, shading: "smooth" },
     props: { bumpScale:  0.4 }
+  },
+  moon: {
+    maps: [
+      { map: "textures/moon256x128.jpg" },
+      // { specularMap: "textures/grass/grass_SPEC.jpg" },
+      // { normalMap: "textures/grass/grass_NRM.jpg" }
+    ],
+    mapProps: { repeatScale: 1, shading: "smooth", shininess: 15 },
+    props: {
+      shadingType: "MeshBasicMaterial",
+      color: colorPallete.color2.hex
+     }
   },
 };

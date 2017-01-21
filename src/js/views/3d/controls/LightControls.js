@@ -33,7 +33,6 @@ var LightControls = BaseView.extend({
   addLight: function () {
     this.addHemisphereLight();
     this.addDirectionalLight();
-    // this.addSpotLights();
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.worldLights);
   },
   resetScene: function () {
@@ -129,33 +128,6 @@ var LightControls = BaseView.extend({
       worldColor.hemisphere.intensity
     );
     this.worldLights.push(hemiLight);
-  },
-  setSpotlightTarget: function (spotLightTarget) {
-    var spotLight = this.getWorldLight("SpotLight");
-    spotLight.target = spotLightTarget;
-  },
-  addSpotLights: function () {
-    // color, intensity, distance, angle, penumbra, decay
-    var color = "0xffffff";
-    var sphereSize = 1;
-    var spotlights = [
-      // this.getNewSpotlight( 2.5, 4.5, 8, color),
-      this.getNewSpotlight( 0, 30, 35, color),
-      // this.getNewSpotlight( -2.5, 4.5, 8, color)
-    ];
-
-    _.each(spotlights, function (light) {
-      this.worldLights.push(light);
-      this.scene.add(light);
-      this.scene.add(new THREE.SpotLightHelper( light, sphereSize ));
-    }, this);
-  },
-  getNewSpotlight: function (x, y, z, color) {
-    //color, intensity, distance, angle, penumbra, decay )
-    var spotLight = new THREE.SpotLight( color, 50, 70, Math.PI / 6, 0, 2 );
-    spotLight.position.set( x, y, z );
-    spotLight.castShadow = true;
-    return spotLight;
   }
 });
 

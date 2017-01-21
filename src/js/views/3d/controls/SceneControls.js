@@ -55,9 +55,9 @@ var SceneControls = BaseModel.extend({
     // var geo = new THREE.OctahedronGeometry(0.25, 0);
     // var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
     // this.selectMesh = new THREE.Mesh( geo, material );
-    this.selectMesh = new THREE.PointLight( "#FFFFFF", 1, 5, 2 );
-    // spotlight.position.z += 0.75;
-    // this.selectMesh.add(spotlight);
+    var color = utils.getColorPallete().color2.hex;
+    this.selectMesh = new THREE.PointLight( color, 5, 2, 2 );
+    this.selectMesh.position.y += 5;
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },
   onResize: function (size) {

@@ -29,7 +29,7 @@ var SceneLoader = BaseView.extend({
     this.addListeners();
     var models = [
       { url: "models3d/ground2.json", name: "ground" },
-      // { url: "models3d/roof.json", name: "roof" },
+      { url: "models3d/moon.json", name: "moon" },
       { url: "models3d/japanBottomFloor.json", name: "bottomFloor" },
       { url: "models3d/floorJapan.json", name: this.SCENE_MODEL_NAME}
     ];
