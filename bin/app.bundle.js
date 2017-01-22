@@ -57380,7 +57380,6 @@
 	  },
 	  resize: function resize() {
 	    var size = this.getWidthHeight();
-	    console.log("SIZE:", size);
 	    this.camera.aspect = size.w / size.h;
 	    this.camera.updateProjectionMatrix();
 	    this.renderer.setSize(size.w, size.h);
@@ -58719,12 +58718,6 @@
 	  getWorldLight: function getWorldLight(lightType) {
 	    return _.findWhere(this.worldLights, { type: lightType });
 	  },
-	  setDirectionalLight: function setDirectionalLight(light, newLight) {
-	    if (!newLight) return;
-	    light.color = light.hex = new _three2.default.Color(newLight.color);
-	    var tween = this.getTween(light, newLight.intensity, 1500);
-	    tween.start();
-	  },
 	  addDirectionalLight: function addDirectionalLight() {
 	    var directionalLight = new _three2.default.DirectionalLight(worldColor.directional.color, worldColor.directional.intensity);
 	    var pos = worldColor.directional.position;
@@ -58732,11 +58725,19 @@
 	    directionalLight.position.set(pos.x, pos.y, pos.z);
 	    this.worldLights.push(directionalLight);
 	  },
+	  setDirectionalLight: function setDirectionalLight(light, newLight) {
+	    if (!newLight) return;
+	    light.color = light.hex = new _three2.default.Color(newLight.color);
+	    light.intensity = newLight.intensity;
+	    // var tween = this.getTween(light, newLight.intensity, 1500);
+	    // tween.start();
+	  },
 	  setHemiLight: function setHemiLight(light, newLight) {
 	    light.skyColor = new _three2.default.Color(newLight.skyColor);
 	    light.groundColor = new _three2.default.Color(newLight.groundColor);
-	    var tween = this.getTween(light, newLight.intensity, _utils2.default.getAnimationSpeed().lightOut, light);
-	    tween.start();
+	    light.intensity = newLight.intensity;
+	    // var tween = this.getTween(light, newLight.intensity, utils.getAnimationSpeed().lightOut, light );
+	    // tween.start();
 	  },
 	  addHemisphereLight: function addHemisphereLight() {
 
@@ -58781,9 +58782,6 @@
 	      depth: Math.abs(bounding.min.z) + Math.abs(bounding.max.z)
 	    };
 	  },
-	  // getObjectPosition: function () {
-	  //
-	  // },
 	  getMeshCenterRadius: function getMeshCenterRadius(pos, bounding) {
 	    var center = _.clone(bounding.center);
 	    center.y += bounding.radius;
@@ -58806,8 +58804,8 @@
 	        },
 	        hemisphere: {
 	          sky: "#9be2fe",
-	          ground: "#656565",
-	          intensity: 0.1
+	          ground: "#FFFFFF",
+	          intensity: 0.05
 	        },
 	        directional: {
 	          color: "#FFFFFF",
@@ -60271,6 +60269,7 @@
 	    this.set("raycasterObjects", arr);
 	  },
 	  cancelSelectMeshTimer: function cancelSelectMeshTimer() {
+
 	    if (this.selectMeshTimer) {
 	      clearTimeout(this.selectMeshTimer);
 	      this.selectMeshTimer = null;
@@ -61403,7 +61402,7 @@
 
 	module.exports = {
 	  ground: {
-	    maps: [{ map: "textures/grass/grass_COLOR.jpg" }],
+	    maps: [{ map: "textures/grass/grass.jpg" }],
 	    mapProps: { repeatScale: 10, shading: "flat", shininess: 75 }
 	  },
 	  hedge: {
@@ -61443,7 +61442,7 @@
 
 	module.exports = {
 	  cityNight: {
-	    maps: [{ map: basePath + "cityNightAlt1.jpg" }],
+	    maps: [{ map: basePath + "cityNightAlt2.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "flat" },
 	    props: {
 	      shadingType: "MeshBasicMaterial"
@@ -61504,8 +61503,8 @@
 	    maps: [{ map: basePath + "computer/powerButton.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "flat" }
 	  },
-	  rugPersian: {
-	    maps: [{ map: basePath + "rugPersian.png" }],
+	  rugPersianHalf: {
+	    maps: [{ map: basePath + "rugPersianHalf.png" }],
 	    mapProps: { repeatScale: 1, shading: "flat" },
 	    props: { transparent: true, alwaysTransparent: true }
 	  },
@@ -61606,7 +61605,15 @@
 	    maps: [{ map: "textures/leather/leather_COLOR.jpg" }, { specularMap: "textures/leather/leather_SPEC.jpg" }, { normalMap: "textures/leather/leather_NRM.jpg" }],
 	    mapProps: { repeatScale: 5, shading: "smooth" },
 	    props: {
-	      color: "#cbc773",
+	      color: "#E0D6C7",
+	      "colorSpecular": [0.559829, 0.559829, 0.559829]
+	    }
+	  },
+	  button: {
+	    maps: [{ map: "textures/leather/leather_COLOR.jpg" }, { specularMap: "textures/leather/leather_SPEC.jpg" }, { normalMap: "textures/leather/leather_NRM.jpg" }],
+	    mapProps: { repeatScale: 5, shading: "smooth" },
+	    props: {
+	      color: "#bc9055",
 	      "colorSpecular": [0.559829, 0.559829, 0.559829]
 	    }
 	  },
@@ -61636,7 +61643,7 @@
 	    props: { color: "#FFFFFF", shadingType: "MeshLambertMaterial" }
 	  },
 	  vase: {
-	    maps: [{ map: "textures/digitalArt/chinaBottleSeamless.png" }],
+	    maps: [{ map: "textures/chinaBottleSeamless.png" }],
 	    mapProps: { repeatScale: 2, shading: "smooth" }
 	  }
 	};
@@ -62389,7 +62396,7 @@
 	var AnimationModel3d = _SceneDetailsBaseModel3d2.default.extend({
 	  defaults: _.extend({}, _SceneDetailsBaseModel3d2.default.prototype.defaults, {
 	    name: "AnimationModel3dSceneDetails",
-	    initialCameraPosition: { x: 0, y: 0, z: -3 },
+	    initialCameraPosition: { x: 0, y: 0, z: 1 },
 	    initialCameraTarget: { x: 0, y: 1.5, z: -10 },
 	    pointLights: [{ x: -6, y: 6, z: -1, color: color, intensity: intensity, distance: distance }, { x: -6, y: 6, z: -7, color: color, intensity: intensity, distance: distance }, { x: -6, y: 6, z: -12, color: color, intensity: intensity, distance: distance }, { x: 6, y: 6, z: -1, color: color, intensity: intensity, distance: distance }, { x: 6, y: 6, z: -7, color: color, intensity: intensity, distance: distance }, { x: 6, y: 6, z: -12, color: color, intensity: intensity, distance: distance }],
 	    intialAmbientLights: {
@@ -62423,9 +62430,9 @@
 	  },
 	  getMovieScreen: function getMovieScreen() {
 	    var size = { w: 16 * .6, h: 9 * .6 };
-	    var mat = _commandController2.default.request(_commandController2.default.LOAD_VIDEO_TEXTURE, "videos/california.mp4");
+	    var mat = _commandController2.default.request(_commandController2.default.LOAD_VIDEO_TEXTURE, "videos/cyclesDemo.mp4");
 	    var mesh = new _three.Mesh(new _three.PlaneGeometry(size.w, size.h), mat);
-	    mesh.position.set(0, 3.25, -15.5);
+	    mesh.position.set(0, 3.25, -8);
 	    this.setClickType(mesh);
 	    return mesh;
 	  },
@@ -62705,18 +62712,18 @@
 	var AboutMe3d = _SceneDetailsBaseModel3d2.default.extend({
 	  defaults: _.extend({}, _SceneDetailsBaseModel3d2.default.prototype.defaults, {
 	    name: "aboutMe",
-	    initialCameraPosition: { x: 0, y: 0.25, z: 1.5 },
+	    initialCameraPosition: { x: 0, y: 0.25, z: 2.5 },
 	    initialCameraTarget: { x: 0, y: 2.25, z: -5 },
-	    pointLights: [{ x: -4, y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 }, { x: -0.5, y: 6, z: -2, color: "#FFFFFF", intensity: 0.50, distance: 5 }, { x: 4, y: 3, z: -3, color: "#FFFFFF", intensity: 0.50, distance: 5 }],
+	    pointLights: [{ x: -4.9, y: 3, z: -1.8, color: "#FFFFFF", intensity: 1, distance: 8 }, { x: 4.9, y: 3, z: -1.8, color: "#FFFFFF", intensity: 1, distance: 8 }],
 	    pillar: [{ x: -5, y: 0, z: -5.5, text: "JS" }, { x: 5, y: 0, z: -5.5, text: "CSS" }],
 	    intialAmbientLights: {
-	      directional: { color: "#FFFFFF", intensity: 0.5 }, // color intensity,
-	      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.5 } // skyColor, groundColor, intensity
+	      directional: { color: "#FFFFFF", intensity: 0.4 }, // color intensity,
+	      hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.4 } // skyColor, groundColor, intensity
 	    },
 	    modelUrls: ["sceneDetails", "pillar", "githubBanner", "glassCabinet"]
 	  }),
-	  MAX_IMAGE_WIDTH: 3, //world units
-	  MAX_IMAGE_HEIGHT: 1.75,
+	  MAX_IMAGE_WIDTH: 2.5, //world units
+	  MAX_IMAGE_HEIGHT: 1.25,
 	  initialize: function initialize() {
 	    _SceneDetailsBaseModel3d2.default.prototype.initialize.apply(this, arguments);
 	  },
@@ -62725,8 +62732,8 @@
 
 	    var interactiveObjects = [];
 	    var posterPos = { right: {
-	        startPos: { x: -9, y: 6.25, z: -6.17, tallest: 0 },
-	        boundary: { xMin: -9, yMax: 6.25, xMax: 9, yMin: 0 }
+	        startPos: { x: -9, y: 5.25, z: -4.25, tallest: 0 },
+	        boundary: { xMin: -9, yMax: 5.25, xMax: 9, yMin: 0 }
 	      } };
 
 	    _aboutMeData2.default.forEach(function (d, i) {
@@ -62813,7 +62820,7 @@
 	  },
 	  getArtCanvas: function getArtCanvas(index) {
 	    var canvasSize = this.getCanvasSize(_aboutMeData2.default[index].dimensions);
-	    var geometry = new _three.BoxGeometry(canvasSize.width, canvasSize.height, 0.1);
+	    var geometry = new _three.BoxGeometry(canvasSize.width, canvasSize.height, 0.05);
 	    var src = _aboutMeData2.default[index].src + _aboutMeData2.default[index].name + "." + _aboutMeData2.default[index].dimensions.type;
 	    var frontMaterial = commandController.request(commandController.LOAD_MATERIAL, src);
 	    var lMaterial = new _three.MeshLambertMaterial();
@@ -62986,7 +62993,7 @@
 	        _eventController2.default.trigger(_eventController2.default.VIDEO_PLAY_PAUSE);
 	        break;
 	      case "link":
-	        console.log("openLInk");
+	        console.log("openLink");
 	        // window.open(intersectObject.object.clickData.url);
 	        break;
 	      default:
@@ -63036,6 +63043,7 @@
 	      this.hideSceneModels(newSceneModel);
 	      return;
 	    }
+
 	    if (!newSceneModelisReady && oldSceneModelisReady) {
 	      console.log("3 --- !newSceneModelisReady && oldSceneModelisReady");
 	      var pos = newSceneModel.getCameraPosition();
@@ -63047,14 +63055,24 @@
 
 	    if (!newSceneModelisReady && !oldSceneModel) {
 	      console.log("4 --- !newSceneModelisReady && !oldSceneModel");
-
 	      newSceneModel.set({ selected: true });
 	      this.zoomToSelectedSceneModel(newSceneModel);
+	      return;
+	    }
+
+	    if (newSceneModelisReady && !oldSceneModel) {
+	      console.log("5 --- -------END------");
+	      // this.toggleSelectedSceneDetails(oldSceneModel, newSceneModel, false);
+	      // this.hideSceneModels(newSceneModel);
+	      // newSceneModel.setSelectedDelay(true, 1);
+	      newSceneModel.set({ selected: true });
+	      this.hideSceneModels(newSceneModel);
+	      this.resetSceneDetails(newSceneModel, true, false, false);
 
 	      return;
 	    }
 
-	    console.log("5 --- -------END------");
+	    console.log("6 --- -------END------");
 	    newSceneModel.set({ selected: true });
 	    this.zoomToSelectedSceneModel(newSceneModel);
 	  },
@@ -63077,11 +63095,6 @@
 	      this.resetSceneDetails(selectedScene, true, false, false);
 	    }
 	  },
-	  // goToSceneModelNotReady: function (oldSceneModel, newSceneModel, animate, trigger) {
-	  //   var pos = newSceneModel.getCameraPosition();
-	  //   this.swapSelectedModels(oldSceneModel, newSceneModel);
-	  //   eventController.trigger(eventController.SET_CAMERA_AND_TARGET, pos.camera, pos.target, animate, trigger );
-	  // },
 	  resetSceneDetails: function resetSceneDetails(sceneModel, moveCamera, animateCamera, trigger) {
 	    _eventController2.default.trigger(_eventController2.default.TOGGLE_AMBIENT_LIGHTING, sceneModel.getAmbientLighting());
 	    _eventController2.default.trigger(_eventController2.default.RESET_RAYCASTER, sceneModel.get("sceneDetails").get("interactiveObjects"));

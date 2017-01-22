@@ -19,6 +19,7 @@ var AppView2d = BaseView.extend({
     this.parentEl = options.parentEl;
     this.bodyEl = $("<div class='view-body-2d'></div>");
     this.setSection(this.getSectionView());
+    this.addListeners();
   },
   addListeners: function () {
     console.log("addListeners:AppView2d");
