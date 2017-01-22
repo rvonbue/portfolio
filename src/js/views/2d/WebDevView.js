@@ -11,6 +11,7 @@ var WebDevView2d = BaseView2d.extend({
   },
   render: function () {
     this.$el.append(this.titleTemplate({ title: this.title }));
+
     _.each(pageData, function (templateData, i) {
       var newProjectContainer = _.template(projectContainerHTML(templateData));
       this.$el.append(newProjectContainer);

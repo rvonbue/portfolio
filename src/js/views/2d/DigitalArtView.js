@@ -11,9 +11,11 @@ var DigitalArtView = BaseView2d.extend({
   },
   render: function () {
     this.$el.append(this.titleTemplate({ title: this.title }));
+    console.log("pageData", pageData);
     _.each(pageData, function (templateData) {
-      var newProjectContainer = _.template(projectContainerHTML(templateData));
-      this.$el.append(newProjectContainer);
+      // var newProjectContainer = _.template(projectContainerHTML(templateData));
+      this.$el.append(_.template(projectContainerHTML(templateData)));
+      // if (i !== pageData.length -1) this.$el.append("<hr/>");
     }, this);
     return this;
   }

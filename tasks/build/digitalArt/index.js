@@ -8,6 +8,7 @@ gulp.task('build:digitalArt', function() {
   gulp.src('./src/images/digitalArt/**/*.{png,mov,mpg}')
   .pipe(imagemin({ progressive: true }))
   // .pipe(gulp.dest('./bin/images/digitalArt'))
+  .pipe(gulp.dest('./bin/images/digitalArt/'))
   .pipe(parallel(
      imageResize({
        width: 400,

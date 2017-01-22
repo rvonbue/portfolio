@@ -1,29 +1,45 @@
 module.exports = [
    {
-      title:"Projectya #1",
-      imgSrc:"/images/webDev/blender_cola.png",
-      description:"fdsg Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+      title:"Network Search Visualization",
+      imgSrc:"/images/webDev/NSV1920x1080.png",
+      website:  { title: "Network Search Website", url: "http://faculty.nps.edu/dl/networkVisualization/"},
       images:[
-         "1.jpg",
-         "2.jpg"
-      ]
+         "/images/webDev/NSV1920x1080.png",
+      ],
+      description: "I created this standalone app for the Naval Postgraduate School. It is a data visualization tool that shows the connections of different networks. It was made so you can upload .gexf files and view them graphically instead of looking at a spreadsheet.  The NSV app lets you run algorigthms to see which one uncovers the network faster. It is able to visualize thousands of nodes ands connections while still animating fluidly on three different views.",
    },
    {
-      title:"Projectya #2",
-      imgSrc:"/images/webDev/mortar_emplacment.png",
-      description:" sdgsdg sdgdsgsgff sdafsdfsad sddfg",
+      title:"Spring Pendulum",
+      imgSrc:"/images/webDev/SpringPendulum1920x1080.png",
+      website:  { title: "Spring Pendulum Website", url: "http://faculty.nps.edu/dl/springPendulum/#Sample1"},
+      websiteUrl: "",
       images:[
-         "1.jpg",
-         "2.jpg"
-      ]
+         "/images/webDev/SpringPendulum1920x1080.png",
+      ],
+      description:" I created this 3d Simulation for the Physics Department at Naval Postgraduate School. This app uses real life physics data that was collected by proffesors ay the university. Once they had recored the data this app could parse the results and create a realistic physics simulation.  There are controls to toggle experiment such as playback speed, physics controls, and camera controls.",
    },
    {
-      title:"Projectya #3",
-      imgSrc:"/images/webDev/scenic_drive.png",
-      description:" sdgsdg sdgds asdfasdf sdf s asfsa sdf asasdff sadfdhggfhfh gfhdgh gfh ghgfhdgffgsgfdfg",
+      title:"Monterey Phoenix (Firebird)",
+      imgSrc:"/images/webDev/MP1920x1080.png",
+      website:  { title: "Monterey Phoenix Firebird", url: "http://firebird.nps.edu/"},
       images:[
-         "1.jpg",
-         "2.jpg"
-      ]
+         "/images/webDev/MP1920x1080.png",
+      ],
+      aboutLinks: [
+        "https://wiki.nps.edu/display/MP",
+        "https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf"
+      ],
+      description:"I was part of the team the created an online editor for the " +
+      "<a href='https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf'>Monterey Phoenix language</a>" +
+      " called Firebird. The language was created and developed by Mikhail Augston an Associate Proffesor at the department Computer Science. Among other things I updated the rendering engine to PIXI.js and worked on the front-end development.",
+   },
+   {
+      title:"Hurricane Simulation",
+      imgSrc:"/images/webDev/hurricaneSim.png",
+      website:  { title: "Hurricane Simulator", url: "https://eddy.nps.edu/hurricaneSim/simulation"},
+      images:[
+         "/images/webDev/hurricaneSim.png",
+      ],
+      description: "The Hurricane Decision Simulator provides decision makers with experience and practice in dealing with simulated storm variations, interpreting forecast details, and making critical decisions. On this project I worked mainly on the front-end development. This was one of the most interesting projects I have worked on.  Some of the project restrictions were resolution max of 1024 x 768 and it must be compatable with IE7.",
    }
 ]

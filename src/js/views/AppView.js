@@ -23,21 +23,16 @@ var AppView = BaseView.extend({
     if (localStorage) startView = localStorage.getItem('startView');
 
     if ( startView ) {
-      if ( startView === "2d") {
-         this.switchViews("2d");
-      } else if ( startView === "3d" ){
-        this.switchViews("3d");
-      }
+      eventController.trigger(eventController.SET_VIEW, startView);
     } else  {
         this.$el.append(new IntroView().render().el);
     }
   },
   switchViews: function (whichView) {
     if (whichView === "2d") {
-        if ( this.appView3d ) this.appView3d.hide();
-
-        if ( !this.appView2d ) { this.renderView2d(); }
-        else { this.appView2d.show(); }
+      if ( this.appView3d ) this.appView3d.hide();
+      if ( !this.appView2d ) { this.renderView2d(); }
+      else { this.appView2d.show(); }
     } else if (whichView === "3d") {
       if ( this.appView2d ) this.appView2d.hide();
       if ( !this.appView3d ) { this.renderView3d(); }

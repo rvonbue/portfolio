@@ -1,6 +1,6 @@
 import BaseView2d from "./BaseView2d";
-import pageData from "../../data/pageData/3dAnimation";
-import projectContainerHTML from "./ThreeDAnimationViewTemplate.html";
+// import pageData from "../../data/pageData/3dAnimation";
+import ThreeDAnimationHTML from "./ThreeDAnimationViewTemplate.html";
 
 var ThreeDAnimationView = BaseView2d.extend({
   className: "3d-animation",
@@ -11,10 +11,7 @@ var ThreeDAnimationView = BaseView2d.extend({
   },
   render: function () {
     this.$el.append(this.titleTemplate({ title: this.title }));
-    _.each(pageData, function (templateData) {
-      var newProjectContainer = _.template(projectContainerHTML(templateData));
-      this.$el.append(newProjectContainer);
-    }, this);
+    this.$el.append(ThreeDAnimationHTML);
     return this;
   }
 });

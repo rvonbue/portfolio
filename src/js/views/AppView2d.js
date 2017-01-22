@@ -22,11 +22,9 @@ var AppView2d = BaseView.extend({
     this.addListeners();
   },
   addListeners: function () {
-    console.log("addListeners:AppView2d");
     eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   removeListeners: function () {
-    console.log("removeListeners:AppView2d");
     eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
   },
   getSectionView: function () {
@@ -34,6 +32,7 @@ var AppView2d = BaseView.extend({
   },
   setSection: function (index) {
     index = index ? index : 0;
+    console.log("index", index);
     this.currentView = new viewArray[index];
     this.bodyEl.append(this.currentView.render().el);
   },

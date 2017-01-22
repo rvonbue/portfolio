@@ -4,8 +4,7 @@
 @import "/webDev.less";
 
 .appView-2d {
-  background-color: @color-1;
-  padding-bottom: 8px;
+  padding-bottom: 24px;
 }
 .view-body-2d {
   max-width: 1300px;
@@ -23,7 +22,35 @@
   color: #FAEBD7;
   font-size: 125%;
 }
-.section-title {
+h2.section-title {
   padding: 25px 0px 0px 0px;
-  font-family: "Oswald";
+  color: @color-4;
+}
+p.animation-intro {
+  white-space: normal;
+  margin-bottom: 30px;
+}
+.project-container.animation {
+  max-width: 750px;
+  margin: 0px auto;
+  img {
+    max-width: 750px;
+  }
+  iframe {
+    margin: 0px auto;
+    display: block;
+  }
+}
+.digital-art {
+  .project-container {
+    margin: 8px 0px;
+    display: inline-block;
+    max-width: 600px;
+    .img-wrapper {
+      width: 100%;
+    }
+    p {
+      white-space: normal;
+    }
+  }
 }
