@@ -1,0 +1,456 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+/*@import url(http://fonts.googleapis.com/css?family=Roboto);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700);*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*
+LESS variables are information about icon's compiled state, stored under its original file name
+
+.icon-home {
+  width: @icon-home-width;
+}
+
+The large array-like variables contain all information about a single icon
+@icon-home: x y offset_x offset_y width height total_width total_height image_path name;
+
+At the bottom of this section, we provide information about the spritesheet itself
+@spritesheet: width height image @spritesheet-sprites;
+*/
+/*
+The provided classes are intended to be used with the array-like variables
+
+.icon-home {
+  .sprite-width(@icon-home);
+}
+.icon-email {
+  .sprite(@icon-email);
+}
+*/
+/*
+The `.sprites` mixin generates identical output to the CSS template
+  but can be overridden inside of LESS
+
+This must be run when you have at least 2 sprites.
+  If run with a single sprite, then there will be reference errors.
+
+.sprites(@spritesheet-sprites);
+*/
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.status-processing-icon {
+  width: 16px;
+  height: 16px;
+  background: url("ajax-loader.gif");
+}
+.status-error-icon {
+  margin-right: 4px;
+  position: relative;
+  top: -1px;
+  background-image: url(spritesheet_1475306759421.png);
+  background-position: -160px -327px;
+  width: 18px;
+  height: 18px;
+}
+.help_icon {
+  background-image: url(spritesheet_1475306759421.png);
+  background-position: -340px -327px;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  cursor: pointer;
+}
+.help_icon:hover {
+  background-image: url(spritesheet_1475306759421.png);
+  background-position: -214px -327px;
+  width: 18px;
+  height: 18px;
+}
+.help_icon.enabled {
+  background-image: url(spritesheet_1475306759421.png);
+  background-position: -196px -327px;
+  width: 18px;
+  height: 18px;
+}
+html,
+body {
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+}
+p {
+  color: #333;
+  line-height: 1.428;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 500;
+  color: #FAEBD7;
+}
+h1 {
+  font-size: 200%;
+}
+h2 {
+  font-size: 150%;
+}
+a,
+a:visited,
+a:link {
+  text-decoration: none;
+  color: #0066CC;
+}
+a:hover,
+a:visited:hover,
+a:link:hover {
+  color: #007fff;
+  text-decoration: underline;
+}
+
+/* NavigationBar */
+
+.navigation-bar {
+  width: 100%;
+  position: relative;
+}
+#cssmenu {
+  background: #062f4f;
+  width: auto;
+}
+#cssmenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: block;
+  zoom: 1;
+  text-align: center;
+}
+#cssmenu ul:after {
+  content: " ";
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+#cssmenu ul li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+#cssmenu.align-right ul li {
+  float: right;
+}
+#cssmenu.align-center ul {
+  text-align: center;
+}
+#cssmenu ul li.selected {
+  background-color: #b82601 !important;
+}
+#cssmenu ul li.hovered {
+  background-color: #b82601 !important;
+}
+#cssmenu ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  display: block;
+  padding: 15px 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  position: relative;
+  -webkit-transition: color .25s;
+  -moz-transition: color .25s;
+  -ms-transition: color .25s;
+  -o-transition: color .25s;
+  transition: color .25s;
+}
+#cssmenu ul li a:hover {
+  color: #FFF;
+  cursor: pointer;
+}
+#cssmenu ul li a:hover:before {
+  width: 100%;
+}
+#cssmenu ul li a:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: -3px;
+  top: 19px;
+  height: 6px;
+  width: 6px;
+  background: #ffffff;
+  opacity: .5;
+}
+#cssmenu ul li a:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: #FFF;
+  -webkit-transition: width .25s;
+  -moz-transition: width .25s;
+  -ms-transition: width .25s;
+  -o-transition: width .25s;
+  transition: width .25s;
+}
+#cssmenu ul li.last > a:after,
+#cssmenu ul li:last-child > a:after {
+  display: none;
+}
+#cssmenu ul li.active a {
+  color: #333333;
+}
+#cssmenu ul li.active a:before {
+  width: 100%;
+}
+#cssmenu.align-right li.last > a:after,
+#cssmenu.align-right li:last-child > a:after {
+  display: block;
+}
+#cssmenu.align-right li:first-child a:after {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  #cssmenu ul li {
+    float: none;
+    display: block;
+  }
+  #cssmenu ul li a {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #fb998c;
+  }
+  #cssmenu ul li.last > a,
+  #cssmenu ul li:last-child > a {
+    border: 0;
+  }
+  #cssmenu ul li a:after {
+    display: none;
+  }
+  #cssmenu ul li a:before {
+    display: none;
+  }
+}
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  background: linear-gradient(to right, rgba(255,0,0,0), rgba(0,0,0,1), rgba(0,0,0,1), rgba(0,0,0,1), rgba(255,0,0,0));
+  width: 100%;
+  height: 100%;
+
+}
+input {
+  color: #333;
+}
+.dat-gui {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 100;
+}
+
+/* base */
+.appview-container {
+  max-width: 1300px;
+  margin: 0px auto;
+  height: 100%;
+}
+.appview-container.threeD {
+  max-width: 1300px;
+  margin: 0px auto;
+  height: 100%;
+}
+.appview-container.twoD {
+  max-width: 5000px;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  background-color: black;
+}
+.switch-views {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 45px;
+  padding: 15px 0px;
+}
+.switch-views > div {
+  color: #FAEBD7;
+  display: inline-block;
+  padding: 0px 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.appView-3d {
+  width: 100%;
+  height: calc(100% - 45px);
+  border: 3px solid black;
+  border-top: 3px solid #FAEBD7;
+  box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+canvas {
+  position: absolute;
+  left: 0px;
+}
+/*  Base  */
+.appView-2d {
+  color: #FAEBD7;
+}
+header {
+  position: relative;
+}
+h1 {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+}
+.view-body {
+  max-width: 1300px;
+  margin: 0px auto;
+}
+.view-body > p {
+  color: #FAEBD7;
+  font-size: 125%;
+}
