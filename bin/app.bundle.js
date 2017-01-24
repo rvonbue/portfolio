@@ -78,7 +78,7 @@
 
 	var _AppView2 = _interopRequireDefault(_AppView);
 
-	var _index = __webpack_require__(112);
+	var _index = __webpack_require__(113);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -56929,6 +56929,7 @@
 	module.exports = {
 	  CHANGE_CAMERA: "CHANGE_CAMERA",
 	  SWITCH_VIEWS: "SWITCH_VIEWS",
+	  SET_VIEW: "SET_VIEW",
 	  ADD_DAT_GUI_CONTROLLER: "ADD_DAT_GUI_CONTROLLER",
 
 	  LOAD_MODEL: "LOAD_MODEL",
@@ -57021,15 +57022,15 @@
 
 	var _AppView2d2 = _interopRequireDefault(_AppView2d);
 
-	var _PhotoSwipeView = __webpack_require__(104);
+	var _PhotoSwipeView = __webpack_require__(105);
 
 	var _PhotoSwipeView2 = _interopRequireDefault(_PhotoSwipeView);
 
-	var _SwitchView = __webpack_require__(108);
+	var _SwitchView = __webpack_require__(109);
 
 	var _SwitchView2 = _interopRequireDefault(_SwitchView);
 
-	var _IntroView = __webpack_require__(110);
+	var _IntroView = __webpack_require__(111);
 
 	var _IntroView2 = _interopRequireDefault(_IntroView);
 
@@ -57055,11 +57056,7 @@
 	    if (localStorage) startView = localStorage.getItem('startView');
 
 	    if (startView) {
-	      if (startView === "2d") {
-	        this.switchViews("2d");
-	      } else if (startView === "3d") {
-	        this.switchViews("3d");
-	      }
+	      _eventController2.default.trigger(_eventController2.default.SET_VIEW, startView);
 	    } else {
 	      this.$el.append(new _IntroView2.default().render().el);
 	    }
@@ -57067,7 +57064,6 @@
 	  switchViews: function switchViews(whichView) {
 	    if (whichView === "2d") {
 	      if (this.appView3d) this.appView3d.hide();
-
 	      if (!this.appView2d) {
 	        this.renderView2d();
 	      } else {
@@ -61823,7 +61819,7 @@
 	    var lampLightMeshes = [new _three2.default.Mesh(lampModel.geometry, new _three2.default.MultiMaterial(lampModel.materials))];
 	    this.duplicateMesh(lampLightMeshes, sceneModel, _.clone(lampLightPos), 4, "hoverLamps");
 
-	    var pointLights = [this.getNewHoverLight(3, 6)];
+	    var pointLights = [this.getNewHoverLight(8, 6)];
 	    this.duplicateMesh(pointLights, sceneModel, _.clone(lampLightPos), 4, "hoverLights");
 	  },
 	  duplicateMesh: function duplicateMesh(meshArray, sceneModel, startPosition, total, setModelProp) {
@@ -62603,29 +62599,30 @@
 	"use strict";
 
 	module.exports = [{
-	   title: "Projectyerno #1",
+	   title: "r/Blender Contest",
 	   imgSrc: "/images/digitalArt/blender_cola.png",
 	   thumbSrc: "/images/digitalArt/thumbs/blender_cola.png",
-	   description: "Blender Contest We got the bottle and had to add some interesing texture lighting",
-	   images: ["1.jpg", "2.jpg"]
+	   description: "We got the bottle and had to add some interesing texture lighting."
 	}, {
-	   title: "Projectyero #2",
+	   title: "r/Blender Contest",
 	   imgSrc: "/images/digitalArt/mortar_emplacment.png",
 	   thumbSrc: "/images/digitalArt/thumbs/mortar_emplacment.png",
-	   description: " Blender contest on Reddit the theme was 'duck!''",
-	   images: ["1.jpg", "2.jpg"]
+	   description: " Blender contest on Reddit the theme was 'duck!''"
 	}, {
 	   title: "Projectyera #3",
 	   imgSrc: "/images/digitalArt/scenic_drive.png",
 	   thumbSrc: "/images/digitalArt/thumbs/scenic_drive.png",
-	   description: " 3d Model architecture ",
-	   images: ["1.jpg", "2.jpg"]
+	   description: " 3d Model architecture "
 	}, {
-	   title: "Projectyera #4",
+	   title: "Logo Design",
 	   imgSrc: "/images/digitalArt/funshine.png",
 	   thumbSrc: "/images/digitalArt/thumbs/funshine.png",
-	   description: " Logo Render ",
-	   images: ["1.jpg", "2.jpg"]
+	   description: "This is a logo I created for Reggae on Wharf. Small food and music festival in Monterey"
+	}, {
+	   title: "r/Blender Contest",
+	   imgSrc: "/images/digitalArt/BlenderContestDec2016.png",
+	   thumbSrc: "/images/digitalArt/thumbs/BlenderContestDec2016.png",
+	   description: "Reddit Contest Blender"
 	}];
 
 /***/ },
@@ -62652,8 +62649,10 @@
 	    initialCameraPosition: { x: 0, y: 0, z: 6.5 },
 	    initialCameraTarget: { x: 0, y: 2, z: 0 },
 	    pointLights: [
-	    // {x: 0, y: 5, z: 5, color: "#FFFFFF", intensity: 5, distance: 10 },
-	    { x: 3, y: 5, z: 5, color: "#FF0000", intensity: 5, distance: 10 }],
+	      // {x: 0, y: 5, z: 5, color: "#FFFFFF", intensity: 5, distance: 10 },
+	      // {x: 3, y: 5, z: 5, color: "#FF0000", intensity: 5, distance: 10 },
+	      // {x: 6, y: 5, z: -8, color: "#FFFFFF", intensity: 5, distance: 5 },
+	    ],
 	    directionalLight: { color: "#FFFFFF", x: 0, y: 0, z: 0 },
 	    intialAmbientLights: {
 	      directional: { color: "#FFFFFF", intensity: 0.1 }, // color intensity,
@@ -62881,7 +62880,7 @@
 
 	"use strict";
 
-	module.exports = [{ "src": "images/aboutMe/", "name": "backbone(backbonejs.org)", "dimensions": { "width": 200, "height": 42, "type": "png" }, "linkUrl": "backbonejs.org" }, { "src": "images/aboutMe/", "name": "blender(blender.org)", "dimensions": { "width": 200, "height": 58, "type": "png" }, "linkUrl": "blender.org" }, { "src": "images/aboutMe/", "name": "gulp(gulpjs.com)", "dimensions": { "width": 200, "height": 427, "type": "png" }, "linkUrl": "gulpjs.com" }, { "src": "images/aboutMe/", "name": "html5Badge(html5.org)", "dimensions": { "width": 200, "height": 55, "type": "png" }, "linkUrl": "html5.org" }, { "src": "images/aboutMe/", "name": "less(lesscss.org)", "dimensions": { "width": 199, "height": 90, "type": "png" }, "linkUrl": "lesscss.org" }, { "src": "images/aboutMe/", "name": "lodash(lodash.com)", "dimensions": { "width": 200, "height": 200, "type": "png" }, "linkUrl": "lodash.com" }, { "src": "images/aboutMe/", "name": "LogojQuery(jquery.com)", "dimensions": { "width": 200, "height": 90, "type": "png" }, "linkUrl": "jquery.com" }, { "src": "images/aboutMe/", "name": "npm(npmjs.com)", "dimensions": { "width": 200, "height": 200, "type": "png" }, "linkUrl": "npmjs.com" }, { "src": "images/aboutMe/", "name": "ReactJS(facebook.github.io)", "dimensions": { "width": 200, "height": 200, "type": "png" }, "linkUrl": "facebook.github.io" }, { "src": "images/aboutMe/", "name": "threejs(threejs.org)", "dimensions": { "width": 200, "height": 48, "type": "png" }, "linkUrl": "threejs.org" }, { "src": "images/aboutMe/", "name": "underscore(underscorejs.org)", "dimensions": { "width": 200, "height": 41, "type": "png" }, "linkUrl": "underscorejs.org" }, { "src": "images/aboutMe/", "name": "webpack(webpack.github.io)", "dimensions": { "width": 200, "height": 69, "type": "png" }, "linkUrl": "webpack.github.io" }];
+	module.exports = [{ "src": "images/aboutMe/", "name": "backbone(backbonejs.org)", "dimensions": { "width": 300, "height": 63, "type": "png" }, "linkUrl": "backbonejs.org" }, { "src": "images/aboutMe/", "name": "blender(blender.org)", "dimensions": { "width": 300, "height": 87, "type": "png" }, "linkUrl": "blender.org" }, { "src": "images/aboutMe/", "name": "gulp(gulpjs.com)", "dimensions": { "width": 270, "height": 576, "type": "png" }, "linkUrl": "gulpjs.com" }, { "src": "images/aboutMe/", "name": "html5Badge(html5.org)", "dimensions": { "width": 288, "height": 79, "type": "png" }, "linkUrl": "html5.org" }, { "src": "images/aboutMe/", "name": "less(lesscss.org)", "dimensions": { "width": 199, "height": 90, "type": "png" }, "linkUrl": "lesscss.org" }, { "src": "images/aboutMe/", "name": "lodash(lodash.com)", "dimensions": { "width": 300, "height": 300, "type": "png" }, "linkUrl": "lodash.com" }, { "src": "images/aboutMe/", "name": "LogojQuery(jquery.com)", "dimensions": { "width": 300, "height": 135, "type": "png" }, "linkUrl": "jquery.com" }, { "src": "images/aboutMe/", "name": "npm(npmjs.com)", "dimensions": { "width": 225, "height": 225, "type": "png" }, "linkUrl": "npmjs.com" }, { "src": "images/aboutMe/", "name": "ReactJS(facebook.github.io)", "dimensions": { "width": 300, "height": 300, "type": "png" }, "linkUrl": "facebook.github.io" }, { "src": "images/aboutMe/", "name": "threejs(threejs.org)", "dimensions": { "width": 213, "height": 51, "type": "png" }, "linkUrl": "threejs.org" }, { "src": "images/aboutMe/", "name": "underscore(underscorejs.org)", "dimensions": { "width": 300, "height": 61, "type": "png" }, "linkUrl": "underscorejs.org" }, { "src": "images/aboutMe/", "name": "webpack(webpack.github.io)", "dimensions": { "width": 300, "height": 104, "type": "png" }, "linkUrl": "webpack.github.io" }];
 
 /***/ },
 /* 79 */
@@ -63357,7 +63356,7 @@
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='  <div class="button-container slides">\r\n    <div class="button-left" title="Go to PREVIOUS interactive object"></div>\n    <!-- <div class="button-home"></div> -->\r\n    <div class="button-right" title="Go to NEXT interactive object"></div>\r\n  </div>\r\n  <div class="button-container video">\r\n    <!-- <div class="button-skip-prev" title="Go to PREVIOUS interactive object"></div> -->\r\n    <div class="button-pause"></div>\r\n    <div class="button-play hide"></div>\r\n    <!-- <div class="button-skip-next" title="Go to NEXT interactive object"></div> -->\r\n  </div>\r\n';
+	__p+='  <div class="button-container slides">\n    <div class="button-left" title="Go to PREVIOUS interactive object"></div>\n    <!-- <div class="button-home"></div> -->\n    <div class="button-right" title="Go to NEXT interactive object"></div>\n  </div>\n  <div class="button-container video">\n    <!-- <div class="button-skip-prev" title="Go to PREVIOUS interactive object"></div> -->\n    <div class="button-pause"></div>\n    <div class="button-play hide"></div>\n    <!-- <div class="button-skip-next" title="Go to NEXT interactive object"></div> -->\n  </div>\n';
 	}
 	return __p;
 	};
@@ -63443,7 +63442,7 @@
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='<div class="loading-container">\r\n  <div class="loading-icon"></div>\r\n  <div class="loading-icon-alt"></div>\r\n  <span id="items-loading" class="loading-label"></span>\r\n</div>\r\n';
+	__p+='<div class="loading-container">\n  <div class="loading-icon"></div>\n  <div class="loading-icon-alt"></div>\n  <span id="items-loading" class="loading-label"></span>\n</div>\n';
 	}
 	return __p;
 	};
@@ -63602,7 +63601,7 @@
 	        icon: "css-icons" + i
 	      };
 	    });
-	    menuItems.push({ icon: "button-home" });
+	    // menuItems.push( { icon: "button-home" });
 	    return menuItems;
 	  },
 	  getMenuPosition: function getMenuPosition() {
@@ -68952,7 +68951,7 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var viewArray = [__webpack_require__(95), __webpack_require__(99), __webpack_require__(102), __webpack_require__(102), __webpack_require__(102)];
+	var viewArray = [__webpack_require__(95), __webpack_require__(99), __webpack_require__(101), __webpack_require__(103), __webpack_require__(101)];
 
 	var AppView2d = _BaseView2.default.extend({
 	  className: "appView-2d",
@@ -68962,13 +68961,12 @@
 	    this.parentEl = options.parentEl;
 	    this.bodyEl = $("<div class='view-body-2d'></div>");
 	    this.setSection(this.getSectionView());
+	    this.addListeners();
 	  },
 	  addListeners: function addListeners() {
-	    console.log("addListeners:AppView2d");
 	    _eventController2.default.on(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
 	  },
 	  removeListeners: function removeListeners() {
-	    console.log("removeListeners:AppView2d");
 	    _eventController2.default.off(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
 	  },
 	  getSectionView: function getSectionView() {
@@ -68976,6 +68974,7 @@
 	  },
 	  setSection: function setSection(index) {
 	    index = index ? index : 0;
+	    console.log("index", index);
 	    this.currentView = new viewArray[index]();
 	    this.bodyEl.append(this.currentView.render().el);
 	  },
@@ -69168,6 +69167,7 @@
 	  },
 	  render: function render() {
 	    this.$el.append(this.titleTemplate({ title: this.title }));
+
 	    _.each(_WebDevProjects2.default, function (templateData, i) {
 	      var newProjectContainer = _.template((0, _WebDevViewTemplate2.default)(templateData));
 	      this.$el.append(newProjectContainer);
@@ -69228,7 +69228,33 @@
 
 	"use strict";
 
-	module.exports = [{ title: "Projectya #1", imgSrc: "/images/webDev/blender_cola.png", description: "fdsg Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum", images: ["1.jpg", "2.jpg"] }, { title: "Projectya #2", imgSrc: "/images/webDev/mortar_emplacment.png", description: " sdgsdg sdgdsgsgff sdafsdfsad sddfg", images: ["1.jpg", "2.jpg"] }, { title: "Projectya #3", imgSrc: "/images/webDev/scenic_drive.png", description: " sdgsdg sdgds asdfasdf sdf s asfsa sdf asasdff sadfdhggfhfh gfhdgh gfh ghgfhdgffgsgfdfg", images: ["1.jpg", "2.jpg"] }];
+	module.exports = [{
+	   title: "Network Search Visualization",
+	   imgSrc: "/images/webDev/NSV1920x1080.png",
+	   website: { title: "Network Search Website", url: "http://faculty.nps.edu/dl/networkVisualization/" },
+	   images: ["/images/webDev/NSV1920x1080.png"],
+	   description: "I created this standalone app for the Naval Postgraduate School. It is a data visualization tool that shows the connections of different networks. It was made so you can upload .gexf files and view them graphically instead of looking at a spreadsheet.  The NSV app lets you run algorigthms to see which one uncovers the network faster. It is able to visualize thousands of nodes ands connections while still animating fluidly on three different views."
+	}, {
+	   title: "Spring Pendulum",
+	   imgSrc: "/images/webDev/SpringPendulum1920x1080.png",
+	   website: { title: "Spring Pendulum Website", url: "http://faculty.nps.edu/dl/springPendulum/#Sample1" },
+	   websiteUrl: "",
+	   images: ["/images/webDev/SpringPendulum1920x1080.png"],
+	   description: " I created this 3d Simulation for the Physics Department at Naval Postgraduate School. This app uses real life physics data that was collected by proffesors ay the university. Once they had recored the data this app could parse the results and create a realistic physics simulation.  There are controls to toggle experiment such as playback speed, physics controls, and camera controls."
+	}, {
+	   title: "Monterey Phoenix (Firebird)",
+	   imgSrc: "/images/webDev/MP1920x1080.png",
+	   website: { title: "Monterey Phoenix Firebird", url: "http://firebird.nps.edu/" },
+	   images: ["/images/webDev/MP1920x1080.png"],
+	   aboutLinks: ["https://wiki.nps.edu/display/MP", "https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf"],
+	   description: "I was part of the team the created an online editor for the " + "<a href='https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf'>Monterey Phoenix language</a>" + " called Firebird. The language was created and developed by Mikhail Augston an Associate Proffesor at the department Computer Science. Among other things I updated the rendering engine to PIXI.js and worked on the front-end development."
+	}, {
+	   title: "Hurricane Simulation",
+	   imgSrc: "/images/webDev/hurricaneSim.png",
+	   website: { title: "Hurricane Simulator", url: "https://eddy.nps.edu/hurricaneSim/simulation" },
+	   images: ["/images/webDev/hurricaneSim.png"],
+	   description: "The Hurricane Decision Simulator provides decision makers with experience and practice in dealing with simulated storm variations, interpreting forecast details, and making critical decisions. On this project I worked mainly on the front-end development. This was one of the most interesting projects I have worked on.  Some of the project restrictions were resolution max of 1024 x 768 and it must be compatable with IE7."
+	}];
 
 /***/ },
 /* 98 */
@@ -69237,13 +69263,17 @@
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='<div class="project-container">\r\n  <div class="text-wrapper">\r\n    <div class="project-title">'+
+	__p+='<div class="project-container">\n  <div class="text-wrapper">\n    <div class="project-title">'+
 	((__t=( title ))==null?'':__t)+
-	'</div>\r\n    <p>'+
+	'</div>\n    <p>'+
 	((__t=( description ))==null?'':__t)+
-	'</p>\r\n  </div>\r\n  <div class="img-wrapper">\r\n    <img src="'+
+	'</p>\n    <a href="'+
+	((__t=( website.url ))==null?'':__t)+
+	'" target="_blank">'+
+	((__t=( website.title ))==null?'':__t)+
+	'</a>\n  </div>\n  <div class="img-wrapper">\n    <img src="'+
 	((__t=( imgSrc ))==null?'':__t)+
-	'"/>\r\n  </div>\r\n</div>\r\n';
+	'"/>\n  </div>\n</div>\n';
 	}
 	return __p;
 	};
@@ -69259,11 +69289,7 @@
 
 	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
 
-	var _dAnimation = __webpack_require__(100);
-
-	var _dAnimation2 = _interopRequireDefault(_dAnimation);
-
-	var _ThreeDAnimationViewTemplate = __webpack_require__(101);
+	var _ThreeDAnimationViewTemplate = __webpack_require__(100);
 
 	var _ThreeDAnimationViewTemplate2 = _interopRequireDefault(_ThreeDAnimationViewTemplate);
 
@@ -69280,13 +69306,12 @@
 	  },
 	  render: function render() {
 	    this.$el.append(this.titleTemplate({ title: this.title }));
-	    _.each(_dAnimation2.default, function (templateData) {
-	      var newProjectContainer = _.template((0, _ThreeDAnimationViewTemplate2.default)(templateData));
-	      this.$el.append(newProjectContainer);
-	    }, this);
+	    this.$el.append(_ThreeDAnimationViewTemplate2.default);
 	    return this;
 	  }
 	});
+	// import pageData from "../../data/pageData/3dAnimation";
+
 
 	module.exports = ThreeDAnimationView;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
@@ -69295,31 +69320,17 @@
 /* 100 */
 /***/ function(module, exports) {
 
-	"use strict";
-
-	module.exports = [{ title: "Project------ #1", imgSrc: "/images/webDev/blender_cola.png", description: "Blender Contest We got the bottle and had to add some interesing texture lighting", images: ["1.jpg", "2.jpg"] }, { title: "Projectyero -------#2", imgSrc: "/images/webDev/mortar_emplacment.png", description: " Blender contest on Reddit the theme was 'duck!''", images: ["1.jpg", "2.jpg"] }, { title: "Projectyera -----------#3", imgSrc: "/images/webDev/scenic_drive.png", description: " 3d Model architecture ", images: ["1.jpg", "2.jpg"] }];
-
-/***/ },
-/* 101 */
-/***/ function(module, exports) {
-
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='<div class="project-container">\r\n  <div class="text-wrapper">\r\n    <div class="project-title">'+
-	((__t=( title ))==null?'':__t)+
-	'</div>\r\n    <p>'+
-	((__t=( description ))==null?'':__t)+
-	'</p>\r\n  </div>\r\n  <div class="img-wrapper">\r\n    <img src="'+
-	((__t=( imgSrc ))==null?'':__t)+
-	'"/>\r\n  </div>\r\n</div>\r\n<hr/>\r\n';
+	__p+='<div class="project-container animation">\n  <p class=\'animation-intro\'>Below is collection of my favorite animations from 2016. I used <a href=\'http://www.blender.org\'>Blender</a> to render\n    all the 3d graphics. Adobe Affter affects was used to composite the video and add the audio. My current system that was used to render these videos\n    is a Windows 8, Intel i7 -3930k CPU, with two GTX 970\'s GPU\'s. Below is a link to my YouTube portfolio. The first video in the playlist is my "Blender cycles 2016 Demo".\n  </p>\n    <iframe width="560" height="315" src="https://www.youtube.com/embed/DWv4av-5MiE?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M" frameborder="0" align="middle" allowfullscreen></iframe>\n</div>\n<hr/>\n';
 	}
 	return __p;
 	};
 
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -69332,7 +69343,7 @@
 
 	var _digitalArt2 = _interopRequireDefault(_digitalArt);
 
-	var _DigitalArtViewTemplate = __webpack_require__(103);
+	var _DigitalArtViewTemplate = __webpack_require__(102);
 
 	var _DigitalArtViewTemplate2 = _interopRequireDefault(_DigitalArtViewTemplate);
 
@@ -69349,9 +69360,11 @@
 	  },
 	  render: function render() {
 	    this.$el.append(this.titleTemplate({ title: this.title }));
+	    console.log("pageData", _digitalArt2.default);
 	    _.each(_digitalArt2.default, function (templateData) {
-	      var newProjectContainer = _.template((0, _DigitalArtViewTemplate2.default)(templateData));
-	      this.$el.append(newProjectContainer);
+	      // var newProjectContainer = _.template(projectContainerHTML(templateData));
+	      this.$el.append(_.template((0, _DigitalArtViewTemplate2.default)(templateData)));
+	      // if (i !== pageData.length -1) this.$el.append("<hr/>");
 	    }, this);
 	    return this;
 	  }
@@ -69361,31 +69374,83 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='<div class="project-container">\r\n  <div class="text-wrapper">\r\n    <div class="project-title">'+
+	__p+='<div class="project-container">\n  <div class="project-title">'+
 	((__t=( title ))==null?'':__t)+
-	'</div>\r\n    <p>'+
+	'</div>\n  <p>'+
 	((__t=( description ))==null?'':__t)+
-	'</p>\r\n  </div>\r\n  <div class="img-wrapper">\r\n    <img src="'+
+	'</p>\n  <div class="img-wrapper">\n    <img src="'+
 	((__t=( imgSrc ))==null?'':__t)+
-	'"/>\r\n  </div>\r\n</div>\r\n<hr/>\r\n';
+	'"/>\n  </div>\n</div>\n';
 	}
 	return __p;
 	};
 
 
 /***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _BaseView2d = __webpack_require__(96);
+
+	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
+
+	var _digitalArt = __webpack_require__(75);
+
+	var _digitalArt2 = _interopRequireDefault(_digitalArt);
+
+	var _AboutMeView = __webpack_require__(104);
+
+	var _AboutMeView2 = _interopRequireDefault(_AboutMeView);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var AboutMeView = _BaseView2d2.default.extend({
+	  className: "about-me",
+	  title: "Skills/Resume",
+	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
+	  initialize: function initialize() {
+	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
+	  },
+	  render: function render() {
+	    this.$el.append(this.titleTemplate({ title: this.title }));
+	    this.$el.append(_AboutMeView2.default);
+	    return this;
+	  }
+	});
+
+	module.exports = AboutMeView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
 /* 104 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class="project-container">\r\n  <img class="profile-pic" src="/images/aboutMe/RickVpic.jpg"></img>\r\n  <div class="project-title">About Me</div>\r\n  <p class="about-me-intro">I live in the Monterey Bay area and have here lived here almost my entire life.  Outside of work I like to travel, hike, play and watching Basketball, play Halo, play board games. Most weeknights I am either working on a 3d animation / motion graphic or working on litte programming projects. Below is a link to my resume. My contact information is avaible in my resume.</p>\r\n   <div class="link-wrapper">\r\n     <div class="button-link"></div>\r\n     <a href="other/Resume-RichardvonBuelowDec2016.pdf">Resume.pdf</a>\r\n   </div>\r\n   <div class="link-wrapper">\r\n     <div class="button-link"></div>\r\n     <a href="other/Resume-RichardvonBuelowDec2016.docx">Resume.docx</a>\r\n   </div>\r\n</div>\r\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _photoswipe = __webpack_require__(105);
+	var _photoswipe = __webpack_require__(106);
 
 	var _photoswipe2 = _interopRequireDefault(_photoswipe);
 
@@ -69397,11 +69462,11 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _photoswipeUiDefaultMin = __webpack_require__(106);
+	var _photoswipeUiDefaultMin = __webpack_require__(107);
 
 	var _photoswipeUiDefaultMin2 = _interopRequireDefault(_photoswipeUiDefaultMin);
 
-	var _photoSwipe = __webpack_require__(107);
+	var _photoSwipe = __webpack_require__(108);
 
 	var _photoSwipe2 = _interopRequireDefault(_photoSwipe);
 
@@ -69449,7 +69514,7 @@
 	module.exports = PhotoSwipeView;
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe - v4.1.1 - 2015-12-24
@@ -73172,7 +73237,7 @@
 	});
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe Default UI - 4.1.1 - 2015-12-24
@@ -73181,20 +73246,20 @@
 	!function(a,b){ true?!(__WEBPACK_AMD_DEFINE_FACTORY__ = (b), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"object"==typeof exports?module.exports=b():a.PhotoSwipeUI_Default=b()}(this,function(){"use strict";var a=function(a,b){var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v=this,w=!1,x=!0,y=!0,z={barsSize:{top:44,bottom:"auto"},closeElClasses:["item","caption","zoom-wrap","ui","top-bar"],timeToIdle:4e3,timeToIdleOutside:1e3,loadingIndicatorDelay:1e3,addCaptionHTMLFn:function(a,b){return a.title?(b.children[0].innerHTML=a.title,!0):(b.children[0].innerHTML="",!1)},closeEl:!0,captionEl:!0,fullscreenEl:!0,zoomEl:!0,shareEl:!0,counterEl:!0,arrowEl:!0,preloaderEl:!0,tapToClose:!1,tapToToggleControls:!0,clickToCloseNonZoomable:!0,shareButtons:[{id:"facebook",label:"Share on Facebook",url:"https://www.facebook.com/sharer/sharer.php?u={{url}}"},{id:"twitter",label:"Tweet",url:"https://twitter.com/intent/tweet?text={{text}}&url={{url}}"},{id:"pinterest",label:"Pin it",url:"http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}"},{id:"download",label:"Download image",url:"{{raw_image_url}}",download:!0}],getImageURLForShare:function(){return a.currItem.src||""},getPageURLForShare:function(){return window.location.href},getTextForShare:function(){return a.currItem.title||""},indexIndicatorSep:" / ",fitControlsWidth:1200},A=function(a){if(r)return!0;a=a||window.event,q.timeToIdle&&q.mouseUsed&&!k&&K();for(var c,d,e=a.target||a.srcElement,f=e.getAttribute("class")||"",g=0;g<S.length;g++)c=S[g],c.onTap&&f.indexOf("pswp__"+c.name)>-1&&(c.onTap(),d=!0);if(d){a.stopPropagation&&a.stopPropagation(),r=!0;var h=b.features.isOldAndroid?600:30;s=setTimeout(function(){r=!1},h)}},B=function(){return!a.likelyTouchDevice||q.mouseUsed||screen.width>q.fitControlsWidth},C=function(a,c,d){b[(d?"add":"remove")+"Class"](a,"pswp__"+c)},D=function(){var a=1===q.getNumItemsFn();a!==p&&(C(d,"ui--one-slide",a),p=a)},E=function(){C(i,"share-modal--hidden",y)},F=function(){return y=!y,y?(b.removeClass(i,"pswp__share-modal--fade-in"),setTimeout(function(){y&&E()},300)):(E(),setTimeout(function(){y||b.addClass(i,"pswp__share-modal--fade-in")},30)),y||H(),!1},G=function(b){b=b||window.event;var c=b.target||b.srcElement;return a.shout("shareLinkClick",b,c),c.href?c.hasAttribute("download")?!0:(window.open(c.href,"pswp_share","scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left="+(window.screen?Math.round(screen.width/2-275):100)),y||F(),!1):!1},H=function(){for(var a,b,c,d,e,f="",g=0;g<q.shareButtons.length;g++)a=q.shareButtons[g],c=q.getImageURLForShare(a),d=q.getPageURLForShare(a),e=q.getTextForShare(a),b=a.url.replace("{{url}}",encodeURIComponent(d)).replace("{{image_url}}",encodeURIComponent(c)).replace("{{raw_image_url}}",c).replace("{{text}}",encodeURIComponent(e)),f+='<a href="'+b+'" target="_blank" class="pswp__share--'+a.id+'"'+(a.download?"download":"")+">"+a.label+"</a>",q.parseShareButtonOut&&(f=q.parseShareButtonOut(a,f));i.children[0].innerHTML=f,i.children[0].onclick=G},I=function(a){for(var c=0;c<q.closeElClasses.length;c++)if(b.hasClass(a,"pswp__"+q.closeElClasses[c]))return!0},J=0,K=function(){clearTimeout(u),J=0,k&&v.setIdle(!1)},L=function(a){a=a?a:window.event;var b=a.relatedTarget||a.toElement;b&&"HTML"!==b.nodeName||(clearTimeout(u),u=setTimeout(function(){v.setIdle(!0)},q.timeToIdleOutside))},M=function(){q.fullscreenEl&&!b.features.isOldAndroid&&(c||(c=v.getFullscreenAPI()),c?(b.bind(document,c.eventK,v.updateFullscreen),v.updateFullscreen(),b.addClass(a.template,"pswp--supports-fs")):b.removeClass(a.template,"pswp--supports-fs"))},N=function(){q.preloaderEl&&(O(!0),l("beforeChange",function(){clearTimeout(o),o=setTimeout(function(){a.currItem&&a.currItem.loading?(!a.allowProgressiveImg()||a.currItem.img&&!a.currItem.img.naturalWidth)&&O(!1):O(!0)},q.loadingIndicatorDelay)}),l("imageLoadComplete",function(b,c){a.currItem===c&&O(!0)}))},O=function(a){n!==a&&(C(m,"preloader--active",!a),n=a)},P=function(a){var c=a.vGap;if(B()){var g=q.barsSize;if(q.captionEl&&"auto"===g.bottom)if(f||(f=b.createEl("pswp__caption pswp__caption--fake"),f.appendChild(b.createEl("pswp__caption__center")),d.insertBefore(f,e),b.addClass(d,"pswp__ui--fit")),q.addCaptionHTMLFn(a,f,!0)){var h=f.clientHeight;c.bottom=parseInt(h,10)||44}else c.bottom=g.top;else c.bottom="auto"===g.bottom?0:g.bottom;c.top=g.top}else c.top=c.bottom=0},Q=function(){q.timeToIdle&&l("mouseUsed",function(){b.bind(document,"mousemove",K),b.bind(document,"mouseout",L),t=setInterval(function(){J++,2===J&&v.setIdle(!0)},q.timeToIdle/2)})},R=function(){l("onVerticalDrag",function(a){x&&.95>a?v.hideControls():!x&&a>=.95&&v.showControls()});var a;l("onPinchClose",function(b){x&&.9>b?(v.hideControls(),a=!0):a&&!x&&b>.9&&v.showControls()}),l("zoomGestureEnded",function(){a=!1,a&&!x&&v.showControls()})},S=[{name:"caption",option:"captionEl",onInit:function(a){e=a}},{name:"share-modal",option:"shareEl",onInit:function(a){i=a},onTap:function(){F()}},{name:"button--share",option:"shareEl",onInit:function(a){h=a},onTap:function(){F()}},{name:"button--zoom",option:"zoomEl",onTap:a.toggleDesktopZoom},{name:"counter",option:"counterEl",onInit:function(a){g=a}},{name:"button--close",option:"closeEl",onTap:a.close},{name:"button--arrow--left",option:"arrowEl",onTap:a.prev},{name:"button--arrow--right",option:"arrowEl",onTap:a.next},{name:"button--fs",option:"fullscreenEl",onTap:function(){c.isFullscreen()?c.exit():c.enter()}},{name:"preloader",option:"preloaderEl",onInit:function(a){m=a}}],T=function(){var a,c,e,f=function(d){if(d)for(var f=d.length,g=0;f>g;g++){a=d[g],c=a.className;for(var h=0;h<S.length;h++)e=S[h],c.indexOf("pswp__"+e.name)>-1&&(q[e.option]?(b.removeClass(a,"pswp__element--disabled"),e.onInit&&e.onInit(a)):b.addClass(a,"pswp__element--disabled"))}};f(d.children);var g=b.getChildByClass(d,"pswp__top-bar");g&&f(g.children)};v.init=function(){b.extend(a.options,z,!0),q=a.options,d=b.getChildByClass(a.scrollWrap,"pswp__ui"),l=a.listen,R(),l("beforeChange",v.update),l("doubleTap",function(b){var c=a.currItem.initialZoomLevel;a.getZoomLevel()!==c?a.zoomTo(c,b,333):a.zoomTo(q.getDoubleTapZoom(!1,a.currItem),b,333)}),l("preventDragEvent",function(a,b,c){var d=a.target||a.srcElement;d&&d.getAttribute("class")&&a.type.indexOf("mouse")>-1&&(d.getAttribute("class").indexOf("__caption")>0||/(SMALL|STRONG|EM)/i.test(d.tagName))&&(c.prevent=!1)}),l("bindEvents",function(){b.bind(d,"pswpTap click",A),b.bind(a.scrollWrap,"pswpTap",v.onGlobalTap),a.likelyTouchDevice||b.bind(a.scrollWrap,"mouseover",v.onMouseOver)}),l("unbindEvents",function(){y||F(),t&&clearInterval(t),b.unbind(document,"mouseout",L),b.unbind(document,"mousemove",K),b.unbind(d,"pswpTap click",A),b.unbind(a.scrollWrap,"pswpTap",v.onGlobalTap),b.unbind(a.scrollWrap,"mouseover",v.onMouseOver),c&&(b.unbind(document,c.eventK,v.updateFullscreen),c.isFullscreen()&&(q.hideAnimationDuration=0,c.exit()),c=null)}),l("destroy",function(){q.captionEl&&(f&&d.removeChild(f),b.removeClass(e,"pswp__caption--empty")),i&&(i.children[0].onclick=null),b.removeClass(d,"pswp__ui--over-close"),b.addClass(d,"pswp__ui--hidden"),v.setIdle(!1)}),q.showAnimationDuration||b.removeClass(d,"pswp__ui--hidden"),l("initialZoomIn",function(){q.showAnimationDuration&&b.removeClass(d,"pswp__ui--hidden")}),l("initialZoomOut",function(){b.addClass(d,"pswp__ui--hidden")}),l("parseVerticalMargin",P),T(),q.shareEl&&h&&i&&(y=!0),D(),Q(),M(),N()},v.setIdle=function(a){k=a,C(d,"ui--idle",a)},v.update=function(){x&&a.currItem?(v.updateIndexIndicator(),q.captionEl&&(q.addCaptionHTMLFn(a.currItem,e),C(e,"caption--empty",!a.currItem.title)),w=!0):w=!1,y||F(),D()},v.updateFullscreen=function(d){d&&setTimeout(function(){a.setScrollOffset(0,b.getScrollY())},50),b[(c.isFullscreen()?"add":"remove")+"Class"](a.template,"pswp--fs")},v.updateIndexIndicator=function(){q.counterEl&&(g.innerHTML=a.getCurrentIndex()+1+q.indexIndicatorSep+q.getNumItemsFn())},v.onGlobalTap=function(c){c=c||window.event;var d=c.target||c.srcElement;if(!r)if(c.detail&&"mouse"===c.detail.pointerType){if(I(d))return void a.close();b.hasClass(d,"pswp__img")&&(1===a.getZoomLevel()&&a.getZoomLevel()<=a.currItem.fitRatio?q.clickToCloseNonZoomable&&a.close():a.toggleDesktopZoom(c.detail.releasePoint))}else if(q.tapToToggleControls&&(x?v.hideControls():v.showControls()),q.tapToClose&&(b.hasClass(d,"pswp__img")||I(d)))return void a.close()},v.onMouseOver=function(a){a=a||window.event;var b=a.target||a.srcElement;C(d,"ui--over-close",I(b))},v.hideControls=function(){b.addClass(d,"pswp__ui--hidden"),x=!1},v.showControls=function(){x=!0,w||v.update(),b.removeClass(d,"pswp__ui--hidden")},v.supportsFullscreen=function(){var a=document;return!!(a.exitFullscreen||a.mozCancelFullScreen||a.webkitExitFullscreen||a.msExitFullscreen)},v.getFullscreenAPI=function(){var b,c=document.documentElement,d="fullscreenchange";return c.requestFullscreen?b={enterK:"requestFullscreen",exitK:"exitFullscreen",elementK:"fullscreenElement",eventK:d}:c.mozRequestFullScreen?b={enterK:"mozRequestFullScreen",exitK:"mozCancelFullScreen",elementK:"mozFullScreenElement",eventK:"moz"+d}:c.webkitRequestFullscreen?b={enterK:"webkitRequestFullscreen",exitK:"webkitExitFullscreen",elementK:"webkitFullscreenElement",eventK:"webkit"+d}:c.msRequestFullscreen&&(b={enterK:"msRequestFullscreen",exitK:"msExitFullscreen",elementK:"msFullscreenElement",eventK:"MSFullscreenChange"}),b&&(b.enter=function(){return j=q.closeOnScroll,q.closeOnScroll=!1,"webkitRequestFullscreen"!==this.enterK?a.template[this.enterK]():void a.template[this.enterK](Element.ALLOW_KEYBOARD_INPUT)},b.exit=function(){return q.closeOnScroll=j,document[this.exitK]()},b.isFullscreen=function(){return document[this.elementK]}),b}};return a});
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='<!-- Root element of PhotoSwipe. Must have class pswp. -->\r\n<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">\r\n\r\n    <!-- Background of PhotoSwipe.\r\n         It\'s a separate element as animating opacity is faster than rgba(). -->\r\n    <div class="pswp__bg"></div>\r\n\r\n    <!-- Slides wrapper with overflow:hidden. -->\r\n    <div class="pswp__scroll-wrap">\r\n\r\n        <!-- Container that holds slides.\r\n            PhotoSwipe keeps only 3 of them in the DOM to save memory.\r\n            Don\'t modify these 3 pswp__item elements, data is added later on. -->\r\n        <div class="pswp__container">\r\n            <div class="pswp__item"></div>\r\n            <div class="pswp__item"></div>\r\n            <div class="pswp__item"></div>\r\n        </div>\r\n\r\n        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->\r\n        <div class="pswp__ui pswp__ui--hidden">\r\n\r\n            <div class="pswp__top-bar">\r\n\r\n                <!--  Controls are self-explanatory. Order can be changed. -->\r\n\r\n                <div class="pswp__counter"></div>\r\n\r\n                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>\r\n\r\n                <button class="pswp__button pswp__button--share" title="Share"></button>\r\n\r\n                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>\r\n\r\n                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>\r\n\r\n                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->\r\n                <!-- element will get class pswp__preloader--active when preloader is running -->\r\n                <div class="pswp__preloader">\r\n                    <div class="pswp__preloader__icn">\r\n                      <div class="pswp__preloader__cut">\r\n                        <div class="pswp__preloader__donut"></div>\r\n                      </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">\r\n                <div class="pswp__share-tooltip"></div>\r\n            </div>\r\n\r\n            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">\r\n            </button>\r\n\r\n            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">\r\n            </button>\r\n\r\n            <div class="pswp__caption">\r\n                <div class="pswp__caption__center"></div>\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n';
+	__p+='<!-- Root element of PhotoSwipe. Must have class pswp. -->\n<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">\n\n    <!-- Background of PhotoSwipe.\n         It\'s a separate element as animating opacity is faster than rgba(). -->\n    <div class="pswp__bg"></div>\n\n    <!-- Slides wrapper with overflow:hidden. -->\n    <div class="pswp__scroll-wrap">\n\n        <!-- Container that holds slides.\n            PhotoSwipe keeps only 3 of them in the DOM to save memory.\n            Don\'t modify these 3 pswp__item elements, data is added later on. -->\n        <div class="pswp__container">\n            <div class="pswp__item"></div>\n            <div class="pswp__item"></div>\n            <div class="pswp__item"></div>\n        </div>\n\n        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->\n        <div class="pswp__ui pswp__ui--hidden">\n\n            <div class="pswp__top-bar">\n\n                <!--  Controls are self-explanatory. Order can be changed. -->\n\n                <div class="pswp__counter"></div>\n\n                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>\n\n                <button class="pswp__button pswp__button--share" title="Share"></button>\n\n                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>\n\n                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>\n\n                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->\n                <!-- element will get class pswp__preloader--active when preloader is running -->\n                <div class="pswp__preloader">\n                    <div class="pswp__preloader__icn">\n                      <div class="pswp__preloader__cut">\n                        <div class="pswp__preloader__donut"></div>\n                      </div>\n                    </div>\n                </div>\n            </div>\n\n            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">\n                <div class="pswp__share-tooltip"></div>\n            </div>\n\n            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">\n            </button>\n\n            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">\n            </button>\n\n            <div class="pswp__caption">\n                <div class="pswp__caption__center"></div>\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n';
 	}
 	return __p;
 	};
 
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73207,7 +73272,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _switchView = __webpack_require__(109);
+	var _switchView = __webpack_require__(110);
 
 	var _switchView2 = _interopRequireDefault(_switchView);
 
@@ -73222,14 +73287,17 @@
 	  },
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	    _eventController2.default.on(_eventController2.default.SET_VIEW, this.updateCheckBox, this);
 	  },
 	  clickSwitchViews: function clickSwitchViews(evt) {
-	    var isChecked = this.$el.find("input:checked").length > 0 ? true : false;
-	    if (isChecked) {
+	    if (this.getIsChecked()) {
 	      this.switchView3d();
 	    } else {
 	      this.switchView2d();
 	    }
+	  },
+	  getIsChecked: function getIsChecked() {
+	    return this.$el.find("input:checked").length > 0 ? true : false;
 	  },
 	  switchView2d: function switchView2d() {
 	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "2d");
@@ -73237,6 +73305,15 @@
 	  switchView3d: function switchView3d() {
 	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "3d");
 	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE, "3d");
+	  },
+	  updateCheckBox: function updateCheckBox(whichView) {
+	    var isChecked = this.getIsChecked();
+
+	    if (whichView === "2d" && isChecked === true) {
+	      this.$el.find("input:first").click();
+	    } else {
+	      this.switchView3d();
+	    }
 	  },
 	  render: function render() {
 	    this.$el.append(_switchView2.default);
@@ -73247,20 +73324,20 @@
 	module.exports = SwitchView;
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='  <!-- <div class="button-home"></div> -->\r\n  <span class="switch-view-label">Switch Views</span>\r\n  <div class="onoffswitch">\r\n      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>\r\n      <label class="onoffswitch-label" for="myonoffswitch">\r\n          <span class="onoffswitch-inner"></span>\r\n          <span class="onoffswitch-switch"></span>\r\n      </label>\r\n  </div>\r\n';
+	__p+='  <!-- <div class="button-home"></div> -->\n  <span class="switch-view-label">Switch Views</span>\n  <div class="onoffswitch">\n      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>\n      <label class="onoffswitch-label" for="myonoffswitch">\n          <span class="onoffswitch-inner"></span>\n          <span class="onoffswitch-switch"></span>\n      </label>\n  </div>\n';
 	}
 	return __p;
 	};
 
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73273,7 +73350,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _introView = __webpack_require__(111);
+	var _introView = __webpack_require__(112);
 
 	var _introView2 = _interopRequireDefault(_introView);
 
@@ -73317,7 +73394,7 @@
 	module.exports = SwitchView;
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -73330,7 +73407,7 @@
 
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

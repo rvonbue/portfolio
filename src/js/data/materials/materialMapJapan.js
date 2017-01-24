@@ -84,9 +84,9 @@ module.exports = {
   },
   woodFloor: {
     maps: [
-      { map: "textures/woodFloor/woodFloor_COLOR.jpg" },
-      { normalMap: "textures/woodFloor/woodFloor_NRM.jpg" },
-      { specularMap: "textures/woodFloor/woodFloor_SPEC.jpg" }
+      { map: "textures/woodFloor2/woodFloor_COLOR.jpg" },
+      { normalMap: "textures/woodFloor2/woodFloor_NRM.jpg" },
+      { specularMap: "textures/woodFloor2/woodFloor_SPEC.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { shininess: 10 }

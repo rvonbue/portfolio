@@ -3,15 +3,13 @@
 @import "./appView-container.less";
 @import "/webDev.less";
 
-.appView-2d {
-  padding-bottom: 24px;
-}
 .view-body-2d {
   max-width: 1300px;
   margin: 0px auto;
   background-color: @appView-2d-body-color;
   border-left: 1px solid @color-4;
   border-right: 1px solid @color-4;
+  padding-bottom: 36px;
 
   h2 {
     text-align: center;
@@ -53,4 +51,27 @@ p.animation-intro {
       white-space: normal;
     }
   }
+}
+
+.about-me {
+  .project-container {
+    max-width: 650px;
+    margin: 0px auto;
+  }
+  a {
+    font-size: 125%;
+    vertical-align: middle;
+  }
+}
+.profile-pic {
+  max-width: 250px;
+  text-align: center;
+  margin: 0px auto;
+  display: block;
+  margin-bottom: 24px;
+}
+p.about-me-intro {
+  display: block;
+  margin: 0px auto 24px auto;
+  white-space: normal;
 }

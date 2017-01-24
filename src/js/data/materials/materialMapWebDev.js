@@ -79,6 +79,7 @@ module.exports = {
   powerButton: {
       maps: [{ map: basePath + "computer/powerButton.jpg" } ],
       mapProps: { repeatScale: 1, shading: "flat" },
+      props: { shadingType: "MeshBasicMaterial" }
   },
   rugPersianHalf: {
     maps:[

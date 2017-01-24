@@ -5,12 +5,10 @@ var BaseView2d = Backbone.View.extend({
   hide: function () {
     this.$el.fadeOut();
     // this.removeListeners();
-    this.parentEl.removeClass(this.parentClass);
   },
   show: function () {
     this.$el.fadeIn();
     // this.addListeners();
-    this.parentEl.addClass(this.parentClass);
   },
   close: function () {
     this.remove();
