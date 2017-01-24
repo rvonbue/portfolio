@@ -3,7 +3,7 @@ import BaseView2d from "./BaseView2d";
 import ThreeDAnimationHTML from "./ThreeDAnimationViewTemplate.html";
 
 var ThreeDAnimationView = BaseView2d.extend({
-  className: "3d-animation",
+  className: "animation-3d",
   title: "3D Animation",
   titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
   initialize: function () {

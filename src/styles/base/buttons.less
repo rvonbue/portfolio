@@ -1,0 +1,110 @@
+
+
+.button-zoom,
+.slideshow-icon,
+.video-icon,
+.button-play,
+.button-pause,
+.button-right,
+.button-left,
+.button-toggle-menu,
+.button-close,
+.button-skip-next,
+.button-skip-prev,
+.button-home,
+.button-file,
+.button-link,
+.button-menu {
+  display: inline-block;
+  width: @button-size;
+  height: @button-size;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.button-play {
+  float: left;
+  background-image: url(../sprites/ic_play_circle_outline_white_48px.svg);
+  &:hover {
+    background-image: url(../sprites/ic_play_circle_outline_hover_48px.svg);
+  }
+}
+.slideshow-icon {
+  background-image: url(../sprites/ic_slideshow_white_36px.svg);
+}
+.video-icon {
+  background-image: url(../sprites/ic_tv_white_36px.svg);
+}
+.button-right, .button-left {
+  background-image: url(../sprites/ic_play_arrow_white_48px.svg);
+  position: absolute;
+  &:hover {
+    background-image: url(../sprites/ic_play_arrow_hover_48px.svg);
+  }
+}
+.button-right {
+  right: 0px;
+}
+.button-left {
+  left: 0px;
+}
+.button-left, .button-skip-prev {
+  -moz-transform: scaleX(-1);
+   -o-transform: scaleX(-1);
+   -webkit-transform: scaleX(-1);
+   transform: scaleX(-1);
+   filter: FlipH;
+   -ms-filter: "FlipH";
+}
+.button-pause {
+  background-image: url(../sprites/ic_pause_circle_outline_white_48px.svg);
+  float: left;
+  &:hover {
+    background-image: url(../sprites/ic_pause_circle_outline_hover_48px.svg);
+  }
+}
+.button-file {
+  background-image: url(../sprites/ic_insert_drive_file_black_36px.svg);
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+  &:hover {
+    background-image: url(../sprites/ic_insert_drive_file_hover_36px.svg);
+  }
+}
+.button-link {
+  background-image: url(../sprites/ic_link_black_36px.svg);
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+}
+.button-zoom {
+  background-image: url(../sprites/ic_zoom_in_white_36px.svg);
+  width: 36px;
+  height: 36px;
+  background-color: @color-4;
+}
+
+.button-home {
+  background-image: url(../sprites/ic_home_white_48px.svg);
+  position: absolute;
+}
+.button-menu {
+  background-image: url(../sprites/ic_list_white_48px.svg);
+  &:hover {
+    background-image: url(../sprites/ic_list_hover_48px.svg);
+  }
+}
+.button-toggle-menu {
+  .button-menu;
+  display: block;
+  margin: 0px auto;
+  pointer-events: all;
+
+  &.open {
+     background-image: url("../sprites/ic_close_white_48px.svg");
+  }
+}
+
+.button-skip-next, .button-skip-prev {
+  background-image: url(../sprites/ic_skip_next_white_48px.svg);
+}

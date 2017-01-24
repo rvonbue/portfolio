@@ -71,8 +71,9 @@ var SceneSelector = BaseView.extend({
   },
   clickSelectSceneDetails: function (intersectObject) {
     var sceneModel = this.isSceneSelected();
+    var action = intersectObject.object.clickData.action;
 
-    switch(intersectObject.object.clickData.action) {
+    switch(action) {
       case "photoswipe":
         eventController.trigger(eventController.OPEN_PHOTO_SWIPE,
           sceneModel.get("sceneDetails").getPSImages(),
@@ -82,11 +83,20 @@ var SceneSelector = BaseView.extend({
       case "video":
         eventController.trigger(eventController.VIDEO_PLAY_PAUSE);
         break;
+      case "linkI":
+        eventController.trigger(eventController.OPEN_PHOTO_SWIPE,
+          [
+            { src: "./other/Resume-RichardvonBuelowDec2016-1.png" , w: 1700, h: 2200 },
+            { src: "./other/Resume-RichardvonBuelowDec2016-2.png" , w: 1700, h: 2200 }
+          ],
+          intersectObject.object.clickData.imageNum
+        );
+        break;
       case "link":
-      console.log("openLink");
-        // window.open(intersectObject.object.clickData.url);
+        window.open("http://" + intersectObject.object.clickData.url);
         break;
       default:
+        console.log("action", action);
         break;
     }
   },

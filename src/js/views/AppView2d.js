@@ -8,7 +8,7 @@ var viewArray = [
   require("./2d/ThreeDAnimationView"),
   require("./2d/DigitalArtView"),
   require("./2d/AboutMeView"),
-  require("./2d/DigitalArtView")
+  require("./2d/ContactView")
 ];
 
 var AppView2d = BaseView.extend({
@@ -41,14 +41,16 @@ var AppView2d = BaseView.extend({
 
     if (this.childViews[index].view === null ) {
       var new2dView = new viewArray[index];
-      this.bodyEl.append(new2dView.render().el);
       this.childViews[index].view = new2dView;
+      this.bodyEl.append(new2dView.render().el);
+      new2dView.show();
     } else {
       this.childViews[index].view.show();
     }
     this.currentViewIndex = index;
   },
   switchPage: function (index) {
+    if ( this.currentViewIndex === index) return;
     this.childViews[this.currentViewIndex].view.hide();
     this.setSection(index);
   },

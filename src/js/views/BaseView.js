@@ -5,8 +5,8 @@ var BaseView = Backbone.View.extend({
   },
   hide: function () {
     this.$el.fadeOut();
-    this.removeListeners();
-    this.removeChildViewEventHandlers();
+    // this.removeListeners();
+    // this.removeChildViewEventHandlers();
     this.parentEl.removeClass(this.parentClass);
   },
   show: function () {

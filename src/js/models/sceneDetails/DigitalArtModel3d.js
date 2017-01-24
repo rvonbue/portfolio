@@ -47,7 +47,7 @@ var DigitalArtModel3d = SceneDetailsBaseModel3d.extend({
         photoSwipeImgArray.push({ src: imgSrc, w: 1920, h: 1080 });
       }
     }
-
+    console.log("photoSwipeImgArray", photoSwipeImgArray);
     return photoSwipeImgArray;
   },
   loadSceneDetailModels: function (modelObj) {

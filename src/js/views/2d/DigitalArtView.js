@@ -1,6 +1,6 @@
 import BaseView2d from "./BaseView2d";
 import pageData from "../../data/pageData/digitalArt";
-import projectContainerHTML from "./DigitalArtViewTemplate.html";
+import projectContainerHTML from "./digitalArtViewTemplate.html";
 
 var DigitalArtView = BaseView2d.extend({
   className: "digital-art",

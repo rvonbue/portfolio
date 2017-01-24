@@ -1,6 +1,8 @@
+
 .web-dev {
   position: relative;
   width: 100%;
+  .animate-height;
 }
 
 .project-container {
@@ -36,11 +38,26 @@
 }
 .img-wrapper {
   text-align: right;
+  cursor: pointer;
   img {
     max-width: 100%;
     display: block;
-    // margin: 0px auto;
   }
+
+  &:hover {
+    .hover-zoom {
+      opacity: 1;
+    }
+  }
+}
+.hover-zoom {
+  position: absolute;
+  bottom: -3px;
+  right: 0px;
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
 }
 hr {
   width: 80%;
@@ -70,7 +87,15 @@ hr {
   }
 
 }
-
+.link-container {
+  margin-top: 18px;
+  font-size: 125%;
+  &:hover {
+    .button-link {
+      background-image: url(../sprites/ic_link_hover_36px.svg);
+    }
+  }
+}
 @media screen and (max-width: 768px) {
   .text-wrapper, .img-wrapper {
     width: 100%;

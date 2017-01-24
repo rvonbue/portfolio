@@ -22,16 +22,17 @@ var WebDevModel3d = SceneDetailsBaseModel3d.extend({
     SceneDetailsBaseModel3d.prototype.initialize.apply(this, arguments);
   },
   setClickData: function (obj3d) {
-
     switch(obj3d.name) {
       case "videoGameCabinet":
         obj3d.clickData = { action: "link", url: "dolphinsVSharks.html"};
+        break;
+      case "computerMonitor":
+        obj3d.clickData = { action: "link", url: "computerMonitor.html"};
         break;
       default:
         obj3d.clickData = { action: "default", url: "webDv" };
         break;
     }
-
   }
 });
 

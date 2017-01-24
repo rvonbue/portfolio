@@ -23,7 +23,7 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
       directional: { color: "#FFFFFF", intensity: 0.4 },  // color intensity,
       hemisphere: { groundColor: "#404040", skyColor: "#FFFFFF", intensity: 0.4 }  // skyColor, groundColor, intensity
     },
-    modelUrls: ["sceneDetails", "pillar", "githubBanner", "glassCabinet"],
+    modelUrls: ["sceneDetails", "githubBanner", "glassCabinet"],
   }),
   MAX_IMAGE_WIDTH: 2.5, //world units
   MAX_IMAGE_HEIGHT: 1.25,
@@ -49,8 +49,9 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
     this.set("interactiveObjects", interactiveObjects );
   },
   setClickData: function (mesh, d) {
+    var action = d.action || "link"
     mesh.clickData = {
-      action: "link",
+      action: action,
       url: d.linkUrl || "default----Link"
     };
   },
@@ -91,9 +92,13 @@ var AboutMe3d = SceneDetailsBaseModel3d.extend({
         this.addPillars( modelObj.object3d );
         break;
       case "githubBanner":
-        this.setClickData(modelObj.object3d, { linkUrl: "http://github.com/rvonbue" });
+        this.setClickData(modelObj.object3d, { action: "link", linkUrl: "github.com/rvonbue" });
+        this.get("interactiveObjects").push(modelObj.object3d);
+        break;
       case "glassCabinet":
-        this.setClickData(modelObj.object3d, { linkUrl: "./other/resume.txt" });
+        this.setClickData(modelObj.object3d, { action: "linkI", linkUrl: "./other/resume.txt" });
+        this.get("interactiveObjects").push(modelObj.object3d);
+        break;
       default:
         this.get("interactiveObjects").push(modelObj.object3d);
     }

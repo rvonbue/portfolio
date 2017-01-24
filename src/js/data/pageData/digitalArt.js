@@ -3,19 +3,7 @@ module.exports = [
       title:"r/Blender Contest",
       imgSrc:"/images/digitalArt/blender_cola.png",
       thumbSrc: "/images/digitalArt/thumbs/blender_cola.png",
-      description:"We got the bottle and had to add some interesing texture lighting.",
-   },
-   {
-      title:"r/Blender Contest",
-      imgSrc:"/images/digitalArt/mortar_emplacment.png",
-      thumbSrc: "/images/digitalArt/thumbs/mortar_emplacment.png",
-      description:" Blender contest on Reddit the theme was 'duck!''",
-   },
-   {
-      title:"Projectyera #3",
-      imgSrc:"/images/digitalArt/scenic_drive.png",
-      thumbSrc: "/images/digitalArt/thumbs/scenic_drive.png",
-      description:" 3d Model architecture ",
+      description:"Blender Reddit Contest: Contestestants were given a bottle and had to create interesting lighting and textures",
    },
    {
       title:"Logo Design",
@@ -25,8 +13,21 @@ module.exports = [
    },
    {
       title:"r/Blender Contest",
+      imgSrc:"/images/digitalArt/mortar_emplacment.png",
+      thumbSrc: "/images/digitalArt/thumbs/mortar_emplacment.png",
+      description:"Blender Reddit Contest: Theme was duck",
+   },
+   {
+      title:"Architectural Rendering",
+      imgSrc:"/images/digitalArt/scenic_drive.png",
+      thumbSrc: "/images/digitalArt/thumbs/scenic_drive.png",
+      description:"Based off floor plans from a client in Carmel, CA",
+   },
+   {
+      title:"r/Blender Contest",
       imgSrc:"/images/digitalArt/BlenderContestDec2016.png",
       thumbSrc: "/images/digitalArt/thumbs/BlenderContestDec2016.png",
-      description:"Reddit Contest Blender",
-   }
+      description:"Blender Reddit Contest: Theme was submersible",
+   },
+
 ];

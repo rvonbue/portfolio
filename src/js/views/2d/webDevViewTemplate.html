@@ -2,9 +2,17 @@
   <div class="text-wrapper">
     <div class="project-title"><%= title %></div>
     <p><%= description %></p>
-    <a href="<%= website.url %>" target="_blank"><%= website.title %></a>
+    <div class="link-container">
+      <a href="<%= website.url %>" target="_blank">
+        <div class="button-link"></div>
+        Public Site: <%= website.title %>
+      </a>
+    </div>
   </div>
   <div class="img-wrapper">
-    <img src="<%= imgSrc %>"/>
+    <img src="<%= thumbSrc %>"  data-imgSrc="<%= imgSrc %>"/>
+    <div class="hover-zoom">
+      <div class="button-zoom"></div>
+    </div>
   </div>
 </div>
