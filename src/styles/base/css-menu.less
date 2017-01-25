@@ -54,7 +54,7 @@
   text-transform: uppercase;
   font-size: 16px;
   position: relative;
-  &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
+  &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4, .css-icons5 {
     display: none;
   }
 }
@@ -74,37 +74,42 @@
 
 @media screen and (max-width: @breakPoint1) {
   #cssmenu {
-    max-width: 500px;
+    max-width: 675px;
     margin: 0px auto;
   }
   #cssmenu ul li a {
-    width: 100%;
-    padding: 15px 8px;
+    max-width: 115px;
+    padding: 6px 8px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border-bottom: 1px solid @color-5;
 
-    &.normal {
-      display: none;
-    }
   }
-  #cssmenu ul li.last > a,
-  #cssmenu ul li:last-child > a {
-    border: 0;
-  }
-  #cssmenu ul li a:after {
-    display: none;
-  }
-  #cssmenu ul li a:before {
-    display: none;
-  }
-  #cssmenu ul li a {
-    &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      margin: 4px 18px;
-    }
-  }
+  // #cssmenu ul li.last > a,
+  // #cssmenu ul li:last-child > a {
+  //   border: 0;
+  // }
+  // #cssmenu ul li a:after {
+  //   display: none;
+  // }
+  // #cssmenu ul li a:before {
+  //   display: none;
+  // }
+  // #cssmenu ul li a {
+  //   &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
+  //     display: inline-block;
+  //     width: 48px;
+  //     height: 48px;
+  //     margin: 4px 18px;
+  //   }
+  //   &.css-icons0 {
+  //     width: 85px;
+  //     height: 32px;
+  //   }
+  //   &.css-icons1 {
+  //     width: 121px;
+  //     height: 32px;
+  //   }
+  // }
 }

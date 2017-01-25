@@ -72,7 +72,7 @@ var HomeButtonView = BaseView.extend({
         icon: "css-icons" + i,
        };
     });
-    // menuItems.push( { icon: "button-home" });
+    menuItems.push( { icon: "css-icons5" });
     return menuItems;
   },
   getMenuPosition: function () {

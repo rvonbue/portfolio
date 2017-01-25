@@ -1,8 +1,8 @@
 module.exports = [
    {
       title:"r/Blender Contest",
-      imgSrc:"/images/digitalArt/blender_cola.png",
-      thumbSrc: "/images/digitalArt/thumbs/blender_cola.png",
+      imgSrc:"/images/digitalArt/BlenderContentsNov2016-blender_cola.png",
+      thumbSrc: "/images/digitalArt/thumbs/BlenderContentsNov2016-blender_cola.png",
       description:"Blender Reddit Contest: Contestestants were given a bottle and had to create interesting lighting and textures",
    },
    {
@@ -25,8 +25,8 @@ module.exports = [
    },
    {
       title:"r/Blender Contest",
-      imgSrc:"/images/digitalArt/BlenderContestDec2016.png",
-      thumbSrc: "/images/digitalArt/thumbs/BlenderContestDec2016.png",
+      imgSrc:"/images/digitalArt/BlenderContestDec2016-submersible.png",
+      thumbSrc: "/images/digitalArt/thumbs/BlenderContestDec2016-submersible.png",
       description:"Blender Reddit Contest: Theme was submersible",
    },
 

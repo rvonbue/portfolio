@@ -18,15 +18,15 @@ module.exports = {
      ]
    },
 	 plugins: [
-      new webpack.optimize.UglifyJsPlugin({
-			sourceMap: true,
-            compress: {
-                warnings: false,
-            },
-            output: {
-                comments: false,
-            },
-        }),
+      // new webpack.optimize.UglifyJsPlugin({
+			// sourceMap: true,
+      //       compress: {
+      //           warnings: false,
+      //       },
+      //       output: {
+      //           comments: false,
+      //       },
+      //   }),
 		new webpack.ProvidePlugin({	_: "underscore", "window._": "underscore" }),
     // new webpack.ProvidePlugin({	"THREE": "three", "window.THREE": "three" }),
     new ExtractTextPlugin('allStyles.css'),

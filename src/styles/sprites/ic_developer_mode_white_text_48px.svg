@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px"
+	 height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<g id="Layer_2" display="none">
+	<rect display="inline" fill="#D40000" width="48" height="48"/>
+</g>
+<g id="Layer_1">
+	<path fill="none" d="M8.16,8.16h31.68v31.68H8.16V8.16z"/>
+	<path fill="#FFFFFF" d="M36.99,17.4v13.2H34.35v2.641h5.279c1.453,0,2.627-1.188,2.627-2.641l0.014-13.2
+		c0-1.452-1.188-2.64-2.641-2.64H34.35v2.64H36.99z"/>
+	<polygon fill="#FFFFFF" points="18.749,17.942 12.69,24 18.749,30.059 20.61,28.184 16.426,24 20.61,19.816 	"/>
+	<polygon fill="#FFFFFF" points="25.891,19.816 30.074,24 25.891,28.184 27.752,30.059 33.811,24 27.752,17.942 	"/>
+	<path fill="#FFFFFF" d="M9.509,30.6V17.4h2.641v-2.64H6.87c-1.452,0-2.64,1.188-2.64,2.64v13.2c0,1.453,1.188,2.641,2.64,2.641
+		h5.28V30.6H9.509z"/>
+	<g id="Layer_3">
+		<text transform="matrix(1 0 0 1 6.6479 13.23)" fill="#FFFFFF" font-family="'Roboto-Bold'" font-size="16">WEB</text>
+		<text transform="matrix(1 0 0 1 8.3218 46)" fill="#FFFFFF" font-family="'Myriad-Bold'" font-size="16">DEV</text>
+	</g>
+</g>
+</svg>

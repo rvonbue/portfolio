@@ -16,11 +16,8 @@ var BaseView2d = Backbone.View.extend({
     // this.removeListeners();
   },
   openPhotoSwipe: function (el) {
-    var source = $(el).data("imgSrc");
-    console.log("hello", source);
     eventController.trigger(eventController.OPEN_PHOTO_SWIPE,
-      [{ src: source, w: 1920, h: 1080 }],
-      0
+      [{ src: $(el).data("imgsrc"), w: 1920, h: 1080 }]
     );
   },
   show: function () {

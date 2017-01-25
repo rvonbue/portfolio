@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="85px"
+	 height="32.083px" viewBox="-4 12.417 85 32.083" enable-background="new -4 12.417 85 32.083" xml:space="preserve">
+<g id="Layer_2">
+	<rect x="-4" y="12.5" width="85" height="32"/>
+</g>
+<g id="Layer_1">
+	<path fill="#FFFFFF" d="M72.5,18.458v20h-4v4h8c2.2,0,3.98-1.8,3.98-4l0.02-20c0-2.2-1.8-4-4-4h-8v4H72.5z"/>
+	<polygon points="2.18,85.82 -7,95 2.18,104.18 5,101.34 -1.34,95 5,88.66 	"/>
+	<polygon points="42,88.66 48.34,95 42,101.34 44.82,104.18 54,95 44.82,85.82 	"/>
+	<path fill="#FFFFFF" d="M4.25,38.5v-20h4v-4h-8c-2.2,0-4,1.8-4,4v20c0,2.2,1.8,4,4,4h8v-4H4.25z"/>
+	<text transform="matrix(1 0 0 1 19.8364 27.25)" fill="#FFFFFF" font-family="'Roboto-Black'" font-size="18">WEB</text>
+	<text transform="matrix(1 0 0 1 21.6997 42.5)" fill="#FFFFFF" font-family="'Roboto-Black'" font-size="18">DEV</text>
+</g>
+</svg>

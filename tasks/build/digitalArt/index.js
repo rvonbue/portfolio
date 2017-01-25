@@ -11,7 +11,7 @@ gulp.task('build:digitalArt', function() {
   .pipe(gulp.dest('./bin/images/digitalArt/'))
   .pipe(parallel(
      imageResize({
-       width: 400,
+       width: 550,
       //  height: "100%",
        background: "#FFFFFF"
      }),

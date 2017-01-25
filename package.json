@@ -58,7 +58,6 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "backbone": "^1.1.2",
-    "css3drenderer": "0.0.0",
     "jquery": "^3.1.1",
     "underscore": "^1.8.2"
   }
