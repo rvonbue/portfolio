@@ -6,9 +6,7 @@ module.exports = {
   cityNight: {
     maps: [{ map: basePath + "cityNightAlt2.jpg" }],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: {
-      shadingType: "MeshBasicMaterial"
-    }
+    props: { shadingType: "MeshBasicMaterial" }
   },
   coinSlot: {
     maps: [{ map: basePath + "videoGameCabinet/coinSlot.png" }],
@@ -64,9 +62,9 @@ module.exports = {
     mapProps: { repeatScale: 1, shading: "smooth" },
   },
   blackGlass: {
-    maps: [{ envMap: "webDev" } ],
+    // maps: [{ envMap: "webDev" } ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.5, opacity:0.5 }
+    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.5, opacity: 0.1 }
   },
   fern:  {
     maps: [{ map: basePath + "fern.png" } ],
@@ -83,7 +81,7 @@ module.exports = {
   },
   rugPersianHalf: {
     maps:[
-      { map: basePath + "rugPersianHalf.png" }
+      { map: basePath + "rugPersianHalf_low.png" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { transparent: true, alwaysTransparent: true }

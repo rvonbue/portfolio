@@ -5,7 +5,7 @@ import eventController from "../../../controllers/eventController";
 import BaseView from "../../BaseView";
 import skyGradients from "../../../data/skyGradients";
 import utils from "../../../util/utils";
-var worldColor = utils.getColorPallete().world;
+var worldColor = utils.getWorldLighting();
 
 var LightControls = BaseView.extend({
   initialize: function (options) {
@@ -107,6 +107,7 @@ var LightControls = BaseView.extend({
 
     directionalLight.position.set(pos.x, pos.y, pos.z);
     this.worldLights.push(directionalLight);
+    this.worldLights.push(new THREE.DirectionalLightHelper( directionalLight, 5 ));
   },
   setDirectionalLight: function (light, newLight) {
     if (!newLight) return;

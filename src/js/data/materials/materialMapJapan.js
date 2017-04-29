@@ -2,52 +2,17 @@ import utils from "../../util/utils";
 var colorPallete = utils.getColorPallete();
 
 module.exports = {
-  woodBeamPrimary: {
-      maps: [
-        { map: "textures/woodBare/woodBare_COLOR.jpg" },
-        { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-        { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
-      ],
-      mapProps: { repeatScale: 10, shading: "flat" },
-      props: {  color: colorPallete.color1.hex }
-  },
-  woodBeamSecondary: {
+  bannerLogo: {
     maps: [
-      { map: "textures/woodBare/woodBare_COLOR.jpg" },
-      { specularMap: "textures/woodBare/woodBare_SPEC.jpg" },
-      { normalMap: "textures/woodBare/woodBare_NRM.jpg" }
+      { map: "textures/bannerLogoAlt.png" }
     ],
-    mapProps: { repeatScale: 1, shading: "flat" },
-    props: { color: colorPallete.color2.hex }
+    mapProps: { repeatScale: 1, shading: "smooth" },
+    props: { transparent: false }
+  },drywall: {
+    props: { color: "#EAEAE2" }
   },
-  stucco:{
-    maps: [
-      { map: "textures/stucco2/stucco_COLOR.jpg" },
-      { specularMap: "textures/stucco2/stucco_SPEC.jpg" },
-      { normalMap: "textures/stucco2/stucco_NRM.jpg" }
-    ],
-    mapProps: { repeatScale: 20, shading: "flat" },
-    props: { color: "#FFFFFF" }
-  },
-  woodBamboo:{
-    maps: [
-      { map: "textures/woodBamboo/woodBamboo_COLOR.jpg" },
-      { specularMap: "textures/woodBamboo/woodBamboo_SPEC.jpg" },
-      { normalMap: "textures/woodBamboo/woodBamboo_NRM.jpg" }
-    ],
-    mapProps: { repeatScale: 2, shading: "flat" },
-    props: {
-      color: colorPallete.color3.hex,
-      shininess: 50,
-      // shadingType: "MeshBasicMaterial"
-     }
-  },
-  windowJapan: {
-    maps: [
-      { map: "textures//windowJapan/windowJapan_COLOR.jpg" },
-      { normalMap: "textures/windowJapan/windowJapan_NRM.jpg" }
-    ],
-    mapProps: { repeatScale: 1, shading: "flat" }
+  drywall: {
+    props: { color: "#EAEAE2" }
   },
   lanternNew: {
     maps: [
@@ -62,7 +27,7 @@ module.exports = {
   },
   lampLightEmit: {
     maps: [
-      { map: "textures/lanternRed.png"},
+      { map: "textures/lanternRed_low.jpg"},
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: {
@@ -71,6 +36,29 @@ module.exports = {
       emissive: colorPallete.lampLight.colorEmissive,
       emissiveIntensity: 0.2,
      }
+  },
+  gradient: {
+    maps: [
+      { map: "textures/gradient.jpg" }
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" },
+    props: { transparent: false }
+  },
+  overheadLight: {
+    props: {
+    color: "#FFFFFF",
+    emisssive: "#FFFFFF",
+    shadingType: "MeshBasicMaterial"
+   }
+  },
+  plasticBlack: {
+    props: {
+      color: "#24282a",
+      // specular: colorPallete.lampLight.color
+    }
+  },
+  plasticRed: {
+    props: { color: "#FF0000" }
   },
   shutterJapan:{
      maps: [
@@ -82,46 +70,59 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
   },
+  stucco:{
+    maps: [
+      { map: "textures/stucco2/stucco_COLOR_low.jpg" },
+      { specularMap: "textures/stucco2/stucco_SPEC_low.jpg" },
+      { normalMap: "textures/stucco2/stucco_NRM_low.jpg" }
+    ],
+    mapProps: { repeatScale: 20, shading: "flat" },
+    props: { color: "#FFFFFF" }
+  },
+  windowJapan: {
+    maps: [
+      { map: "textures//windowJapan/windowJapan_COLOR_low.jpg" },
+      { normalMap: "textures/windowJapan/windowJapan_NRM_low.jpg" }
+    ],
+    mapProps: { repeatScale: 1, shading: "flat" }
+  },
   woodFloor: {
     maps: [
-      { map: "textures/woodFloor2/woodFloor_COLOR.jpg" },
-      { normalMap: "textures/woodFloor2/woodFloor_NRM.jpg" },
-      { specularMap: "textures/woodFloor2/woodFloor_SPEC.jpg" }
+      { map: "textures/woodFloor2/woodFloor_COLOR_low.jpg" },
+      { normalMap: "textures/woodFloor2/woodFloor_NRM_low.jpg" },
+      { specularMap: "textures/woodFloor2/woodFloor_SPEC_low.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
     props: { shininess: 10 }
   },
-  bannerLogo: {
+  woodBamboo:{
     maps: [
-      { map: "textures/bannerLogoAlt.png" }
+      { map: "textures/woodBamboo/woodBamboo_COLOR_low.jpg" },
+      { specularMap: "textures/woodBamboo/woodBamboo_SPEC_low.jpg" },
+      { normalMap: "textures/woodBamboo/woodBamboo_NRM_low.jpg" }
     ],
-    mapProps: { repeatScale: 1, shading: "smooth" },
-    props: { transparent: false }
-  },
-  plasticBlack: {
+    mapProps: { repeatScale: 2, shading: "flat" },
     props: {
-      color: "#24282a",
-      // specular: colorPallete.lampLight.color
-    }
+      color: colorPallete.color3.hex,
+      shininess: 50,
+      // shadingType: "MeshBasicMaterial"
+     }
   },
-  plasticRed: {
-    props: { color: "#FF0000" }
+  woodBeamPrimary: {
+      maps: [
+        { map: "textures/woodBare/woodBare_COLOR_low.jpg" },
+        { normalMap: "textures/woodBare/woodBare_NRM_low.jpg" }
+      ],
+      mapProps: { repeatScale: 10, shading: "flat" },
+      props: {  color: colorPallete.color1.hex }
   },
-  drywall: {
-    props: { color: "#EAEAE2" }
-  },
-  overheadLight: {
-    props: {
-    color: "#FFFFFF",
-    emisssive: "#FFFFFF",
-    shadingType: "MeshBasicMaterial"
-   }
- },
-  gradient: {
+  woodBeamSecondary: {
     maps: [
-      { map: "textures/gradient.jpg" }
+      { map: "textures/woodBare/woodBare_COLOR_low.jpg" },
+      { normalMap: "textures/woodBare/woodBare_NRM_low.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "flat" },
-    props: { transparent: false }
+    props: { color: colorPallete.color2.hex }
   },
+
 };

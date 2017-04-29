@@ -53,7 +53,7 @@ var AppView = BaseView.extend({
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
     this.$el.append(new SwitchView({}).render().el);
-    var startSkyColor = utils.getColorPallete().world.background.cssSkyGradient;
+    var startSkyColor = utils.getWorldLighting().background.cssSkyGradient;
     var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
     this.$el.append(skyGradientDiv);
     return this;
