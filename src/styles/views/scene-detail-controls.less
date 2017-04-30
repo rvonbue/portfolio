@@ -43,11 +43,26 @@
 }
 .home-button-container {
   position: absolute;
-  bottom: 0px;
+  top: 0px;
   width: 100%;
   z-index: 1001;
-  pointer-events: none;
-  background-color: rgba(0,0,0,0.2);
+  margin-top: 12px;
+  ul {
+    display: block;
+    text-align: center;
+    li {
+      display: inline-block;
+      font-size: 150%;
+      color: @color-5;
+      border: 1px solid @color-5;
+      padding: 4px;
+      margin: 0px 4px;
+      cursor: pointer;
+      &:hover {
+        border-color: @color-4;
+      }
+    }
+  }
 }
 
 .link-bar {

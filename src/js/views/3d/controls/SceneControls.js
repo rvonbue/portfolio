@@ -19,29 +19,7 @@ var SceneControls = BaseModel.extend({
     this.addListeners();
     // this.loadEnvironmentMap();
     this.setRaycasterOptions();
-    this.setSelectMesh();
-  },
-  addListeners: function () {
-    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
-    this.canvasEl.on("mousemove", this.throttledMouseMove);
-    this.canvasEl.on("mouseleave", this.triggerHoverNav);
-    this.canvasEl.on("mouseup", this.onMouseClick);
-    this.canvasEl.on("mousedown", this.onMouseDown);
-
-
-    eventController.on(eventController.ON_RESIZE, this.onResize, this);
-    eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
-  },
-  removeListeners: function () {
-    this.canvasEl.off("mousemove", this.throttledMouseMove);
-    this.canvasEl.off("mouseleave", this.triggerHoverNav);
-    this.canvasEl.off("mouseup",this.onMouseClick);
-    this.canvasEl.off("mousedown", this.onMouseDown);
-
-    eventController.off(eventController.ON_RESIZE, this.onResize, this);
-    eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
-    eventController.off(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
+    this.addSelectMesh();
   },
   setRaycasterOptions: function () {
     this.raycaster = new THREE.Raycaster();
@@ -51,13 +29,10 @@ var SceneControls = BaseModel.extend({
   triggerHoverNav: function () {
     eventController.trigger(eventController.HOVER_NAVIGATION, null);
   },
-  setSelectMesh: function () {
-    // var geo = new THREE.OctahedronGeometry(0.25, 0);
-    // var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
-    // this.selectMesh = new THREE.Mesh( geo, material );
-    var color = utils.getColorPallete().color2.hex;
-    this.selectMesh = new THREE.PointLight( color, 5, 2, 2 );
-    this.selectMesh.position.y += 5;
+  addSelectMesh: function () {
+    var geo = new THREE.OctahedronGeometry(0.25, 0);
+    var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
+    this.selectMesh = new THREE.Mesh( geo, material );
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, [this.selectMesh]);
   },
   onResize: function (size) {
@@ -155,7 +130,7 @@ var SceneControls = BaseModel.extend({
     this.set("raycasterObjects", arr);
   },
   cancelSelectMeshTimer: function () {
-    
+
     if (this.selectMeshTimer) {
       clearTimeout(this.selectMeshTimer);
       this.selectMeshTimer = null;
@@ -164,13 +139,15 @@ var SceneControls = BaseModel.extend({
   },
   getMeshCenter: function (selectedMesh) {
     var center = selectedMesh.geometry.boundingSphere.center;
+
+    console.log("center", center);
     return {
       x: selectedMesh.position.x + center.x,
       y: selectedMesh.position.y + center.y,
-      z: selectedMesh.position.z + center.z + 1
+      z: selectedMesh.position.z + center.z
     };
   },
-  moveSceneDetailsIcon:function (selectedMesh) {
+  moveSceneDetailsIcon: function (selectedMesh) {
     this.cancelSelectMeshTimer();
 
     if (!selectedMesh) {
@@ -187,6 +164,28 @@ var SceneControls = BaseModel.extend({
     .easing(TWEEN.Easing.Exponential.Out)
     .start();
 
+  },
+  addListeners: function () {
+    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
+    this.canvasEl.on("mousemove", this.throttledMouseMove);
+    this.canvasEl.on("mouseleave", this.triggerHoverNav);
+    this.canvasEl.on("mouseup", this.onMouseClick);
+    this.canvasEl.on("mousedown", this.onMouseDown);
+
+
+    eventController.on(eventController.ON_RESIZE, this.onResize, this);
+    eventController.on(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+    eventController.on(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
+  },
+  removeListeners: function () {
+    this.canvasEl.off("mousemove", this.throttledMouseMove);
+    this.canvasEl.off("mouseleave", this.triggerHoverNav);
+    this.canvasEl.off("mouseup",this.onMouseClick);
+    this.canvasEl.off("mousedown", this.onMouseDown);
+
+    eventController.off(eventController.ON_RESIZE, this.onResize, this);
+    eventController.off(eventController.RESET_RAYCASTER, this.resetRaycaster, this);
+    eventController.off(eventController.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
   },
   render: function () {
     return this;

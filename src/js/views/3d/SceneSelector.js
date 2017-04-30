@@ -253,10 +253,10 @@ var SceneSelector = BaseView.extend({
     if ( sceneModel ) {
       var sceneDetailsModel = sceneModel.get("sceneDetails")
       var sdObject = next ? sceneDetailsModel.selectNextObject() : sceneDetailsModel.selectPrevObject();
+
       eventController.trigger(eventController.MOVE_SCENE_SELECTOR, sdObject);
     } else {
-      var newHoverModel = this.getNextSceneModel(next);
-      this.setHoverSceneModel(newHoverModel, true);
+      this.setHoverSceneModel(this.getNextSceneModel(next), true);
     }
 
   },
@@ -264,18 +264,17 @@ var SceneSelector = BaseView.extend({
     var hoverModel = this.sceneModelCollection.findWhere({ hover: true });
     var numFloor = this.sceneModelCollection.where({ interactive: true }).length;
     var newFloorIndex;
+    var floorIndex = hoverModel ? hoverModel.get("floorIndex") : null;
 
-    if (hoverModel) {
-      var floorIndex = hoverModel.get("floorIndex")
-      if ( nextOrPrev ) {
-        if ( floorIndex > 0 ) return this.sceneModelCollection.findWhere({ floorIndex: floorIndex - 1});
-      } else {
-        newFloorIndex = floorIndex < numFloor - 1 ? floorIndex + 1 : 0;
-        return this.sceneModelCollection.findWhere({ floorIndex: newFloorIndex});
-      }
+    if (hoverModel) return this.sceneModelCollection.findWhere({ floorIndex: numFloor - 1 });
+
+    if ( nextOrPrev ) {
+      if ( floorIndex > 0 ) return this.sceneModelCollection.findWhere({ floorIndex: floorIndex - 1});
+    } else {
+      newFloorIndex = floorIndex < numFloor - 1 ? floorIndex + 1 : 0;
+      return this.sceneModelCollection.findWhere({ floorIndex: newFloorIndex});
     }
 
-    return this.sceneModelCollection.findWhere({ floorIndex: numFloor - 1 });;
   },
   sceneModelReady: function (sceneModel) {
     var isCameraAnimating = commandController.request(commandController.IS_CAMERA_ANIMATING);
@@ -295,13 +294,14 @@ var SceneSelector = BaseView.extend({
     var self = this;
     var isSameModel = selectedSceneModel && (selectedSceneModel.cid === sceneModel.cid);
     var sceneDetails = sceneModel.get("sceneDetails");
+    var timeOpenDoors;
 
     if ( isSameModel ) {
       sceneDetails.showHide(true);
       this.resetSceneDetails(sceneModel, false, false, true);
     }
 
-    var timeOpenDoors;
+
     setTimeout( function () {
       timeOpenDoors = sceneModel.openDoors(true);
       setTimeout( function () {
