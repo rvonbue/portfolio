@@ -21,13 +21,11 @@ var LightControls = BaseView.extend({
   addListeners: function () {
     eventController.on(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
-    eventController.on(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
     eventController.on(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
   },
   removeListeners: function () {
     eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
-    eventController.off(eventController.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
     eventController.off(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
   },
   addLight: function () {

@@ -8,15 +8,13 @@ module.exports = {
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: { transparent: false }
-  },drywall: {
-    props: { color: "#EAEAE2" }
   },
   drywall: {
     props: { color: "#EAEAE2" }
   },
   lanternNew: {
     maps: [
-      {map: "textures/lantern4.png"},
+      { map: "textures/lantern4.png" },
     ],
     mapProps: { repeatScale: 1, shading: "smooth" },
     props: {
@@ -98,13 +96,12 @@ module.exports = {
   woodBamboo:{
     maps: [
       { map: "textures/woodBamboo/woodBamboo_COLOR_low.jpg" },
-      { specularMap: "textures/woodBamboo/woodBamboo_SPEC_low.jpg" },
       { normalMap: "textures/woodBamboo/woodBamboo_NRM_low.jpg" }
     ],
     mapProps: { repeatScale: 2, shading: "flat" },
     props: {
-      color: colorPallete.color3.hex,
-      shininess: 50,
+      // color: colorPallete.color3.hex,
+      shininess: 95,
       // shadingType: "MeshBasicMaterial"
      }
   },
