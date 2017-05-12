@@ -12,7 +12,7 @@ import SceneSelector from "./3d/SceneSelector";
 import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
 import LoadingBarView from "./components/LoadingBarView";
 import LinkHighlighterView from "./components/LinkHighlighterView";
-import HomeButtonView from "./components/HomeButtonView";
+import NavigationBarView3d from "./components/NavigationBarView3d";
 import DatGuiView from "./3d/DatGuiView";
 import StatsView from "./components/statsView";
 // import { CSS3DRenderer, CSS3DObject, Scene } from 'css3drenderer';
@@ -201,7 +201,7 @@ var AppView3d = BaseView.extend({
       new SceneDetailControlsView(),
       new LoadingBarView(),
       new LinkHighlighterView(),
-      new HomeButtonView(),
+      new NavigationBarView3d(),
     ];
 
     this.childViews.forEach( function (view) {

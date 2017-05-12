@@ -1,4 +1,4 @@
-## Hello and welcome to my hybrid 2d/3d site template. You will need the NPM, Gulp, and Webpack installed to use this application.
+## Hello and welcome to my hybrid 2d/3d site template. You will need NPM, Gulp, and Webpack installed to use this application.
 
 #First Time only
   npm install

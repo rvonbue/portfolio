@@ -24,13 +24,13 @@ module.exports = {
   moon: {
     maps: [
       { map: "textures/moon256x128.jpg" },
-      // { specularMap: "textures/grass/grass_SPEC.jpg" },
-      // { normalMap: "textures/grass/grass_NRM.jpg" }
     ],
     mapProps: { repeatScale: 1, shading: "smooth", shininess: 15 },
     props: {
-      shadingType: "MeshBasicMaterial",
-      color: colorPallete.color2.hex
+      // shadingType: "MeshBasicMaterial",
+      // color: colorPallete.color2.hex,
+      emissive: colorPallete.lampLight.colorEmissive,
+      emissiveIntensity: 0.75,
      }
   },
 };

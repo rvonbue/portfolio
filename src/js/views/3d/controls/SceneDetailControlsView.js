@@ -1,6 +1,3 @@
-// import TWEEN from "tween.js";
-// import THREE from "three";
-
 import eventController from "../../../controllers/eventController";
 import BaseView from "../../BaseView";
 import SceneDetailControlsHTML from "../../html/sceneDetailControls.html";
@@ -12,7 +9,6 @@ var SceneDetailControlsView = BaseView.extend({
   visible: false,
   events: {
     "click .button-left": "prevInteractiveObject",
-    "click .button-home": "resetSceneDetails",
     "click .button-right": "nextInteractiveObject",
 
     "click .button-pause": "clickPause",

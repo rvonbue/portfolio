@@ -256,17 +256,22 @@ var SceneSelector = BaseView.extend({
 
       eventController.trigger(eventController.MOVE_SCENE_SELECTOR, sdObject);
     } else {
+      console.log("asjkdhfkajsdf:", this.getNextSceneModel(next));
       this.setHoverSceneModel(this.getNextSceneModel(next), true);
     }
 
   },
-  getNextSceneModel: function (nextOrPrev) {
+  getNextSceneModel: function (nextOrPrev) { // true or false
     var hoverModel = this.sceneModelCollection.findWhere({ hover: true });
     var numFloor = this.sceneModelCollection.where({ interactive: true }).length;
     var newFloorIndex;
-    var floorIndex = hoverModel ? hoverModel.get("floorIndex") : null;
+    var floorIndex = hoverModel ? hoverModel.get("floorIndex") : 0;
 
     if (hoverModel) return this.sceneModelCollection.findWhere({ floorIndex: numFloor - 1 });
+
+    if (nextOrPrev) {
+
+    }
 
     if ( nextOrPrev ) {
       if ( floorIndex > 0 ) return this.sceneModelCollection.findWhere({ floorIndex: floorIndex - 1});

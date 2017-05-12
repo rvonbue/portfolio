@@ -16,20 +16,20 @@ module.exports = {
       maps: [
         { map: basePath + "computer/computer.jpg" }
       ],
-      mapProps: { repeatScale: 1, shading: "flat" },
+      mapProps: { repeatScale: 1, shading: "flat" }
   },
-  // computerScreen1: {
-  //     maps: [
-  //       { map: "textures/computerScreen.jpg" },
-  //     ],
-  //     mapProps: { repeatScale: 1, shading: "flat" },
-  // },
-  // computerScreen2: {
-  //     maps: [
-  //       { map: "textures/computerScreen.jpg" },
-  //     ],
-  //     mapProps: { repeatScale: 1, shading: "flat" },
-  // },
+  computerScreen1: {
+      maps: [
+        { map: basePath +  "computerScreen1.jpg" },
+      ],
+      mapProps: { repeatScale: 1, shading: "flat" }
+  },
+  computerScreen2: {
+      maps: [
+        { map: basePath + "computerScreen2.jpg" }
+      ],
+      mapProps: { repeatScale: 1, shading: "flat" }
+  },
   keyboard: {
       maps: [
         { map: basePath + "computer/keyboard_COLOR.jpg" },

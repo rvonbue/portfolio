@@ -3,8 +3,9 @@ import BaseView from "../BaseView";
 import navigationList from "../../data/navigationList";
 // import utils from "../../util/utils";
 
-var HomeButtonView = BaseView.extend({
+var NavigationBarView3d = BaseView.extend({
   className: "home-button-container",
+  template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
   events: {
     "dblclick" : "resetSceneDetails",
     "mouseenter ul>li": "enterMenuItem",
@@ -36,8 +37,8 @@ var HomeButtonView = BaseView.extend({
     var html = "<ul>";
 
     _.each(navigationList, function (navItem, i ) {
-      html += "<li>" + navItem.name + "</li>";
-    });
+      html += this.template({displayTitle: navItem.name.toUpperCase(), i});
+    }, this);
 
     return html + "</ul>";
   },
@@ -46,4 +47,4 @@ var HomeButtonView = BaseView.extend({
     return this;
   }
 });
-module.exports = HomeButtonView;
+module.exports = NavigationBarView3d;

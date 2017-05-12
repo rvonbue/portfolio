@@ -3,7 +3,7 @@ import commandController from "../../controllers/commandController";
 import BaseView from "../BaseView";
 import navigationList from "../../data/navigationList";
 
-var NavigationBar = BaseView.extend({
+var NavigationBar2d = BaseView.extend({
   className: "navigation-bar",
   template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
   events: {
@@ -85,11 +85,10 @@ var NavigationBar = BaseView.extend({
   },
   clickSelected: function (evt) {
     var currentTarget = $(evt.currentTarget);
-    var index = currentTarget.index("li");
-    var name = navigationList[currentTarget.index("li")].name;
+    var index = currentTarget.closest("li").index();
 
     this.swapSelectedEl(currentTarget);
-    eventController.trigger(eventController.SWITCH_PAGE, currentTarget.index("li"));
+    eventController.trigger(eventController.SWITCH_PAGE, index);
   },
   setSelectedFrom3d: function (sceneModel) {
     this.swapSelectedEl(this.navEls[sceneModel.name]);
@@ -117,4 +116,4 @@ var NavigationBar = BaseView.extend({
   }
 });
 
-module.exports = NavigationBar;
+module.exports = NavigationBar2d;

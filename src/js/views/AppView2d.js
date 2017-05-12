@@ -1,7 +1,7 @@
 import eventController from "../controllers/eventController";
 import commandController from "../controllers/commandController";
 import BaseView from "./BaseView";
-import NavigationBar from "./components/navigationBar";
+import NavigationBar2d from "./components/NavigationBar2d";
 
 var viewArray = [
   require("./2d/WebDevView"),
@@ -55,9 +55,9 @@ var AppView2d = BaseView.extend({
     this.setSection(index);
   },
   render: function () {
-    var navigationBar = new NavigationBar({ parentEl: this.$el });
-    this.childViews.push(navigationBar);
-    this.$el.append(navigationBar.render().el);
+    var navigationBar2d = new NavigationBar2d({ parentEl: this.$el });
+    this.childViews.push(navigationBar2d);
+    this.$el.append(navigationBar2d.render().el);
     this.$el.append(this.bodyEl);
     return this;
   }

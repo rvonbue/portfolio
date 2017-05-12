@@ -144,7 +144,7 @@ var SceneControls = BaseModel.extend({
     return {
       x: selectedMesh.position.x + center.x,
       y: selectedMesh.position.y + center.y,
-      z: selectedMesh.position.z + center.z
+      z: selectedMesh.position.z + center.z + 0.5 // TODO: magic number should be move along angle to camera
     };
   },
   moveSceneDetailsIcon: function (selectedMesh) {
@@ -159,9 +159,15 @@ var SceneControls = BaseModel.extend({
     }
     this.selectMesh.visible = true;
 
-    var tween = new TWEEN.Tween(this.selectMesh.position)
+    var tweenMove = new TWEEN.Tween(this.selectMesh.position)
     .to(this.getMeshCenter(selectedMesh), 500)
     .easing(TWEEN.Easing.Exponential.Out)
+    .start();
+
+    var tweenRotate = new TWEEN.Tween(this.selectMesh.rotation)
+    .to({x: "+6.28319", y: "+6.28319", z: "+6.28319" }, 750)  //6.28319 = 260 degrees
+    .easing(TWEEN.Easing.Exponential.In)
+    // .delay(250)
     .start();
 
   },
