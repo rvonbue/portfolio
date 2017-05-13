@@ -11,20 +11,21 @@ var BaseView = Backbone.View.extend({
   },
   show: function () {
     this.$el.fadeIn();
-    this.addListeners();
-    this.addChildViewEventHandlers();
+    // this.addListeners();
+    // this.addChildViewEventHandlers();
     this.parentEl.addClass(this.parentClass);
   },
-  addChildViewEventHandlers: function () {
-    _.each(this.childViews, function(childView){
-      childView.addListeners();
-    }, this);
-  },
-  removeChildViewEventHandlers: function() {
-    _.each(this.childViews, function(childView){
-      childView.removeListeners();
-    }, this);
-  }
+  // addChildViewEventHandlers: function () {
+  //   _.each(this.childViews, function(childView){
+  //     console.log("chidldView: ", childView);
+  //     childView.view.addListeners();
+  //   }, this);
+  // },
+  // removeChildViewEventHandlers: function() {
+  //   _.each(this.childViews, function(childView){
+  //     childView.removeListeners();
+  //   }, this);
+  // }
 });
 
 module.exports = BaseView;

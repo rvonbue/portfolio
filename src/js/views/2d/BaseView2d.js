@@ -1,7 +1,7 @@
 var BaseView2d = Backbone.View.extend({
   childViews: [],
-  className: "DEfault",
-  title: "DEfault",
+  className: "Default",
+  title: "Default",
   titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
   initialize: function () {
     this.$el.hide();
@@ -23,6 +23,9 @@ var BaseView2d = Backbone.View.extend({
   show: function () {
     this.$el.delay(400).fadeIn();
     // this.addListeners();
+  },
+  addListeners: function () {
+
   },
   removeListeners: function () {
 

@@ -22,11 +22,11 @@ var AppView = BaseView.extend({
     var startView = null;
     if (localStorage) startView = localStorage.getItem('startView');
 
-    if ( startView ) {
-      eventController.trigger(eventController.SET_VIEW, startView);
-    } else  {
+    // if ( startView ) {
+    //   eventController.trigger(eventController.SET_VIEW, startView);
+    // } else  {
         this.$el.append(new IntroView().render().el);
-    }
+    // }
   },
   switchViews: function (whichView) {
     if (whichView === "2d") {

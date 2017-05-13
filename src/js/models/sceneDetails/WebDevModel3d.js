@@ -24,7 +24,7 @@ var WebDevModel3d = SceneDetailsBaseModel3d.extend({
   setClickData: function (obj3d) {
     switch(obj3d.name) {
       case "videoGameCabinet":
-        obj3d.clickData = { action: "link", url: "dvs/intro.html"};
+        obj3d.clickData = { action: "link", url: "other/dvs/index.html"};
         break;
       case "computerMonitor":
         obj3d.clickData = { action: "link", url: "computerMonitor.html"};

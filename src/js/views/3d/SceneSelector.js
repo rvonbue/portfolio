@@ -93,7 +93,9 @@ var SceneSelector = BaseView.extend({
         );
         break;
       case "link":
-        window.open("http://" + intersectObject.object.clickData.url);
+        var address = window.location.origin + "/" + intersectObject.object.clickData.url;
+        console.log('Address:  ', address);
+        window.open(address);
         break;
       default:
         console.log("action", action);

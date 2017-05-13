@@ -6,9 +6,6 @@ var WebDevView2d = BaseView2d.extend({
   className: "web-dev",
   title: "Web Development",
   titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-  initialize: function () {
-    BaseView2d.prototype.initialize.apply(this, arguments);
-  },
   render: function () {
     this.$el.append(this.titleTemplate({ title: this.title }));
 

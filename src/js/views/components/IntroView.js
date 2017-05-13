@@ -10,19 +10,35 @@ var SwitchView = BaseView.extend({
     "click .intro-switch-3d": "switchView3d",
   },
   initialize: function () {
-    var self = this;
     BaseView.prototype.initialize.apply(this, arguments);
-    eventController.once(eventController.SWITCH_VIEWS, function () {
-      self.destroy();
-    });
+    eventController.once(eventController.SWITCH_VIEWS, _.bind(this.animateDestroy, this));
   },
   switchView2d: function () {
-    eventController.trigger(eventController.SWITCH_VIEWS, "2d");
+    this.animateDestroy("2d");
     if ( localStorage ) localStorage.setItem('startView', "2d");
   },
   switchView3d: function () {
-    eventController.trigger(eventController.SWITCH_VIEWS, "3d");
+    this.animateDestroy("3d");
     if ( localStorage ) localStorage.setItem('startView', "3d");
+  },
+  animateDestroy: function (whichViewStr) {
+    var offset = this.$el.offset();
+    var self = this;
+
+    this.$el
+    .css({
+      top: offset.top,
+      right: ($(window).width() - (offset.left + this.$el.outerWidth())),
+      width: this.$el.width(),
+      height: this.$el.height()
+    })
+    .addClass("animateSwitchView");
+
+    setTimeout(function () {
+      eventController.trigger(eventController.SWITCH_VIEWS, whichViewStr);
+      self.destroy();
+    }, 1000);
+
   },
   destroy: function () {
     this.undelegateEvents();

@@ -1,0 +1,1159 @@
+<!doctype html>
+<html>
+	
+<!-- Mirrored from rvonbuelow.info/pages/game.html by HTTrack Website Copier/3.x [XR&CO'2013], Wed, 14 May 2014 04:34:16 GMT -->
+<head>
+		<meta charset="UTF-8" />
+		<title>Rick School Portfolio</title>
+		<link href='../../fonts.googleapis.com/csse9a9.css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+		<style>
+		*{
+			margin: 0; 
+			padding: 0; 
+			font-family: 'Lobster Two', cursive;
+		}
+		html, body {
+			height: 100%; 
+			width: 100%; 
+			background-color: black; 
+			
+			overflow-x: hidden;
+		}		
+		canvas{ 
+			display:block;
+			position:absolute;
+		}
+		img{
+			display:block;
+			position:relative;							
+		}
+		p{
+			font-size:150%;
+			color:white;
+		}
+		#statusBar{
+			background-color: black;
+			z-index: 4; 
+			position:absolute; 
+			left:0px; 
+			top:400px;
+			width:100%;
+		}
+		#controls{
+			z-index: 4; 
+			position:absolute; 
+			left:20px;
+			top:600px;
+			width:100%;
+		}
+		#introAnimation{
+			background-color: blue;	
+		}
+		.statusElements{
+			border:5px;
+			margin: 10px;
+			padding:10px;
+			border-color:white;
+			position:relative;
+		}
+		#newGameText{
+			background-color:red;
+			width:200px;
+			margin:auto;
+		}
+		
+		</style>
+		<script type="text/javascript" src="../../ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>	<!-- Load jquery -->		
+		<script src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/Portfolio/script/utils.js"></script>    	<!-- //script to normalize animations and retrieve mouse position -->
+		<script type="text/javascript">   																			 // all the animation script
+			$(document).ready(function() {		  			  
+				var layer1,layer2,layer3,layer4,layer5;   				 //all the layers
+				var ctx1,ctx2,ctx3,ctx4,ctx5;                  		    //all the contexts	
+				
+				function init(){               						     //call up all canvases by their name 
+					layer1 = document.getElementById("layer1");
+					ctx1 = layer1.getContext("2d");
+					layer4 = document.getElementById("layer4");
+					ctx4 = layer4.getContext("2d");		
+				};
+				init();
+				
+				var cW = window.innerWidth;                              //get inner width of browser window
+				var cH = window.innerHeight;                       		 //get inner height of browser window
+					
+				function resizeCanvas1() {
+					ctx1.canvas.width  = cW;						
+				};
+				function resizeCanvas4() {
+					ctx4.canvas.width  = cW;
+				//ctx4.fillRect(0,0,cW,layer4.height);
+				};
+			 
+								
+				//global Variables		
+				var playAnimation = true;
+				var startButton = $("#startAnimation");
+				var stopButton =  $("#stopAnimation");
+				var text1 ="Richard von Buelow";	
+				var text2 = "Web Portfolio";
+				var helloA = 0;	
+				var waveCounter = 0;
+				var waveCounter1 = 0;	
+				var upORdown = true;
+			// on window resize call function named "rollCall"
+				$(window).resize(rollCall);
+				
+				function rollCall(){
+					cW = window.innerWidth;
+					cH = window.innerHeight;
+					resizeCanvas1();
+					resizeCanvas4();	
+					helloA =  0;
+					
+					drawSunset();					
+				};
+				rollCall();		
+				//start and stop buttons that pause and continue the animation
+			    startButton.hide();
+				startButton.click(function() {
+					$(this).toggle();
+					stopButton.show();					
+					playAnimation = true;
+					console.log("whats ups dude");
+					$("#blackness").toggle();
+				});
+				stopButton.click(function() {
+					$(this).toggle();
+					startButton.show();
+					console.log("whats ups dude");
+					playAnimation = false;
+				});
+				
+				function drawSunset(){      	 //Draw all the images using simple functions
+					waveCounter = 0;
+					waveCounter1 = 0;	
+					upORdown = true;
+					drawBackground();            //Draws the sky and the water on CTX1				
+					drawMountains();            //Draws the Mountains/lighthouse/sun on CTX1
+					drawDolphin();              //dolphin drawn on CTX3
+					//drawWaves();				//draw waves on CTX4		
+				}
+				function drawBackground(){		 //Draws the sky and the water on CTX1
+					ctx1.save();
+					ctx1.clearRect(0, 0, cW, cH);
+					var lingrad = ctx1.createLinearGradient(0,0,0,225);
+						lingrad.addColorStop(0, 'skyblue');
+						lingrad.addColorStop(0.70, 'orange');
+						lingrad.addColorStop(0.70, 'blue');
+						lingrad.addColorStop(1, 'darkblue');
+					ctx1.fillStyle = "darkblue";
+					//ctx1.fillRect(0,0,cW,cH);               //draw the body color
+					ctx1.fillStyle = lingrad;
+					ctx1.fillRect(0,0,cW,225);              //draw the sunset with gradient layer
+					ctx1.restore();
+				}
+				function drawMountains(){        //Draws the Mountains,lighthouse and the sun on CTX1
+				if(cW >=802){
+					var lightHouse = new Image();
+						lightHouse.src =  '../../hosting.otterlabs.org/classes/vonbuelowrichardl/Portfolio/images/lightHouse.png';						
+						lightHouse.onload = function() {    //wait till image loads then draw it            
+						  ctx1.save();
+						  
+						  ctx1.drawImage(lightHouse, 385,70);
+						  ctx1.restore();
+						};
+					}
+					ctx1.save();								//draw a circle
+					ctx1.fillStyle = "darkorange";				// ( x-pos, y-pos, something,something
+					ctx1.shadowBlur = 50;
+					ctx1.shadowColor = "red";							
+					if(cW >= 1900 ){
+						ctx1.beginPath();                             
+						ctx1.arc(1400,90,35,0,Math.PI*2,false);       
+						ctx1.closePath();
+						ctx1.fill();
+					}					
+					if((cW >=1600) && (cW <=1899)){
+						ctx1.beginPath();                             
+						ctx1.arc(cW*0.8,90,35,0,Math.PI*2,false);       
+						ctx1.closePath();
+						ctx1.fill();
+					}
+					if((cW >= 1200) && (cW<=1599)){
+						ctx1.beginPath();                             
+						ctx1.arc(cW*0.9,90,35,0,Math.PI*2,false);       
+						ctx1.closePath();
+						ctx1.fill();								
+					}
+					if(cW <= 1200 ){
+						ctx1.beginPath();                             
+						ctx1.arc(cW-75,90,35,0,Math.PI*2,false);       
+						ctx1.closePath();
+						ctx1.fill();
+					
+					}
+					ctx1.restore();
+				}
+
+					
+
+				function drawDolphin(){          //dolphin drawn on ctx3
+					var dolphin = new Image();    //image width = 75 height =58   size =6kb
+					dolphin.src =  '../../hosting.otterlabs.org/classes/vonbuelowrichardl/Portfolio/images/dolphin.png';
+					
+					var xposStartDolphin = cW - 75;
+					var yposStartDolphin = 225 -58;
+					var radius = 5;
+					var speed = 0.1;
+					var angle = 0;
+					var rotatorD = 0; 
+				}
+				function drawWaves(){            //draw waves on CTX4				
+					if (playAnimation==true){
+						var cpxWaves = 16.25;		//sets control point for both waves
+						var cpyWaves = 225;         //sets control point Y for first bezier curve   
+						var xposWaves = 37.5;		//sets width of the wave
+						var yposWaves = 200;        //sets y-position of bezier curve.. draw line through the middle of waves
+						var cpy1Waves = 275;	
+						cpyWaves -= waveCounter;
+						cpy1Waves += waveCounter;
+											
+						var waveGrad = ctx4.createLinearGradient(0,175,0,225);    //creates a gradient that fills in the waves
+						waveGrad.addColorStop(0, "white");
+						waveGrad.addColorStop(.45, "lightblue");
+						waveGrad.addColorStop(.50, "blue");
+						waveGrad.addColorStop(.6, "blue");
+						waveGrad.addColorStop(1, "darkblue");
+						ctx4.fillStyle = waveGrad;
+						
+						ctx4.beginPath();
+						ctx4.lineWidth =3;
+						ctx4.strokeStyle ="white"; 
+						ctx4.clearRect(0,0,cW,cH);
+						ctx4.strokeStyle ="white";
+						ctx4.moveTo(xposWaves-(150/4), 200);					
+							for(var z = 0; z < cW; z +=75){					                    //for loop that draws a series of bezier curves to form waves							
+								ctx4.quadraticCurveTo(cpxWaves, cpyWaves, xposWaves, yposWaves);
+								cpxWaves +=150/4;
+								cpyWaves -= 100;
+								cpy1Waves -= 100;
+								xposWaves += 150/4;
+								ctx4.quadraticCurveTo(cpxWaves, cpy1Waves, xposWaves, yposWaves);
+								cpyWaves += 100;
+								cpy1Waves += 100;
+								//                   (75,250,150,200)
+								cpxWaves +=150/4;
+								xposWaves += 150/4;
+							
+						}
+						ctx4.lineTo(cW,cH);              //finsh the wave drawing by making a border around the bottom of the canvas and filling it
+						ctx4.lineTo(0,cH);
+						ctx4.closePath();
+						ctx4.stroke();
+						ctx4.fill();  						
+						if((waveCounter >= 40) || (upORdown == false) ){
+							upORdown = false;
+							waveCounter-=1.25;
+						}
+						if((waveCounter <= 15) || (upORdown == true) ){
+							upORdown = true;
+							waveCounter +=1.25;
+						}						
+					}		
+				}
+
+				var timer = setInterval(drawWaves,60);			
+			});
+		</script>
+	</head>
+	<body>
+	<img src='../../hosting.otterlabs.org/classes/vonbuelowrichardl/Portfolio/images/island3.png' style="float:left; z-index:3;">
+	
+		<section><!-- --------------------------holds all the canvases in a div ------------------------------------>
+			<h1 style="z-index: 6; position:absolute; top:0px; left:575px; font-size:72px; text-align:center; color:white;"> Dolphins vs.</h1>
+			<h1 style="z-index: 6; position:absolute; top:58px; left:850px; font-size:72px; text-align:center; color:white;">Sharks</h1>		
+			<div id="canvasesdiv" style="position:relative; width:100%; height:200px">
+				<canvas id="layer1" style="z-index: 1; position:absolute; left:0px;	top:-25px; " height="200px" width="200"></canvas>
+				<canvas id="layer4"	style="z-index: 4; position:absolute; left:0px; top:-50px;" height="225px" width="200"></canvas>
+			</div>
+		</section>
+		<script type="text/javascript">	
+			  window.onload = function () {				
+	{//sets up canvases				
+				var canvas = $("#Canvas1");
+				var ctx = canvas.get(0).getContext("2d");				
+				var canvas2 = $("#Canvas2");
+				var ctx2 = canvas2.get(0).getContext("2d");				
+				var canvas3 = $("#Canvas3");
+				var ctx3 = canvas3.get(0).getContext("2d");				
+				var canvas4 = $("#Canvas4");
+				var ctx4 = canvas4.get(0).getContext("2d");
+				var canvas5 = $("#Canvas5");
+				var ctx5 = canvas5.get(0).getContext("2d");
+			
+				
+				var cW = window.innerWidth;
+				var cH = window.innerHeight;		
+				
+				function resizeCanvas1() {
+					ctx.canvas.width  = cW;						
+				};
+				function resizeCanvas2() {
+					ctx2.canvas.width  = cW;				
+				};
+			    function resizeCanvas3() {
+					ctx3.canvas.width  = cW;					
+				};
+				function resizeCanvas4() {
+					ctx4.canvas.width  = cW;
+				//ctx4.fillRect(0,0,cW,layer4.height);
+				};
+				function resizeCanvas5() {
+					ctx5.canvas.width  = cW;
+				//ctx4.fillRect(0,0,cW,layer4.height);
+				};
+				
+				function rollCall(){
+					cW = window.innerWidth;
+					cH = window.innerHeight;
+					
+					resizeCanvas1();
+					resizeCanvas2();
+					resizeCanvas3();
+					resizeCanvas4();
+					resizeCanvas5();
+				}
+				rollCall();
+		}				
+	{ //all global variables						
+				var sharkArray = new Array();                           //an array that will hold the position of sharks in an array
+				var mineArray  = new Array();							//an array that will hold the position of mine in an array				                               
+				var	jellyArray = new Array();							//an array that will hold the position of jellyfish
+				var fishArray = new Array();
+				var dolphin; 
+				
+				var cHr = 400;											//sets canvas size manually
+				var numSharks = 7;										//number of sharks			
+				var numMines  = 8;										//number of mines - 1
+				var numFish = 10;
+				var mineSpeed = 5;                                      //speed the mines moves towards player when they move
+				var numJelly = 30;										//number of jellyyfish created
+				var sharkSpeed = 4;
+				var dolphinSpeed = 15;
+				var sharkAlpha = 1;
+				var sharkBool = false;
+				var sharkBool2 = false;
+				var tailCounter;
+				var stunTimer =0;
+				var dolphinHit = undefined;
+				var bloodFall = 0;
+				var playerRestart = false;
+				var xMover = 0;
+				var pSlider =15;
+				$("#nextLife").hide();
+				$("#resetGame").hide();
+				//audio
+				var sonar = $("#gameSoundSonar").get(0);
+				
+				
+				var shark1 = new Image(); //Size: 186 x 80
+					shark1.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/shark1.svg';						
+				var shark2 = new Image(); //Size: 186 x 80
+					shark2.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/shark2.svg';					
+				var shark3 = new Image(); //Size: 186 x 80
+					shark3.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/shark3.svg';					
+				var mine = new Image(); //70x70
+					mine.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/mine.svg';		
+				var chain = new Image(); //13x180
+					chain.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/chainLong.svg';
+				var dolphin1 = new Image();//111x34
+					dolphin1.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/dolphin1.svg';
+				var dolphin2 = new Image();
+					dolphin2.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/dolphin2.svg';
+				var dolphin3 = new Image();
+					dolphin3.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/dolphin3.svg';		
+				var bottomBoard = new Image();
+				 bottomBoard.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/bottomBoard.png';
+				var fish = new Image();
+					fish.src = '../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/fish.svg';
+				}
+			
+			    window.requestAnimFrame = (function(callback) {
+				return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+				function(callback) {
+				window.setTimeout(callback, 1000 / 60);
+				};
+				})();
+				
+				//handy math functions
+				function getRandomInt (min, max) {                 		 //awesome function taken from http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
+					return Math.floor(Math.random() * (max - min + 1)) + min;
+				}
+				function getRandomArbitary (min, max) {
+					return Math.random() * (max - min) + min;
+				}
+				function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {    //http://stackoverflow.com/questions/8017541/javascript-canvas-collision-detection
+					w2 += x2;
+					w1 += x1;
+					if (x2 > w1 || x1 > w2) return false;
+					h2 += y2;
+					h1 += y1;
+					if (y2 > h1 || y1 > h2) return false;
+					 return true;
+				}
+				function pRestart(){                                    //makes player invisible to boundary detection for a couple seconds 
+					playerRestart = false;
+				}
+				//set up classes for animated objects
+				var Player = function(){
+					this.x = 5;
+					this.y = (cHr/2) - (111/2);
+					this.speed = dolphinSpeed;
+					this.alive = true;
+					this.sonar = 3;
+					this.sonarBool = false;
+					this.score = 0;
+					this.lives = 2;
+					this.height = 34;
+					this.width = 111;
+					this.rotate = 0;
+				};	
+				var Sharky = function(x, y, speed,scale) {					//protoype for sharky used in makeSharks
+					this.x = x;
+					this.y = y;
+					this.speed = speed;
+					this.stun = false;
+					this.scale = scale;
+				};
+				var Miney = function(x,y){
+					this.x = x;
+					this.y = y;
+				};
+				var Jelly = function(x,y,speed,scale,color){
+					this.x = x;
+					this.y = y;
+					this.scale =  scale;
+					this.color = color;
+					this.speed = speed;
+				};
+				var Fishy = function(x,y){
+					this.x = x;
+					this.y = y;
+				};
+				//sets up placement of Sharks/Mines/Kelp
+				function setupSharks(){									//generates random x and y postions of sharks
+					for(var z = 0; z < numSharks; z++){							
+						if(z%2 == 0){
+							var y = getRandomInt(0, cHr/2);
+						}
+						else{
+							var y = getRandomInt(cHr/2 + 30, cHr-80);
+						}
+						var x = getRandomInt(cW,cW + 400);
+						var y = getRandomInt(0, cHr-80);
+						var speed = Math.random()*2 + 1;		
+						var scale = getRandomArbitary (0.75, 1.3);
+						sharkArray.push(new Sharky(x, y, speed,scale));					
+					}
+				}
+				function setupMiney(){									//generates random x and y postions of mines
+					var mineXpos = cW/8;
+						for(var z = 0; z < numMines; z++){							
+							var mineYpos = getRandomInt(50,300);
+							var mineXposMover = getRandomInt(-10,10);
+							var speed = Math.random()*2 + 1;				
+							mineArray.push(new Miney(mineXpos, mineYpos));
+							mineXpos += cW/numMines +(mineXposMover);							
+						}
+				}
+				function setupJelly(){									//generates random x and y postions of mines
+				var y =0 
+						for(var z = 0 ; z < numJelly; z++,y++){							
+							var jellyXpos = getRandomInt(200,cW-200);
+							var jellyYpos = getRandomInt(80,340);
+							var scale =  getRandomArbitary (0.4, 0.7);
+							var speed = getRandomArbitary (-1, 1);
+							if (y ==0){
+						 	 var color = "orangered";
+							}
+							if (y ==1){
+						 	 var color = "green";
+							}
+							if (y ==2){
+						 	 var color = "yellow";
+							 y =-1;
+							}
+							jellyArray.push(new Jelly(jellyXpos, jellyYpos,speed,scale,color));					
+						}
+				}
+				function setupFishy(){									//generates random x and y postions of mines
+							for(var z = 0; z < numFish; z++){
+								var Xpos = getRandomInt(200,cW);
+								var Ypos = getRandomInt(25,375);										
+								fishArray.push(new Fishy(Xpos, Ypos));								
+					     	}
+				}
+				//DRAW THE ELEMENTS
+				function drawBackground(){                  			//draw ocean and seafloor on ctx
+					ctx.save();
+					var gradient = ctx.createLinearGradient(0,0,0, cH);
+					gradient.addColorStop(0,"lightblue");
+					gradient.addColorStop(1, " darkblue");
+
+					ctx.fillStyle = gradient;
+					ctx.fillRect(0,0,cW, cH);         //(x- start coordinates, y-start coordinates, width of gradient, height of gradient)
+					
+					//ctx.fillStyle = "yellow";
+					//ctx.strokeStyle= "brown";
+					//ctx.lineWidth = "5";
+					//ctx.fillRect(0,cHr-25, cW, 25);
+					
+					//ctx.beginPath();
+				//	ctx.moveTo(0, cHr-25);
+				//	ctx.lineTo(cW,cHr-25);
+				//	ctx.stroke();
+					ctx.restore();
+					
+			        bottomBoard.onload = function(){
+						ctx5.save();
+						ctx5.scale(2,2);
+						ctx.globalCompositeOperation = "xor";
+						ctx5.fillStyle = "yelllow";
+						ctx5.fillRect(0,150,cW/2,50);
+						ctx5.drawImage(bottomBoard,0,150);				
+						ctx5.restore();	
+					}
+					
+				}
+				function drawKelp(){								    //draws kelp on ctx
+					ctx.save();
+					ctx.beginPath();
+					ctx.lineWidth = "6";
+					ctx.lineCap="round";
+					ctx.strokeStyle = "green";
+					var kelpX =0;
+					
+						for(; kelpX < cW;){
+							var kelpY = getRandomInt(275,375);
+							var kelpXchanger = getRandomInt(45,75);
+							var kelpThick = getRandomInt(4,8);
+							var kelpCurve = getRandomInt(5,25);
+							ctx.lineWidth = kelpThick;
+							ctx.moveTo(kelpX,cHr);
+							ctx.quadraticCurveTo(kelpX + kelpCurve,cHr - 50, kelpX,cHr - 100);
+							ctx.quadraticCurveTo(kelpX - kelpCurve,cHr - 150,kelpX,cHr - 200);
+							ctx.quadraticCurveTo(kelpX + 15,cHr - 250,kelpX,cHr - kelpY)
+							ctx.stroke();
+							kelpX += kelpXchanger;
+						}
+					ctx2.restore();
+				}
+				function drawShark(){ 									//draw sharks on ctx2
+					if(dolphin.alive == true){
+					window.requestAnimationFrame(drawShark, canvas2);	
+						ctx2.clearRect(0, 0, cW,cH);
+						stunTimer++;
+						for(var z = 0; z < numSharks; z++){											
+							if(sharkArray[z].stun == false){
+								//ctx2.fillRect(sharkArray[z].x +10, sharkArray[z].y + 34, 155, 31);							
+								ctx2.save();
+							//	ctx2.scale(sharkArray[z].scale,sharkArray[z].scale);
+							
+							    ctx2.drawImage(shark1, sharkArray[z].x, sharkArray[z].y);
+								ctx2.restore();
+								//ctx2.fillRect(dolphin.x + 20, dolphin.y + 8, 91, 24);
+								
+								if(sharkArray[z].x <= -186){
+									sharkArray[z].x = getRandomInt(cW,cW + 400);
+									sharkArray[z].y = getRandomInt(0, cHr-80);
+									sharkArray[z].speed = Math.random()*sharkSpeed + 1;
+								}
+								else{
+									sharkArray[z].x -= sharkArray[z].speed;
+									dolphinHit = intersects(dolphin.x + 20, dolphin.y + 8, 91, 24, sharkArray[z].x+10, sharkArray[z].y + 34, 155, 31);	
+									if((dolphinHit == true) && (playerRestart == false)){
+										dolphin.alive =false;
+										ctx2.drawImage(dolphin1, dolphin.x, dolphin.y);
+										dolphin.lives--;
+										$("#lives").html(dolphin.lives);
+										dolphinHit = false;	
+										$("#nextLife").hide();
+										if(dolphin.lives >=0){
+											$("#nextLife").fadeToggle("slow");
+										}
+										else{   				  //if no more lives left you are dead
+										$("#start").fadeToggle();
+										$("#newGameText").hide();
+										$("#resetGame").show();										
+										}
+									
+									}
+								}
+							}							
+							if(sharkArray[z].stun == true){
+								ctx2.drawImage(shark3, sharkArray[z].x, sharkArray[z].y);
+								sharkArray[z].y -= .5;								
+							}
+							if(stunTimer >=400){								
+								for(var H = 0; H < numSharks; H++){
+									sharkArray[H].stun = false;	
+								}
+								console.log("phase3 done");
+								stunTimer = 0;
+							}
+						}
+						for(var z = 0; z < numFish; z++){
+							ctx2.drawImage(fish,fishArray[z].x,fishArray[z].y);
+							fishArray[z].x -= sharkSpeed;
+						}						
+					}
+					/*if(dolphin.alive == false){
+					window.requestAnimationFrame(drawShark, canvas2);
+						for(var z = 0; z < numSharks; z++){	
+							if(sharkArray[z].x > dolphin.x){
+								sharkArray[z].x += 4;
+							}							
+							if(sharkArray[z].y > dolphin.y){
+								sharkArray[z].y -= 4;
+							}	
+							if(sharkArray[z].y < dolphin.y){
+								sharkArray[z].y += 4;
+							}	
+						}
+					
+					console.log("yo im here");
+					}*/
+				}
+				function drawDolphin(){                                //animate dolphin tail and rotation on ctx2
+					if(dolphin.alive == true){
+						window.requestAnimationFrame(drawDolphin, canvas2);
+						if(tailCounter <= 1000/8){
+							ctx2.save();
+							ctx2.translate((dolphin.x) + dolphin.width * 0.5, (dolphin.y)+ dolphin.height * 0.5);
+							ctx2.rotate(dolphin.rotate);
+							ctx2.translate((-dolphin.width * 0.5)  , (-dolphin.height * 0.5) );					
+							ctx2.drawImage(dolphin1, 0,0);
+							ctx2.restore();
+							if((dolphin.y <= 350) &&(dolphin.x<= 250)){
+								dolphin.y +=0.25;
+								//simulated dolphin gravity								
+							}
+							if(dolphin.x >= 25){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/4){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+								if(dolphin.x >= cW/10 * 7){
+								dolphin.x -=0.5;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 9){
+								dolphin.x -=7;                         //simulated dolphin gravity								
+							}
+							
+						}
+						if((tailCounter >=1000/8)&&(tailCounter <=2000/8)){
+							ctx2.save();
+							ctx2.translate((dolphin.x) + dolphin.width * 0.5, (dolphin.y)+ dolphin.height * 0.5);
+							ctx2.rotate(dolphin.rotate);
+							ctx2.translate((-dolphin.width * 0.5)  , (-dolphin.height * 0.5) );	
+							
+							ctx2.drawImage(dolphin3, 0,0);		
+							ctx2.restore();
+							if(dolphin.y <= 350){
+								dolphin.y +=0.25;                       //simulated dolphin gravity
+							}
+							if(dolphin.x >= 25){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/4){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 7){
+								dolphin.x -=0.5;                          //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 9){
+								dolphin.x -=7;                         //simulated dolphin gravity								
+							}
+							
+							
+						}
+						if((tailCounter >=2000/8)&&(tailCounter <=3000/8)){
+							ctx2.save();
+							ctx2.translate((dolphin.x) + dolphin.width * 0.5, (dolphin.y)+ dolphin.height * 0.5);
+							ctx2.rotate(dolphin.rotate);
+							ctx2.translate((-dolphin.width * 0.5)  , (-dolphin.height * 0.5) );							
+							ctx2.drawImage(dolphin1, 0,0);		
+							ctx2.restore();
+							if(dolphin.y <= 350){ 
+								dolphin.y +=0.25;                     //simulated dolphin gravity
+							} 
+							if(dolphin.x >= 25){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/4){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 7){
+								dolphin.x -=0.5;                          //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 9){
+								dolphin.x -=7;                         //simulated dolphin gravity								
+							}					
+						}
+						if((tailCounter >=3000/8)&&(tailCounter <=4000/8)){
+							ctx2.save();
+							ctx2.translate((dolphin.x) + dolphin.width * 0.5, (dolphin.y)+ dolphin.height * 0.5);
+							ctx2.rotate(dolphin.rotate);
+							ctx2.translate((-dolphin.width * 0.5)  , (-dolphin.height * 0.5) );								
+							ctx2.drawImage(dolphin2, 0,0);		
+							ctx2.restore();
+							if(dolphin.y <= 350){
+								dolphin.y +=0.25;                   //simulated dolphin gravity
+							}
+							if(dolphin.x >= cW/4){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= 25){
+								dolphin.x -=0.50;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 7){
+								dolphin.x -=0.5;                         //simulated dolphin gravity								
+							}
+							if(dolphin.x >= cW/10 * 9){
+								dolphin.x -=7;                         //simulated dolphin gravity								
+							}
+						
+								}
+						if(tailCounter >= 4000/8 ){
+							tailCounter=0;
+						}
+						tailCounter+=5;	
+					}
+				}				
+				function drawMine(){                                   //draws mines on ctx3
+					if(dolphin.alive == true){
+					window.requestAnimationFrame(drawMine, canvas3);	
+						ctx3.clearRect(0, 0, cW,cH);
+						for(var z = 0; z < numMines; z++){							
+							ctx3.drawImage(chain, mineArray[z].x + (0.5*mine.width) - (0.5*chain.width), mineArray[z].y + (0.5*mine.height));
+							ctx3.drawImage(mine,  mineArray[z].x, mineArray[z].y);							
+						}
+					}
+				}
+				function drawSonar(){				                   //draws sonar on ctx4
+					if(sonarStartX < cW + 50){
+						window.requestAnimationFrame(drawSonar, canvas4);						
+							if(dolphin.sonarBool == true){
+								sonarStartX = dolphin.x + dolphin.width + 5;
+								sonarStartY = dolphin.y - 20;
+								sonarFinishY =  dolphin.y + (dolphin.height) + 20;
+								sonarFinishX = 30;
+								dolphin.sonarBool = false;					
+							}
+							if(sonarStartX < cW + 50){
+								ctx4.save();
+								ctx4.strokeStyle = "darkblue";
+								ctx4.lineWidth = 8;
+								ctx4.lineCap = "round";
+									
+								ctx4.clearRect(0,0,cW,cHr);
+								ctx4.beginPath();
+								ctx4.moveTo(sonarStartX, sonarStartY)
+								ctx4.quadraticCurveTo(sonarStartX + sonarFinishX, dolphin.y + dolphin.height/2,sonarStartX,sonarFinishY);                          //(cpx,cpy,x,y)
+								ctx4.stroke();
+								
+								sonarStartX += 10;
+								sonarStartY -= 5;
+								sonarFinishY += 5;
+								sonarFinishX +=  1;						
+								ctx4.restore();
+							}
+					}
+				}
+				function drawJelly(){									//draws jellyfish on ctx4
+					if(dolphin.alive == true){
+						window.requestAnimationFrame(drawJelly, canvas4);						
+						
+						ctx4.clearRect(0,0,cW,cH)
+						for(var z = 0; z < numJelly; z++){
+							{
+							ctx4.save()								
+							var jGradient = ctx4.createLinearGradient(0,0,0,50);     //create linear gradient on jellyFish	
+							jGradient.addColorStop(0, "#290029");               //purple
+							jGradient.addColorStop(.15, "#991F00");             //darker orange
+							jGradient.addColorStop(1, "#FF3300");               //bright orange
+							ctx3.fillStyle = jGradient;
+							ctx4.strokeStyle = "#5c005c";                       //purple
+							
+							
+							ctx4.translate(jellyArray[z].x,jellyArray[z].y);									//where to move the jellyfish
+						//	ctx4.rotate(0.39);
+							
+							ctx4.scale(jellyArray[z].scale,jellyArray[z].scale);			
+						
+							ctx4.fillStyle = "lightgreen";
+							ctx4.strokeStyle = "black";                             //darkpurple
+							
+							ctx4.beginPath();                                         //draw bottom part of jellyfish
+							ctx4.moveTo(92,50);
+							ctx4.quadraticCurveTo(75,37.5,50,37.5);
+							ctx4.quadraticCurveTo(25,37.5,8,50);
+							ctx4.quadraticCurveTo(50,70,92,50);
+							ctx4.closePath();					
+							ctx4.fill();
+							ctx4.stroke();
+							
+							
+							ctx4.lineWidth =4;                                //draw jellyfish legs
+							ctx4.strokeStyle = 	jellyArray[z].color;          
+							ctx4.lineCap ="round";	
+							for(var n = 0; n <8; n++){
+									ctx4.moveTo((n*10)+18,40);
+									ctx4.quadraticCurveTo((n*5)+28,40,(n*10)+18,100);						
+								}								
+							ctx4.stroke();									
+							
+							
+							ctx4.lineWidth =2;	
+							ctx4.fillStyle = jGradient;
+							ctx4.strokeStyle = "pink";                             //darkpurple	
+							ctx4.beginPath();                                 //draw top part of jellyfish							
+							ctx4.moveTo(0,37.5);           					//1
+							ctx4.quadraticCurveTo(0,0,50,0);  			    //2
+							ctx4.quadraticCurveTo(100,0,100,37.5);			//3
+							ctx4.translate(0,0);					
+							ctx4.quadraticCurveTo(100,55,92,50);			//4
+							ctx4.quadraticCurveTo(75,37.5,50,37.5);		
+							ctx4.quadraticCurveTo(25,37.5,8,50);
+							ctx4.quadraticCurveTo(0,50,0,37.5);
+
+							ctx4.closePath();
+							ctx4.fill();
+							ctx4.stroke();						
+							
+							ctx4.restore();	
+							}
+							if(jellyArray[z].y >= -60){ 
+								jellyArray[z].x += jellyArray[z].speed/2;
+								jellyArray[z].y	-= jellyArray[z].speed;
+								dolphinHit = intersects(dolphin.x +20, dolphin.y + 8, 91, 24, jellyArray[z].x, jellyArray[z].y, 100 * jellyArray[z].scale, 100 * jellyArray[z].scale);			
+							//	ctx4.fillRect(jellyArray[z].x,jellyArray[z].y,100*jellyArray[z].scale,100*jellyArray[z].scale);                     //checks hit location on jellyfish
+								if((dolphinHit == true) && (playerRestart == false)){
+										console.log("JellyFish hit z = ");
+										dolphin.alive = false;									
+										dolphin.lives--;
+										$("#lives").html(dolphin.lives);
+										dolphinHit = false;	
+										$("#nextLife").hide();
+										if(dolphin.lives >=0){
+											$("#nextLife").fadeToggle("slow");
+										}
+										else{   				  //if no more lives left you are dead
+										$("#start").fadeToggle();
+										$("#newGameText").hide();
+										$("#resetGame").show();										
+										}
+									
+									}								
+							}		
+							else{
+								jellyArray[z].x = getRandomInt(200,cW-200);
+								jellyArray[z].y = getRandomInt(400,435);
+							}
+						}
+						
+					}
+				}
+				function drawIntroAnimation(){
+
+
+				}				
+				function animateProgress(){	
+					if(dolphin.alive == true){
+						window.requestAnimationFrame(animateProgress, canvas5);	
+							ctx5.save();
+							ctx5.clearRect(0,300,cW,100);
+							ctx5.scale(2,2);
+							ctx5.drawImage(bottomBoard,xMover,150);
+							xMover -= 0.25;							
+							ctx5.restore();	
+							
+							ctx5.save();
+							ctx5.clearRect(50,400,cW,150);
+							ctx5.strokeStyle = "red";
+							ctx5.fillStyle = "red";
+							ctx5.beginPath();                             //draw a circle
+							ctx5.arc(50,425,10,0,Math.PI*2,false);       // ( x-pos, y-pos, something,something
+							ctx5.closePath();					
+							ctx5.fill();
+							
+							ctx5.lineWidth = 5;
+							ctx5.beginPath();
+							ctx5.moveTo(50,425);
+							ctx5.lineTo(pSlider + 100,425);
+							ctx5.closePath();
+							ctx5.stroke();
+							ctx5.drawImage(dolphin1, pSlider + 50,410);
+								
+							pSlider +=.50;
+							
+							ctx5.beginPath();                             //draw a circle
+							ctx5.arc(cW-50,425,10,0,Math.PI*2,false);       // ( x-pos, y-pos, something,something
+							ctx5.closePath();					
+							ctx5.fill();
+							ctx5.restore();
+
+					}
+				}
+				
+				var keys = {};                       				 //key codes obtained from http://stackoverflow.com/questions/4954403/can-jquery-keypress-detect-more-than-one-key-at-the-same-time
+				$(document).keydown(function (e) {
+					keys[e.which] = true;					
+					printKeys();
+				});
+				$(document).keyup(function (e) {
+					delete keys[e.which];					
+					printKeys();
+				});
+				
+				function printKeys() {						
+					
+					for (var i in keys) {
+							if (!keys.hasOwnProperty(i)) continue;						
+							if((keys[39] == true) && ((keys[38] != true) && (keys[40] != true))) {     // move dolphin right(39)					
+								if(dolphin.x >= -10){
+									dolphin.x += dolphinSpeed;
+									
+									
+									/*for(var k =0; k <numMines; k++){
+										mineArray[k].x -= mineSpeed;
+									}
+									*/
+								}
+								if(dolphin.rotate > 0){
+									dolphin.rotate -= 0.1;								
+								}
+								if(dolphin.rotate < 0){
+									dolphin.rotate += 0.1;									
+								}
+							}
+							if((keys[38] == true) && (keys[39] != true)) {      // move dolphin up(38)						
+								if(dolphin.y >= 0){
+									dolphin.y -= dolphinSpeed;
+								}
+							}
+							if((keys[40] == true) && (keys[39] != true)) {      // move dolphin down(40)						
+								if(dolphin.y <= cHr-(dolphin.height*2)){
+									dolphin.y += dolphinSpeed;
+								}
+							}
+							if(keys[37] == true){     							// move dolphin left(40)						
+								if(dolphin.x >= 0){
+									dolphin.x -= dolphinSpeed/3;
+								}
+								if(dolphin.rotate > 0){
+									dolphin.rotate -= 0.1;
+								}
+								if(dolphin.rotate < 0){
+									dolphin.rotate += 0.1;
+								}
+							}
+							if((keys[39] == true) && (keys[40]==true)){          //down(40) and right(39) key pressed
+								if(dolphin.y <= cHr-50){
+									dolphin.y += dolphinSpeed*0.5;
+									dolphin.x += dolphinSpeed*0.5;
+								}							
+								if(dolphin.rotate <0.30){
+									dolphin.rotate += 0.1;
+								}
+								
+							}
+							if((keys[38] == true) && (keys[39]==true)){          //up(38) and right(39) key pressed
+								if(dolphin.y >= 13){
+									dolphin.x += dolphinSpeed*0.5;
+									dolphin.y -= dolphinSpeed*0.5;
+								}						
+								if(dolphin.rotate >-0.30){ 
+									dolphin.rotate -= 0.1;
+								}
+								
+							}
+							if(keys[32] == true){                                //spacebar key is pressed							
+								if(dolphin.sonar >= 1){
+									if (sonar.paused) {
+										sonar.play();
+										sonar.loop = false;
+									};
+									sonarStartX = dolphin.x + dolphin.width + 5;
+									sonarStartY = dolphin.y - 20;
+									sonarFinishY =  dolphin.y + (dolphin.height) + 20;
+									sonarFinishX = 30;								
+									dolphin.sonar--;									
+									sharkAlpha =1;
+									dolphin.sonarBool = true;
+									drawSonar();
+									$("#sonar").html(dolphin.sonar);
+									for(var z = 0; z < numSharks; z++){	
+										if((dolphin.x + dolphin.width) <= sharkArray[z].x){
+											sharkArray[z].stun = true;
+										}
+									}
+								}
+							}					
+						}
+				}	
+				
+				//sets up start button and nextLife button
+				$("#newGameText").click(function(){
+					newGame();
+					$(this).fadeOut("slow");
+					$("#start").fadeOut("slow");
+				//	$("#dLives").fadeToggle();
+				//	$("#sonarSpan").fadeToggle();
+				});				
+				$("#nextLife").click(function(){
+					nextLife();
+					$(this).fadeToggle();					
+					var timer = setTimeout(pRestart,3000);
+				});			
+				$("#resetGame").click(function(){
+					resetGame();
+					$(this).toggle();
+				});
+												
+				function resetGame(){
+					for(var k = 0; k < numSharks; k++){	
+						sharkArray[k].x = getRandomInt(cW,cW + 400);
+						sharkArray[k].y = getRandomInt(0, cHr-80);
+						sharkArray[k].speed = Math.random()*sharkSpeed + 1;
+						setupSharks();
+						setupMiney();
+						setupFishy();
+						drawShark();
+						drawDolphin();
+						drawMine();
+						xMover =0;
+						
+					}
+					$("#lives").html(dolphin.lives);
+						$("#sonar").html(dolphin.sonar);
+						$("#start").show();
+						$("#newGameText").fadeIn(3000);						
+					
+					/*for(var r = 0; r < numMines; r++){							
+							var mineYpos = getRandomInt(50,300);
+							var mineXposMover = getRandomInt(-10,10);
+							var speed = Math.random()*2 + 1;				
+							mineXpos += cW/numMines +(mineXposMover);
+							mineArray[r].x = mineXpos;	
+							mineArray[r].y = mineYpos;								
+					}
+					*/
+				}
+				function nextLife(){
+					playerRestart = true;
+					dolphin.x = 5;
+					dolphin.y = (cHr/2) - (111/2);
+					dolphin.alive = true;
+					drawShark();
+					drawDolphin();
+					drawJelly();
+					animateProgress();
+					//drawMine();
+				}
+				function newGame(){
+					dolphin = new Player();
+					numJelly = 8;
+					numSharks = 7;
+					tailCounter = 0;					
+					setupSharks();					
+					setupJelly();
+					setupFishy();
+					drawShark();
+					drawDolphin();				
+					drawJelly();
+					animateProgress();
+					$("#lives").html(dolphin.lives);
+					$("#sonar").html(dolphin.sonar);
+				}
+				function introStart(){
+					  drawBackground();
+				      drawKelp();
+					//drawIntroAnimation();				
+				}
+				introStart();			
+    };			
+		</script>
+		<div id="canvases">			
+				<canvas id="Canvas1" width="1200" height="400" style = "z-index: 1; left:0; top:200px;"></canvas>
+				<canvas id="Canvas2" width="1200" height="400" style = "z-index: 2; left:0; top:200px;"></canvas>
+				<canvas id="Canvas3" width="1200" height="400" style = "z-index: 3; left:0; top:200px;"></canvas>
+				<canvas id="Canvas4" width="1200" height="400" style = "z-index: 4; left:0; top:200px;"></canvas>
+				<canvas id="Canvas5" width="1200" height="400" style = "z-index: 4; left:0; top:200px;"></canvas>	
+		</div>
+		<div id="aniButtons">
+			<button id="startAnimation" style="z-index: 6; position:absolute; left:0px; top:0px;">Start</button>
+			<button id="stopAnimation"  style="z-index: 6; position:absolute; left:50px; top:0px;">Stop</button>
+		</div>	
+		<!-- Audio -->
+				
+				<audio id="gameSoundSonar">
+						<source src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/audio/sonar.ogg">
+						<source src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/audio/sonar.mp3">
+				</audio>
+				<audio id="gameSoundBackground">
+						<source src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/audio/lucky.ogg">
+						<source src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/audio/lucky.mp3">
+				</audio>
+					
+				<!--  loads lives sonar and score-->
+				<div id ="statusBar" >		
+					<div id ="newGameText" >
+						<div id="start" >
+							<img src='../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/shark1.svg'>
+							<img src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/dolphin1.svg">
+							<img src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/fish.svg">
+						</div>						
+						<p style = "color:white; ">New Game</p>
+					</div>
+					<span>
+						<button id="resetGame" class ="statusElements" style = "z-index: 4; ">
+							<img src='../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/shark1.svg'>
+							<img src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/dolphin1.svg">
+							<img src="../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/fish.svg">
+							<p id ="resetGameText" style = "color:black;">Reset Game</p>
+						</button>
+					</span>			
+				</div>
+				<div id="controls">
+					<table>
+						<tr>
+							<td>
+								<div class ="statusElements" id = "dLives">
+									<img src='../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/lives.svg'>
+									<p id="lives"> Lives</p>
+								</div>
+							</td>
+							<td>				
+								<div class ="statusElements" id = "sonarSpan">			
+									<img src='../../hosting.otterlabs.org/classes/vonbuelowrichardl/dolphinSharks/images/sonar.svg'>
+									<p id="sonar"> Sonar</p>
+								</div>
+							</td>
+							<td>
+								<div class ="statusElements" id = "scoreSpan">			
+									<p> Score:</p>
+									<p id="score">zero</p>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div><button id="nextLife" class ="statusElements" style = "z-index: 5; position:absolute; top:500; width:100%; text-align:center; ">?Next Life?</button></div>
+	</body>
+
+<!-- Mirrored from rvonbuelow.info/pages/game.html by HTTrack Website Copier/3.x [XR&CO'2013], Wed, 14 May 2014 04:34:34 GMT -->
+</html>
+
+

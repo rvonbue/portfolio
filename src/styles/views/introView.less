@@ -1,11 +1,12 @@
 .intro-view {
   max-width: 650px;
-  width: 50%;
   min-height: 250px;
   margin: 48px auto auto auto;
   padding: 18px 24px;
-  border: 2px solid @color-4;
+  border: 2px solid @color-5;
   border-radius: @borderRadius;
+  background-color: @color-2;
+
   p {
     margin: 8px;
     font-size: 150%;
@@ -46,10 +47,28 @@
 
 .button-container-2 {
   width: 100%;
-  margin: 24px auto;
+  margin: 36px auto 12px auto;
   text-align: center;
   border-top: none;
   box-sizing: border-box;
   border-radius: @borderRadius;
   position: relative;
+}
+.animateSwitchView {
+  position: absolute;
+  overflow: hidden;
+  margin: 0px;
+  padding: 0px;
+  z-index: 999;
+  min-height: 0px;
+  > p, > div, > h1 {
+    display: none;
+  }
+  animation-name: introViewAnimation;
+  animation-duration: 1s;
+}
+
+@keyframes introViewAnimation {
+    0%   { background-color: @color-2 }
+    100% { background-color: @color-1; top:6px; right:15px; height:30px; width: 70px; opacity: 0 }
 }
