@@ -12,6 +12,7 @@ var SwitchView = BaseView.extend({
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
     eventController.once(eventController.SWITCH_VIEWS, _.bind(this.animateDestroy, this));
+    eventController.once(eventController.SET_VIEW, _.bind(this.animateDestroy, this));
   },
   switchView2d: function () {
     this.animateDestroy("2d");
@@ -35,13 +36,13 @@ var SwitchView = BaseView.extend({
     .addClass("animateSwitchView");
 
     setTimeout(function () {
-      eventController.trigger(eventController.SWITCH_VIEWS, whichViewStr);
-      eventController.trigger(eventController.SET_VIEW, whichViewStr);
       self.destroy();
     }, 1000);
 
   },
   destroy: function () {
+    eventController.trigger(eventController.SWITCH_VIEWS, whichViewStr);
+    eventController.trigger(eventController.SET_VIEW, whichViewStr);
     this.undelegateEvents();
     this.$el.removeData().unbind();
     this.remove();

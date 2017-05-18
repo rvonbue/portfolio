@@ -36,6 +36,8 @@ var SwitchView = BaseView.extend({
       this.$el.find("input:first").click();
     } else if (whichView === "3d" && isChecked !== true) {
       this.$el.find("input:first").click();
+    } else {
+      eventController.trigger(eventController.SWITCH_VIEWS, whichView);
     }
   },
   render: function () {

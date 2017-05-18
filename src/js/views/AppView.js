@@ -2,7 +2,7 @@ import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import AppView3d from "./AppView3d";
 import AppView2d from "./AppView2d";
-
+import MobileNavigationBarView from "./components/MobileNavigationBarView";
 import PhotoSwipeView from "./components/PhotoSwipeView";
 import SwitchView from "./components/SwitchView";
 import IntroView from "./components/IntroView";
@@ -22,11 +22,11 @@ var AppView = BaseView.extend({
     var startView = null;
     if (localStorage) startView = localStorage.getItem('startView');
 
-    // if ( startView ) {
-    //   eventController.trigger(eventController.SET_VIEW, startView);
-    // } else  {
-        this.$el.append(new IntroView().render().el);
-    // }
+    if ( startView ) {
+      eventController.trigger(eventController.SET_VIEW, startView);
+    } else  {
+      this.$el.append(new IntroView().render().el);
+    }
   },
   switchViews: function (whichView) {
     if (whichView === "2d") {
@@ -53,6 +53,7 @@ var AppView = BaseView.extend({
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
     this.$el.append(new SwitchView({}).render().el);
+    this.$el.append(new MobileNavigationBarView().render().el);
     var startSkyColor = utils.getWorldLighting().background.cssSkyGradient;
     var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
     this.$el.append(skyGradientDiv);
