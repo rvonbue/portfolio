@@ -1,10 +1,10 @@
-/* jshint -W079 */ //stop jquery reassignment from showing error
 var view;
 // import NoCanvasSupportTemplate from "./AppMainNoCanvas.html";
 
 import $ from 'jquery';
 window.$ = $;
 window.jQuery = $;
+// import TouchSwipe from "jquery-touchswipe";
 
 import _ from "underscore";
 window._ = _;
