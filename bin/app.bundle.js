@@ -78,7 +78,7 @@
 
 	var _AppView2 = _interopRequireDefault(_AppView);
 
-	var _index = __webpack_require__(114);
+	var _index = __webpack_require__(113);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -56914,7 +56914,6 @@
 
 	  ON_RESIZE: "ON_RESIZE",
 	  TOGGLE_AMBIENT_LIGHTING: "TOGGLE_AMBIENT_LIGHTING",
-	  SET_SPOTLIGHT_TARGET: "SET_SPOTLIGHT_TARGET",
 	  OPEN_PHOTO_SWIPE: "OPEN_PHOTO_SWIPE",
 	  SET_RENDER_VIDEO_TEXTURE: "SET_RENDER_VIDEO_TEXTURE"
 	};
@@ -56943,8 +56942,7 @@
 	  REMOVE_MODEL_FROM_SCENE: "REMOVE_MODEL_FROM_SCENE",
 
 	  LOAD_JSON_MODEL: "LOAD_JSON_MODEL",
-	  BUILD_SCENE_DETAILS: "BUILD_SCENE_DETAILS",
-	  CSS_RENDERER: "CSS_RENDERER"
+	  BUILD_SCENE_DETAILS: "BUILD_SCENE_DETAILS"
 	};
 
 /***/ },
@@ -57017,19 +57015,19 @@
 
 	var _AppView3d2 = _interopRequireDefault(_AppView3d);
 
-	var _AppView2d = __webpack_require__(92);
+	var _AppView2d = __webpack_require__(91);
 
 	var _AppView2d2 = _interopRequireDefault(_AppView2d);
 
-	var _PhotoSwipeView = __webpack_require__(106);
+	var _PhotoSwipeView = __webpack_require__(105);
 
 	var _PhotoSwipeView2 = _interopRequireDefault(_PhotoSwipeView);
 
-	var _SwitchView = __webpack_require__(110);
+	var _SwitchView = __webpack_require__(109);
 
 	var _SwitchView2 = _interopRequireDefault(_SwitchView);
 
-	var _IntroView = __webpack_require__(112);
+	var _IntroView = __webpack_require__(111);
 
 	var _IntroView2 = _interopRequireDefault(_IntroView);
 
@@ -57054,11 +57052,11 @@
 	    var startView = null;
 	    if (localStorage) startView = localStorage.getItem('startView');
 
-	    if (startView) {
-	      _eventController2.default.trigger(_eventController2.default.SET_VIEW, startView);
-	    } else {
-	      this.$el.append(new _IntroView2.default().render().el);
-	    }
+	    // if ( startView ) {
+	    //   eventController.trigger(eventController.SET_VIEW, startView);
+	    // } else  {
+	    this.$el.append(new _IntroView2.default().render().el);
+	    // }
 	  },
 	  switchViews: function switchViews(whichView) {
 	    if (whichView === "2d") {
@@ -57091,7 +57089,7 @@
 	  render: function render() {
 	    var photoSwipeView = new _PhotoSwipeView2.default({ parentEl: this.$el });
 	    this.$el.append(new _SwitchView2.default({}).render().el);
-	    var startSkyColor = _utils2.default.getColorPallete().world.background.cssSkyGradient;
+	    var startSkyColor = _utils2.default.getWorldLighting().background.cssSkyGradient;
 	    var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
 	    this.$el.append(skyGradientDiv);
 	    return this;
@@ -57102,9 +57100,9 @@
 
 /***/ },
 /* 34 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	"use strict";
 
 	var BaseView = Backbone.View.extend({
 	  childViews: [],
@@ -57119,24 +57117,13 @@
 	  },
 	  show: function show() {
 	    this.$el.fadeIn();
-	    this.addListeners();
-	    this.addChildViewEventHandlers();
+	    // this.addListeners();
+	    // this.addChildViewEventHandlers();
 	    this.parentEl.addClass(this.parentClass);
-	  },
-	  addChildViewEventHandlers: function addChildViewEventHandlers() {
-	    _.each(this.childViews, function (childView) {
-	      childView.addListeners();
-	    }, this);
-	  },
-	  removeChildViewEventHandlers: function removeChildViewEventHandlers() {
-	    _.each(this.childViews, function (childView) {
-	      childView.removeListeners();
-	    }, this);
 	  }
 	});
 
 	module.exports = BaseView;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
 /* 35 */
@@ -57196,15 +57183,15 @@
 
 	var _LinkHighlighterView2 = _interopRequireDefault(_LinkHighlighterView);
 
-	var _HomeButtonView = __webpack_require__(84);
+	var _NavigationBarView3d = __webpack_require__(84);
 
-	var _HomeButtonView2 = _interopRequireDefault(_HomeButtonView);
+	var _NavigationBarView3d2 = _interopRequireDefault(_NavigationBarView3d);
 
-	var _DatGuiView = __webpack_require__(86);
+	var _DatGuiView = __webpack_require__(85);
 
 	var _DatGuiView2 = _interopRequireDefault(_DatGuiView);
 
-	var _statsView = __webpack_require__(90);
+	var _statsView = __webpack_require__(89);
 
 	var _statsView2 = _interopRequireDefault(_statsView);
 
@@ -57388,7 +57375,7 @@
 	  },
 	  render: function render() {
 
-	    this.childViews = [new _SceneDetailControlsView2.default(), new _LoadingBarView2.default(), new _LinkHighlighterView2.default(), new _HomeButtonView2.default()];
+	    this.childViews = [new _SceneDetailControlsView2.default(), new _LoadingBarView2.default(), new _LinkHighlighterView2.default(), new _NavigationBarView3d2.default()];
 
 	    this.childViews.forEach(function (view) {
 	      this.$el.append(view.render().el);
@@ -58621,7 +58608,7 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var worldColor = _utils2.default.getColorPallete().world;
+	var worldColor = _utils2.default.getWorldLighting();
 
 	var LightControls = _BaseView2.default.extend({
 	  initialize: function initialize(options) {
@@ -58637,13 +58624,11 @@
 	  addListeners: function addListeners() {
 	    _eventController2.default.on(_eventController2.default.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
 	    _eventController2.default.on(_eventController2.default.RESET_SCENE, this.resetScene, this);
-	    _eventController2.default.on(_eventController2.default.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
 	    _eventController2.default.on(_eventController2.default.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
 	  },
 	  removeListeners: function removeListeners() {
 	    _eventController2.default.off(_eventController2.default.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
 	    _eventController2.default.off(_eventController2.default.RESET_SCENE, this.resetScene, this);
-	    _eventController2.default.off(_eventController2.default.SET_SPOTLIGHT_TARGET, this.setSpotlightTarget, this);
 	    _eventController2.default.off(_eventController2.default.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
 	  },
 	  addLight: function addLight() {
@@ -58719,6 +58704,7 @@
 
 	    directionalLight.position.set(pos.x, pos.y, pos.z);
 	    this.worldLights.push(directionalLight);
+	    this.worldLights.push(new _three2.default.DirectionalLightHelper(directionalLight, 5));
 	  },
 	  setDirectionalLight: function setDirectionalLight(light, newLight) {
 	    if (!newLight) return;
@@ -58785,6 +58771,24 @@
 	    pos.z += center.z;
 	    return pos;
 	  },
+	  getWorldLighting: function getWorldLighting() {
+	    return {
+	      background: {
+	        cssSkyGradient: 5 // 0 - 23 is valid
+	      },
+	      hemisphere: {
+	        sky: "#9be2fe",
+	        ground: "#FFFFFF",
+	        intensity: 0.1
+
+	      },
+	      directional: {
+	        color: "#FFFFFF",
+	        intensity: 0.3, //0.3
+	        position: { x: 15, y: 50, z: 30 }
+	      }
+	    };
+	  },
 	  getColorPallete: function getColorPallete() {
 	    return {
 	      color1: { hex: "#b5651d" }, //brown
@@ -58792,22 +58796,8 @@
 	      color3: { hex: "#062f4f" },
 	      color4: { hex: "#813772" },
 	      lampLight: { color: "#B82601", colorEmissive: "#B82601" }, //red //663399 purple
-	      text: { color: "#0090FF", color2: "#00cece" },
-	      world: {
-	        background: {
-	          cssSkyGradient: 5 // 0 - 23 is valid
-	        },
-	        hemisphere: {
-	          sky: "#9be2fe",
-	          ground: "#FFFFFF",
-	          intensity: 0.05
-	        },
-	        directional: {
-	          color: "#FFFFFF",
-	          intensity: 0.3, //0.3
-	          position: { x: 50, y: 50, z: 20 }
-	        }
-	      }
+	      text: { color: "#0090FF", color2: "#00cece" }
+
 	    };
 	  }
 	};
@@ -60137,28 +60127,7 @@
 	    this.addListeners();
 	    // this.loadEnvironmentMap();
 	    this.setRaycasterOptions();
-	    this.setSelectMesh();
-	  },
-	  addListeners: function addListeners() {
-	    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
-	    this.canvasEl.on("mousemove", this.throttledMouseMove);
-	    this.canvasEl.on("mouseleave", this.triggerHoverNav);
-	    this.canvasEl.on("mouseup", this.onMouseClick);
-	    this.canvasEl.on("mousedown", this.onMouseDown);
-
-	    _eventController2.default.on(_eventController2.default.ON_RESIZE, this.onResize, this);
-	    _eventController2.default.on(_eventController2.default.RESET_RAYCASTER, this.resetRaycaster, this);
-	    _eventController2.default.on(_eventController2.default.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
-	  },
-	  removeListeners: function removeListeners() {
-	    this.canvasEl.off("mousemove", this.throttledMouseMove);
-	    this.canvasEl.off("mouseleave", this.triggerHoverNav);
-	    this.canvasEl.off("mouseup", this.onMouseClick);
-	    this.canvasEl.off("mousedown", this.onMouseDown);
-
-	    _eventController2.default.off(_eventController2.default.ON_RESIZE, this.onResize, this);
-	    _eventController2.default.off(_eventController2.default.RESET_RAYCASTER, this.resetRaycaster, this);
-	    _eventController2.default.off(_eventController2.default.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
+	    this.addSelectMesh();
 	  },
 	  setRaycasterOptions: function setRaycasterOptions() {
 	    this.raycaster = new _three2.default.Raycaster();
@@ -60168,13 +60137,10 @@
 	  triggerHoverNav: function triggerHoverNav() {
 	    _eventController2.default.trigger(_eventController2.default.HOVER_NAVIGATION, null);
 	  },
-	  setSelectMesh: function setSelectMesh() {
-	    // var geo = new THREE.OctahedronGeometry(0.25, 0);
-	    // var material = new THREE.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
-	    // this.selectMesh = new THREE.Mesh( geo, material );
-	    var color = _utils2.default.getColorPallete().color2.hex;
-	    this.selectMesh = new _three2.default.PointLight(color, 5, 2, 2);
-	    this.selectMesh.position.y += 5;
+	  addSelectMesh: function addSelectMesh() {
+	    var geo = new _three2.default.OctahedronGeometry(0.25, 0);
+	    var material = new _three2.default.MeshBasicMaterial({ color: "#FF0000", wireframe: true });
+	    this.selectMesh = new _three2.default.Mesh(geo, material);
 	    _eventController2.default.trigger(_eventController2.default.ADD_MODEL_TO_SCENE, [this.selectMesh]);
 	  },
 	  onResize: function onResize(size) {
@@ -60272,10 +60238,12 @@
 	  },
 	  getMeshCenter: function getMeshCenter(selectedMesh) {
 	    var center = selectedMesh.geometry.boundingSphere.center;
+
+	    console.log("center", center);
 	    return {
 	      x: selectedMesh.position.x + center.x,
 	      y: selectedMesh.position.y + center.y,
-	      z: selectedMesh.position.z + center.z + 1
+	      z: selectedMesh.position.z + center.z + 0.5 // TODO: magic number should be move along angle to camera
 	    };
 	  },
 	  moveSceneDetailsIcon: function moveSceneDetailsIcon(selectedMesh) {
@@ -60290,7 +60258,33 @@
 	    }
 	    this.selectMesh.visible = true;
 
-	    var tween = new _tween2.default.Tween(this.selectMesh.position).to(this.getMeshCenter(selectedMesh), 500).easing(_tween2.default.Easing.Exponential.Out).start();
+	    var tweenMove = new _tween2.default.Tween(this.selectMesh.position).to(this.getMeshCenter(selectedMesh), 500).easing(_tween2.default.Easing.Exponential.Out).start();
+
+	    var tweenRotate = new _tween2.default.Tween(this.selectMesh.rotation).to({ x: "+6.28319", y: "+6.28319", z: "+6.28319" }, 750) //6.28319 = 260 degrees
+	    .easing(_tween2.default.Easing.Exponential.In)
+	    // .delay(250)
+	    .start();
+	  },
+	  addListeners: function addListeners() {
+	    this.throttledMouseMove = _.throttle(this.onMouseMove, 25);
+	    this.canvasEl.on("mousemove", this.throttledMouseMove);
+	    this.canvasEl.on("mouseleave", this.triggerHoverNav);
+	    this.canvasEl.on("mouseup", this.onMouseClick);
+	    this.canvasEl.on("mousedown", this.onMouseDown);
+
+	    _eventController2.default.on(_eventController2.default.ON_RESIZE, this.onResize, this);
+	    _eventController2.default.on(_eventController2.default.RESET_RAYCASTER, this.resetRaycaster, this);
+	    _eventController2.default.on(_eventController2.default.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
+	  },
+	  removeListeners: function removeListeners() {
+	    this.canvasEl.off("mousemove", this.throttledMouseMove);
+	    this.canvasEl.off("mouseleave", this.triggerHoverNav);
+	    this.canvasEl.off("mouseup", this.onMouseClick);
+	    this.canvasEl.off("mousedown", this.onMouseDown);
+
+	    _eventController2.default.off(_eventController2.default.ON_RESIZE, this.onResize, this);
+	    _eventController2.default.off(_eventController2.default.RESET_RAYCASTER, this.resetRaycaster, this);
+	    _eventController2.default.off(_eventController2.default.MOVE_SCENE_SELECTOR, this.moveSceneDetailsIcon, this);
 	  },
 	  render: function render() {
 	    return this;
@@ -61291,32 +61285,13 @@
 	var colorPallete = _utils2.default.getColorPallete();
 
 	module.exports = {
-	  woodBeamPrimary: {
-	    maps: [{ map: "textures/woodBare/woodBare_COLOR.jpg" }, { specularMap: "textures/woodBare/woodBare_SPEC.jpg" }, { normalMap: "textures/woodBare/woodBare_NRM.jpg" }],
-	    mapProps: { repeatScale: 10, shading: "flat" },
-	    props: { color: colorPallete.color1.hex }
+	  bannerLogo: {
+	    maps: [{ map: "textures/bannerLogoAlt.png" }],
+	    mapProps: { repeatScale: 1, shading: "smooth" },
+	    props: { transparent: false }
 	  },
-	  woodBeamSecondary: {
-	    maps: [{ map: "textures/woodBare/woodBare_COLOR.jpg" }, { specularMap: "textures/woodBare/woodBare_SPEC.jpg" }, { normalMap: "textures/woodBare/woodBare_NRM.jpg" }],
-	    mapProps: { repeatScale: 1, shading: "flat" },
-	    props: { color: colorPallete.color2.hex }
-	  },
-	  stucco: {
-	    maps: [{ map: "textures/stucco2/stucco_COLOR.jpg" }, { specularMap: "textures/stucco2/stucco_SPEC.jpg" }, { normalMap: "textures/stucco2/stucco_NRM.jpg" }],
-	    mapProps: { repeatScale: 20, shading: "flat" },
-	    props: { color: "#FFFFFF" }
-	  },
-	  woodBamboo: {
-	    maps: [{ map: "textures/woodBamboo/woodBamboo_COLOR.jpg" }, { specularMap: "textures/woodBamboo/woodBamboo_SPEC.jpg" }, { normalMap: "textures/woodBamboo/woodBamboo_NRM.jpg" }],
-	    mapProps: { repeatScale: 2, shading: "flat" },
-	    props: {
-	      color: colorPallete.color3.hex,
-	      shininess: 50
-	    }
-	  },
-	  windowJapan: {
-	    maps: [{ map: "textures//windowJapan/windowJapan_COLOR.jpg" }, { normalMap: "textures/windowJapan/windowJapan_NRM.jpg" }],
-	    mapProps: { repeatScale: 1, shading: "flat" }
+	  drywall: {
+	    props: { color: "#EAEAE2" }
 	  },
 	  lanternNew: {
 	    maps: [{ map: "textures/lantern4.png" }],
@@ -61328,7 +61303,7 @@
 	    }
 	  },
 	  lampLightEmit: {
-	    maps: [{ map: "textures/lanternRed.png" }],
+	    maps: [{ map: "textures/lanternRed_low.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "smooth" },
 	    props: {
 	      color: colorPallete.lampLight.color,
@@ -61337,22 +61312,17 @@
 	      emissiveIntensity: 0.2
 	    }
 	  },
-	  shutterJapan: {
-	    maps: [{
-	      map: "textures/japanShutter/japanShutter_COLOR.jpg",
-	      normalMap: "textures/japanShutter/japanShutter_NRM.jpg"
-	    }],
-	    mapProps: { repeatScale: 1, shading: "flat" }
-	  },
-	  woodFloor: {
-	    maps: [{ map: "textures/woodFloor2/woodFloor_COLOR.jpg" }, { normalMap: "textures/woodFloor2/woodFloor_NRM.jpg" }, { specularMap: "textures/woodFloor2/woodFloor_SPEC.jpg" }],
+	  gradient: {
+	    maps: [{ map: "textures/gradient.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "flat" },
-	    props: { shininess: 10 }
-	  },
-	  bannerLogo: {
-	    maps: [{ map: "textures/bannerLogoAlt.png" }],
-	    mapProps: { repeatScale: 1, shading: "smooth" },
 	    props: { transparent: false }
+	  },
+	  overheadLight: {
+	    props: {
+	      color: "#FFFFFF",
+	      emisssive: "#FFFFFF",
+	      shadingType: "MeshBasicMaterial"
+	    }
 	  },
 	  plasticBlack: {
 	    props: {
@@ -61362,21 +61332,46 @@
 	  plasticRed: {
 	    props: { color: "#FF0000" }
 	  },
-	  drywall: {
-	    props: { color: "#EAEAE2" }
+	  shutterJapan: {
+	    maps: [{
+	      map: "textures/japanShutter/japanShutter_COLOR.jpg",
+	      normalMap: "textures/japanShutter/japanShutter_NRM.jpg"
+	    }],
+	    mapProps: { repeatScale: 1, shading: "flat" }
 	  },
-	  overheadLight: {
+	  stucco: {
+	    maps: [{ map: "textures/stucco2/stucco_COLOR_low.jpg" }, { specularMap: "textures/stucco2/stucco_SPEC_low.jpg" }, { normalMap: "textures/stucco2/stucco_NRM_low.jpg" }],
+	    mapProps: { repeatScale: 20, shading: "flat" },
+	    props: { color: "#FFFFFF" }
+	  },
+	  windowJapan: {
+	    maps: [{ map: "textures//windowJapan/windowJapan_COLOR_low.jpg" }, { normalMap: "textures/windowJapan/windowJapan_NRM_low.jpg" }],
+	    mapProps: { repeatScale: 1, shading: "flat" }
+	  },
+	  woodFloor: {
+	    maps: [{ map: "textures/woodFloor2/woodFloor_COLOR_low.jpg" }, { normalMap: "textures/woodFloor2/woodFloor_NRM_low.jpg" }, { specularMap: "textures/woodFloor2/woodFloor_SPEC_low.jpg" }],
+	    mapProps: { repeatScale: 1, shading: "flat" },
+	    props: { shininess: 10 }
+	  },
+	  woodBamboo: {
+	    maps: [{ map: "textures/woodBamboo/woodBamboo_COLOR_low.jpg" }, { normalMap: "textures/woodBamboo/woodBamboo_NRM_low.jpg" }],
+	    mapProps: { repeatScale: 2, shading: "flat" },
 	    props: {
-	      color: "#FFFFFF",
-	      emisssive: "#FFFFFF",
-	      shadingType: "MeshBasicMaterial"
+	      // color: colorPallete.color3.hex,
+	      shininess: 95
 	    }
 	  },
-	  gradient: {
-	    maps: [{ map: "textures/gradient.jpg" }],
+	  woodBeamPrimary: {
+	    maps: [{ map: "textures/woodBare/woodBare_COLOR_low.jpg" }, { normalMap: "textures/woodBare/woodBare_NRM_low.jpg" }],
+	    mapProps: { repeatScale: 10, shading: "flat" },
+	    props: { color: colorPallete.color1.hex }
+	  },
+	  woodBeamSecondary: {
+	    maps: [{ map: "textures/woodBare/woodBare_COLOR_low.jpg" }, { normalMap: "textures/woodBare/woodBare_NRM_low.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "flat" },
-	    props: { transparent: false }
+	    props: { color: colorPallete.color2.hex }
 	  }
+
 	};
 
 /***/ },
@@ -61412,8 +61407,10 @@
 	    maps: [{ map: "textures/moon256x128.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "smooth", shininess: 15 },
 	    props: {
-	      shadingType: "MeshBasicMaterial",
-	      color: colorPallete.color2.hex
+	      // shadingType: "MeshBasicMaterial",
+	      // color: colorPallete.color2.hex,
+	      emissive: colorPallete.lampLight.colorEmissive,
+	      emissiveIntensity: 0.75
 	    }
 	  }
 	};
@@ -61439,9 +61436,7 @@
 	  cityNight: {
 	    maps: [{ map: basePath + "cityNightAlt2.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "flat" },
-	    props: {
-	      shadingType: "MeshBasicMaterial"
-	    }
+	    props: { shadingType: "MeshBasicMaterial" }
 	  },
 	  coinSlot: {
 	    maps: [{ map: basePath + "videoGameCabinet/coinSlot.png" }],
@@ -61451,18 +61446,14 @@
 	    maps: [{ map: basePath + "computer/computer.jpg" }],
 	    mapProps: { repeatScale: 1, shading: "flat" }
 	  },
-	  // computerScreen1: {
-	  //     maps: [
-	  //       { map: "textures/computerScreen.jpg" },
-	  //     ],
-	  //     mapProps: { repeatScale: 1, shading: "flat" },
-	  // },
-	  // computerScreen2: {
-	  //     maps: [
-	  //       { map: "textures/computerScreen.jpg" },
-	  //     ],
-	  //     mapProps: { repeatScale: 1, shading: "flat" },
-	  // },
+	  computerScreen1: {
+	    maps: [{ map: basePath + "computerScreen1.jpg" }],
+	    mapProps: { repeatScale: 1, shading: "flat" }
+	  },
+	  computerScreen2: {
+	    maps: [{ map: basePath + "computerScreen2.jpg" }],
+	    mapProps: { repeatScale: 1, shading: "flat" }
+	  },
 	  keyboard: {
 	    maps: [{ map: basePath + "computer/keyboard_COLOR.jpg" },
 	    // { specularMap: "textures/computer/keyboard_SPEC.jpg" },
@@ -61482,9 +61473,9 @@
 	    mapProps: { repeatScale: 1, shading: "smooth" }
 	  },
 	  blackGlass: {
-	    maps: [{ envMap: "webDev" }],
+	    // maps: [{ envMap: "webDev" } ],
 	    mapProps: { repeatScale: 1, shading: "flat" },
-	    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.5, opacity: 0.5 }
+	    props: { color: "#FFFFFF", transparent: true, alwaysTransparent: true, opacityMax: 0.5, opacity: 0.1 }
 	  },
 	  fern: {
 	    maps: [{ map: basePath + "fern.png" }],
@@ -61500,7 +61491,7 @@
 	    props: { shadingType: "MeshBasicMaterial" }
 	  },
 	  rugPersianHalf: {
-	    maps: [{ map: basePath + "rugPersianHalf.png" }],
+	    maps: [{ map: basePath + "rugPersianHalf_low.png" }],
 	    mapProps: { repeatScale: 1, shading: "flat" },
 	    props: { transparent: true, alwaysTransparent: true }
 	  },
@@ -62344,7 +62335,7 @@
 	  setClickData: function setClickData(obj3d) {
 	    switch (obj3d.name) {
 	      case "videoGameCabinet":
-	        obj3d.clickData = { action: "link", url: "dolphinsVSharks.html" };
+	        obj3d.clickData = { action: "link", url: "other/dvs/index.html" };
 	        break;
 	      case "computerMonitor":
 	        obj3d.clickData = { action: "link", url: "computerMonitor.html" };
@@ -63003,7 +62994,9 @@
 	        _eventController2.default.trigger(_eventController2.default.OPEN_PHOTO_SWIPE, [{ src: "./other/Resume-RichardvonBuelowDec2016-1.png", w: 1700, h: 2200 }, { src: "./other/Resume-RichardvonBuelowDec2016-2.png", w: 1700, h: 2200 }], intersectObject.object.clickData.imageNum);
 	        break;
 	      case "link":
-	        window.open("http://" + intersectObject.object.clickData.url);
+	        var address = window.location.origin + "/" + intersectObject.object.clickData.url;
+	        console.log('Address:  ', address);
+	        window.open(address);
 	        break;
 	      default:
 	        console.log("action", action);
@@ -63162,28 +63155,30 @@
 	    if (sceneModel) {
 	      var sceneDetailsModel = sceneModel.get("sceneDetails");
 	      var sdObject = next ? sceneDetailsModel.selectNextObject() : sceneDetailsModel.selectPrevObject();
+
 	      _eventController2.default.trigger(_eventController2.default.MOVE_SCENE_SELECTOR, sdObject);
 	    } else {
-	      var newHoverModel = this.getNextSceneModel(next);
-	      this.setHoverSceneModel(newHoverModel, true);
+	      console.log("asjkdhfkajsdf:", this.getNextSceneModel(next));
+	      this.setHoverSceneModel(this.getNextSceneModel(next), true);
 	    }
 	  },
 	  getNextSceneModel: function getNextSceneModel(nextOrPrev) {
+	    // true or false
 	    var hoverModel = this.sceneModelCollection.findWhere({ hover: true });
 	    var numFloor = this.sceneModelCollection.where({ interactive: true }).length;
 	    var newFloorIndex;
+	    var floorIndex = hoverModel ? hoverModel.get("floorIndex") : 0;
 
-	    if (hoverModel) {
-	      var floorIndex = hoverModel.get("floorIndex");
-	      if (nextOrPrev) {
-	        if (floorIndex > 0) return this.sceneModelCollection.findWhere({ floorIndex: floorIndex - 1 });
-	      } else {
-	        newFloorIndex = floorIndex < numFloor - 1 ? floorIndex + 1 : 0;
-	        return this.sceneModelCollection.findWhere({ floorIndex: newFloorIndex });
-	      }
+	    if (hoverModel) return this.sceneModelCollection.findWhere({ floorIndex: numFloor - 1 });
+
+	    if (nextOrPrev) {}
+
+	    if (nextOrPrev) {
+	      if (floorIndex > 0) return this.sceneModelCollection.findWhere({ floorIndex: floorIndex - 1 });
+	    } else {
+	      newFloorIndex = floorIndex < numFloor - 1 ? floorIndex + 1 : 0;
+	      return this.sceneModelCollection.findWhere({ floorIndex: newFloorIndex });
 	    }
-
-	    return this.sceneModelCollection.findWhere({ floorIndex: numFloor - 1 });;
 	  },
 	  sceneModelReady: function sceneModelReady(sceneModel) {
 	    var isCameraAnimating = commandController.request(commandController.IS_CAMERA_ANIMATING);
@@ -63202,13 +63197,13 @@
 	    var self = this;
 	    var isSameModel = selectedSceneModel && selectedSceneModel.cid === sceneModel.cid;
 	    var sceneDetails = sceneModel.get("sceneDetails");
+	    var timeOpenDoors;
 
 	    if (isSameModel) {
 	      sceneDetails.showHide(true);
 	      this.resetSceneDetails(sceneModel, false, false, true);
 	    }
 
-	    var timeOpenDoors;
 	    setTimeout(function () {
 	      timeOpenDoors = sceneModel.openDoors(true);
 	      setTimeout(function () {
@@ -63285,9 +63280,6 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	// import TWEEN from "tween.js";
-	// import THREE from "three";
-
 	var animationSpeed = _utils2.default.getAnimationSpeed().speed;
 
 	var SceneDetailControlsView = _BaseView2.default.extend({
@@ -63295,7 +63287,6 @@
 	  visible: false,
 	  events: {
 	    "click .button-left": "prevInteractiveObject",
-	    "click .button-home": "resetSceneDetails",
 	    "click .button-right": "nextInteractiveObject",
 
 	    "click .button-pause": "clickPause",
@@ -63520,7 +63511,7 @@
 /* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
 	var _eventController = __webpack_require__(27);
 
@@ -63534,95 +63525,35 @@
 
 	var _navigationList2 = _interopRequireDefault(_navigationList);
 
-	var _utils = __webpack_require__(42);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _circularMenu = __webpack_require__(85);
-
-	var _circularMenu2 = _interopRequireDefault(_circularMenu);
-
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var HomeButtonView = _BaseView2.default.extend({
+	// import utils from "../../util/utils";
+
+	var NavigationBarView3d = _BaseView2.default.extend({
 	  className: "home-button-container",
-	  LEAVE_TIMER: 1500,
+	  template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
 	  events: {
 	    "dblclick": "resetSceneDetails",
-	    "click .button-toggle-menu": "toggleMenu",
-	    "click .button-toggle-menu.open": "resetSceneDetails",
 	    "mouseenter ul>li": "enterMenuItem",
-	    "mouseleave ul>li": "startLeaveTimer",
-	    "click #menu1": "closeMenu",
-	    "click ul>li>a": "clickme"
+	    "mouseleave ul>li": "leaveMenuItem",
+	    "click ul>li": "clickme"
 	  },
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	  },
-	  addListeners: function addListeners() {
-	    // this.delegateEvents();
-	  },
-	  removeListeners: function removeListeners() {
-	    // this.undelegateEvents();
-	  },
-	  startLeaveTimer: function startLeaveTimer() {
-	    var self = this;
-
-	    this.leaveTimer = setTimeout(function () {
-	      self.closeMenu();
-	    }, this.LEAVE_TIMER);
-
-	    this.leaveHoverNavigationLi();
-	  },
 	  enterMenuItem: function enterMenuItem(evt) {
-	    this.cancelLeaveTimer();
-	    var index = $(evt.currentTarget).index();
-	    this.enterHoverNavigationLi(index);
+	    this.enterHoverNavigationLi($(evt.currentTarget).index());
 	  },
-	  cancelLeaveTimer: function cancelLeaveTimer() {
-	    if (this.leaveTimer) {
-	      clearTimeout(this.leaveTimer);
-	      this.leaveTimer = null;
-	    }
+	  leaveMenuItem: function leaveMenuItem(evt) {
+	    this.leaveHoverNavigationLi($(evt.currentTarget).index());
 	  },
 	  clickme: function clickme(evt) {
-	    var clickedIndex = $(evt.currentTarget).closest("li").index();
-	    var navList = _navigationList2.default[clickedIndex];
-	    this.toggleMenu(false);
-
-	    if (navList) {
-	      _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, clickedIndex);
-	    } else {
-	      this.resetSceneDetails();
-	    }
-	  },
-	  closeMenu: function closeMenu() {
-	    this.toggleMenu(false);
-	    this.cancelLeaveTimer();
+	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, $(evt.currentTarget).closest("li").index());
 	  },
 	  resetSceneDetails: function resetSceneDetails() {
 	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE);
-	  },
-	  getMenuItems: function getMenuItems() {
-	    var self = this;
-	    var menuItems = _navigationList2.default.map(function (name, i) {
-	      return {
-	        icon: "css-icons" + i
-	      };
-	    });
-	    // menuItems.push( { icon: "button-home" });
-	    return menuItems;
-	  },
-	  getMenuPosition: function getMenuPosition() {
-	    this.buttonToggleCloseEl = this.$el.find(".button-toggle-menu");
-	    var position = this.buttonToggleCloseEl.offset();
-	    var width = this.buttonToggleCloseEl.width() / 2;
-	    return {
-	      left: position.left + this.buttonToggleCloseEl.width() / 2,
-	      top: position.top + this.buttonToggleCloseEl.height() / 2 - 35 //magic number
-	    };
 	  },
 	  enterHoverNavigationLi: function enterHoverNavigationLi(index) {
 	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[index], true);
@@ -63630,718 +63561,25 @@
 	  leaveHoverNavigationLi: function leaveHoverNavigationLi() {
 	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR);
 	  },
-	  // nearestPowerOfTwo: function ( value ) {
-	  //    return Math.pow( 2, Math.round( Math.log( value ) / Math.LN2 ) );
-	  // },
-	  getCircularMenu: function getCircularMenu(diameter) {
-	    this.menu = (0, _circularMenu2.default)("#menu1").config({
-	      // background: "rgba(0,0,0,0)",
-	      background: "#000000",
-	      backgroundHover: "#B82601",
-	      totalAngle: 180,
-	      position: "top",
-	      hideAfterClick: false,
-	      diameter: diameter,
-	      menus: this.getMenuItems()
-	    });
+	  getMenuItems: function getMenuItems() {
+	    var html = "<ul>";
 
-	    this.menu.styles({ "border-top": "5px solid #ccc" });
-	  },
-	  isMenuVisible: function isMenuVisible() {
-	    return this.menu.open;
-	  },
-	  showMenu: function showMenu() {
-	    var menuPosition = this.getMenuPosition();
-	    this.menu.show([menuPosition.left, menuPosition.top]);
-	    this.buttonToggleCloseEl.addClass("open");
-	    this.menu.open = true;
-	  },
-	  hideMenu: function hideMenu() {
-	    this.menu.hide();
-	    this.menu.open = false;
-	    this.buttonToggleCloseEl.removeClass("open");
-	    this.leaveHoverNavigationLi();
-	  },
-	  toggleMenu: function toggleMenu(hideBool) {
-	    this.shouldCreateMenu();
+	    _.each(_navigationList2.default, function (navItem, i) {
+	      html += this.template({ displayTitle: navItem.name.toUpperCase(), i: i });
+	    }, this);
 
-	    if (this.isMenuVisible() || hideBool === false) {
-	      this.hideMenu();
-	    } else {
-	      this.showMenu();
-	    }
-	    this.cancelLeaveTimer();
-	  },
-	  shouldCreateMenu: function shouldCreateMenu() {
-	    if (!this.menu) {
-	      var windowWidth = $(window).width();
-	      var diameter = windowWidth < 400 ? windowWidth : 400;
-	      diameter = Math.max(diameter, 200);
-	      this.getCircularMenu(diameter);
-	      this.showMenu();
-	      this.menu.open = false;
-	    }
+	    return html + "</ul>";
 	  },
 	  render: function render() {
-	    this.$el.append("<div class='button-toggle-menu' title='Toggle Navigation Menu'></div>");
-	    this.$el.append("<div id='menu1'></div>");
+	    this.$el.append(this.getMenuItems());
 	    return this;
 	  }
 	});
-	// import CMenu from "circular-menu";
-
-	module.exports = HomeButtonView;
+	module.exports = NavigationBarView3d;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
 /* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-	    return typeof obj;
-	} : function (obj) {
-	    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-	};
-
-	//circular-menu
-	(function (global, factory) {
-	    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : global.CMenu = factory();
-	})(undefined, function () {
-	    'use strict';
-
-	    function rotateDeg(i) {
-	        return this.startDeg + this.rotateUnit * i;
-	    }
-
-	    function rotateDeg$1(i) {
-	        return -(this.rotateDeg(i) + this.unskewDeg);
-	    }
-
-	    function startDeg(config) {
-	        var top = -(config.totalAngle - 180) / 2,
-	            positions = {
-	            top: top,
-	            left: top - 90,
-	            right: top + 90,
-	            bottom: top + 180
-	        };
-
-	        return config.start !== undefined ? config.start : positions[config.position];
-	    }
-
-	    var antialiasing = 3;
-
-	    function coverRadius(radius, percent) {
-	        var square = radius * radius * 2;
-	        return Math.sqrt(square) * percent + antialiasing;
-	    }
-
-	    function coverSize(coverRadius) {
-	        var l = coverRadius * 2;
-	        var m = -l / 2;
-
-	        l += "px";
-	        m += "px";
-
-	        return {
-	            width: l,
-	            height: l,
-	            marginLeft: m,
-	            marginTop: m
-	        };
-	    }
-
-	    function menuSize(config) {
-	        var l = config.diameter;
-	        var m = -config.diameter / 2;
-
-	        l += "px";
-	        m += "px";
-
-	        return {
-	            width: l,
-	            height: l,
-	            marginLeft: m,
-	            marginTop: m
-	        };
-	    }
-
-	    var fixedTop = 10;
-
-	    function clickZoneSize(config) {
-	        var l = config.diameter;
-	        var m = -config.diameter / 2;
-
-	        l += "px";
-	        m += "px";
-
-	        return {
-	            width: l,
-	            height: l,
-	            marginRight: m,
-	            marginBottom: m
-	        };
-	    }
-
-	    function listSize(config) {
-	        var l = config.diameter / 2 + 'px';
-
-	        return {
-	            width: l,
-	            height: l
-	        };
-	    }
-
-	    var middleRatio = 0.41;
-
-	    function textTop(clickZoneRadius) {
-	        return clickZoneRadius * middleRatio - fixedTop + 'px';
-	    }
-
-	    function Calculation(config) {
-	        this._config = config;
-
-	        var c = this.config = config,
-	            itemsNum = c.menus.length,
-	            spaceNumber = c.totalAngle === 360 ? itemsNum : itemsNum - 1;
-
-	        this.radius = config.diameter / 2;
-	        this.coverRadius = coverRadius(this.radius, config.percent);
-	        this.clickZoneRadius = this.radius - this.coverRadius;
-
-	        this.listSize = listSize(config);
-	        this.clickZoneSize = clickZoneSize(config);
-	        this.menuSize = menuSize(config);
-	        this.coverSize = coverSize(this.coverRadius);
-	        this.startDeg = startDeg(config);
-	        this.centralDeg = (c.totalAngle - c.spaceDeg * spaceNumber) / itemsNum;
-	        this.rotateUnit = this.centralDeg + c.spaceDeg;
-	        this.skewDeg = 90 - this.centralDeg;
-	        this.unskewDeg = -(90 - this.centralDeg / 2);
-	        this.textTop = textTop(this.clickZoneRadius);
-	    }
-
-	    Calculation.prototype = {
-	        constructor: Calculation,
-	        rotateDeg: rotateDeg,
-	        horizontalDeg: rotateDeg$1
-	    };
-
-	    function createLists(parent) {
-
-	        this._config.menus.forEach(function (v, k) {
-
-	            this._createList(parent, v, k);
-	        }, this);
-	    }
-
-	    function defaultView(node) {
-	        return node.ownerDocument && node.ownerDocument.defaultView || // node is a Node
-	        node.document && node // node is a Window
-	        || node.defaultView; // node is a Document
-	    }
-
-	    function styleRemove(name) {
-	        this.style.removeProperty(name);
-	    }
-
-	    function styleConstant(name, value, priority) {
-	        this.style.setProperty(name, value, priority);
-	    }
-
-	    function styleFunction(name, value, priority) {
-	        var v = value.apply(this, arguments);
-	        if (v == null) this.style.removeProperty(name);else this.style.setProperty(name, v, priority);
-	    }
-
-	    function style(ele, name, value, priority) {
-
-	        var node;
-	        return arguments.length > 1 ? (value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant).call(ele, name, value, priority == null ? "" : priority) : defaultView(node = ele).getComputedStyle(node, null).getPropertyValue(name);
-	    }
-
-	    function createList(parent, data, index) {
-
-	        var list = document.createElement('li');
-	        style(list, 'width', this._calc.listSize.width);
-	        style(list, 'height', this._calc.listSize.height);
-	        style(list, 'transform', 'rotate(' + this._calc.rotateDeg(index) + 'deg) skew(' + this._calc.skewDeg + 'deg)');
-
-	        parent.appendChild(list);
-
-	        this._createAnchor(list, data, index);
-	    }
-
-	    function classArray(string) {
-	        return string.trim().split(/^|\s+/);
-	    }
-
-	    function classList(node) {
-	        return node.classList || new ClassList(node);
-	    }
-
-	    function ClassList(node) {
-	        this._node = node;
-	        this._names = classArray(node.getAttribute("class") || "");
-	    }
-
-	    ClassList.prototype = {
-	        add: function add(name) {
-	            var i = this._names.indexOf(name);
-	            if (i < 0) {
-	                this._names.push(name);
-	                this._node.setAttribute("class", this._names.join(" "));
-	            }
-	        },
-	        remove: function remove(name) {
-	            var i = this._names.indexOf(name);
-	            if (i >= 0) {
-	                this._names.splice(i, 1);
-	                this._node.setAttribute("class", this._names.join(" "));
-	            }
-	        },
-	        contains: function contains(name) {
-	            return this._names.indexOf(name) >= 0;
-	        }
-	    };
-
-	    function classedAdd(node, names) {
-	        var list = classList(node),
-	            i = -1,
-	            n = names.length;
-	        while (++i < n) {
-	            list.add(names[i]);
-	        }
-	    }
-
-	    function classedRemove(node, names) {
-	        var list = classList(node),
-	            i = -1,
-	            n = names.length;
-	        while (++i < n) {
-	            list.remove(names[i]);
-	        }
-	    }
-
-	    function classedTrue(names) {
-	        classedAdd(this, names);
-	    }
-
-	    function classedFalse(names) {
-	        classedRemove(this, names);
-	    }
-
-	    function classedFunction(names, value) {
-	        (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
-	    }
-
-	    function classed(ele, name, value) {
-	        var names = classArray(name + "");
-
-	        if (arguments.length < 2) {
-	            var list = classList(this),
-	                i = -1,
-	                n = names.length;
-	            while (++i < n) {
-	                if (!list.contains(names[i])) return false;
-	            }return true;
-	        }
-
-	        var callee = (typeof value === "function" ? classedFunction : value ? classedTrue : classedFalse).call(ele, names, value);
-	    }
-
-	    var UID = {
-	        _current: 0,
-	        getNew: function getNew() {
-	            this._current++;
-	            return this._current;
-	        }
-	    };
-	    function styleSheet(element, prop, value, pseudo) {
-
-	        var _this = element;
-	        var _sheetId = "sheetStyles";
-	        var _head = document.head || document.getElementsByTagName('head')[0];
-	        var _sheet = document.getElementById(_sheetId) || document.createElement('style');
-	        _sheet.id = _sheetId;
-	        var className = "s-S" + UID.getNew();
-
-	        _this.className += " " + className;
-
-	        _sheet.innerHTML += " ." + className + (pseudo ? ":" + pseudo : "") + "{" + prop + ":" + value + "}";
-	        _head.appendChild(_sheet);
-	        return this;
-	    };
-
-	    function on(ele, type, callback, data) {
-	        ele.addEventListener(type, function (e) {
-	            callback.call(this, e, data);
-	        });
-	    }
-
-	    function createMenu() {
-	        var p = this._container;
-
-	        classed(p, 'circular-menu', true);
-	        style(p, 'width', this._calc.menuSize.width);
-	        style(p, 'height', this._calc.menuSize.height);
-	        style(p, 'margin-top', this._calc.menuSize.marginTop);
-	        style(p, 'margin-left', this._calc.menuSize.marginLeft);
-
-	        var self = this;
-	        on(p, "click", function (e) {
-	            if (e.toElement === p) {
-	                self._cMenu.hide();
-	            }
-	        });
-	        setTimeout(function () {
-	            style(p, 'display', 'block');
-	        }, 100);
-
-	        styleSheet(p, 'width', this._calc.coverSize.width, 'after');
-	        styleSheet(p, 'height', this._calc.coverSize.height, 'after');
-	        styleSheet(p, 'margin-left', this._calc.coverSize.marginLeft, 'after');
-	        styleSheet(p, 'margin-top', this._calc.coverSize.marginTop, 'after');
-	        styleSheet(p, 'border', "3px solid " + this._config.pageBackground, 'after');
-
-	        var ul = p.appendChild(document.createElement('ul'));
-	        this._createLists(ul);
-	    }
-
-	    function hasSubMenus(menus) {
-	        return menus instanceof Array && menus.length !== 0;
-	    }
-	    function ifDisabled(disabled) {
-	        if (disabled instanceof Function) return disabled();else return Boolean(disabled);
-	    }
-
-	    function setHref(ele, href) {
-	        if (!href) return;
-
-	        if (href instanceof Object) {
-	            ele.href = href.url;
-	            ele.target = href.blank ? "_blank" : "";
-	        } else {
-	            ele.href = href;
-	        }
-	    }
-
-	    var delayShow = null; // delayShow reference the last setTimeout triggered by any one of menu item(anchor)
-
-	    function createAnchor(parent, data, index) {
-	        var self = this;
-
-	        var delayHide = null; // delayHide reference the last setTimeout triggered by the menu item itself
-
-	        var a = document.createElement('a');
-
-	        setHref(a, data.href);
-
-	        a.setDisabled = function () {
-	            classed(a, 'disabled', ifDisabled(data.disabled));
-	        };
-	        this._anchors.push(a);
-
-	        style(a, 'width', this._calc.clickZoneSize.width);
-	        style(a, 'height', this._calc.clickZoneSize.height);
-	        style(a, 'right', this._calc.clickZoneSize.marginRight);
-	        style(a, 'bottom', this._calc.clickZoneSize.marginBottom);
-	        style(a, 'transform', 'skew(' + -this._calc.skewDeg + 'deg) rotate(' + this._calc.unskewDeg + 'deg) scale(1)');
-
-	        classed(a, 'disabled', ifDisabled(data.disabled));
-
-	        var percent = this._config.percent * 100 + "%";
-	        styleSheet(a, 'background', 'radial-gradient(transparent ' + percent + ', ' + this._config.background + ' ' + percent + ')');
-	        styleSheet(a, 'background', 'radial-gradient(transparent ' + percent + ', ' + this._config.backgroundHover + ' ' + percent + ')', 'hover');
-
-	        function clickCallBack(e, data) {
-	            if (data.click) data.click.call(this, e, data);
-
-	            if (self._config.hideAfterClick) {
-	                self._cMenu.hide();
-	                if (self._cMenu._pMenu) self._cMenu._pMenu.hide();
-	                if (subMenu) subMenu.hide();
-	            }
-	        }
-
-	        on(a, 'click', clickCallBack, data);
-
-	        parent.appendChild(a);
-
-	        this._createHorizontal(a, data, index);
-
-	        //toggle subMenu
-	        if (hasSubMenus(data.menus)) {
-	            var subMenu = this._createSubMenu(self, data.menus, index);
-
-	            on(a, 'mouseenter', function () {
-	                delayShow = setTimeout(function () {
-	                    subMenu.styles({
-	                        top: self._container.offsetTop + self._calc.radius + 'px',
-	                        left: self._container.offsetLeft + self._calc.radius + 'px'
-	                    }).show();
-	                }, 150);
-	            });
-
-	            on(a, 'mouseleave', function (e) {
-	                if (!subMenu._container.contains(e.toElement)) {
-	                    delayHide = setTimeout(function () {
-	                        subMenu.hide();
-	                    }, 200);
-	                }
-	            });
-
-	            on(subMenu._container, 'mouseenter', function () {
-	                clearTimeout(delayShow);
-	                clearTimeout(delayHide);
-	            });
-
-	            on(subMenu._container, 'mouseleave', function (e) {
-	                if (!a.contains(e.toElement) || e.toElement.children[0] === a) {
-	                    subMenu.hide();
-	                }
-	            });
-	        }
-	    }
-
-	    var sizeRatio = 0.65;
-	    var marginTopRatio = 0.2;
-	    var fontHeight = 13;
-
-	    function hasIcon(icon) {
-	        if (icon === undefined) return false;else if (typeof icon === "string") return icon !== "";else return icon.length && icon[0] !== "";
-	    }
-
-	    function getIcon(icon) {
-	        return typeof icon === "string" ? icon : icon[0];
-	    }
-
-	    function getIconColor(icon) {
-	        return typeof icon === "string" ? null : icon[1];
-	    }
-
-	    function createIcon(parent, data, index) {
-	        if (!hasIcon(data.icon)) return;
-
-	        var span = document.createElement('span');
-
-	        var icon = getIcon(data.icon),
-	            color = getIconColor(data.icon);
-
-	        classed(span, icon + " cm-icon", true);
-	        style(span, 'color', color);
-
-	        var l = this._calc.clickZoneRadius * sizeRatio - fontHeight + "px",
-	            m = this._calc.clickZoneRadius * marginTopRatio - fontHeight + "px";
-	        style(span, 'width', l);
-	        style(span, 'height', l);
-	        style(span, 'font-size', l);
-	        style(span, 'margin-top', m);
-
-	        parent.appendChild(span);
-	    }
-
-	    var withIconMarginTop = "3px";
-	    var withIconTop = "-3px";
-
-	    function createText(parent, data, index) {
-
-	        var span = document.createElement('span');
-	        span.textContent = data.title;
-
-	        classed(span, 'text', true);
-	        style(span, 'margin-top', hasIcon(data.icon) ? withIconMarginTop : this._calc.textTop);
-	        style(span, 'top', hasIcon(data.icon) ? withIconTop : 0);
-
-	        parent.appendChild(span);
-	    }
-
-	    function createHorizontal(parent, data, index) {
-
-	        var div = document.createElement('div');
-	        classed(div, "horizontal", true);
-
-	        if (this._config.horizontal) style(div, 'transform', 'rotate(' + this._calc.horizontalDeg(index) + 'deg)');
-
-	        parent.appendChild(div);
-
-	        this._createIcon(div, data, index);
-	        this._createText(div, data, index);
-	    }
-
-	    function extend$1() {
-	        // Variables
-	        var extended = {};
-	        var deep = false;
-	        var i = 0;
-	        var length = arguments.length;
-
-	        // Check if a deep merge
-	        if (Object.prototype.toString.call(arguments[0]) === '[object Boolean]') {
-	            deep = arguments[0];
-	            i++;
-	        }
-
-	        // Merge the object into the extended object
-	        var merge = function merge(obj) {
-	            for (var prop in obj) {
-	                if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-	                    // If deep merge and property is an object, merge properties
-	                    if (deep && Object.prototype.toString.call(obj[prop]) === '[object Object]') {
-	                        extended[prop] = extend(true, extended[prop], obj[prop]);
-	                    } else {
-	                        extended[prop] = obj[prop];
-	                    }
-	                }
-	            }
-	        };
-
-	        // Loop through each object and conduct a merge
-	        for (; i < length; i++) {
-	            var obj = arguments[i];
-	            merge(obj);
-	        }
-
-	        return extended;
-	    };
-
-	    var sizeRatio$1 = 5 / 3;
-	    var percentRatio = 0.45;
-	    var centralDegRatio = 0.618;
-
-	    function createSubMenu(creator, menus, index) {
-	        var subMenu = document.createElement('div');
-
-	        classed(subMenu, 'circular-sub-menu', true);
-
-	        this._container.parentNode.insertBefore(subMenu, this._container);
-
-	        var totalAngle = this._calc.centralDeg * centralDegRatio * menus.length;
-	        var startDeg = this._calc.rotateDeg(index) - totalAngle / 2 + this._calc.centralDeg / 2;
-
-	        var config = extend$1(this._config, {
-	            totalAngle: totalAngle, //deg,
-	            percent: percentRatio, //%
-	            diameter: this._config.diameter * sizeRatio$1, //px
-	            start: startDeg, //deg
-	            animation: "into",
-	            menus: menus
-	        });
-
-	        return new CMenu(subMenu, creator._cMenu).config(config);
-	    }
-
-	    function Creator(cMenu, config) {
-	        this._cMenu = cMenu;
-	        this._container = cMenu._container;
-	        this._config = config;
-	        this._calc = new Calculation(config);
-	        this._anchors = [];
-	    }
-
-	    Creator.prototype = {
-	        constructor: Creator,
-	        createMenu: createMenu,
-	        _createLists: createLists,
-	        _createList: createList,
-	        _createAnchor: createAnchor,
-	        _createText: createText,
-	        _createHorizontal: createHorizontal,
-	        _createIcon: createIcon,
-	        _createSubMenu: createSubMenu
-	    };
-
-	    var defaultConfig = {
-	        totalAngle: 360, //deg,
-	        spaceDeg: 0, //deg
-	        background: "#323232",
-	        backgroundHover: "#515151",
-	        pageBackground: "transparent",
-	        percent: 0.32, //%
-	        diameter: 300, //px
-	        position: 'top',
-	        horizontal: true,
-	        animation: "into",
-	        hideAfterClick: true
-	    };
-
-	    function config(config) {
-
-	        config = extend$1(defaultConfig, config);
-
-	        this._creator = new Creator(this, config);
-	        this._creator.createMenu();
-
-	        return this;
-	    }
-
-	    function setCoordinate(coordinate) {
-	        if (!(coordinate instanceof Array) || !(coordinate.length === 2)) return;
-
-	        //TODO verify if has unit
-	        style(this._container, 'left', coordinate[0] + "px");
-	        style(this._container, 'top', coordinate[1] + "px");
-	    }
-
-	    //check disabled
-
-	    function setDisabled() {
-	        this._creator._anchors.forEach(function (v) {
-	            v.setDisabled();
-	        });
-	    }
-
-	    function show(coordinate) {
-
-	        setDisabled.call(this);
-
-	        setCoordinate.call(this, coordinate);
-
-	        classed(this._container, 'opened-nav', true);
-	        return this;
-	    }
-
-	    function hide() {
-	        classed(this._container, 'opened-nav', false);
-	        return this;
-	    }
-
-	    function styles(styles) {
-	        if (!styles instanceof Object) return this;
-
-	        for (var k in styles) {
-	            if (styles.hasOwnProperty(k)) style(this._container, k, styles[k]);
-	        }
-
-	        return this;
-	    }
-
-	    function CMenu(element, pMenu) {
-	        this._container = element;
-
-	        if (pMenu) this._pMenu = pMenu;
-	    }
-
-	    CMenu.prototype = {
-	        constructor: CMenu,
-	        config: config,
-	        show: show,
-	        hide: hide,
-	        styles: styles
-
-	    };
-
-	    function index(selector) {
-	        return typeof selector === "string" ? new CMenu(document.querySelector(selector)) : new CMenu(selector);
-	    }
-
-	    return index;
-	});
-	//# sourceMappingURL=circular-menu.js.map
-
-/***/ },
-/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64354,7 +63592,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _datGui = __webpack_require__(87);
+	var _datGui = __webpack_require__(86);
 
 	var _datGui2 = _interopRequireDefault(_datGui);
 
@@ -64433,14 +63671,14 @@
 	module.exports = DatGuiView;
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(88)
-	module.exports.color = __webpack_require__(89)
+	module.exports = __webpack_require__(87)
+	module.exports.color = __webpack_require__(88)
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports) {
 
 	/**
@@ -68105,7 +67343,7 @@
 	dat.utils.common);
 
 /***/ },
-/* 89 */
+/* 88 */
 /***/ function(module, exports) {
 
 	/**
@@ -68865,7 +68103,7 @@
 	dat.utils.common);
 
 /***/ },
-/* 90 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -68882,7 +68120,7 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var Stats = __webpack_require__(91);
+	var Stats = __webpack_require__(90);
 
 	var AppView = _BaseView2.default.extend({
 	  className: "stats",
@@ -68925,7 +68163,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 91 */
+/* 90 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -68937,7 +68175,7 @@
 
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68954,15 +68192,15 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _navigationBar = __webpack_require__(93);
+	var _NavigationBar2d = __webpack_require__(92);
 
-	var _navigationBar2 = _interopRequireDefault(_navigationBar);
+	var _NavigationBar2d2 = _interopRequireDefault(_NavigationBar2d);
 
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var viewArray = [__webpack_require__(94), __webpack_require__(98), __webpack_require__(100), __webpack_require__(102), __webpack_require__(104)];
+	var viewArray = [__webpack_require__(93), __webpack_require__(97), __webpack_require__(99), __webpack_require__(101), __webpack_require__(103)];
 
 	var AppView2d = _BaseView2.default.extend({
 	  className: "appView-2d",
@@ -69008,9 +68246,9 @@
 	    this.setSection(index);
 	  },
 	  render: function render() {
-	    var navigationBar = new _navigationBar2.default({ parentEl: this.$el });
-	    this.childViews.push(navigationBar);
-	    this.$el.append(navigationBar.render().el);
+	    var navigationBar2d = new _NavigationBar2d2.default({ parentEl: this.$el });
+	    this.childViews.push(navigationBar2d);
+	    this.$el.append(navigationBar2d.render().el);
 	    this.$el.append(this.bodyEl);
 	    return this;
 	  }
@@ -69019,7 +68257,7 @@
 	module.exports = AppView2d;
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -69044,7 +68282,7 @@
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	var NavigationBar = _BaseView2.default.extend({
+	var NavigationBar2d = _BaseView2.default.extend({
 	  className: "navigation-bar",
 	  template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
 	  events: {
@@ -69126,11 +68364,10 @@
 	  },
 	  clickSelected: function clickSelected(evt) {
 	    var currentTarget = $(evt.currentTarget);
-	    var index = currentTarget.index("li");
-	    var name = _navigationList2.default[currentTarget.index("li")].name;
+	    var index = currentTarget.closest("li").index();
 
 	    this.swapSelectedEl(currentTarget);
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, currentTarget.index("li"));
+	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, index);
 	  },
 	  setSelectedFrom3d: function setSelectedFrom3d(sceneModel) {
 	    this.swapSelectedEl(this.navEls[sceneModel.name]);
@@ -69158,24 +68395,24 @@
 	  }
 	});
 
-	module.exports = NavigationBar;
+	module.exports = NavigationBar2d;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
-	var _BaseView2d = __webpack_require__(95);
+	var _BaseView2d = __webpack_require__(94);
 
 	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
 
-	var _WebDevProjects = __webpack_require__(96);
+	var _WebDevProjects = __webpack_require__(95);
 
 	var _WebDevProjects2 = _interopRequireDefault(_WebDevProjects);
 
-	var _WebDevViewTemplate = __webpack_require__(97);
+	var _WebDevViewTemplate = __webpack_require__(96);
 
 	var _WebDevViewTemplate2 = _interopRequireDefault(_WebDevViewTemplate);
 
@@ -69187,9 +68424,6 @@
 	  className: "web-dev",
 	  title: "Web Development",
 	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-	  initialize: function initialize() {
-	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
-	  },
 	  render: function render() {
 	    this.$el.append(this.titleTemplate({ title: this.title }));
 
@@ -69206,15 +68440,15 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
 	var BaseView2d = Backbone.View.extend({
 	  childViews: [],
-	  className: "DEfault",
-	  title: "DEfault",
+	  className: "Default",
+	  title: "Default",
 	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
 	  initialize: function initialize() {
 	    this.$el.hide();
@@ -69235,6 +68469,7 @@
 	    this.$el.delay(400).fadeIn();
 	    // this.addListeners();
 	  },
+	  addListeners: function addListeners() {},
 	  removeListeners: function removeListeners() {},
 	  close: function close() {
 	    this.remove();
@@ -69245,7 +68480,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 96 */
+/* 95 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -69278,7 +68513,7 @@
 	}];
 
 /***/ },
-/* 97 */
+/* 96 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -69303,16 +68538,16 @@
 
 
 /***/ },
-/* 98 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
-	var _BaseView2d = __webpack_require__(95);
+	var _BaseView2d = __webpack_require__(94);
 
 	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
 
-	var _ThreeDAnimationViewTemplate = __webpack_require__(99);
+	var _ThreeDAnimationViewTemplate = __webpack_require__(98);
 
 	var _ThreeDAnimationViewTemplate2 = _interopRequireDefault(_ThreeDAnimationViewTemplate);
 
@@ -69340,7 +68575,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -69353,12 +68588,12 @@
 
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
-	var _BaseView2d = __webpack_require__(95);
+	var _BaseView2d = __webpack_require__(94);
 
 	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
 
@@ -69366,7 +68601,7 @@
 
 	var _digitalArt2 = _interopRequireDefault(_digitalArt);
 
-	var _digitalArtViewTemplate = __webpack_require__(101);
+	var _digitalArtViewTemplate = __webpack_require__(100);
 
 	var _digitalArtViewTemplate2 = _interopRequireDefault(_digitalArtViewTemplate);
 
@@ -69394,7 +68629,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -69415,12 +68650,12 @@
 
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
-	var _BaseView2d = __webpack_require__(95);
+	var _BaseView2d = __webpack_require__(94);
 
 	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
 
@@ -69428,7 +68663,7 @@
 
 	var _digitalArt2 = _interopRequireDefault(_digitalArt);
 
-	var _aboutMeView = __webpack_require__(103);
+	var _aboutMeView = __webpack_require__(102);
 
 	var _aboutMeView2 = _interopRequireDefault(_aboutMeView);
 
@@ -69454,7 +68689,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -69467,12 +68702,12 @@
 
 
 /***/ },
-/* 104 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _BaseView2d = __webpack_require__(95);
+	var _BaseView2d = __webpack_require__(94);
 
 	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
 
@@ -69480,7 +68715,7 @@
 
 	var _digitalArt2 = _interopRequireDefault(_digitalArt);
 
-	var _contactView = __webpack_require__(105);
+	var _contactView = __webpack_require__(104);
 
 	var _contactView2 = _interopRequireDefault(_contactView);
 
@@ -69504,7 +68739,7 @@
 	module.exports = ContactView;
 
 /***/ },
-/* 105 */
+/* 104 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -69517,12 +68752,12 @@
 
 
 /***/ },
-/* 106 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _photoswipe = __webpack_require__(107);
+	var _photoswipe = __webpack_require__(106);
 
 	var _photoswipe2 = _interopRequireDefault(_photoswipe);
 
@@ -69534,11 +68769,11 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _photoswipeUiDefaultMin = __webpack_require__(108);
+	var _photoswipeUiDefaultMin = __webpack_require__(107);
 
 	var _photoswipeUiDefaultMin2 = _interopRequireDefault(_photoswipeUiDefaultMin);
 
-	var _photoSwipe = __webpack_require__(109);
+	var _photoSwipe = __webpack_require__(108);
 
 	var _photoSwipe2 = _interopRequireDefault(_photoSwipe);
 
@@ -69586,7 +68821,7 @@
 	module.exports = PhotoSwipeView;
 
 /***/ },
-/* 107 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe - v4.1.1 - 2015-12-24
@@ -73309,7 +72544,7 @@
 	});
 
 /***/ },
-/* 108 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe Default UI - 4.1.1 - 2015-12-24
@@ -73318,7 +72553,7 @@
 	!function(a,b){ true?!(__WEBPACK_AMD_DEFINE_FACTORY__ = (b), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"object"==typeof exports?module.exports=b():a.PhotoSwipeUI_Default=b()}(this,function(){"use strict";var a=function(a,b){var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v=this,w=!1,x=!0,y=!0,z={barsSize:{top:44,bottom:"auto"},closeElClasses:["item","caption","zoom-wrap","ui","top-bar"],timeToIdle:4e3,timeToIdleOutside:1e3,loadingIndicatorDelay:1e3,addCaptionHTMLFn:function(a,b){return a.title?(b.children[0].innerHTML=a.title,!0):(b.children[0].innerHTML="",!1)},closeEl:!0,captionEl:!0,fullscreenEl:!0,zoomEl:!0,shareEl:!0,counterEl:!0,arrowEl:!0,preloaderEl:!0,tapToClose:!1,tapToToggleControls:!0,clickToCloseNonZoomable:!0,shareButtons:[{id:"facebook",label:"Share on Facebook",url:"https://www.facebook.com/sharer/sharer.php?u={{url}}"},{id:"twitter",label:"Tweet",url:"https://twitter.com/intent/tweet?text={{text}}&url={{url}}"},{id:"pinterest",label:"Pin it",url:"http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}"},{id:"download",label:"Download image",url:"{{raw_image_url}}",download:!0}],getImageURLForShare:function(){return a.currItem.src||""},getPageURLForShare:function(){return window.location.href},getTextForShare:function(){return a.currItem.title||""},indexIndicatorSep:" / ",fitControlsWidth:1200},A=function(a){if(r)return!0;a=a||window.event,q.timeToIdle&&q.mouseUsed&&!k&&K();for(var c,d,e=a.target||a.srcElement,f=e.getAttribute("class")||"",g=0;g<S.length;g++)c=S[g],c.onTap&&f.indexOf("pswp__"+c.name)>-1&&(c.onTap(),d=!0);if(d){a.stopPropagation&&a.stopPropagation(),r=!0;var h=b.features.isOldAndroid?600:30;s=setTimeout(function(){r=!1},h)}},B=function(){return!a.likelyTouchDevice||q.mouseUsed||screen.width>q.fitControlsWidth},C=function(a,c,d){b[(d?"add":"remove")+"Class"](a,"pswp__"+c)},D=function(){var a=1===q.getNumItemsFn();a!==p&&(C(d,"ui--one-slide",a),p=a)},E=function(){C(i,"share-modal--hidden",y)},F=function(){return y=!y,y?(b.removeClass(i,"pswp__share-modal--fade-in"),setTimeout(function(){y&&E()},300)):(E(),setTimeout(function(){y||b.addClass(i,"pswp__share-modal--fade-in")},30)),y||H(),!1},G=function(b){b=b||window.event;var c=b.target||b.srcElement;return a.shout("shareLinkClick",b,c),c.href?c.hasAttribute("download")?!0:(window.open(c.href,"pswp_share","scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left="+(window.screen?Math.round(screen.width/2-275):100)),y||F(),!1):!1},H=function(){for(var a,b,c,d,e,f="",g=0;g<q.shareButtons.length;g++)a=q.shareButtons[g],c=q.getImageURLForShare(a),d=q.getPageURLForShare(a),e=q.getTextForShare(a),b=a.url.replace("{{url}}",encodeURIComponent(d)).replace("{{image_url}}",encodeURIComponent(c)).replace("{{raw_image_url}}",c).replace("{{text}}",encodeURIComponent(e)),f+='<a href="'+b+'" target="_blank" class="pswp__share--'+a.id+'"'+(a.download?"download":"")+">"+a.label+"</a>",q.parseShareButtonOut&&(f=q.parseShareButtonOut(a,f));i.children[0].innerHTML=f,i.children[0].onclick=G},I=function(a){for(var c=0;c<q.closeElClasses.length;c++)if(b.hasClass(a,"pswp__"+q.closeElClasses[c]))return!0},J=0,K=function(){clearTimeout(u),J=0,k&&v.setIdle(!1)},L=function(a){a=a?a:window.event;var b=a.relatedTarget||a.toElement;b&&"HTML"!==b.nodeName||(clearTimeout(u),u=setTimeout(function(){v.setIdle(!0)},q.timeToIdleOutside))},M=function(){q.fullscreenEl&&!b.features.isOldAndroid&&(c||(c=v.getFullscreenAPI()),c?(b.bind(document,c.eventK,v.updateFullscreen),v.updateFullscreen(),b.addClass(a.template,"pswp--supports-fs")):b.removeClass(a.template,"pswp--supports-fs"))},N=function(){q.preloaderEl&&(O(!0),l("beforeChange",function(){clearTimeout(o),o=setTimeout(function(){a.currItem&&a.currItem.loading?(!a.allowProgressiveImg()||a.currItem.img&&!a.currItem.img.naturalWidth)&&O(!1):O(!0)},q.loadingIndicatorDelay)}),l("imageLoadComplete",function(b,c){a.currItem===c&&O(!0)}))},O=function(a){n!==a&&(C(m,"preloader--active",!a),n=a)},P=function(a){var c=a.vGap;if(B()){var g=q.barsSize;if(q.captionEl&&"auto"===g.bottom)if(f||(f=b.createEl("pswp__caption pswp__caption--fake"),f.appendChild(b.createEl("pswp__caption__center")),d.insertBefore(f,e),b.addClass(d,"pswp__ui--fit")),q.addCaptionHTMLFn(a,f,!0)){var h=f.clientHeight;c.bottom=parseInt(h,10)||44}else c.bottom=g.top;else c.bottom="auto"===g.bottom?0:g.bottom;c.top=g.top}else c.top=c.bottom=0},Q=function(){q.timeToIdle&&l("mouseUsed",function(){b.bind(document,"mousemove",K),b.bind(document,"mouseout",L),t=setInterval(function(){J++,2===J&&v.setIdle(!0)},q.timeToIdle/2)})},R=function(){l("onVerticalDrag",function(a){x&&.95>a?v.hideControls():!x&&a>=.95&&v.showControls()});var a;l("onPinchClose",function(b){x&&.9>b?(v.hideControls(),a=!0):a&&!x&&b>.9&&v.showControls()}),l("zoomGestureEnded",function(){a=!1,a&&!x&&v.showControls()})},S=[{name:"caption",option:"captionEl",onInit:function(a){e=a}},{name:"share-modal",option:"shareEl",onInit:function(a){i=a},onTap:function(){F()}},{name:"button--share",option:"shareEl",onInit:function(a){h=a},onTap:function(){F()}},{name:"button--zoom",option:"zoomEl",onTap:a.toggleDesktopZoom},{name:"counter",option:"counterEl",onInit:function(a){g=a}},{name:"button--close",option:"closeEl",onTap:a.close},{name:"button--arrow--left",option:"arrowEl",onTap:a.prev},{name:"button--arrow--right",option:"arrowEl",onTap:a.next},{name:"button--fs",option:"fullscreenEl",onTap:function(){c.isFullscreen()?c.exit():c.enter()}},{name:"preloader",option:"preloaderEl",onInit:function(a){m=a}}],T=function(){var a,c,e,f=function(d){if(d)for(var f=d.length,g=0;f>g;g++){a=d[g],c=a.className;for(var h=0;h<S.length;h++)e=S[h],c.indexOf("pswp__"+e.name)>-1&&(q[e.option]?(b.removeClass(a,"pswp__element--disabled"),e.onInit&&e.onInit(a)):b.addClass(a,"pswp__element--disabled"))}};f(d.children);var g=b.getChildByClass(d,"pswp__top-bar");g&&f(g.children)};v.init=function(){b.extend(a.options,z,!0),q=a.options,d=b.getChildByClass(a.scrollWrap,"pswp__ui"),l=a.listen,R(),l("beforeChange",v.update),l("doubleTap",function(b){var c=a.currItem.initialZoomLevel;a.getZoomLevel()!==c?a.zoomTo(c,b,333):a.zoomTo(q.getDoubleTapZoom(!1,a.currItem),b,333)}),l("preventDragEvent",function(a,b,c){var d=a.target||a.srcElement;d&&d.getAttribute("class")&&a.type.indexOf("mouse")>-1&&(d.getAttribute("class").indexOf("__caption")>0||/(SMALL|STRONG|EM)/i.test(d.tagName))&&(c.prevent=!1)}),l("bindEvents",function(){b.bind(d,"pswpTap click",A),b.bind(a.scrollWrap,"pswpTap",v.onGlobalTap),a.likelyTouchDevice||b.bind(a.scrollWrap,"mouseover",v.onMouseOver)}),l("unbindEvents",function(){y||F(),t&&clearInterval(t),b.unbind(document,"mouseout",L),b.unbind(document,"mousemove",K),b.unbind(d,"pswpTap click",A),b.unbind(a.scrollWrap,"pswpTap",v.onGlobalTap),b.unbind(a.scrollWrap,"mouseover",v.onMouseOver),c&&(b.unbind(document,c.eventK,v.updateFullscreen),c.isFullscreen()&&(q.hideAnimationDuration=0,c.exit()),c=null)}),l("destroy",function(){q.captionEl&&(f&&d.removeChild(f),b.removeClass(e,"pswp__caption--empty")),i&&(i.children[0].onclick=null),b.removeClass(d,"pswp__ui--over-close"),b.addClass(d,"pswp__ui--hidden"),v.setIdle(!1)}),q.showAnimationDuration||b.removeClass(d,"pswp__ui--hidden"),l("initialZoomIn",function(){q.showAnimationDuration&&b.removeClass(d,"pswp__ui--hidden")}),l("initialZoomOut",function(){b.addClass(d,"pswp__ui--hidden")}),l("parseVerticalMargin",P),T(),q.shareEl&&h&&i&&(y=!0),D(),Q(),M(),N()},v.setIdle=function(a){k=a,C(d,"ui--idle",a)},v.update=function(){x&&a.currItem?(v.updateIndexIndicator(),q.captionEl&&(q.addCaptionHTMLFn(a.currItem,e),C(e,"caption--empty",!a.currItem.title)),w=!0):w=!1,y||F(),D()},v.updateFullscreen=function(d){d&&setTimeout(function(){a.setScrollOffset(0,b.getScrollY())},50),b[(c.isFullscreen()?"add":"remove")+"Class"](a.template,"pswp--fs")},v.updateIndexIndicator=function(){q.counterEl&&(g.innerHTML=a.getCurrentIndex()+1+q.indexIndicatorSep+q.getNumItemsFn())},v.onGlobalTap=function(c){c=c||window.event;var d=c.target||c.srcElement;if(!r)if(c.detail&&"mouse"===c.detail.pointerType){if(I(d))return void a.close();b.hasClass(d,"pswp__img")&&(1===a.getZoomLevel()&&a.getZoomLevel()<=a.currItem.fitRatio?q.clickToCloseNonZoomable&&a.close():a.toggleDesktopZoom(c.detail.releasePoint))}else if(q.tapToToggleControls&&(x?v.hideControls():v.showControls()),q.tapToClose&&(b.hasClass(d,"pswp__img")||I(d)))return void a.close()},v.onMouseOver=function(a){a=a||window.event;var b=a.target||a.srcElement;C(d,"ui--over-close",I(b))},v.hideControls=function(){b.addClass(d,"pswp__ui--hidden"),x=!1},v.showControls=function(){x=!0,w||v.update(),b.removeClass(d,"pswp__ui--hidden")},v.supportsFullscreen=function(){var a=document;return!!(a.exitFullscreen||a.mozCancelFullScreen||a.webkitExitFullscreen||a.msExitFullscreen)},v.getFullscreenAPI=function(){var b,c=document.documentElement,d="fullscreenchange";return c.requestFullscreen?b={enterK:"requestFullscreen",exitK:"exitFullscreen",elementK:"fullscreenElement",eventK:d}:c.mozRequestFullScreen?b={enterK:"mozRequestFullScreen",exitK:"mozCancelFullScreen",elementK:"mozFullScreenElement",eventK:"moz"+d}:c.webkitRequestFullscreen?b={enterK:"webkitRequestFullscreen",exitK:"webkitExitFullscreen",elementK:"webkitFullscreenElement",eventK:"webkit"+d}:c.msRequestFullscreen&&(b={enterK:"msRequestFullscreen",exitK:"msExitFullscreen",elementK:"msFullscreenElement",eventK:"MSFullscreenChange"}),b&&(b.enter=function(){return j=q.closeOnScroll,q.closeOnScroll=!1,"webkitRequestFullscreen"!==this.enterK?a.template[this.enterK]():void a.template[this.enterK](Element.ALLOW_KEYBOARD_INPUT)},b.exit=function(){return q.closeOnScroll=j,document[this.exitK]()},b.isFullscreen=function(){return document[this.elementK]}),b}};return a});
 
 /***/ },
-/* 109 */
+/* 108 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -73331,7 +72566,7 @@
 
 
 /***/ },
-/* 110 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73344,7 +72579,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _switchView = __webpack_require__(111);
+	var _switchView = __webpack_require__(110);
 
 	var _switchView2 = _interopRequireDefault(_switchView);
 
@@ -73396,7 +72631,7 @@
 	module.exports = SwitchView;
 
 /***/ },
-/* 111 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -73409,10 +72644,10 @@
 
 
 /***/ },
-/* 112 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 
 	var _eventController = __webpack_require__(27);
 
@@ -73422,7 +72657,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _introView = __webpack_require__(113);
+	var _introView = __webpack_require__(112);
 
 	var _introView2 = _interopRequireDefault(_introView);
 
@@ -73438,19 +72673,32 @@
 	    "click .intro-switch-3d": "switchView3d"
 	  },
 	  initialize: function initialize() {
-	    var self = this;
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    _eventController2.default.once(_eventController2.default.SWITCH_VIEWS, function () {
-	      self.destroy();
-	    });
+	    _eventController2.default.once(_eventController2.default.SWITCH_VIEWS, _.bind(this.animateDestroy, this));
 	  },
 	  switchView2d: function switchView2d() {
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "2d");
+	    this.animateDestroy("2d");
 	    if (localStorage) localStorage.setItem('startView', "2d");
 	  },
 	  switchView3d: function switchView3d() {
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "3d");
+	    this.animateDestroy("3d");
 	    if (localStorage) localStorage.setItem('startView', "3d");
+	  },
+	  animateDestroy: function animateDestroy(whichViewStr) {
+	    var offset = this.$el.offset();
+	    var self = this;
+
+	    this.$el.css({
+	      top: offset.top,
+	      right: $(window).width() - (offset.left + this.$el.outerWidth()),
+	      width: this.$el.width(),
+	      height: this.$el.height()
+	    }).addClass("animateSwitchView");
+
+	    setTimeout(function () {
+	      _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, whichViewStr);
+	      self.destroy();
+	    }, 1000);
 	  },
 	  destroy: function destroy() {
 	    this.undelegateEvents();
@@ -73464,9 +72712,10 @@
 	});
 
 	module.exports = SwitchView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ },
-/* 113 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -73479,7 +72728,7 @@
 
 
 /***/ },
-/* 114 */
+/* 113 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

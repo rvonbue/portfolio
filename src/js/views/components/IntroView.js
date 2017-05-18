@@ -36,6 +36,7 @@ var SwitchView = BaseView.extend({
 
     setTimeout(function () {
       eventController.trigger(eventController.SWITCH_VIEWS, whichViewStr);
+      eventController.trigger(eventController.SET_VIEW, whichViewStr);
       self.destroy();
     }, 1000);
 

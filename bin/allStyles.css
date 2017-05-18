@@ -690,13 +690,11 @@ table {
 }
 .button-zoom {
   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjM2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIzNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xNS41IDE0aC0uNzlsLS4yOC0uMjdDMTUuNDEgMTIuNTkgMTYgMTEuMTEgMTYgOS41IDE2IDUuOTEgMTMuMDkgMyA5LjUgM1MzIDUuOTEgMyA5LjUgNS45MSAxNiA5LjUgMTZjMS42MSAwIDMuMDktLjU5IDQuMjMtMS41N2wuMjcuMjh2Ljc5bDUgNC45OUwyMC40OSAxOWwtNC45OS01em0tNiAwQzcuMDEgMTQgNSAxMS45OSA1IDkuNVM3LjAxIDUgOS41IDUgMTQgNy4wMSAxNCA5LjUgMTEuOTkgMTQgOS41IDE0eiIvPgogICAgPHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+CiAgICA8cGF0aCBkPSJNMTIgMTBoLTJ2Mkg5di0ySDdWOWgyVjdoMXYyaDJ2MXoiLz4KPC9zdmc+);
-  width: 36px;
-  height: 36px;
   background-color: #B82601;
 }
 .button-home {
   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xMCAyMHYtNmg0djZoNXYtOGgzTDEyIDMgMiAxMmgzdjh6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
-  position: absolute;
+  vertical-align: bottom;
 }
 .button-menu {
   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0zIDEzaDJ2LTJIM3Yyem0wIDRoMnYtMkgzdjJ6bTAtOGgyVjdIM3Yyem00IDRoMTR2LTJIN3Yyem0wIDRoMTR2LTJIN3Yyek03IDd2MmgxNFY3SDd6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
@@ -724,6 +722,32 @@ table {
 .button-skip-next,
 .button-skip-prev {
   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik02IDE4bDguNS02TDYgNnYxMnpNMTYgNnYxMmgyVjZoLTJ6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
+}
+.css-icons0 {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik03IDVoMTB2MmgyVjNjMC0xLjEtLjktMS45OS0yLTEuOTlMNyAxYy0xLjEgMC0yIC45LTIgMnY0aDJWNXptOC40MSAxMS41OUwyMCAxMmwtNC41OS00LjU5TDE0IDguODMgMTcuMTcgMTIgMTQgMTUuMTdsMS40MSAxLjQyek0xMCAxNS4xN0w2LjgzIDEyIDEwIDguODMgOC41OSA3LjQxIDQgMTJsNC41OSA0LjU5TDEwIDE1LjE3ek0xNyAxOUg3di0ySDV2NGMwIDEuMS45IDIgMiAyaDEwYzEuMSAwIDItLjkgMi0ydi00aC0ydjJ6Ii8+Cjwvc3ZnPg==);
+}
+.css-icons1 {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik00IDZIMnYxNGMwIDEuMS45IDIgMiAyaDE0di0ySDRWNnptMTYtNEg4Yy0xLjEgMC0yIC45LTIgMnYxMmMwIDEuMS45IDIgMiAyaDEyYzEuMSAwIDItLjkgMi0yVjRjMC0xLjEtLjktMi0yLTJ6bS04IDEyLjV2LTlsNiA0LjUtNiA0LjV6Ii8+Cjwvc3ZnPg==);
+}
+.css-icons2 {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yMCA0SDRjLTEuMSAwLTEuOTkuOS0xLjk5IDJMMiAxOGMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjZjMC0xLjEtLjktMi0yLTJ6bS01IDE0SDR2LTRoMTF2NHptMC01SDRWOWgxMXY0em01IDVoLTRWOWg0djl6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
+}
+.css-icons3 {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHptMCAwaDI0djI0SDB6bTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPgogICAgPHBhdGggZD0iTTIwIDBINHYyaDE2VjB6TTQgMjRoMTZ2LTJINHYyek0yMCA0SDRjLTEuMSAwLTIgLjktMiAydjEyYzAgMS4xLjkgMiAyIDJoMTZjMS4xIDAgMi0uOSAyLTJWNmMwLTEuMS0uOS0yLTItMnptLTggMi43NWMxLjI0IDAgMi4yNSAxLjAxIDIuMjUgMi4yNXMtMS4wMSAyLjI1LTIuMjUgMi4yNVM5Ljc1IDEwLjI0IDkuNzUgOSAxMC43NiA2Ljc1IDEyIDYuNzV6TTE3IDE3SDd2LTEuNWMwLTEuNjcgMy4zMy0yLjUgNS0yLjVzNSAuODMgNSAyLjVWMTd6Ii8+Cjwvc3ZnPg==);
+}
+.css-icons4 {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KICAgIDxwYXRoIGQ9Ik0yMSA4VjdsLTMgMi0zLTJ2MWwzIDIgMy0yem0xLTVIMkMuOSAzIDAgMy45IDAgNXYxNGMwIDEuMS45IDIgMiAyaDIwYzEuMSAwIDEuOTktLjkgMS45OS0yTDI0IDVjMC0xLjEtLjktMi0yLTJ6TTggNmMxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTYgMTJIMnYtMWMwLTIgNC0zLjEgNi0zLjFzNiAxLjEgNiAzLjF2MXptOC02aC04VjZoOHY2eiIvPgogICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=);
+}
+.css-icons5 {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xMCAyMHYtNmg0djZoNXYtOGgzTDEyIDMgMiAxMmgzdjh6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==);
+}
+.css-icons0,
+.css-icons1,
+.css-icons2,
+.css-icons3,
+.css-icons4,
+.css-icons5 {
+  display: none;
 }
 /*!
  * Hover.css (http://ianlunn.github.io/Hover/)
@@ -1370,7 +1394,7 @@ table {
   overflow: hidden;
   cursor: pointer;
   border: 2px solid #FFFFFF;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 .onoffswitch-inner {
   display: block;
@@ -1425,10 +1449,12 @@ table {
 }
 .intro-view {
   max-width: 650px;
-  width: 50%;
   min-height: 250px;
-  margin: 0px auto;
-  padding-top: 48px;
+  margin: 48px auto auto auto;
+  padding: 18px 24px;
+  border: 2px solid #FFFFFF;
+  border-radius: 4px;
+  background-color: #062F4F;
 }
 .intro-view p {
   margin: 8px;
@@ -1444,7 +1470,7 @@ table {
   background-image: linear-gradient(to bottom, #4f4f4f, #000000);
   -webkit-border-radius: 30;
   -moz-border-radius: 30;
-  border-radius: 2px;
+  border-radius: 4px;
   color: #ffffff;
   font-size: 30px;
   padding: 10px 20px 10px 20px;
@@ -1467,12 +1493,40 @@ table {
 }
 .button-container-2 {
   width: 100%;
-  margin: 24px auto;
+  margin: 36px auto 12px auto;
   text-align: center;
   border-top: none;
   box-sizing: border-box;
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
+}
+.animateSwitchView {
+  position: absolute;
+  overflow: hidden;
+  margin: 0px;
+  padding: 0px;
+  z-index: 999;
+  min-height: 0px;
+  animation-name: introViewAnimation;
+  animation-duration: 1s;
+}
+.animateSwitchView > p,
+.animateSwitchView > div,
+.animateSwitchView > h1 {
+  display: none;
+}
+@keyframes introViewAnimation {
+  0% {
+    background-color: #062F4F;
+  }
+  100% {
+    background-color: #000000;
+    top: 6px;
+    right: 15px;
+    height: 30px;
+    width: 70px;
+    opacity: 0;
+  }
 }
 #cssmenu {
   width: auto;
@@ -1540,7 +1594,8 @@ table {
 #cssmenu ul li a.css-icons1,
 #cssmenu ul li a.css-icons2,
 #cssmenu ul li a.css-icons3,
-#cssmenu ul li a.css-icons4 {
+#cssmenu ul li a.css-icons4,
+#cssmenu ul li a .css-icons5 {
   display: none;
 }
 #cssmenu ul li.active a {
@@ -1923,7 +1978,7 @@ p.about-me-intro {
   text-align: center;
   border-top: none;
   box-sizing: border-box;
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
   width: 150px;
 }
@@ -1935,11 +1990,29 @@ p.about-me-intro {
 }
 .home-button-container {
   position: absolute;
-  bottom: 0px;
+  top: 0px;
   width: 100%;
   z-index: 1001;
-  pointer-events: none;
-  background-color: rgba(0, 0, 0, 0.2);
+  margin-top: 12px;
+}
+.home-button-container ul {
+  display: block;
+  text-align: center;
+}
+.home-button-container ul li {
+  display: inline-block;
+  border-radius: 4px;
+  background: #FFFFFF;
+  font-size: 150%;
+  color: #0090FF;
+  border: 1px solid #B82601;
+  padding: 4px 8px;
+  margin: 0px 4px;
+  cursor: pointer;
+}
+.home-button-container ul li:hover {
+  border-color: #B82601;
+  color: #B82601;
 }
 .link-bar {
   background-color: #000000;
@@ -1968,7 +2041,7 @@ p.about-me-intro {
   right: 8px;
   color: #FFFFFF;
   padding: 4px 8px;
-  z-index: 1001;
+  z-index: 10000;
 }
 .switch-views table {
   text-align: center;
