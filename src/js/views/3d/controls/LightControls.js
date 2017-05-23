@@ -29,7 +29,7 @@ var LightControls = BaseView.extend({
     eventController.off(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
   },
   addLight: function () {
-    this.addHemisphereLight();
+    // this.addHemisphereLight();
     this.addDirectionalLight();
     eventController.trigger(eventController.ADD_MODEL_TO_SCENE, this.worldLights);
   },

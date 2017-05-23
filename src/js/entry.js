@@ -55,13 +55,15 @@ function isCanvasSupported () {
 function startApp () {
   view = new AppView({});
 }
-$(function () {
+
+$(function () { 
   if (isCanvasSupported()) {
     startApp();
   } else {
     $("body").append(NoCanvasSupportTemplate);
     return;
   }
+
   $("body").append(view.render().el);
   view.initScene();
 

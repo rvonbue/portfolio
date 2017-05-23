@@ -19,6 +19,7 @@ var AppView = BaseView.extend({
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
   },
   initScene: function () {
+    console.log("Init initScene");
     var startView = null;
     if (localStorage) startView = localStorage.getItem('startView');
 
@@ -52,7 +53,6 @@ var AppView = BaseView.extend({
   },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
-    // this.$el.append(new SwitchView({}).render().el);
     this.$el.append(new MobileNavigationBarView().render().el);
     var startSkyColor = utils.getWorldLighting().background.cssSkyGradient;
     var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";

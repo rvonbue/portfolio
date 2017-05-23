@@ -2,7 +2,6 @@ import eventController from "../../controllers/eventController";
 import BaseView from "../BaseView";
 import navigationList from "../../data/navigationList";
 import SwitchView from "../components/SwitchView";
-// import SceneDetailControlsView from "../3d/controls/SceneDetailControlsView";
 // import utils from "../../util/utils";
 
 
@@ -18,6 +17,7 @@ var MobileNavigationBarView = BaseView.extend({
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
+    console.log("Init MobileNavigationBarView");
   },
   toggleSidebar: function () {
     console.log("alfhadshf");
@@ -51,12 +51,13 @@ var MobileNavigationBarView = BaseView.extend({
     return html + "</ul>";
   },
   render: function () {
-    var toolbar =  $("<div class='toolbar'>Rick von Buelow Portfolio</div>");
-        // toolbar.append("<div class='button-home'></div>");
-        // toolbar.append(new SwitchView({}).render().el);
+    var toolbar =  $("<div class='toolbar'></div>");
+        toolbar.append("<div class='button-home'></div>");
+        toolbar.append(new SwitchView({}).render().el);
     var navbarBody = $("<div class='navbar-body'></div>");
+        navbarBody.append("<div class='side-header'></div>");
         navbarBody.append(toolbar);
-        navbarBody.append("<hr class='toolbar-hr'>");
+        // navbarBody.append("<hr class='toolbar-hr'>");
         navbarBody.append(this.getMenuItems());
 
     this.$el.append("<div class='button-menu'></div>");

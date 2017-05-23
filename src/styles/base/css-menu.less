@@ -52,7 +52,7 @@
   font-family: 'Open Sans', sans-serif;
   font-weight: 800;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 28px;
   position: relative;
   &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4, .css-icons5 {
     display: none;
@@ -72,13 +72,26 @@
   display: none;
 }
 
+@media screen and (max-width: @breakpoint3) {
+  #cssmenu {
+    display: none;
+  }
+}
+
+@media screen and (max-width: @breakpoint2) {
+  #cssmenu ul li a {
+    font-size: 20px;
+    padding: 15px 15px;
+  }
+}
+
 @media screen and (max-width: @breakPoint1) {
   #cssmenu {
-    max-width: 675px;
+    max-width: 775px;
     margin: 0px auto;
   }
   #cssmenu ul li a {
-    max-width: 115px;
+    max-width: 180px;
     padding: 6px 8px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -86,30 +99,5 @@
     border-bottom: 1px solid @color-5;
 
   }
-  // #cssmenu ul li.last > a,
-  // #cssmenu ul li:last-child > a {
-  //   border: 0;
-  // }
-  // #cssmenu ul li a:after {
-  //   display: none;
-  // }
-  // #cssmenu ul li a:before {
-  //   display: none;
-  // }
-  // #cssmenu ul li a {
-  //   &.css-icons0, &.css-icons1, &.css-icons2, &.css-icons3, &.css-icons4 {
-  //     display: inline-block;
-  //     width: 48px;
-  //     height: 48px;
-  //     margin: 4px 18px;
-  //   }
-  //   &.css-icons0 {
-  //     width: 85px;
-  //     height: 32px;
-  //   }
-  //   &.css-icons1 {
-  //     width: 121px;
-  //     height: 32px;
-  //   }
-  // }
+
 }
