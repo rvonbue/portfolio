@@ -4,7 +4,6 @@ import navigationList from "../../data/navigationList";
 import SwitchView from "../components/SwitchView";
 // import utils from "../../util/utils";
 
-
 var MobileNavigationBarView = BaseView.extend({
   className: "mobile-navigation-bar",
   template: _.template("<li class='hvr-sweep-to-top normal'><a ><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
@@ -20,8 +19,7 @@ var MobileNavigationBarView = BaseView.extend({
     console.log("Init MobileNavigationBarView");
   },
   toggleSidebar: function () {
-    console.log("alfhadshf");
-    this.$el.toggleClass("hide");
+    eventController.trigger( eventController.TOGGLE_SIDEBAR_VISIBILITY);
   },
   enterMenuItem: function (evt) {
     this.enterHoverNavigationLi( $(evt.currentTarget).index() );
@@ -60,7 +58,7 @@ var MobileNavigationBarView = BaseView.extend({
         // navbarBody.append("<hr class='toolbar-hr'>");
         navbarBody.append(this.getMenuItems());
 
-    this.$el.append("<div class='button-menu'></div>");
+    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
     this.$el.append(navbarBody);
     return this;
   }

@@ -31,13 +31,11 @@ var AppView3d = BaseView.extend({
   addListeners: function () {
     eventController.on(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.on(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
-    eventController.on(eventController.CSS_RENDERER, this.switchRenderer, this);
     $(window).on("resize", this.resize);
   },
   removeListeners: function () {
     eventController.off(eventController.ADD_MODEL_TO_SCENE, this.addModelsToScene);
     eventController.off(eventController.REMOVE_MODEL_FROM_SCENE, this.removeModelsFromScene);
-    eventController.off(eventController.CSS_RENDERER, this.switchRenderer, this);
     $(window).off("resize", this.resize);
   },
   show: function () {
@@ -60,7 +58,7 @@ var AppView3d = BaseView.extend({
     this.initCamera(size);
 
     // this.addHelpers();
-    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas:this.canvasEl });
+    this.renderer = new THREE.WebGLRenderer({ alpha:true, antiAlias:false, canvas: this.canvasEl[0] });
     this.renderer.setSize( size.w, size.h );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setClearColor( 0x000000, 0 );
@@ -79,8 +77,8 @@ var AppView3d = BaseView.extend({
   initControls: function () {
 
     var newChildViews = [
-      new CameraControls({ camera:this.camera, canvasEl:this.canvasEl }),
-      new SceneControls({ camera:this.camera, canvasEl:this.canvasEl })
+      new CameraControls({ camera:this.camera, canvasEl: this.canvasEl[0] }),
+      new SceneControls({ camera:this.camera, canvasEl: this.canvasEl[0] })
     ];
 
     this.controls = newChildViews[0].getControls();
@@ -130,54 +128,6 @@ var AppView3d = BaseView.extend({
 		this.renderer.render(this.scene, this.camera);
     this.statsView.stats.end();
   },
-  animateCSS3DRenderer: function (time) {
-    raf( this.animateCSS3DRenderer.bind(this) );
-    // this.statsView.stats.begin();
-    TWEEN.update(time);
-    this.controls.update(this.clock.getDelta());
-    this.css3DRenderer.render(this.css3dScene, this.camera2);
-    // this.statsView.stats.end();
-  },
-  switchRenderer: function () {
-    raf.cancel(this.renderLoop);
-    this.css3dScene = new Scene();
-    this.css3DRenderer = this.getCSS3DRenderer();
-    this.animateCSS3DRenderer();
-  },
-  getCSS3DRenderer: function () {
-    var renderer = new CSS3DRenderer();
-    		renderer.setSize( window.innerWidth, window.innerHeight );
-    		renderer.domElement.style.position = 'absolute';
-    		renderer.domElement.style.top = 0;
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    var element = this.getElement( 'G1YtpuA7XNs', 0, 0, 240, 0 );
-    this.css3dScene.add( element );
-    var size = this.getWidthHeight()
-    this.camera2 = new THREE.PerspectiveCamera( 75, size.w / size.h, 0.1, 1000 );
-    // this.camera2.position.set(200,200,200);
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-    return renderer;
-  },
-  getElement: function ( id, x, y, z, ry ) {
-    // var div = document.createElement( 'div' );
-    //     div.style.width = '480px';
-    //     div.style.height = '360px';
-    //     div.style.backgroundColor = '#000';
-    var iframeEl = document.createElement( 'iframe' );
-        iframeEl.style.width = '480px';
-        iframeEl.style.height = '360px';
-        iframeEl.style.border = '0px';
-        iframeEl.src = "https://www.youtube.com/embed/mFfe4ZRQOH8";
-
-    // div.appendChild( iframe );
-    var object = new CSS3DObject( iframeEl );
-    object.position.set( x, y, z );
-    object.rotation.y = ry;
-
-    return object;
-  },
-
   getWidthHeight: function () {
     return {w: this.$el.outerWidth(true), h: this.$el.outerHeight(true) }
   },
@@ -186,6 +136,11 @@ var AppView3d = BaseView.extend({
     this.camera.aspect = size.w / size.h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize( size.w, size.h );
+    // this.canvasEl.attr({
+    //   width: size.w,
+    //   height: size.h
+    // });
+    console.log("SIZE:", size);
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   renderDev: function () {
@@ -206,9 +161,8 @@ var AppView3d = BaseView.extend({
       this.$el.append(view.render().el);
     }, this);
 
-    var canvasEl = $("<canvas>");
-    this.$el.append(canvasEl);
-    this.canvasEl = canvasEl[0];
+    this.canvasEl = $("<canvas>");
+    this.$el.append(this.canvasEl);
     this.renderDev();
 
     return this;

@@ -105,7 +105,7 @@ var LightControls = BaseView.extend({
 
     directionalLight.position.set(pos.x, pos.y, pos.z);
     this.worldLights.push(directionalLight);
-    this.worldLights.push(new THREE.DirectionalLightHelper( directionalLight, 5 ));
+    // this.worldLights.push(new THREE.DirectionalLightHelper( directionalLight, 5 ));
   },
   setDirectionalLight: function (light, newLight) {
     if (!newLight) return;

@@ -17,9 +17,9 @@ var AppView = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
+    eventController.on(eventController.TOGGLE_SIDEBAR_VISIBILITY, this.toggleSidebar, this);
   },
   initScene: function () {
-    console.log("Init initScene");
     var startView = null;
     if (localStorage) startView = localStorage.getItem('startView');
 
@@ -50,6 +50,9 @@ var AppView = BaseView.extend({
     this.$el.append(this.appView3d.render().el);
     this.$el.addClass("threeD").removeClass("twoD");
     this.appView3d.initScene();
+  },
+  toggleSidebar: function () {
+    this.$el.toggleClass("sidebar-hide");
   },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });

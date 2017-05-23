@@ -36,11 +36,11 @@ var SwitchView = BaseView.extend({
     .addClass("animateSwitchView");
 
     setTimeout(function () {
-      self.destroy();
+      self.destroy(whichViewStr);
     }, 1000);
 
   },
-  destroy: function () {
+  destroy: function (whichViewStr) {
     eventController.trigger(eventController.SWITCH_VIEWS, whichViewStr);
     eventController.trigger(eventController.SET_VIEW, whichViewStr);
     this.undelegateEvents();

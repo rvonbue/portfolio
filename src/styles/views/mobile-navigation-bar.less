@@ -14,16 +14,6 @@
   background: @color-1;
   // animation-name: toggleSidebar;
   transition: all 0.5s;
-  &.hide {
-    left: -@mobile-nav-menu-width;
-    .navbar-body {
-      padding: 0px;
-      margin: 0px;
-    }
-    .toolbar-hr {
-      display: none;
-    }
-  }
 }
 .navbar-body {
   overflow: hidden;
@@ -81,12 +71,18 @@ hr.toolbar-hr {
     border: none;
   }
 }
-.button-menu {
+.button-menu-tab {
   transition: all 0.5s;
   position: absolute;
-  margin-left: @mobile-nav-menu-width;
-  background-color: @color-1;
+  left: @mobile-nav-menu-width;
+  // background-color: @color-1;
+  width: 75px;
+  Height: 59px;
 }
 .button-home {
   display: inline-block;
+}
+.button-menu {
+  left: 15px;
+  top: 5px;
 }

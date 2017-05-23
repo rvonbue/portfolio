@@ -8,17 +8,15 @@ var SwitchView = BaseView.extend({
     "click #myonoffswitch": "clickSwitchViews",
   },
   initialize: function () {
-    console.log("INIT SWITCH VIEW");
     BaseView.prototype.initialize.apply(this, arguments);
     eventController.on(eventController.SET_VIEW, this.updateCheckBox, this);
     // eventController.on(eventController.SWITCH_VIEWS, this.updateCheckBox, this);
   },
   clickSwitchViews: function (evt) {
-    if ( this.getIsChecked() ) {
-      this.switchView3d();
-    } else {
-      this.switchView2d();
-    }
+    var whichView = this.getIsChecked() ? "3d" : "2d";
+
+    this.updateViewPreference(whichView);
+    whichView === "3d" ? this.switchView3d() : this.switchView2d();
   },
   getIsChecked: function () {
     return this.$el.find("input:checked").length > 0 ? true : false;
@@ -31,7 +29,6 @@ var SwitchView = BaseView.extend({
     eventController.trigger(eventController.RESET_SCENE, "3d");
   },
   updateCheckBox: function (whichView) { // isChecked means 3d view
-    console.log("updateCheckBox");
     var isChecked = this.getIsChecked();
 
     if (whichView === "2d" && isChecked === true) {
@@ -41,6 +38,9 @@ var SwitchView = BaseView.extend({
     } else {
       eventController.trigger(eventController.SWITCH_VIEWS, whichView);
     }
+  },
+  updateViewPreference: function (whichView) {
+    if ( localStorage ) localStorage.setItem('startView', whichView);
   },
   render: function () {
     this.$el.append(switchViewHtml);
