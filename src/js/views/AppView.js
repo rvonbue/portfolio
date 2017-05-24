@@ -23,11 +23,11 @@ var AppView = BaseView.extend({
     var startView = null;
     if (localStorage) startView = localStorage.getItem('startView');
 
-    if ( startView ) {
-      eventController.trigger(eventController.SET_VIEW, startView);
-    } else  {
+    // if ( startView ) {
+    //   eventController.trigger(eventController.SET_VIEW, startView);
+    // } else  {
       this.$el.append(new IntroView().render().el);
-    }
+    // }
   },
   switchViews: function (whichView) {
     if (whichView === "2d") {
@@ -54,12 +54,15 @@ var AppView = BaseView.extend({
   toggleSidebar: function () {
     this.$el.toggleClass("sidebar-hide");
   },
+  getSkyGradientHTML: function () {
+    var startSkyColor = utils.getWorldLighting().background.cssSkyGradient;
+    var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
+    return skyGradientDiv;
+  },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
     this.$el.append(new MobileNavigationBarView().render().el);
-    var startSkyColor = utils.getWorldLighting().background.cssSkyGradient;
-    var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
-    this.$el.append(skyGradientDiv);
+    this.$el.append(this.getSkyGradientHTML());
     return this;
   }
 });

@@ -13,10 +13,10 @@ var MobileNavigationBarView = BaseView.extend({
     "click ul>li": "clickme",
     "click .button-menu": "toggleSidebar",
     "click .button-home" : "resetSceneDetails",
+    "click .sidebar-click-catcher": "toggleSidebar"
   },
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
-    console.log("Init MobileNavigationBarView");
   },
   toggleSidebar: function () {
     eventController.trigger( eventController.TOGGLE_SIDEBAR_VISIBILITY);
@@ -48,6 +48,9 @@ var MobileNavigationBarView = BaseView.extend({
 
     return html + "</ul>";
   },
+  getSidebarClickCatchHTML: function () {
+    return "<div class='sidebar-click-catcher'></div>";
+  },
   render: function () {
     var toolbar =  $("<div class='toolbar'></div>");
         toolbar.append("<div class='button-home'></div>");
@@ -60,6 +63,7 @@ var MobileNavigationBarView = BaseView.extend({
 
     this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
     this.$el.append(navbarBody);
+    this.$el.append(this.getSidebarClickCatchHTML());
     return this;
   }
 });

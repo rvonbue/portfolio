@@ -46,21 +46,38 @@ p.animation-intro {
 
 
 .digital-art {
+
   .animate-height;
    text-align: center;
+
   .project-container {
     margin: 24px 0px;
     display: inline-block;
-    max-width: 550px;
+    max-width: 45%;
+
     .img-wrapper {
       width: 100%;
     }
+
     p {
       white-space: normal;
       text-align: start;
       margin-bottom: 8px;
     }
   }
+}
+
+@media screen and (max-width: @breakPoint1) {
+ .digital-art {
+   max-width: 80%;
+   margin: 0px auto;
+   .project-container {
+     max-width: 70%;
+   }
+   .img-wrapper > img {
+     margin: auto;
+   }
+ }
 }
 
 .about-me {
