@@ -57046,7 +57046,7 @@
 
 	// import SwitchView from "./components/SwitchView";
 	var AppView = _BaseView2.default.extend({
-	  className: "appview-container",
+	  className: "appview-container sidebar-hide",
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	    this.addListeners();
@@ -57059,11 +57059,12 @@
 	    var startView = null;
 	    if (localStorage) startView = localStorage.getItem('startView');
 
-	    // if ( startView ) {
-	    //   eventController.trigger(eventController.SET_VIEW, startView);
-	    // } else  {
-	    this.$el.append(new _IntroView2.default().render().el);
-	    // }
+	    if (startView) {
+	      _eventController2.default.trigger(_eventController2.default.SET_VIEW, startView);
+	    } else {
+	      this.$el.addClass("intro-view-open");
+	      this.$el.append(new _IntroView2.default({ parentEl: this.$el }).render().el);
+	    }
 	  },
 	  switchViews: function switchViews(whichView) {
 	    if (whichView === "2d") {
@@ -68473,7 +68474,7 @@
 	module.exports = function(obj){
 	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 	with(obj||{}){
-	__p+='<div class="project-container animation">\n  <p class=\'animation-intro\'>Below is collection of my favorite animations from 2016. I used <a href=\'http://www.blender.org\'>Blender</a> to render\n    all the 3d graphics. Adobe Affter affects was used to composite the video and add the audio. My current system that was used to render these videos\n    is a Windows 8, Intel i7 -3930k CPU, with two GTX 970\'s GPU\'s. Below is a link to my YouTube portfolio. The first video in the playlist is my "Blender cycles 2016 Demo" and is rendered in 720p resolution. \n  </p>\n    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M" frameborder="0" allowfullscreen></iframe>\n</div>\n<hr/>\n';
+	__p+='<div class="project-container animation">\n  <p class=\'animation-intro\'>Below is collection of my favorite animations from 2016. I used <a href=\'http://www.blender.org\'>Blender</a> to render\n    all the 3d graphics. Adobe Affter affects was used to composite the video and add the audio. My current system that was used to render these videos\n    is a Windows 8, Intel i7 -3930k CPU, with two GTX 970\'s GPU\'s. Below is a link to my YouTube portfolio. The first video in the playlist is my "Blender cycles 2016 Demo" and is rendered in 720p resolution.\n  </p>\n    <iframe width="560" height="315" style="background-color: black;" src="https://www.youtube.com/embed/videoseries?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M" frameborder="0" allowfullscreen></iframe>\n</div>\n<hr/>\n';
 	}
 	return __p;
 	};
@@ -68722,10 +68723,11 @@
 	    var toolbar = $("<div class='toolbar'></div>");
 	    toolbar.append("<div class='button-home'></div>");
 	    toolbar.append(new _SwitchView2.default({}).render().el);
+	    var sidebarHeader = $("<div class='side-header'></div>");
+	    sidebarHeader.append("<img class='side-header-img' src='/images/small-header.png'/>");
+	    sidebarHeader.append(toolbar);
 	    var navbarBody = $("<div class='navbar-body'></div>");
-	    navbarBody.append("<div class='side-header'><img class='side-header-img' src='/images/small-header.png'/></div>");
-	    navbarBody.append(toolbar);
-	    // navbarBody.append("<hr class='toolbar-hr'>");
+	    navbarBody.append(sidebarHeader);
 	    navbarBody.append(this.getMenuItems());
 
 	    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
@@ -72664,10 +72666,11 @@
 	    "click .intro-switch-2d": "switchView2d",
 	    "click .intro-switch-3d": "switchView3d"
 	  },
-	  initialize: function initialize() {
+	  initialize: function initialize(options) {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	    _eventController2.default.once(_eventController2.default.SWITCH_VIEWS, _.bind(this.animateDestroy, this));
 	    _eventController2.default.once(_eventController2.default.SET_VIEW, _.bind(this.animateDestroy, this));
+	    this.parentEl = options.parentEl;
 	  },
 	  switchView2d: function switchView2d() {
 	    this.animateDestroy("2d");
@@ -72693,6 +72696,7 @@
 	    }, 1000);
 	  },
 	  destroy: function destroy(whichViewStr) {
+	    this.parentEl.removeClass("intro-view-open");
 	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, whichViewStr);
 	    _eventController2.default.trigger(_eventController2.default.SET_VIEW, whichViewStr);
 	    this.undelegateEvents();

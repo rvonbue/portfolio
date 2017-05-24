@@ -55,10 +55,11 @@ var MobileNavigationBarView = BaseView.extend({
     var toolbar =  $("<div class='toolbar'></div>");
         toolbar.append("<div class='button-home'></div>");
         toolbar.append(new SwitchView({}).render().el);
+    var sidebarHeader = $("<div class='side-header'></div>");
+        sidebarHeader.append("<img class='side-header-img' src='/images/small-header.png'/>");
+        sidebarHeader.append(toolbar);
     var navbarBody = $("<div class='navbar-body'></div>");
-        navbarBody.append("<div class='side-header'><img class='side-header-img' src='/images/small-header.png'/></div>");
-        navbarBody.append(toolbar);
-        // navbarBody.append("<hr class='toolbar-hr'>");
+        navbarBody.append(sidebarHeader);
         navbarBody.append(this.getMenuItems());
 
     this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
