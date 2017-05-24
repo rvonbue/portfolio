@@ -16,8 +16,8 @@
 .button-link,
 .button-menu {
   display: inline-block;
-  width: @button-size;
-  height: @button-size;
+  width: 48px;
+  height: 48px;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -90,10 +90,12 @@
 
 .button-menu {
   position: absolute;
-  background-image: url(../sprites/ic_list_white_48px.svg);
+  background-image: url(../sprites/ic_list_white_64px.svg);
   &:hover {
-    background-image: url(../sprites/ic_list_hover_48px.svg);
+    background-image: url(../sprites/ic_list_hover_64px.svg);
   }
+  width: 64px;
+  height: 64px;
 }
 .button-toggle-menu {
   .button-menu;

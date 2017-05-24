@@ -57059,11 +57059,11 @@
 	    var startView = null;
 	    if (localStorage) startView = localStorage.getItem('startView');
 
-	    if (startView) {
-	      _eventController2.default.trigger(_eventController2.default.SET_VIEW, startView);
-	    } else {
-	      this.$el.append(new _IntroView2.default().render().el);
-	    }
+	    // if ( startView ) {
+	    //   eventController.trigger(eventController.SET_VIEW, startView);
+	    // } else  {
+	    this.$el.append(new _IntroView2.default().render().el);
+	    // }
 	  },
 	  switchViews: function switchViews(whichView) {
 	    if (whichView === "2d") {
@@ -57096,12 +57096,15 @@
 	  toggleSidebar: function toggleSidebar() {
 	    this.$el.toggleClass("sidebar-hide");
 	  },
+	  getSkyGradientHTML: function getSkyGradientHTML() {
+	    var startSkyColor = _utils2.default.getWorldLighting().background.cssSkyGradient;
+	    var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
+	    return skyGradientDiv;
+	  },
 	  render: function render() {
 	    var photoSwipeView = new _PhotoSwipeView2.default({ parentEl: this.$el });
 	    this.$el.append(new _MobileNavigationBarView2.default().render().el);
-	    var startSkyColor = _utils2.default.getWorldLighting().background.cssSkyGradient;
-	    var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
-	    this.$el.append(skyGradientDiv);
+	    this.$el.append(this.getSkyGradientHTML());
 	    return this;
 	  }
 	});
@@ -68676,11 +68679,11 @@
 	    "mouseleave ul>li": "leaveMenuItem",
 	    "click ul>li": "clickme",
 	    "click .button-menu": "toggleSidebar",
-	    "click .button-home": "resetSceneDetails"
+	    "click .button-home": "resetSceneDetails",
+	    "click .sidebar-click-catcher": "toggleSidebar"
 	  },
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    console.log("Init MobileNavigationBarView");
 	  },
 	  toggleSidebar: function toggleSidebar() {
 	    _eventController2.default.trigger(_eventController2.default.TOGGLE_SIDEBAR_VISIBILITY);
@@ -68712,6 +68715,9 @@
 
 	    return html + "</ul>";
 	  },
+	  getSidebarClickCatchHTML: function getSidebarClickCatchHTML() {
+	    return "<div class='sidebar-click-catcher'></div>";
+	  },
 	  render: function render() {
 	    var toolbar = $("<div class='toolbar'></div>");
 	    toolbar.append("<div class='button-home'></div>");
@@ -68724,6 +68730,7 @@
 
 	    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
 	    this.$el.append(navbarBody);
+	    this.$el.append(this.getSidebarClickCatchHTML());
 	    return this;
 	  }
 	});

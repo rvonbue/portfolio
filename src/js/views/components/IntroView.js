@@ -9,10 +9,11 @@ var SwitchView = BaseView.extend({
     "click .intro-switch-2d": "switchView2d",
     "click .intro-switch-3d": "switchView3d",
   },
-  initialize: function () {
+  initialize: function (options) {
     BaseView.prototype.initialize.apply(this, arguments);
     eventController.once(eventController.SWITCH_VIEWS, _.bind(this.animateDestroy, this));
     eventController.once(eventController.SET_VIEW, _.bind(this.animateDestroy, this));
+    this.parentEl = options.parentEl;
   },
   switchView2d: function () {
     this.animateDestroy("2d");
@@ -41,6 +42,7 @@ var SwitchView = BaseView.extend({
 
   },
   destroy: function (whichViewStr) {
+    this.parentEl.removeClass("intro-view-open");
     eventController.trigger(eventController.SWITCH_VIEWS, whichViewStr);
     eventController.trigger(eventController.SET_VIEW, whichViewStr);
     this.undelegateEvents();

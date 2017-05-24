@@ -10,7 +10,7 @@ import IntroView from "./components/IntroView";
 import utils from "../util/utils";
 
 var AppView = BaseView.extend({
-  className: "appview-container",
+  className: "appview-container sidebar-hide",
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
     this.addListeners();
@@ -23,11 +23,12 @@ var AppView = BaseView.extend({
     var startView = null;
     if (localStorage) startView = localStorage.getItem('startView');
 
-    // if ( startView ) {
-    //   eventController.trigger(eventController.SET_VIEW, startView);
-    // } else  {
-      this.$el.append(new IntroView().render().el);
-    // }
+    if ( startView ) {
+      eventController.trigger(eventController.SET_VIEW, startView);
+    } else  {
+      this.$el.addClass("intro-view-open");
+      this.$el.append(new IntroView({ parentEl: this.$el }).render().el);
+    }
   },
   switchViews: function (whichView) {
     if (whichView === "2d") {
