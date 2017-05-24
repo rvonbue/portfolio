@@ -30,7 +30,7 @@ var SwitchView = BaseView.extend({
     this.$el
     .css({
       top: offset.top,
-      right: ($(window).width() - (offset.left + this.$el.outerWidth())),
+      left: offset.left,
       width: this.$el.width(),
       height: this.$el.height()
     })

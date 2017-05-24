@@ -57,6 +57,7 @@ var AppView2d = BaseView.extend({
   render: function () {
     var navigationBar2d = new NavigationBar2d({ parentEl: this.$el });
     this.childViews.push(navigationBar2d);
+    this.$el.append("<div class='img-header'><img src='/images/big-header.png'/></div>");
     this.$el.append(navigationBar2d.render().el);
     this.$el.append(this.bodyEl);
     return this;

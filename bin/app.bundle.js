@@ -68141,6 +68141,7 @@
 	  render: function render() {
 	    var navigationBar2d = new _NavigationBar2d2.default({ parentEl: this.$el });
 	    this.childViews.push(navigationBar2d);
+	    this.$el.append("<div class='img-header'><img src='/images/big-header.png'/></div>");
 	    this.$el.append(navigationBar2d.render().el);
 	    this.$el.append(this.bodyEl);
 	    return this;
@@ -72686,7 +72687,7 @@
 
 	    this.$el.css({
 	      top: offset.top,
-	      right: $(window).width() - (offset.left + this.$el.outerWidth()),
+	      left: offset.left,
 	      width: this.$el.width(),
 	      height: this.$el.height()
 	    }).addClass("animateSwitchView");

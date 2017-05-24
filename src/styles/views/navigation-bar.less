@@ -6,6 +6,7 @@
   width: 100%;
   height: @navigation-bar-height;
   border-bottom: 1px solid @color-4;
+  padding-top: 8px;
   background-color: @color-1;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -17,8 +18,20 @@
   height:10px;
   background-color: @color-5;
 }
+.img-header {
+  max-width: 1024px;
+  margin: auto;
+  > img {
+    width: 100%;
+    padding: 8px 0px;
+    border-bottom: 2px solid @color-4;
+    position: relative;
+    top:3px;
+  }
+}
+
 @media screen and (max-width: @breakPoint1) {
   .navigation-bar {
-    height: @navigation-bar-height-mobile;
+    display: none;
   }
 }
