@@ -122,11 +122,11 @@ var AppView3d = BaseView.extend({
   },
   animate: function (time) {
     this.renderLoop = raf( this.animate );
-    this.statsView.stats.begin();
+    // this.statsView.stats.begin();
     TWEEN.update(time);
     this.controls.update(this.clock.getDelta());
 		this.renderer.render(this.scene, this.camera);
-    this.statsView.stats.end();
+    // this.statsView.stats.end();
   },
   getWidthHeight: function () {
     return {w: this.$el.outerWidth(true), h: this.$el.outerHeight(true) }
@@ -144,8 +144,8 @@ var AppView3d = BaseView.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   renderDev: function () {
-    this.statsView = new StatsView();
-    $("body").append(this.statsView.render().el);
+    // this.statsView = new StatsView();
+    // $("body").append(this.statsView.render().el);
     // var datGui = new DatGuiView();
     //     datGui.render();
   },
