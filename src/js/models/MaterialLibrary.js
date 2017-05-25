@@ -110,10 +110,17 @@ var MaterialLibrary = BaseModel.extend({
 
     return newMaterial;
   },
-  loadMaterial: function (imgSrc) {
-    var material = new THREE.MeshLambertMaterial({
-      map: new THREE.TextureLoader(this.get("manager")).load( imgSrc )
-    });
+  loadMaterial: function (imgSrc, options) {
+    var material;
+    if ( options && options.meshType === 'basic') {
+      material = new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader(this.get("manager")).load( imgSrc )
+      });
+    } else {
+      material = new THREE.MeshLambertMaterial({
+        map: new THREE.TextureLoader(this.get("manager")).load( imgSrc )
+      });
+    }
     return material;
   },
   getCubeImageUrls: function (modelUrlBase) {
@@ -142,7 +149,7 @@ var MaterialLibrary = BaseModel.extend({
   getVideoTexture: function (src) {
     var video = document.createElement( 'video' );
     video.src = src;
-    video.play();
+    video.pause();
     video.loop = true;
 
     var videoTexture = new THREE.VideoTexture( video );

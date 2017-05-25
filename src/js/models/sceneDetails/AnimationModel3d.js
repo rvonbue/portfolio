@@ -1,7 +1,6 @@
 import SceneDetailsBaseModel3d from "./SceneDetailsBaseModel3d";
-import movieScreenJson from "../../data/embeded3dModels/movieScreen.json";
 import commandController from "../../controllers/commandController";
-import { Mesh, PlaneGeometry } from "three";
+import { Mesh, BoxGeometry, PlaneGeometry, MeshLambertMaterial } from "three";
 import eventController from "../../controllers/eventController";
 
 var distance = 5;
@@ -38,7 +37,11 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   },
   addInteractiveObjects: function () {
     SceneDetailsBaseModel3d.prototype.addInteractiveObjects.apply(this, arguments);
-    this.set("interactiveObjects", [this.getMovieScreen()]);
+    this.set("interactiveObjects",
+    [
+      this.getMovieScreen(),
+      this.getYouTubeButton()
+    ]);
   },
   toggleVideoPlayback: function () {
     var videoEl = this.get("interactiveObjects")[0].material.map.image;
@@ -54,13 +57,24 @@ var AnimationModel3d = SceneDetailsBaseModel3d.extend({
   getMovieScreen: function () {
     var size = { w: 16 *.6, h: 9 *.6};
     var mat = commandController.request(commandController.LOAD_VIDEO_TEXTURE, "videos/cyclesDemo.mp4");
-    var mesh = new Mesh( new PlaneGeometry( size.w, size.h ), mat );
-    mesh.position.set(0, 3.25, -8);
-    this.setClickType(mesh);
+    var mesh = new Mesh( new PlaneGeometry( size.w, size.h), mat );
+    mesh.position.set(0, 3.25, -7);
+    this.setClickType(mesh, "video");
+
     return mesh;
   },
-  setClickType: function (mesh) {
-    mesh.clickData = { action: "video" };
+  getYouTubeButton: function () {
+    var size = { w: 2 , h: 1, d: 0.125 };
+    var mat = commandController.request(commandController.LOAD_MATERIAL, "images/3DAnimation/youtube.png", { meshType: "basic" });
+    var mesh = new Mesh( new BoxGeometry( size.w, size.h, size.d ), mat);
+        mesh.clickData= { url: "https://www.youtube.com/watch?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M&v=tNs3_4HyIcM" };
+        mesh.position.set(6.5, 0.75, -7);
+
+    this.setClickType(mesh, "link:ext");
+    return mesh;
+  },
+  setClickType: function (mesh, action) {
+    mesh.clickData = { action: action };
   }
 });
 

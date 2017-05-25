@@ -94,7 +94,10 @@ var SceneSelector = BaseView.extend({
         break;
       case "link":
         var address = window.location.origin + "/" + intersectObject.object.clickData.url;
-        console.log('Address:  ', address);
+        window.open(address);
+        break;
+      case "link:ext":
+        var address = "https://www.youtube.com/watch?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M&v=tNs3_4HyIcM";
         window.open(address);
         break;
       default:

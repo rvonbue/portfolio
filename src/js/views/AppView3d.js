@@ -14,10 +14,6 @@ import LoadingBarView from "./components/LoadingBarView";
 import LinkHighlighterView from "./components/LinkHighlighterView";
 import DatGuiView from "./3d/DatGuiView";
 import StatsView from "./components/statsView";
-// import { CSS3DRenderer, CSS3DObject, Scene } from 'css3drenderer';
-// import css3drenderer from 'css3drenderer';
-// console.log("THREE: ", THREE);
-// console.log("THREE:css3drenderer ", css3drenderer);
 
 var AppView3d = BaseView.extend({
   className: "appView-3d",
@@ -110,7 +106,7 @@ var AppView3d = BaseView.extend({
   },
   addModelsToScene: function (sceneModelArray) {
     _.each(sceneModelArray, function (object3d) {
-      // console.log("object3d", object3d);
+      console.log("object3d", object3d);
       // this.statsView.updateFaceCount(object3d);
       this.scene.add(object3d);
     }, this);

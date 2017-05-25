@@ -2,7 +2,7 @@ import eventController from "../../controllers/eventController";
 import BaseView from "../BaseView";
 var Stats = require("stats-js");
 
-var AppView = BaseView.extend({
+var StatsView = BaseView.extend({
   className: "stats",
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
@@ -11,8 +11,8 @@ var AppView = BaseView.extend({
     this.faceCountEl = $("<div class='face-count'></div>");
     this.stats.setMode(0);
     this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '0px';
-    this.stats.domElement.style.bottom = '0px';
+    this.stats.domElement.style.right = '0px';
+    this.stats.domElement.style.top = '0px';
     this.stats.domElement.style.zIndex = 5;
     // eventController.on(eventController.UPDATE_FACE_COUNT, this.updateFaceCount, this);
     this.faceCountTotal = 0;
@@ -39,4 +39,4 @@ var AppView = BaseView.extend({
   }
 });
 
-module.exports = AppView;
+module.exports = StatsView;
