@@ -66,14 +66,12 @@ var LightControls = BaseView.extend({
     delete options.lightType;
 
     _.each(options, function (val, key) {
-      if (key === "skyColor" || key === "groundColor") {
+      if (key === "skyColor" || key === "groundColor" || key === "color") {
         light[key] = new THREE.Color(val);
       } else {
         light[key] = val;
       }
 
-      console.log("val", val);
-      console.log("key", key);
     });
   },
   getClickLighting: function (sky, ground) {
