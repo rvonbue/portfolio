@@ -5,8 +5,8 @@ import SwitchView from "../components/SwitchView";
 import DatGuiView from "../3d/DatGuiView";
 // import utils from "../../util/utils";
 
-var MobileNavigationBarView = BaseView.extend({
-  className: "mobile-navigation-bar",
+var SidebarView = BaseView.extend({
+  className: "sidebar",
   template: _.template("<li class='hvr-sweep-to-top normal'><a ><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
   events: {
     "mouseenter ul.nav-list>li": "enterMenuItem",
@@ -102,4 +102,4 @@ var MobileNavigationBarView = BaseView.extend({
     return this;
   }
 });
-module.exports = MobileNavigationBarView;
+module.exports = SidebarView;

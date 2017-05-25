@@ -22,19 +22,42 @@ var DatGuiView = BaseView.extend({
     // this.addMaterials(sceneModel.getAllMaterials());
   },
   addWorldLights: function () {
-    console.log("addWorldLights::", utils.getWorldLighting().background.cssSkyGradient);
-    var worldLights = this.gui.addFolder("WorldLights");
-        var cssSkyGradient = worldLights.add(utils.getWorldLighting().background, 'cssSkyGradient')
+    var worldFolder = this.gui.addFolder("WorldLights");
+    var worldLighting = utils.getWorldLighting();
+
+    var cssSkyGradient = worldFolder.add(worldLighting.background, 'cssSkyGradient')
         .min(0)
         .max(23)
         .step(1)
         .name("CSS Background");
 
-        cssSkyGradient.onChange(function(value) {
-          // Fires on every change, drag, keypress, etc.
-          eventController.trigger(eventController.UPDATE_SKY_GRADIENT, value);
-          console.log("onChange", value);
-        });
+    var hemiLightSky = worldFolder.addColor(worldLighting.hemisphere, 'sky')
+        .name("Hemisphere Light: Sky");
+
+    var hemiLightGround = worldFolder.addColor(worldLighting.hemisphere, 'ground')
+        .name("Hemisphere Light: Ground");
+
+    var hemisphereIntensity = worldFolder.add(worldLighting.hemisphere, "intensity")
+    .step(0.05)
+    .min(0)
+    .max(0.75).onChange(function(value) {
+      eventController.trigger(eventController.UPDATE_HEMISPHERE_LIGHT,
+        { intensity: value, lightType: "HemisphereLight"});
+    });
+
+    cssSkyGradient.onChange(function(value) {
+      eventController.trigger(eventController.UPDATE_SKY_GRADIENT, value);
+    });
+
+    hemiLightSky.onChange(function(value) {
+      eventController.trigger(eventController.UPDATE_HEMISPHERE_LIGHT,
+        { skyColor: value, lightType: "HemisphereLight" });
+    });
+
+    hemiLightGround.onChange(function(value) {
+      eventController.trigger(eventController.UPDATE_HEMISPHERE_LIGHT,
+        { groundColor: value, lightType: "HemisphereLight" });
+    });
   },
   addSceneLights: function (ambientLights) {
     var ambientLightFolder = this.gui.addFolder("AmbientLights");
@@ -77,7 +100,7 @@ var DatGuiView = BaseView.extend({
 
   },
   render: function () {
-    this.gui = new Dat.GUI({ autoPlace: false });
+    this.gui = new Dat.GUI({ autoPlace: false, width: 400 });
     this.gui.open();
     this.$el = this.gui.domElement;
     this.addWorldLights();

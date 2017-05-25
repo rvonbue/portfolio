@@ -21,12 +21,14 @@ var LightControls = BaseView.extend({
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
     eventController.on(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
     eventController.on(eventController.UPDATE_SKY_GRADIENT, this.updateSkyGradient, this);
+    eventController.on(eventController.UPDATE_HEMISPHERE_LIGHT, this.updateHemisphereLight, this);
   },
   removeListeners: function () {
     eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
     eventController.off(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
     eventController.off(eventController.UPDATE_SKY_GRADIENT, this.updateSkyGradient, this);
+    eventController.off(eventController.UPDATE_HEMISPHERE_LIGHT, this.updateHemisphereLight, this);
   },
   addLight: function () {
     this.addHemisphereLight();
@@ -57,9 +59,22 @@ var LightControls = BaseView.extend({
     var sky = skyGradients[index][0];
     var ground = skyGradients[index][1];
     var classNames = "sky-gradient" + " sky-gradient-" + index;
-
-    this.toggleWorldLighting( this.getClickLighting(sky, ground));
     this.skyGradientEl.attr("class", classNames);
+  },
+  updateHemisphereLight: function (options) {
+    var light = _.findWhere(this.worldLights, {type: options.lightType});
+    delete options.lightType;
+
+    _.each(options, function (val, key) {
+      if (key === "skyColor" || key === "groundColor") {
+        light[key] = new THREE.Color(val);
+      } else {
+        light[key] = val;
+      }
+
+      console.log("val", val);
+      console.log("key", key);
+    });
   },
   getClickLighting: function (sky, ground) {
     return {

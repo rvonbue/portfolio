@@ -2,7 +2,7 @@ import eventController from "../controllers/eventController";
 import BaseView from "./BaseView";
 import AppView3d from "./AppView3d";
 import AppView2d from "./AppView2d";
-import MobileNavigationBarView from "./components/MobileNavigationBarView";
+import SidebarView from "./components/SidebarView";
 import PhotoSwipeView from "./components/PhotoSwipeView";
 // import SwitchView from "./components/SwitchView";
 import IntroView from "./components/IntroView";
@@ -62,7 +62,7 @@ var AppView = BaseView.extend({
   },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
-    this.$el.append(new MobileNavigationBarView().render().el);
+    this.$el.append(new SidebarView().render().el);
     this.$el.append(this.getSkyGradientHTML());
     return this;
   }
