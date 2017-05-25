@@ -12,9 +12,7 @@ var LightControls = BaseView.extend({
     BaseView.prototype.initialize.apply(this, arguments);
     this.worldLights = [];
     this.skyGradientEl = $(".sky-gradient:first");
-    this.skyGradientElClickNum = worldColor.background.cssSkyGradient;
-    // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
-    this.clickChangeSkyGradient();
+    this.updateSkyGradient(worldColor.background.cssSkyGradient);
     this.addLight();
     this.addListeners();
   },
@@ -22,11 +20,13 @@ var LightControls = BaseView.extend({
     eventController.on(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.on(eventController.RESET_SCENE, this.resetScene, this);
     eventController.on(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
+    eventController.on(eventController.UPDATE_SKY_GRADIENT, this.updateSkyGradient, this);
   },
   removeListeners: function () {
     eventController.off(eventController.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
     eventController.off(eventController.RESET_SCENE, this.resetScene, this);
     eventController.off(eventController.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
+    eventController.off(eventController.UPDATE_SKY_GRADIENT, this.updateSkyGradient, this);
   },
   addLight: function () {
     this.addHemisphereLight();
@@ -53,16 +53,13 @@ var LightControls = BaseView.extend({
       }
     };
   },
-  clickChangeSkyGradient: function (newLightSettings) {
-    if (this.skyGradientElClickNum > 23) this.skyGradientElClickNum = 0 ;
-
-    var sky = skyGradients[this.skyGradientElClickNum][0];
-    var ground = skyGradients[this.skyGradientElClickNum][1];
-    var classNames = "sky-gradient" + " sky-gradient-" + this.skyGradientElClickNum;
+  updateSkyGradient: function (index) {
+    var sky = skyGradients[index][0];
+    var ground = skyGradients[index][1];
+    var classNames = "sky-gradient" + " sky-gradient-" + index;
 
     this.toggleWorldLighting( this.getClickLighting(sky, ground));
     this.skyGradientEl.attr("class", classNames);
-    this.skyGradientElClickNum++;
   },
   getClickLighting: function (sky, ground) {
     return {

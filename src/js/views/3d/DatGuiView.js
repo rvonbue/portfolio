@@ -6,9 +6,6 @@ var animationSpeed = utils.getAnimationSpeed().speed;
 
 var DatGuiView = BaseView.extend({
   className: "dat-gui",
-  events: {
-
-  },
   initialize: function (options) {
     this.addListeners();
   },
@@ -20,10 +17,24 @@ var DatGuiView = BaseView.extend({
 
   },
   loadSceneGui: function ( sceneModel ) {
-    console.log("ambient Lights", sceneModel);
-    // this.addSceneLights(sceneModel.get("sceneDetails").get("sceneLights"));
+    console.log("SceneModel::", sceneModel);
     this.addLightControls(sceneModel.get("sceneDetails").get("sceneLights"));
     // this.addMaterials(sceneModel.getAllMaterials());
+  },
+  addWorldLights: function () {
+    console.log("addWorldLights::", utils.getWorldLighting().background.cssSkyGradient);
+    var worldLights = this.gui.addFolder("WorldLights");
+        var cssSkyGradient = worldLights.add(utils.getWorldLighting().background, 'cssSkyGradient')
+        .min(0)
+        .max(23)
+        .step(1)
+        .name("CSS Background");
+
+        cssSkyGradient.onChange(function(value) {
+          // Fires on every change, drag, keypress, etc.
+          eventController.trigger(eventController.UPDATE_SKY_GRADIENT, value);
+          console.log("onChange", value);
+        });
   },
   addSceneLights: function (ambientLights) {
     var ambientLightFolder = this.gui.addFolder("AmbientLights");
@@ -40,11 +51,11 @@ var DatGuiView = BaseView.extend({
     var pointLights = this.gui.addFolder("PointLights");
 
     lights.forEach( function (light, i) {
-      var lightFolder = pointLights.addFolder("light" + i);
+      var lightFolder = pointLights.addFolder("light-" + i);
           lightFolder.addColor(light, "color");
           lightFolder.add(light, "intensity", 0, 3);
           lightFolder.add(light, "distance", 0, 10);
-          lightFolder.add(light.position, "x");
+          lightFolder.add(light.position, "x", 0, 10);
           lightFolder.add(light.position, "y");
           lightFolder.add(light.position, "z");
     });
@@ -66,7 +77,10 @@ var DatGuiView = BaseView.extend({
 
   },
   render: function () {
-    this.gui = new Dat.GUI();
+    this.gui = new Dat.GUI({ autoPlace: false });
+    this.gui.open();
+    this.$el = this.gui.domElement;
+    this.addWorldLights();
     return this;
   }
 });

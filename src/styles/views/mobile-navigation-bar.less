@@ -51,9 +51,10 @@ ul.nav-list  {
   }
 }
 .toolbar {
-  margin: 6px auto;
+  margin: 18px auto;
   min-height: 50px;
   color: @color-5;
+  width: 75%;
   // border: 1px solid @color-4;
 }
 .side-header {
@@ -98,4 +99,18 @@ hr.toolbar-hr {
   background: @color-1;
   opacity: 0.750;
   z-index: -1;
+}
+.button-home, .button-settings {
+  border-bottom: 2px solid @color-1;
+  &:hover, &.active {
+    border-bottom: 2px solid @color-4;
+  }
+}
+.navbar-body-container {
+  > div {
+    display: none;
+  }
+  > div.show {
+    display: block;
+  }
 }

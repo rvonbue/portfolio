@@ -10,7 +10,7 @@ import IntroView from "./components/IntroView";
 import utils from "../util/utils";
 
 var AppView = BaseView.extend({
-  className: "appview-container sidebar-hide",
+  className: "appview-container",
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
     this.addListeners();

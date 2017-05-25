@@ -12,7 +12,6 @@ import SceneSelector from "./3d/SceneSelector";
 import SceneDetailControlsView from "./3d/controls/SceneDetailControlsView";
 import LoadingBarView from "./components/LoadingBarView";
 import LinkHighlighterView from "./components/LinkHighlighterView";
-import DatGuiView from "./3d/DatGuiView";
 import StatsView from "./components/statsView";
 
 var AppView3d = BaseView.extend({
@@ -106,7 +105,7 @@ var AppView3d = BaseView.extend({
   },
   addModelsToScene: function (sceneModelArray) {
     _.each(sceneModelArray, function (object3d) {
-      console.log("object3d", object3d);
+      // console.log("object3d", object3d);
       // this.statsView.updateFaceCount(object3d);
       this.scene.add(object3d);
     }, this);
@@ -140,10 +139,8 @@ var AppView3d = BaseView.extend({
     eventController.trigger(eventController.ON_RESIZE, size);
   },
   renderDev: function () {
-    // this.statsView = new StatsView();
-    // $("body").append(this.statsView.render().el);
-    // var datGui = new DatGuiView();
-    //     datGui.render();
+    this.statsView = new StatsView();
+    $("body").append(this.statsView.render().el);
   },
   render: function () {
 
@@ -159,7 +156,7 @@ var AppView3d = BaseView.extend({
 
     this.canvasEl = $("<canvas>");
     this.$el.append(this.canvasEl);
-    this.renderDev();
+    // this.renderDev();
 
     return this;
   }
