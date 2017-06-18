@@ -78,7 +78,7 @@
 
 	var _AppView2 = _interopRequireDefault(_AppView);
 
-	var _index = __webpack_require__(114);
+	var _index = __webpack_require__(113);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -56947,7 +56947,10 @@
 	  REMOVE_MODEL_FROM_SCENE: "REMOVE_MODEL_FROM_SCENE",
 
 	  LOAD_JSON_MODEL: "LOAD_JSON_MODEL",
-	  BUILD_SCENE_DETAILS: "BUILD_SCENE_DETAILS"
+	  BUILD_SCENE_DETAILS: "BUILD_SCENE_DETAILS",
+
+	  UPDATE_SKY_GRADIENT: "UPDATE_SKY_GRADIENT",
+	  UPDATE_HEMISPHERE_LIGHT: "UPDATE_HEMISPHERE_LIGHT"
 	};
 
 /***/ },
@@ -57020,19 +57023,19 @@
 
 	var _AppView3d2 = _interopRequireDefault(_AppView3d);
 
-	var _AppView2d = __webpack_require__(91);
+	var _AppView2d = __webpack_require__(86);
 
 	var _AppView2d2 = _interopRequireDefault(_AppView2d);
 
-	var _MobileNavigationBarView = __webpack_require__(105);
+	var _SidebarView = __webpack_require__(100);
 
-	var _MobileNavigationBarView2 = _interopRequireDefault(_MobileNavigationBarView);
+	var _SidebarView2 = _interopRequireDefault(_SidebarView);
 
-	var _PhotoSwipeView = __webpack_require__(108);
+	var _PhotoSwipeView = __webpack_require__(107);
 
 	var _PhotoSwipeView2 = _interopRequireDefault(_PhotoSwipeView);
 
-	var _IntroView = __webpack_require__(112);
+	var _IntroView = __webpack_require__(111);
 
 	var _IntroView2 = _interopRequireDefault(_IntroView);
 
@@ -57046,7 +57049,7 @@
 
 	// import SwitchView from "./components/SwitchView";
 	var AppView = _BaseView2.default.extend({
-	  className: "appview-container sidebar-hide",
+	  className: "appview-container",
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	    this.addListeners();
@@ -57104,7 +57107,7 @@
 	  },
 	  render: function render() {
 	    var photoSwipeView = new _PhotoSwipeView2.default({ parentEl: this.$el });
-	    this.$el.append(new _MobileNavigationBarView2.default().render().el);
+	    this.$el.append(new _SidebarView2.default().render().el);
 	    this.$el.append(this.getSkyGradientHTML());
 	    return this;
 	  }
@@ -57181,38 +57184,29 @@
 
 	var _SceneLoader2 = _interopRequireDefault(_SceneLoader);
 
-	var _SceneSelector = __webpack_require__(79);
+	var _SceneSelector = __webpack_require__(78);
 
 	var _SceneSelector2 = _interopRequireDefault(_SceneSelector);
 
-	var _SceneDetailControlsView = __webpack_require__(80);
+	var _SceneDetailControlsView = __webpack_require__(79);
 
 	var _SceneDetailControlsView2 = _interopRequireDefault(_SceneDetailControlsView);
 
-	var _LoadingBarView = __webpack_require__(82);
+	var _LoadingBarView = __webpack_require__(81);
 
 	var _LoadingBarView2 = _interopRequireDefault(_LoadingBarView);
 
-	var _LinkHighlighterView = __webpack_require__(84);
+	var _LinkHighlighterView = __webpack_require__(83);
 
 	var _LinkHighlighterView2 = _interopRequireDefault(_LinkHighlighterView);
 
-	var _DatGuiView = __webpack_require__(85);
-
-	var _DatGuiView2 = _interopRequireDefault(_DatGuiView);
-
-	var _statsView = __webpack_require__(89);
+	var _statsView = __webpack_require__(84);
 
 	var _statsView2 = _interopRequireDefault(_statsView);
 
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
-
-	// import { CSS3DRenderer, CSS3DObject, Scene } from 'css3drenderer';
-	// import css3drenderer from 'css3drenderer';
-	// console.log("THREE: ", THREE);
-	// console.log("THREE:css3drenderer ", css3drenderer);
 
 	var AppView3d = _BaseView2.default.extend({
 	  className: "appView-3d",
@@ -57333,10 +57327,8 @@
 	    _eventController2.default.trigger(_eventController2.default.ON_RESIZE, size);
 	  },
 	  renderDev: function renderDev() {
-	    // this.statsView = new StatsView();
-	    // $("body").append(this.statsView.render().el);
-	    // var datGui = new DatGuiView();
-	    //     datGui.render();
+	    this.statsView = new _statsView2.default();
+	    $("body").append(this.statsView.render().el);
 	  },
 	  render: function render() {
 
@@ -57348,7 +57340,7 @@
 
 	    this.canvasEl = $("<canvas>");
 	    this.$el.append(this.canvasEl);
-	    this.renderDev();
+	    // this.renderDev();
 
 	    return this;
 	  }
@@ -58579,9 +58571,7 @@
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	    this.worldLights = [];
 	    this.skyGradientEl = $(".sky-gradient:first");
-	    this.skyGradientElClickNum = worldColor.background.cssSkyGradient;
-	    // $(".navigation-bar:first").on("click", _.bind(this.clickChangeSkyGradient, this));
-	    this.clickChangeSkyGradient();
+	    this.updateSkyGradient(worldColor.background.cssSkyGradient);
 	    this.addLight();
 	    this.addListeners();
 	  },
@@ -58589,11 +58579,15 @@
 	    _eventController2.default.on(_eventController2.default.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
 	    _eventController2.default.on(_eventController2.default.RESET_SCENE, this.resetScene, this);
 	    _eventController2.default.on(_eventController2.default.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
+	    _eventController2.default.on(_eventController2.default.UPDATE_SKY_GRADIENT, this.updateSkyGradient, this);
+	    _eventController2.default.on(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, this.updateHemisphereLight, this);
 	  },
 	  removeListeners: function removeListeners() {
 	    _eventController2.default.off(_eventController2.default.TOGGLE_AMBIENT_LIGHTING, this.toggleWorldLighting, this);
 	    _eventController2.default.off(_eventController2.default.RESET_SCENE, this.resetScene, this);
 	    _eventController2.default.off(_eventController2.default.RESET_SCENE_DETAILS, this.resetToSceneDetails, this);
+	    _eventController2.default.off(_eventController2.default.UPDATE_SKY_GRADIENT, this.updateSkyGradient, this);
+	    _eventController2.default.off(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, this.updateHemisphereLight, this);
 	  },
 	  addLight: function addLight() {
 	    this.addHemisphereLight();
@@ -58620,16 +58614,23 @@
 	      }
 	    };
 	  },
-	  clickChangeSkyGradient: function clickChangeSkyGradient(newLightSettings) {
-	    if (this.skyGradientElClickNum > 23) this.skyGradientElClickNum = 0;
-
-	    var sky = _skyGradients2.default[this.skyGradientElClickNum][0];
-	    var ground = _skyGradients2.default[this.skyGradientElClickNum][1];
-	    var classNames = "sky-gradient" + " sky-gradient-" + this.skyGradientElClickNum;
-
-	    this.toggleWorldLighting(this.getClickLighting(sky, ground));
+	  updateSkyGradient: function updateSkyGradient(index) {
+	    var sky = _skyGradients2.default[index][0];
+	    var ground = _skyGradients2.default[index][1];
+	    var classNames = "sky-gradient" + " sky-gradient-" + index;
 	    this.skyGradientEl.attr("class", classNames);
-	    this.skyGradientElClickNum++;
+	  },
+	  updateHemisphereLight: function updateHemisphereLight(options) {
+	    var light = _.findWhere(this.worldLights, { type: options.lightType });
+	    delete options.lightType;
+
+	    _.each(options, function (val, key) {
+	      if (key === "skyColor" || key === "groundColor" || key === "color") {
+	        light[key] = new _three2.default.Color(val);
+	      } else {
+	        light[key] = val;
+	      }
+	    });
 	  },
 	  getClickLighting: function getClickLighting(sky, ground) {
 	    return {
@@ -60315,15 +60316,15 @@
 
 	var _AnimationModel3d2 = _interopRequireDefault(_AnimationModel3d);
 
-	var _DigitalArtModel3d = __webpack_require__(74);
+	var _DigitalArtModel3d = __webpack_require__(73);
 
 	var _DigitalArtModel3d2 = _interopRequireDefault(_DigitalArtModel3d);
 
-	var _ContactModel3d = __webpack_require__(76);
+	var _ContactModel3d = __webpack_require__(75);
 
 	var _ContactModel3d2 = _interopRequireDefault(_ContactModel3d);
 
-	var _AboutMeModel3d = __webpack_require__(77);
+	var _AboutMeModel3d = __webpack_require__(76);
 
 	var _AboutMeModel3d2 = _interopRequireDefault(_AboutMeModel3d);
 
@@ -61146,10 +61147,17 @@
 
 	    return newMaterial;
 	  },
-	  loadMaterial: function loadMaterial(imgSrc) {
-	    var material = new _three2.default.MeshLambertMaterial({
-	      map: new _three2.default.TextureLoader(this.get("manager")).load(imgSrc)
-	    });
+	  loadMaterial: function loadMaterial(imgSrc, options) {
+	    var material;
+	    if (options && options.meshType === 'basic') {
+	      material = new _three2.default.MeshBasicMaterial({
+	        map: new _three2.default.TextureLoader(this.get("manager")).load(imgSrc)
+	      });
+	    } else {
+	      material = new _three2.default.MeshLambertMaterial({
+	        map: new _three2.default.TextureLoader(this.get("manager")).load(imgSrc)
+	      });
+	    }
 	    return material;
 	  },
 	  getCubeImageUrls: function getCubeImageUrls(modelUrlBase) {
@@ -61174,7 +61182,7 @@
 	  getVideoTexture: function getVideoTexture(src) {
 	    var video = document.createElement('video');
 	    video.src = src;
-	    video.play();
+	    video.pause();
 	    video.loop = true;
 
 	    var videoTexture = new _three2.default.VideoTexture(video);
@@ -62324,10 +62332,6 @@
 
 	var _SceneDetailsBaseModel3d2 = _interopRequireDefault(_SceneDetailsBaseModel3d);
 
-	var _movieScreen = __webpack_require__(73);
-
-	var _movieScreen2 = _interopRequireDefault(_movieScreen);
-
 	var _commandController = __webpack_require__(31);
 
 	var _commandController2 = _interopRequireDefault(_commandController);
@@ -62368,7 +62372,7 @@
 	  },
 	  addInteractiveObjects: function addInteractiveObjects() {
 	    _SceneDetailsBaseModel3d2.default.prototype.addInteractiveObjects.apply(this, arguments);
-	    this.set("interactiveObjects", [this.getMovieScreen()]);
+	    this.set("interactiveObjects", [this.getMovieScreen(), this.getYouTubeButton()]);
 	  },
 	  toggleVideoPlayback: function toggleVideoPlayback() {
 	    var videoEl = this.get("interactiveObjects")[0].material.map.image;
@@ -62385,12 +62389,23 @@
 	    var size = { w: 16 * .6, h: 9 * .6 };
 	    var mat = _commandController2.default.request(_commandController2.default.LOAD_VIDEO_TEXTURE, "videos/cyclesDemo.mp4");
 	    var mesh = new _three.Mesh(new _three.PlaneGeometry(size.w, size.h), mat);
-	    mesh.position.set(0, 3.25, -8);
-	    this.setClickType(mesh);
+	    mesh.position.set(0, 3.25, -7);
+	    this.setClickType(mesh, "video");
+
 	    return mesh;
 	  },
-	  setClickType: function setClickType(mesh) {
-	    mesh.clickData = { action: "video" };
+	  getYouTubeButton: function getYouTubeButton() {
+	    var size = { w: 2, h: 1, d: 0.125 };
+	    var mat = _commandController2.default.request(_commandController2.default.LOAD_MATERIAL, "images/3DAnimation/youtube.png", { meshType: "basic" });
+	    var mesh = new _three.Mesh(new _three.BoxGeometry(size.w, size.h, size.d), mat);
+	    mesh.clickData = { url: "https://www.youtube.com/watch?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M&v=tNs3_4HyIcM" };
+	    mesh.position.set(6.5, 0.75, -7);
+
+	    this.setClickType(mesh, "link:ext");
+	    return mesh;
+	  },
+	  setClickType: function setClickType(mesh, action) {
+	    mesh.clickData = { action: action };
 	  }
 	});
 
@@ -62399,47 +62414,6 @@
 
 /***/ },
 /* 73 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	    "name": "Cube.033Geometry.4",
-	    "normals": [0,0,1],
-	    "metadata": {
-	        "version": 3,
-	        "normals": 1,
-	        "materials": 1,
-	        "vertices": 4,
-	        "type": "Geometry",
-	        "generator": "io_three",
-	        "uvs": 1,
-	        "faces": 1
-	    },
-	    "vertices": [-5.31428,1.52913,-3.80657,-5.31428,7.50785,-3.80657,5.31456,7.50785,-3.80657,5.31456,1.52913,-3.80657],
-	    "materials": [{
-	        "wireframe": false,
-	        "depthTest": true,
-	        "DbgColor": 15658734,
-	        "DbgName": "movieScreen",
-	        "shading": "phong",
-	        "colorDiffuse": [0.64,0.64,0.64],
-	        
-	        "specularCoef": 50,
-	        "opacity": 1,
-	        "blending": "NormalBlending",
-	        "transparent": false,
-	        "colorSpecular": [0.5,0.5,0.5],
-	        "visible": true,
-	        "DbgIndex": 0,
-	        "depthWrite": true,
-	        "colorEmissive": [0,0,0]
-	    }],
-	    "uvs": [[9.5e-05,0.898487,9.5e-05,9.5e-05,0.999905,9.5e-05,0.999905,0.898487]],
-	    "faces": [43,1,0,3,2,0,0,1,2,3,0,0,0,0]
-	}
-
-
-/***/ },
-/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -62452,7 +62426,7 @@
 
 	var _SceneDetailsBaseModel3d2 = _interopRequireDefault(_SceneDetailsBaseModel3d);
 
-	var _digitalArt = __webpack_require__(75);
+	var _digitalArt = __webpack_require__(74);
 
 	var _digitalArt2 = _interopRequireDefault(_digitalArt);
 
@@ -62550,7 +62524,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62583,7 +62557,7 @@
 	}];
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -62626,7 +62600,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -62639,7 +62613,7 @@
 
 	var _eventController2 = _interopRequireDefault(_eventController);
 
-	var _aboutMeData = __webpack_require__(78);
+	var _aboutMeData = __webpack_require__(77);
 
 	var _aboutMeData2 = _interopRequireDefault(_aboutMeData);
 
@@ -62837,7 +62811,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62845,7 +62819,7 @@
 	module.exports = [{ "src": "images/aboutMe/", "name": "backbone(backbonejs.org)", "dimensions": { "width": 300, "height": 63, "type": "png" }, "linkUrl": "backbonejs.org" }, { "src": "images/aboutMe/", "name": "blender(blender.org)", "dimensions": { "width": 300, "height": 87, "type": "png" }, "linkUrl": "blender.org" }, { "src": "images/aboutMe/", "name": "gulp(gulpjs.com)", "dimensions": { "width": 270, "height": 576, "type": "png" }, "linkUrl": "gulpjs.com" }, { "src": "images/aboutMe/", "name": "html5Badge(html5.org)", "dimensions": { "width": 288, "height": 79, "type": "png" }, "linkUrl": "html5.org" }, { "src": "images/aboutMe/", "name": "less(lesscss.org)", "dimensions": { "width": 199, "height": 90, "type": "png" }, "linkUrl": "lesscss.org" }, { "src": "images/aboutMe/", "name": "lodash(lodash.com)", "dimensions": { "width": 300, "height": 300, "type": "png" }, "linkUrl": "lodash.com" }, { "src": "images/aboutMe/", "name": "LogojQuery(jquery.com)", "dimensions": { "width": 300, "height": 135, "type": "png" }, "linkUrl": "jquery.com" }, { "src": "images/aboutMe/", "name": "npm(npmjs.com)", "dimensions": { "width": 225, "height": 225, "type": "png" }, "linkUrl": "npmjs.com" }, { "src": "images/aboutMe/", "name": "ReactJS(facebook.github.io)", "dimensions": { "width": 300, "height": 300, "type": "png" }, "linkUrl": "facebook.github.io" }, { "src": "images/aboutMe/", "name": "threejs(threejs.org)", "dimensions": { "width": 213, "height": 51, "type": "png" }, "linkUrl": "threejs.org" }, { "src": "images/aboutMe/", "name": "underscore(underscorejs.org)", "dimensions": { "width": 300, "height": 61, "type": "png" }, "linkUrl": "underscorejs.org" }, { "src": "images/aboutMe/", "name": "webpack(webpack.github.io)", "dimensions": { "width": 300, "height": 104, "type": "png" }, "linkUrl": "webpack.github.io" }];
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -62959,7 +62933,10 @@
 	        break;
 	      case "link":
 	        var address = window.location.origin + "/" + intersectObject.object.clickData.url;
-	        console.log('Address:  ', address);
+	        window.open(address);
+	        break;
+	      case "link:ext":
+	        var address = "https://www.youtube.com/watch?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M&v=tNs3_4HyIcM";
 	        window.open(address);
 	        break;
 	      default:
@@ -63219,7 +63196,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -63232,7 +63209,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _sceneDetailControls = __webpack_require__(81);
+	var _sceneDetailControls = __webpack_require__(80);
 
 	var _sceneDetailControls2 = _interopRequireDefault(_sceneDetailControls);
 
@@ -63316,7 +63293,7 @@
 	module.exports = SceneDetailControlsView;
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -63329,7 +63306,7 @@
 
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -63338,7 +63315,7 @@
 
 	var _eventController2 = _interopRequireDefault(_eventController);
 
-	var _LoadingBarView = __webpack_require__(83);
+	var _LoadingBarView = __webpack_require__(82);
 
 	var _LoadingBarView2 = _interopRequireDefault(_LoadingBarView);
 
@@ -63402,7 +63379,7 @@
 	module.exports = LoadingBarView;
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -63415,7 +63392,7 @@
 
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -63472,7 +63449,786 @@
 	module.exports = LinkHighlighterView;
 
 /***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _eventController = __webpack_require__(28);
+
+	var _eventController2 = _interopRequireDefault(_eventController);
+
+	var _BaseView = __webpack_require__(35);
+
+	var _BaseView2 = _interopRequireDefault(_BaseView);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var Stats = __webpack_require__(85);
+
+	var StatsView = _BaseView2.default.extend({
+	  className: "stats",
+	  initialize: function initialize() {
+	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	    _.bindAll(this, "render");
+	    this.stats = new Stats();
+	    this.faceCountEl = $("<div class='face-count'></div>");
+	    this.stats.setMode(0);
+	    this.stats.domElement.style.position = 'absolute';
+	    this.stats.domElement.style.right = '0px';
+	    this.stats.domElement.style.top = '0px';
+	    this.stats.domElement.style.zIndex = 5;
+	    // eventController.on(eventController.UPDATE_FACE_COUNT, this.updateFaceCount, this);
+	    this.faceCountTotal = 0;
+	  },
+	  updateFaceCount: function updateFaceCount(object3d) {
+	    // console.log("object3d", object3d);
+	    // if (object3d.type === "Mesh") {
+	    //   var groups = object3d.geometry.groups
+	    //   if ( groups ) {
+	    //     groups.forEach( function (item, i) {
+	    //       if (i === groups.length - 1) {
+	    //         this.faceCountEl.text(item.start);
+	    //       }
+	    //         console.log("item", item.start);
+	    //     }, this);
+	    //   }
+	    // }
+	  },
+	  render: function render() {
+	    console.log("this.stats", this.stats);
+	    this.$el.append(this.stats.domElement);
+	    this.$el.append(this.faceCountEl);
+	    return this;
+	  }
+	});
+
+	module.exports = StatsView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
 /* 85 */
+/***/ function(module, exports) {
+
+	// stats.js - http://github.com/mrdoob/stats.js
+	var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,r=0,s=0,f=document.createElement("div");f.id="stats";f.addEventListener("mousedown",function(b){b.preventDefault();t(++s%2)},!1);f.style.cssText="width:80px;opacity:0.9;cursor:pointer";var a=document.createElement("div");a.id="fps";a.style.cssText="padding:0 0 3px 3px;text-align:left;background-color:#002";f.appendChild(a);var i=document.createElement("div");i.id="fpsText";i.style.cssText="color:#0ff;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px";
+	i.innerHTML="FPS";a.appendChild(i);var c=document.createElement("div");c.id="fpsGraph";c.style.cssText="position:relative;width:74px;height:30px;background-color:#0ff";for(a.appendChild(c);74>c.children.length;){var j=document.createElement("span");j.style.cssText="width:1px;height:30px;float:left;background-color:#113";c.appendChild(j)}var d=document.createElement("div");d.id="ms";d.style.cssText="padding:0 0 3px 3px;text-align:left;background-color:#020;display:none";f.appendChild(d);var k=document.createElement("div");
+	k.id="msText";k.style.cssText="color:#0f0;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px";k.innerHTML="MS";d.appendChild(k);var e=document.createElement("div");e.id="msGraph";e.style.cssText="position:relative;width:74px;height:30px;background-color:#0f0";for(d.appendChild(e);74>e.children.length;)j=document.createElement("span"),j.style.cssText="width:1px;height:30px;float:left;background-color:#131",e.appendChild(j);var t=function(b){s=b;switch(s){case 0:a.style.display=
+	"block";d.style.display="none";break;case 1:a.style.display="none",d.style.display="block"}};return{REVISION:12,domElement:f,setMode:t,begin:function(){l=Date.now()},end:function(){var b=Date.now();g=b-l;n=Math.min(n,g);o=Math.max(o,g);k.textContent=g+" MS ("+n+"-"+o+")";var a=Math.min(30,30-30*(g/200));e.appendChild(e.firstChild).style.height=a+"px";r++;b>m+1E3&&(h=Math.round(1E3*r/(b-m)),p=Math.min(p,h),q=Math.max(q,h),i.textContent=h+" FPS ("+p+"-"+q+")",a=Math.min(30,30-30*(h/100)),c.appendChild(c.firstChild).style.height=
+	a+"px",m=b,r=0);return b},update:function(){l=this.end()}}};"object"===typeof module&&(module.exports=Stats);
+
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _eventController = __webpack_require__(28);
+
+	var _eventController2 = _interopRequireDefault(_eventController);
+
+	var _commandController = __webpack_require__(31);
+
+	var _commandController2 = _interopRequireDefault(_commandController);
+
+	var _BaseView = __webpack_require__(35);
+
+	var _BaseView2 = _interopRequireDefault(_BaseView);
+
+	var _NavigationBar2d = __webpack_require__(87);
+
+	var _NavigationBar2d2 = _interopRequireDefault(_NavigationBar2d);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var viewArray = [__webpack_require__(88), __webpack_require__(92), __webpack_require__(94), __webpack_require__(96), __webpack_require__(98)];
+
+	var AppView2d = _BaseView2.default.extend({
+	  className: "appView-2d",
+	  parentClass: "twoD",
+	  initialize: function initialize(options) {
+	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	    this.parentEl = options.parentEl;
+	    this.bodyEl = $("<div class='view-body-2d'></div>");
+	    this.currentViewIndex = null;
+	    this.addListeners();
+
+	    viewArray.forEach(function (view, i) {
+	      this.childViews.push({ view: null });
+	    }, this);
+
+	    this.setSection(this.getSectionView());
+	  },
+	  addListeners: function addListeners() {
+	    _eventController2.default.on(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
+	  },
+	  removeListeners: function removeListeners() {
+	    _eventController2.default.off(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
+	  },
+	  getSectionView: function getSectionView() {
+	    return _commandController2.default.request(_commandController2.default.GET_SELECTED_SECTION);
+	  },
+	  setSection: function setSection(index) {
+	    index = index ? index : 0;
+
+	    if (this.childViews[index].view === null) {
+	      var new2dView = new viewArray[index]();
+	      this.childViews[index].view = new2dView;
+	      this.bodyEl.append(new2dView.render().el);
+	      new2dView.show();
+	    } else {
+	      this.childViews[index].view.show();
+	    }
+	    this.currentViewIndex = index;
+	  },
+	  switchPage: function switchPage(index) {
+	    if (this.currentViewIndex === index) return;
+	    this.childViews[this.currentViewIndex].view.hide();
+	    this.setSection(index);
+	  },
+	  render: function render() {
+	    var navigationBar2d = new _NavigationBar2d2.default({ parentEl: this.$el });
+	    this.childViews.push(navigationBar2d);
+	    this.$el.append("<div class='img-header'><img src='/images/big-header.png'/></div>");
+	    this.$el.append(navigationBar2d.render().el);
+	    this.$el.append(this.bodyEl);
+	    return this;
+	  }
+	});
+
+	module.exports = AppView2d;
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _eventController = __webpack_require__(28);
+
+	var _eventController2 = _interopRequireDefault(_eventController);
+
+	var _commandController = __webpack_require__(31);
+
+	var _commandController2 = _interopRequireDefault(_commandController);
+
+	var _BaseView = __webpack_require__(35);
+
+	var _BaseView2 = _interopRequireDefault(_BaseView);
+
+	var _navigationList = __webpack_require__(49);
+
+	var _navigationList2 = _interopRequireDefault(_navigationList);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var NavigationBar2d = _BaseView2.default.extend({
+	  className: "navigation-bar",
+	  template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
+	  events: {
+	    "click li": "clickSelected",
+	    "mouseenter li": "enterHoverNavigationLi",
+	    "mouseleave li": "leaveHoverNavigationLi"
+	  },
+	  initialize: function initialize(options) {
+	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	    _.bindAll(this, "getSelectedSection");
+	    this.parentEl = options.parentEl;
+	    this.height = 45;
+	  },
+	  addListeners: function addListeners() {
+	    console.log("addListeners:NavigationBar");
+	    _eventController2.default.on(_eventController2.default.RESET_SCENE, this.resetScene, this);
+	    // eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
+	    _eventController2.default.on(_eventController2.default.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
+	    _commandController2.default.reply(_commandController2.default.GET_SELECTED_SECTION, this.getSelectedSection);
+	  },
+	  removeListeners: function removeListeners() {
+	    console.log("removeListeners:NavigationBar");
+	    _eventController2.default.off(_eventController2.default.RESET_SCENE, this.resetScene, this);
+	    // eventController.off(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
+	    _eventController2.default.off(_eventController2.default.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
+	    _commandController2.default.stopReplying(_commandController2.default.GET_SELECTED_SECTION, this.getSelectedSection);
+	  },
+	  cacheListEls: function cacheListEls() {
+	    var navEljq = this.$el.find("li");
+	    this.navEls = {};
+	    _.each(_navigationList2.default, function (navListObj, i) {
+	      this.navEls[navListObj.name] = $(navEljq[i]);
+	    }, this);
+	  },
+	  getSelectedSection: function getSelectedSection() {
+	    if (this.selectedEl) return this.selectedEl.index();
+	    return 0;
+	  },
+	  // updateHoverNavigationFrom3d: function (closestObject) {
+	  //   console.log("updateHoverNavigationFrom3d");
+	  //   if (!closestObject || (closestObject && !this.navEls[closestObject.object.name])) {
+	  //     var updateCursor = closestObject ? true : false;
+	  //     this.updateHoverMouseCursor(updateCursor);
+	  //     this.unsetHoverEl();
+	  //     return;
+	  //   }
+	  //
+	  //   if (this.hoveredEl && closestObject ) {
+	  //     this.swapHoveredEl(this.navEls[closestObject.object.name]);
+	  //   } else if (this.hoveredEl) {
+	  //     this.unsetHoverEl();
+	  //   } else {
+	  //     this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
+	  //   }
+	  //
+	  //   var hoveredBool = this.hoveredEl ? true : false;
+	  // },
+	  unsetHoverEl: function unsetHoverEl() {
+	    if (this.hoveredEl) {
+	      this.hoveredEl.removeClass("hovered");
+	      this.hoveredEl = null;
+	    }
+	  },
+	  enterHoverNavigationLi: function enterHoverNavigationLi(evt) {
+	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[$(evt.currentTarget).index()], true);
+	  },
+	  leaveHoverNavigationLi: function leaveHoverNavigationLi(evt) {
+	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[$(evt.currentTarget).index()], false);
+	  },
+	  swapSelectedEl: function swapSelectedEl(newSelectedEl) {
+	    if (!newSelectedEl) return;
+	    if (this.selectedEl) this.selectedEl.removeClass("selected");
+	    this.selectedEl = newSelectedEl.addClass("selected");
+	  },
+	  swapHoveredEl: function swapHoveredEl(newSelectedEl) {
+	    if (!newSelectedEl || this.hoveredEl === newSelectedEl) return;
+	    if (this.hoveredEl) this.hoveredEl.removeClass("hovered");
+	    this.hoveredEl = newSelectedEl.addClass("hovered");
+	  },
+	  clickSelected: function clickSelected(evt) {
+	    var currentTarget = $(evt.currentTarget);
+	    var index = currentTarget.closest("li").index();
+
+	    this.swapSelectedEl(currentTarget);
+	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, index);
+	  },
+	  setSelectedFrom3d: function setSelectedFrom3d(sceneModel) {
+	    this.swapSelectedEl(this.navEls[sceneModel.name]);
+	  },
+	  resetScene: function resetScene() {
+	    _.each(this.navEls, function (el) {
+	      el.removeClass("hovered selected");
+	    });
+	  },
+	  getCssMenu: function getCssMenu() {
+	    var cssMenu = "<div id='cssmenu'><ul>";
+
+	    _.each(_navigationList2.default, function (navListObj, i) {
+	      cssMenu += this.template({ displayTitle: navListObj.name.toUpperCase(), i: i });
+	    }, this);
+
+	    cssMenu += "</ul></div>";
+	    return cssMenu;
+	  },
+	  render: function render() {
+	    this.$el.append(this.getCssMenu());
+	    this.cacheListEls();
+
+	    return this;
+	  }
+	});
+
+	module.exports = NavigationBar2d;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _BaseView2d = __webpack_require__(89);
+
+	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
+
+	var _WebDevProjects = __webpack_require__(90);
+
+	var _WebDevProjects2 = _interopRequireDefault(_WebDevProjects);
+
+	var _WebDevViewTemplate = __webpack_require__(91);
+
+	var _WebDevViewTemplate2 = _interopRequireDefault(_WebDevViewTemplate);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var WebDevView2d = _BaseView2d2.default.extend({
+	  className: "web-dev",
+	  title: "Web Development",
+	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
+	  render: function render() {
+	    this.$el.append(this.titleTemplate({ title: this.title }));
+
+	    _.each(_WebDevProjects2.default, function (templateData, i) {
+	      var newProjectContainer = _.template((0, _WebDevViewTemplate2.default)(templateData));
+	      this.$el.append(newProjectContainer);
+	      if (i !== _WebDevProjects2.default.length - 1) this.$el.append("<hr/>");
+	    }, this);
+	    return this;
+	  }
+	});
+
+	module.exports = WebDevView2d;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var BaseView2d = Backbone.View.extend({
+	  childViews: [],
+	  className: "Default",
+	  title: "Default",
+	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
+	  initialize: function initialize() {
+	    this.$el.hide();
+	    var self = this;
+
+	    this.$el.on("click", "img", function () {
+	      self.openPhotoSwipe(this);
+	    });
+	  },
+	  hide: function hide() {
+	    this.$el.fadeOut();
+	    // this.removeListeners();
+	  },
+	  openPhotoSwipe: function openPhotoSwipe(el) {
+	    eventController.trigger(eventController.OPEN_PHOTO_SWIPE, [{ src: $(el).data("imgsrc"), w: 1920, h: 1080 }]);
+	  },
+	  show: function show() {
+	    this.$el.delay(400).fadeIn();
+	    // this.addListeners();
+	  },
+	  addListeners: function addListeners() {},
+	  removeListeners: function removeListeners() {},
+	  close: function close() {
+	    this.remove();
+	  }
+	});
+
+	module.exports = BaseView2d;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 90 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = [{
+	   title: "Network Search Visualization",
+	   thumbSrc: "/images/webDev/NSVthumb.jpg",
+	   website: { title: "Network Search Website", url: "http://faculty.nps.edu/dl/networkVisualization/" },
+	   imgSrc: "/images/webDev/NSV1920x1080.png",
+	   description: "I created this standalone app for the Naval Postgraduate School. It is a data visualization tool that shows the connections of different networks. It was made so you can upload .gexf files and view them graphically instead of looking at a spreadsheet.  The NSV app lets you run algorigthms to see which one uncovers the network faster. It is able to visualize thousands of nodes ands connections while still animating fluidly on three different views."
+	}, {
+	   title: "Spring Pendulum",
+	   thumbSrc: "/images/webDev/SpringPendulumthumb.jpg",
+	   imgSrc: "/images/webDev/SpringPendulum1920x1080.png",
+	   website: { title: "Spring Pendulum Website", url: "http://faculty.nps.edu/dl/springPendulum/#Sample1" },
+	   description: " I created this 3d Simulation for the Physics Department at Naval Postgraduate School. This app uses real life physics data that was collected by proffesors ay the university. Once they had recored the data this app could parse the results and create a realistic physics simulation.  There are controls to toggle experiment such as playback speed, physics controls, and camera controls."
+	}, {
+	   title: "Monterey Phoenix (Firebird)",
+	   thumbSrc: "/images/webDev/MPthumb.jpg",
+	   imgSrc: "/images/webDev/MP1920x1080.png",
+	   website: { title: "Monterey Phoenix Firebird", url: "http://firebird.nps.edu/" },
+	   aboutLinks: ["https://wiki.nps.edu/display/MP", "https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf"],
+	   description: "I was part of the team the created an online editor for the " + "<a href='https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf'>Monterey Phoenix language</a>" + " called Firebird. The language was created and developed by Mikhail Augston an Associate Proffesor at the department Computer Science. Among other things I updated the rendering engine to PIXI.js and worked on the front-end development."
+	}, {
+	   title: "Hurricane Simulation",
+	   thumbSrc: "/images/webDev/hurricaneSimthumb.jpg",
+	   imgSrc: "/images/webDev/hurricaneSim.png",
+	   website: { title: "Hurricane Simulator", url: "https://eddy.nps.edu/hurricaneSim/simulation" },
+	   description: "The Hurricane Decision Simulator provides decision makers with experience and practice in dealing with simulated storm variations, interpreting forecast details, and making critical decisions. On this project I worked mainly on the front-end development. This was one of the most interesting projects I have worked on.  Some of the project restrictions were resolution max of 1024 x 768 and it must be compatable with IE7."
+	}];
+
+/***/ },
+/* 91 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class="project-container">\n  <div class="text-wrapper">\n    <div class="project-title">'+
+	((__t=( title ))==null?'':__t)+
+	'</div>\n    <p>'+
+	((__t=( description ))==null?'':__t)+
+	'</p>\n    <div class="link-container">\n      <a href="'+
+	((__t=( website.url ))==null?'':__t)+
+	'" target="_blank">\n        <div class="button-link"></div>\n        Public Site: '+
+	((__t=( website.title ))==null?'':__t)+
+	'\n      </a>\n    </div>\n  </div>\n  <div class="img-wrapper">\n    <img src="'+
+	((__t=( thumbSrc ))==null?'':__t)+
+	'"  data-imgsrc="'+
+	((__t=( imgSrc ))==null?'':__t)+
+	'"/>\n    <div class="hover-zoom">\n      <div class="button-zoom"></div>\n    </div>\n  </div>\n</div>\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _BaseView2d = __webpack_require__(89);
+
+	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
+
+	var _ThreeDAnimationViewTemplate = __webpack_require__(93);
+
+	var _ThreeDAnimationViewTemplate2 = _interopRequireDefault(_ThreeDAnimationViewTemplate);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var ThreeDAnimationView = _BaseView2d2.default.extend({
+	  className: "animation-3d",
+	  title: "3D Animation",
+	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
+	  initialize: function initialize() {
+	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
+	  },
+	  render: function render() {
+	    this.$el.append(this.titleTemplate({ title: this.title }));
+	    this.$el.append(_ThreeDAnimationViewTemplate2.default);
+	    return this;
+	  }
+	});
+	// import pageData from "../../data/pageData/3dAnimation";
+
+
+	module.exports = ThreeDAnimationView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 93 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class="project-container animation">\n  <p class=\'animation-intro\'>Below is collection of my favorite animations from 2016. I used <a href=\'http://www.blender.org\'>Blender</a> to render\n    all the 3d graphics. Adobe Affter affects was used to composite the video and add the audio. My current system that was used to render these videos\n    is a Windows 8, Intel i7 -3930k CPU, with two GTX 970\'s GPU\'s. Below is a link to my YouTube portfolio. The first video in the playlist is my "Blender cycles 2016 Demo" and is rendered in 720p resolution.\n  </p>\n    <iframe width="560" height="315" style="background-color: black;" src="https://www.youtube.com/embed/videoseries?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M" frameborder="0" allowfullscreen></iframe>\n</div>\n<hr/>\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _BaseView2d = __webpack_require__(89);
+
+	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
+
+	var _digitalArt = __webpack_require__(74);
+
+	var _digitalArt2 = _interopRequireDefault(_digitalArt);
+
+	var _digitalArtViewTemplate = __webpack_require__(95);
+
+	var _digitalArtViewTemplate2 = _interopRequireDefault(_digitalArtViewTemplate);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var DigitalArtView = _BaseView2d2.default.extend({
+	  className: "digital-art",
+	  title: "Digital Art",
+	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
+	  initialize: function initialize() {
+	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
+	  },
+	  render: function render() {
+	    this.$el.append(this.titleTemplate({ title: this.title }));
+	    _.each(_digitalArt2.default, function (templateData) {
+	      this.$el.append(_.template((0, _digitalArtViewTemplate2.default)(templateData)));
+	    }, this);
+	    return this;
+	  }
+	});
+
+	module.exports = DigitalArtView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 95 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class="project-container">\n  <div class="project-title">'+
+	((__t=( title ))==null?'':__t)+
+	'</div>\n  <p>'+
+	((__t=( description ))==null?'':__t)+
+	'</p>\n  <div class="img-wrapper">\n    <img src="'+
+	((__t=( thumbSrc ))==null?'':__t)+
+	'"  data-imgsrc="'+
+	((__t=( imgSrc ))==null?'':__t)+
+	'"/>\n    <div class="hover-zoom">\n      <div class="button-zoom"></div>\n    </div>\n  </div>\n</div>\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _BaseView2d = __webpack_require__(89);
+
+	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
+
+	var _digitalArt = __webpack_require__(74);
+
+	var _digitalArt2 = _interopRequireDefault(_digitalArt);
+
+	var _aboutMeView = __webpack_require__(97);
+
+	var _aboutMeView2 = _interopRequireDefault(_aboutMeView);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var AboutMeView = _BaseView2d2.default.extend({
+	  className: "about-me",
+	  title: "Skills/Resume",
+	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
+	  initialize: function initialize() {
+	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
+	  },
+	  render: function render() {
+	    this.$el.append(this.titleTemplate({ title: this.title }));
+	    this.$el.append(_aboutMeView2.default);
+	    return this;
+	  }
+	});
+
+	module.exports = AboutMeView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 97 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class="project-container">\r\n  <img class="profile-pic" src="/images/aboutMe/RickVpic.jpg"></img>\r\n  <div class="project-title">About Me</div>\r\n  <p class="about-me-intro">\r\n     I\'m Rick von Buelow and this is my portfolio site.  I have been a full time Web Developer for 3 years. My passion is on front end development.  My second passion is 3d Modeling and creating motion graphics. That is why I created my portfolio site in 2d and 3d. I like working on jobs that require me to use as many of my different skills as possible. Below is a link to my resume. My contact information is avaible in my resume. Thanks for taking the time to check out my portfolio website. You can fork/view this website code on github <a href="https://github.com/rvonbue/portfolio" target="_blank" style="font-size:100%;">here</a> </p>\r\n   <div class="link-wrapper">\r\n     <div class="button-file"></div>\r\n     <a href="other/Resume-RichardvonBuelowDec2016.pdf">Resume.pdf</a>\r\n   </div>\r\n   <div class="link-wrapper">\r\n     <div class="button-file"></div>\r\n     <a href="other/Resume-RichardvonBuelowDec2016.docx">Resume.docx</a>\r\n   </div>\r\n</div>\r\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _BaseView2d = __webpack_require__(89);
+
+	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
+
+	var _digitalArt = __webpack_require__(74);
+
+	var _digitalArt2 = _interopRequireDefault(_digitalArt);
+
+	var _contactView = __webpack_require__(99);
+
+	var _contactView2 = _interopRequireDefault(_contactView);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var ContactView = _BaseView2d2.default.extend({
+	  className: "contact",
+	  title: "Contact Info",
+	  initialize: function initialize() {
+	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
+	  },
+	  render: function render() {
+	    this.$el.append(this.titleTemplate({ title: this.title }));
+	    this.$el.append(_contactView2.default);
+	    return this;
+	  }
+	});
+
+	module.exports = ContactView;
+
+/***/ },
+/* 99 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class="link-container">\n  <a href="mailto:rvonbue@gmail.com">\n    <img src="/images/contact/ic_mail_outline_black_48px.svg"/>\n    rvonbue@gmail.com\n  </a>\n  <a href="https://www.linkedin.com/in/rick-von-buelow-270314103" target="_blank">\n    <img src="/images/contact/linkedin_44x36.png"/>\n    Linked In\n  </a>\n</div>\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+
+	var _eventController = __webpack_require__(28);
+
+	var _eventController2 = _interopRequireDefault(_eventController);
+
+	var _BaseView = __webpack_require__(35);
+
+	var _BaseView2 = _interopRequireDefault(_BaseView);
+
+	var _navigationList = __webpack_require__(49);
+
+	var _navigationList2 = _interopRequireDefault(_navigationList);
+
+	var _SwitchView = __webpack_require__(101);
+
+	var _SwitchView2 = _interopRequireDefault(_SwitchView);
+
+	var _DatGuiView = __webpack_require__(103);
+
+	var _DatGuiView2 = _interopRequireDefault(_DatGuiView);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	// import utils from "../../util/utils";
+
+	var SidebarView = _BaseView2.default.extend({
+	  className: "sidebar",
+	  template: _.template("<li class='hvr-sweep-to-top normal'><a ><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
+	  events: {
+	    "mouseenter ul.nav-list>li": "enterMenuItem",
+	    "mouseleave ul.nav-list>li": "leaveMenuItem",
+	    "click ul.nav-list>li": "clickme",
+	    "click .button-menu": "toggleSidebar",
+	    "click .button-home": "showNavList",
+	    "click .button-settings": "show3dSettings",
+	    "click .sidebar-click-catcher": "toggleSidebar"
+	  },
+	  initialize: function initialize() {
+	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	  },
+	  toggleSidebar: function toggleSidebar() {
+	    _eventController2.default.trigger(_eventController2.default.TOGGLE_SIDEBAR_VISIBILITY);
+	  },
+	  enterMenuItem: function enterMenuItem(evt) {
+	    this.enterHoverNavigationLi($(evt.currentTarget).index());
+	  },
+	  leaveMenuItem: function leaveMenuItem(evt) {
+	    this.leaveHoverNavigationLi($(evt.currentTarget).index());
+	  },
+	  clickme: function clickme(evt) {
+	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, $(evt.currentTarget).closest("li").index());
+	  },
+	  showNavList: function showNavList(evt) {
+	    var el = $(evt.currentTarget);
+	    this.swapSelectedSubmenu(el);
+	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE);
+	  },
+	  show3dSettings: function show3dSettings(evt) {
+	    var el = $(evt.currentTarget);
+	    this.swapSelectedSubmenu(el);
+	  },
+	  enterHoverNavigationLi: function enterHoverNavigationLi(index) {
+	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[index], true);
+	  },
+	  leaveHoverNavigationLi: function leaveHoverNavigationLi() {
+	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR);
+	  },
+	  swapSelectedSubmenu: function swapSelectedSubmenu(currentTargetEl) {
+	    this.toolbarEl.find(".active:first").removeClass("active");
+	    currentTargetEl.addClass("active");
+	    var index = currentTargetEl.index();
+	    this.navbarBodyContainerEl.find(".show:first").removeClass("show");
+	    this.navbarBodyContainerEl.children().eq(index).addClass("show");
+	    // console.log("swapSelectedSubmenu", this.navbarBodyContainerEl.children().eq(index));
+	  },
+	  showHideSubmenu: function showHideSubmenu() {},
+	  getMenuItemsHTML: function getMenuItemsHTML() {
+	    var html = "<div class='show'><ul class='nav-list'>";
+
+	    _.each(_navigationList2.default, function (navItem, i) {
+	      html += this.template({ displayTitle: navItem.name.toUpperCase(), i: i });
+	    }, this);
+
+	    return html + "</ul></div>";
+	  },
+	  getSidebarClickCatchHTML: function getSidebarClickCatchHTML() {
+	    return "<div class='sidebar-click-catcher'></div>";
+	  },
+	  addDatGui: function addDatGui() {
+	    var datGui = new _DatGuiView2.default();
+	    datGui.render();
+	    return datGui;
+	  },
+	  render: function render() {
+	    this.toolbarEl = $("<div class='toolbar'></div>");
+	    this.toolbarEl.append("<div class='button-home active'></div>");
+	    this.toolbarEl.append("<div class='button-settings'></div>");
+	    this.toolbarEl.append(new _SwitchView2.default({}).render().el);
+	    this.datGui = this.addDatGui();
+
+	    this.navbarBodyContainerEl = $("<div class='navbar-body-container'></div>");
+	    this.navbarBodyContainerEl.append(this.getMenuItemsHTML());
+	    this.navbarBodyContainerEl.append(this.datGui.$el);
+
+	    var sidebarHeader = $("<div class='side-header'></div>");
+	    sidebarHeader.append("<img class='side-header-img' src='/images/small-header.png'/>");
+
+	    var navbarBody = $("<div class='navbar-body'></div>");
+	    navbarBody.append(sidebarHeader);
+	    navbarBody.append(this.toolbarEl);
+	    navbarBody.append(this.navbarBodyContainerEl);
+
+	    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
+	    this.$el.append(navbarBody);
+	    this.$el.append(this.getSidebarClickCatchHTML());
+
+	    return this;
+	  }
+	});
+	module.exports = SidebarView;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+
+/***/ },
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -63485,7 +64241,91 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _datGui = __webpack_require__(86);
+	var _switchView = __webpack_require__(102);
+
+	var _switchView2 = _interopRequireDefault(_switchView);
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	var SwitchView = _BaseView2.default.extend({
+	  className: "switch-views",
+	  events: {
+	    "click #myonoffswitch": "clickSwitchViews"
+	  },
+	  initialize: function initialize() {
+	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	    _eventController2.default.on(_eventController2.default.SET_VIEW, this.updateCheckBox, this);
+	    // eventController.on(eventController.SWITCH_VIEWS, this.updateCheckBox, this);
+	  },
+	  clickSwitchViews: function clickSwitchViews(evt) {
+	    var whichView = this.getIsChecked() ? "3d" : "2d";
+
+	    this.updateViewPreference(whichView);
+	    whichView === "3d" ? this.switchView3d() : this.switchView2d();
+	  },
+	  getIsChecked: function getIsChecked() {
+	    return this.$el.find("input:checked").length > 0 ? true : false;
+	  },
+	  switchView2d: function switchView2d() {
+	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "2d");
+	  },
+	  switchView3d: function switchView3d() {
+	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "3d");
+	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE, "3d");
+	  },
+	  updateCheckBox: function updateCheckBox(whichView) {
+	    // isChecked means 3d view
+	    var isChecked = this.getIsChecked();
+
+	    if (whichView === "2d" && isChecked === true) {
+	      this.$el.find("input:first").click();
+	    } else if (whichView === "3d" && isChecked !== true) {
+	      this.$el.find("input:first").click();
+	    } else {
+	      _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, whichView);
+	    }
+	  },
+	  updateViewPreference: function updateViewPreference(whichView) {
+	    if (localStorage) localStorage.setItem('startView', whichView);
+	  },
+	  render: function render() {
+	    this.$el.append(_switchView2.default);
+	    return this;
+	  }
+	});
+
+	module.exports = SwitchView;
+
+/***/ },
+/* 102 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='  <span class="switch-view-label">Switch Views</span>\n  <div class="onoffswitch">\n      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>\n      <label class="onoffswitch-label" for="myonoffswitch">\n          <span class="onoffswitch-inner"></span>\n          <span class="onoffswitch-switch"></span>\n      </label>\n  </div>\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _eventController = __webpack_require__(28);
+
+	var _eventController2 = _interopRequireDefault(_eventController);
+
+	var _BaseView = __webpack_require__(35);
+
+	var _BaseView2 = _interopRequireDefault(_BaseView);
+
+	var _datGui = __webpack_require__(104);
 
 	var _datGui2 = _interopRequireDefault(_datGui);
 
@@ -63501,7 +64341,6 @@
 
 	var DatGuiView = _BaseView2.default.extend({
 	  className: "dat-gui",
-	  events: {},
 	  initialize: function initialize(options) {
 	    this.addListeners();
 	  },
@@ -63511,10 +64350,46 @@
 	  },
 	  loadMaterial: function loadMaterial(raycastObject) {},
 	  loadSceneGui: function loadSceneGui(sceneModel) {
-	    console.log("ambient Lights", sceneModel);
-	    // this.addSceneLights(sceneModel.get("sceneDetails").get("sceneLights"));
-	    this.addLightControls(sceneModel.get("sceneDetails").get("sceneLights"));
+	    console.log("this.gui::", this.gui.__folders);
+	    if (this.gui.__folders[sceneModel.get('name')]) return;
+	    var sceneFolder = this.gui.addFolder(sceneModel.get('name'));
+	    this.addLightControls(sceneModel.get("sceneDetails").get("sceneLights"), sceneFolder);
 	    // this.addMaterials(sceneModel.getAllMaterials());
+	  },
+	  addWorldLightsControllers: function addWorldLightsControllers() {
+	    var worldFolder = this.gui.addFolder("WorldLights");
+	    var worldLighting = _utils2.default.getWorldLighting();
+
+	    this.addCSSGradientControls(worldFolder, worldLighting);
+	    this.addHemiLightControls(worldFolder, worldLighting);
+	    this.addDirectionalLightControls(worldFolder, worldLighting);
+	  },
+	  addCSSGradientControls: function addCSSGradientControls(worldFolder, worldLighting) {
+	    worldFolder.add(worldLighting.background, 'cssSkyGradient').min(0).max(23).step(1).name("CSS Background").onChange(function (value) {
+	      _eventController2.default.trigger(_eventController2.default.UPDATE_SKY_GRADIENT, value);
+	    });
+	  },
+	  addHemiLightControls: function addHemiLightControls(worldFolder, worldLighting) {
+	    worldFolder.addColor(worldLighting.hemisphere, 'sky').name("Hemisphere Light: Sky").onChange(function (value) {
+	      _eventController2.default.trigger(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, { skyColor: value, lightType: "HemisphereLight" });
+	    });
+
+	    worldFolder.addColor(worldLighting.hemisphere, 'ground').name("Hemisphere Light: Ground").onChange(function (value) {
+	      _eventController2.default.trigger(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, { groundColor: value, lightType: "HemisphereLight" });
+	    });
+
+	    worldFolder.add(worldLighting.hemisphere, "intensity").step(0.05).min(0).max(0.75).onChange(function (value) {
+	      _eventController2.default.trigger(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, { intensity: value, lightType: "HemisphereLight" });
+	    });
+	  },
+	  addDirectionalLightControls: function addDirectionalLightControls(worldFolder, worldLighting) {
+	    worldFolder.addColor(worldLighting.directional, 'color').name("DirectionalLight").onChange(function (value) {
+	      _eventController2.default.trigger(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, { color: value, lightType: "DirectionalLight" });
+	    });
+
+	    worldFolder.add(worldLighting.directional, "intensity").step(0.05).name("DirectionalLight: Intensity").min(0).max(0.3).onChange(function (value) {
+	      _eventController2.default.trigger(_eventController2.default.UPDATE_HEMISPHERE_LIGHT, { intensity: value, lightType: "DirectionalLight" });
+	    });
 	  },
 	  addSceneLights: function addSceneLights(ambientLights) {
 	    var ambientLightFolder = this.gui.addFolder("AmbientLights");
@@ -63527,15 +64402,15 @@
 	    directionalLight.addColor(ambientLights.directional, "color").listen();
 	    directionalLight.add(ambientLights.directional, "intensity", 0, 3).listen();
 	  },
-	  addLightControls: function addLightControls(lights) {
-	    var pointLights = this.gui.addFolder("PointLights");
+	  addLightControls: function addLightControls(lights, sceneFolder) {
+	    var pointLights = sceneFolder.addFolder("Point Lights");
 
 	    lights.forEach(function (light, i) {
-	      var lightFolder = pointLights.addFolder("light" + i);
+	      var lightFolder = pointLights.addFolder("light-" + i);
 	      lightFolder.addColor(light, "color");
 	      lightFolder.add(light, "intensity", 0, 3);
 	      lightFolder.add(light, "distance", 0, 10);
-	      lightFolder.add(light.position, "x");
+	      lightFolder.add(light.position, "x", 0, 10);
 	      lightFolder.add(light.position, "y");
 	      lightFolder.add(light.position, "z");
 	    });
@@ -63556,7 +64431,10 @@
 	    // });
 	  },
 	  render: function render() {
-	    this.gui = new _datGui2.default.GUI();
+	    this.gui = new _datGui2.default.GUI({ autoPlace: false, width: 400 });
+	    this.gui.open();
+	    this.$el = this.gui.domElement;
+	    this.addWorldLightsControllers();
 	    return this;
 	  }
 	});
@@ -63564,14 +64442,14 @@
 	module.exports = DatGuiView;
 
 /***/ },
-/* 86 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(87)
-	module.exports.color = __webpack_require__(88)
+	module.exports = __webpack_require__(105)
+	module.exports.color = __webpack_require__(106)
 
 /***/ },
-/* 87 */
+/* 105 */
 /***/ function(module, exports) {
 
 	/**
@@ -67236,7 +68114,7 @@
 	dat.utils.common);
 
 /***/ },
-/* 88 */
+/* 106 */
 /***/ function(module, exports) {
 
 	/**
@@ -67996,841 +68874,12 @@
 	dat.utils.common);
 
 /***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _eventController = __webpack_require__(28);
-
-	var _eventController2 = _interopRequireDefault(_eventController);
-
-	var _BaseView = __webpack_require__(35);
-
-	var _BaseView2 = _interopRequireDefault(_BaseView);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var Stats = __webpack_require__(90);
-
-	var AppView = _BaseView2.default.extend({
-	  className: "stats",
-	  initialize: function initialize() {
-	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    _.bindAll(this, "render");
-	    this.stats = new Stats();
-	    this.faceCountEl = $("<div class='face-count'></div>");
-	    this.stats.setMode(0);
-	    this.stats.domElement.style.position = 'absolute';
-	    this.stats.domElement.style.left = '0px';
-	    this.stats.domElement.style.bottom = '0px';
-	    this.stats.domElement.style.zIndex = 5;
-	    // eventController.on(eventController.UPDATE_FACE_COUNT, this.updateFaceCount, this);
-	    this.faceCountTotal = 0;
-	  },
-	  updateFaceCount: function updateFaceCount(object3d) {
-	    // console.log("object3d", object3d);
-	    // if (object3d.type === "Mesh") {
-	    //   var groups = object3d.geometry.groups
-	    //   if ( groups ) {
-	    //     groups.forEach( function (item, i) {
-	    //       if (i === groups.length - 1) {
-	    //         this.faceCountEl.text(item.start);
-	    //       }
-	    //         console.log("item", item.start);
-	    //     }, this);
-	    //   }
-	    // }
-	  },
-	  render: function render() {
-	    console.log("this.stats", this.stats);
-	    this.$el.append(this.stats.domElement);
-	    this.$el.append(this.faceCountEl);
-	    return this;
-	  }
-	});
-
-	module.exports = AppView;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 90 */
-/***/ function(module, exports) {
-
-	// stats.js - http://github.com/mrdoob/stats.js
-	var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,r=0,s=0,f=document.createElement("div");f.id="stats";f.addEventListener("mousedown",function(b){b.preventDefault();t(++s%2)},!1);f.style.cssText="width:80px;opacity:0.9;cursor:pointer";var a=document.createElement("div");a.id="fps";a.style.cssText="padding:0 0 3px 3px;text-align:left;background-color:#002";f.appendChild(a);var i=document.createElement("div");i.id="fpsText";i.style.cssText="color:#0ff;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px";
-	i.innerHTML="FPS";a.appendChild(i);var c=document.createElement("div");c.id="fpsGraph";c.style.cssText="position:relative;width:74px;height:30px;background-color:#0ff";for(a.appendChild(c);74>c.children.length;){var j=document.createElement("span");j.style.cssText="width:1px;height:30px;float:left;background-color:#113";c.appendChild(j)}var d=document.createElement("div");d.id="ms";d.style.cssText="padding:0 0 3px 3px;text-align:left;background-color:#020;display:none";f.appendChild(d);var k=document.createElement("div");
-	k.id="msText";k.style.cssText="color:#0f0;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px";k.innerHTML="MS";d.appendChild(k);var e=document.createElement("div");e.id="msGraph";e.style.cssText="position:relative;width:74px;height:30px;background-color:#0f0";for(d.appendChild(e);74>e.children.length;)j=document.createElement("span"),j.style.cssText="width:1px;height:30px;float:left;background-color:#131",e.appendChild(j);var t=function(b){s=b;switch(s){case 0:a.style.display=
-	"block";d.style.display="none";break;case 1:a.style.display="none",d.style.display="block"}};return{REVISION:12,domElement:f,setMode:t,begin:function(){l=Date.now()},end:function(){var b=Date.now();g=b-l;n=Math.min(n,g);o=Math.max(o,g);k.textContent=g+" MS ("+n+"-"+o+")";var a=Math.min(30,30-30*(g/200));e.appendChild(e.firstChild).style.height=a+"px";r++;b>m+1E3&&(h=Math.round(1E3*r/(b-m)),p=Math.min(p,h),q=Math.max(q,h),i.textContent=h+" FPS ("+p+"-"+q+")",a=Math.min(30,30-30*(h/100)),c.appendChild(c.firstChild).style.height=
-	a+"px",m=b,r=0);return b},update:function(){l=this.end()}}};"object"===typeof module&&(module.exports=Stats);
-
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _eventController = __webpack_require__(28);
-
-	var _eventController2 = _interopRequireDefault(_eventController);
-
-	var _commandController = __webpack_require__(31);
-
-	var _commandController2 = _interopRequireDefault(_commandController);
-
-	var _BaseView = __webpack_require__(35);
-
-	var _BaseView2 = _interopRequireDefault(_BaseView);
-
-	var _NavigationBar2d = __webpack_require__(92);
-
-	var _NavigationBar2d2 = _interopRequireDefault(_NavigationBar2d);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var viewArray = [__webpack_require__(93), __webpack_require__(97), __webpack_require__(99), __webpack_require__(101), __webpack_require__(103)];
-
-	var AppView2d = _BaseView2.default.extend({
-	  className: "appView-2d",
-	  parentClass: "twoD",
-	  initialize: function initialize(options) {
-	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    this.parentEl = options.parentEl;
-	    this.bodyEl = $("<div class='view-body-2d'></div>");
-	    this.currentViewIndex = null;
-	    this.addListeners();
-
-	    viewArray.forEach(function (view, i) {
-	      this.childViews.push({ view: null });
-	    }, this);
-
-	    this.setSection(this.getSectionView());
-	  },
-	  addListeners: function addListeners() {
-	    _eventController2.default.on(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
-	  },
-	  removeListeners: function removeListeners() {
-	    _eventController2.default.off(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
-	  },
-	  getSectionView: function getSectionView() {
-	    return _commandController2.default.request(_commandController2.default.GET_SELECTED_SECTION);
-	  },
-	  setSection: function setSection(index) {
-	    index = index ? index : 0;
-
-	    if (this.childViews[index].view === null) {
-	      var new2dView = new viewArray[index]();
-	      this.childViews[index].view = new2dView;
-	      this.bodyEl.append(new2dView.render().el);
-	      new2dView.show();
-	    } else {
-	      this.childViews[index].view.show();
-	    }
-	    this.currentViewIndex = index;
-	  },
-	  switchPage: function switchPage(index) {
-	    if (this.currentViewIndex === index) return;
-	    this.childViews[this.currentViewIndex].view.hide();
-	    this.setSection(index);
-	  },
-	  render: function render() {
-	    var navigationBar2d = new _NavigationBar2d2.default({ parentEl: this.$el });
-	    this.childViews.push(navigationBar2d);
-	    this.$el.append("<div class='img-header'><img src='/images/big-header.png'/></div>");
-	    this.$el.append(navigationBar2d.render().el);
-	    this.$el.append(this.bodyEl);
-	    return this;
-	  }
-	});
-
-	module.exports = AppView2d;
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _eventController = __webpack_require__(28);
-
-	var _eventController2 = _interopRequireDefault(_eventController);
-
-	var _commandController = __webpack_require__(31);
-
-	var _commandController2 = _interopRequireDefault(_commandController);
-
-	var _BaseView = __webpack_require__(35);
-
-	var _BaseView2 = _interopRequireDefault(_BaseView);
-
-	var _navigationList = __webpack_require__(49);
-
-	var _navigationList2 = _interopRequireDefault(_navigationList);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var NavigationBar2d = _BaseView2.default.extend({
-	  className: "navigation-bar",
-	  template: _.template("<li><a class='hvr-sweep-to-top normal'><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
-	  events: {
-	    "click li": "clickSelected",
-	    "mouseenter li": "enterHoverNavigationLi",
-	    "mouseleave li": "leaveHoverNavigationLi"
-	  },
-	  initialize: function initialize(options) {
-	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    _.bindAll(this, "getSelectedSection");
-	    this.parentEl = options.parentEl;
-	    this.height = 45;
-	  },
-	  addListeners: function addListeners() {
-	    console.log("addListeners:NavigationBar");
-	    _eventController2.default.on(_eventController2.default.RESET_SCENE, this.resetScene, this);
-	    // eventController.on(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
-	    _eventController2.default.on(_eventController2.default.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
-	    _commandController2.default.reply(_commandController2.default.GET_SELECTED_SECTION, this.getSelectedSection);
-	  },
-	  removeListeners: function removeListeners() {
-	    console.log("removeListeners:NavigationBar");
-	    _eventController2.default.off(_eventController2.default.RESET_SCENE, this.resetScene, this);
-	    // eventController.off(eventController.HOVER_NAVIGATION, this.updateHoverNavigationFrom3d, this);
-	    _eventController2.default.off(_eventController2.default.SCENE_MODEL_SELECTED, this.setSelectedFrom3d, this);
-	    _commandController2.default.stopReplying(_commandController2.default.GET_SELECTED_SECTION, this.getSelectedSection);
-	  },
-	  cacheListEls: function cacheListEls() {
-	    var navEljq = this.$el.find("li");
-	    this.navEls = {};
-	    _.each(_navigationList2.default, function (navListObj, i) {
-	      this.navEls[navListObj.name] = $(navEljq[i]);
-	    }, this);
-	  },
-	  getSelectedSection: function getSelectedSection() {
-	    if (this.selectedEl) return this.selectedEl.index();
-	    return 0;
-	  },
-	  // updateHoverNavigationFrom3d: function (closestObject) {
-	  //   console.log("updateHoverNavigationFrom3d");
-	  //   if (!closestObject || (closestObject && !this.navEls[closestObject.object.name])) {
-	  //     var updateCursor = closestObject ? true : false;
-	  //     this.updateHoverMouseCursor(updateCursor);
-	  //     this.unsetHoverEl();
-	  //     return;
-	  //   }
-	  //
-	  //   if (this.hoveredEl && closestObject ) {
-	  //     this.swapHoveredEl(this.navEls[closestObject.object.name]);
-	  //   } else if (this.hoveredEl) {
-	  //     this.unsetHoverEl();
-	  //   } else {
-	  //     this.hoveredEl = this.navEls[closestObject.object.name].addClass("hovered");
-	  //   }
-	  //
-	  //   var hoveredBool = this.hoveredEl ? true : false;
-	  // },
-	  unsetHoverEl: function unsetHoverEl() {
-	    if (this.hoveredEl) {
-	      this.hoveredEl.removeClass("hovered");
-	      this.hoveredEl = null;
-	    }
-	  },
-	  enterHoverNavigationLi: function enterHoverNavigationLi(evt) {
-	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[$(evt.currentTarget).index()], true);
-	  },
-	  leaveHoverNavigationLi: function leaveHoverNavigationLi(evt) {
-	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[$(evt.currentTarget).index()], false);
-	  },
-	  swapSelectedEl: function swapSelectedEl(newSelectedEl) {
-	    if (!newSelectedEl) return;
-	    if (this.selectedEl) this.selectedEl.removeClass("selected");
-	    this.selectedEl = newSelectedEl.addClass("selected");
-	  },
-	  swapHoveredEl: function swapHoveredEl(newSelectedEl) {
-	    if (!newSelectedEl || this.hoveredEl === newSelectedEl) return;
-	    if (this.hoveredEl) this.hoveredEl.removeClass("hovered");
-	    this.hoveredEl = newSelectedEl.addClass("hovered");
-	  },
-	  clickSelected: function clickSelected(evt) {
-	    var currentTarget = $(evt.currentTarget);
-	    var index = currentTarget.closest("li").index();
-
-	    this.swapSelectedEl(currentTarget);
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, index);
-	  },
-	  setSelectedFrom3d: function setSelectedFrom3d(sceneModel) {
-	    this.swapSelectedEl(this.navEls[sceneModel.name]);
-	  },
-	  resetScene: function resetScene() {
-	    _.each(this.navEls, function (el) {
-	      el.removeClass("hovered selected");
-	    });
-	  },
-	  getCssMenu: function getCssMenu() {
-	    var cssMenu = "<div id='cssmenu'><ul>";
-
-	    _.each(_navigationList2.default, function (navListObj, i) {
-	      cssMenu += this.template({ displayTitle: navListObj.name.toUpperCase(), i: i });
-	    }, this);
-
-	    cssMenu += "</ul></div>";
-	    return cssMenu;
-	  },
-	  render: function render() {
-	    this.$el.append(this.getCssMenu());
-	    this.cacheListEls();
-
-	    return this;
-	  }
-	});
-
-	module.exports = NavigationBar2d;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _BaseView2d = __webpack_require__(94);
-
-	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
-
-	var _WebDevProjects = __webpack_require__(95);
-
-	var _WebDevProjects2 = _interopRequireDefault(_WebDevProjects);
-
-	var _WebDevViewTemplate = __webpack_require__(96);
-
-	var _WebDevViewTemplate2 = _interopRequireDefault(_WebDevViewTemplate);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var WebDevView2d = _BaseView2d2.default.extend({
-	  className: "web-dev",
-	  title: "Web Development",
-	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-	  render: function render() {
-	    this.$el.append(this.titleTemplate({ title: this.title }));
-
-	    _.each(_WebDevProjects2.default, function (templateData, i) {
-	      var newProjectContainer = _.template((0, _WebDevViewTemplate2.default)(templateData));
-	      this.$el.append(newProjectContainer);
-	      if (i !== _WebDevProjects2.default.length - 1) this.$el.append("<hr/>");
-	    }, this);
-	    return this;
-	  }
-	});
-
-	module.exports = WebDevView2d;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var BaseView2d = Backbone.View.extend({
-	  childViews: [],
-	  className: "Default",
-	  title: "Default",
-	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-	  initialize: function initialize() {
-	    this.$el.hide();
-	    var self = this;
-
-	    this.$el.on("click", "img", function () {
-	      self.openPhotoSwipe(this);
-	    });
-	  },
-	  hide: function hide() {
-	    this.$el.fadeOut();
-	    // this.removeListeners();
-	  },
-	  openPhotoSwipe: function openPhotoSwipe(el) {
-	    eventController.trigger(eventController.OPEN_PHOTO_SWIPE, [{ src: $(el).data("imgsrc"), w: 1920, h: 1080 }]);
-	  },
-	  show: function show() {
-	    this.$el.delay(400).fadeIn();
-	    // this.addListeners();
-	  },
-	  addListeners: function addListeners() {},
-	  removeListeners: function removeListeners() {},
-	  close: function close() {
-	    this.remove();
-	  }
-	});
-
-	module.exports = BaseView2d;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 95 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = [{
-	   title: "Network Search Visualization",
-	   thumbSrc: "/images/webDev/NSVthumb.jpg",
-	   website: { title: "Network Search Website", url: "http://faculty.nps.edu/dl/networkVisualization/" },
-	   imgSrc: "/images/webDev/NSV1920x1080.png",
-	   description: "I created this standalone app for the Naval Postgraduate School. It is a data visualization tool that shows the connections of different networks. It was made so you can upload .gexf files and view them graphically instead of looking at a spreadsheet.  The NSV app lets you run algorigthms to see which one uncovers the network faster. It is able to visualize thousands of nodes ands connections while still animating fluidly on three different views."
-	}, {
-	   title: "Spring Pendulum",
-	   thumbSrc: "/images/webDev/SpringPendulumthumb.jpg",
-	   imgSrc: "/images/webDev/SpringPendulum1920x1080.png",
-	   website: { title: "Spring Pendulum Website", url: "http://faculty.nps.edu/dl/springPendulum/#Sample1" },
-	   description: " I created this 3d Simulation for the Physics Department at Naval Postgraduate School. This app uses real life physics data that was collected by proffesors ay the university. Once they had recored the data this app could parse the results and create a realistic physics simulation.  There are controls to toggle experiment such as playback speed, physics controls, and camera controls."
-	}, {
-	   title: "Monterey Phoenix (Firebird)",
-	   thumbSrc: "/images/webDev/MPthumb.jpg",
-	   imgSrc: "/images/webDev/MP1920x1080.png",
-	   website: { title: "Monterey Phoenix Firebird", url: "http://firebird.nps.edu/" },
-	   aboutLinks: ["https://wiki.nps.edu/display/MP", "https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf"],
-	   description: "I was part of the team the created an online editor for the " + "<a href='https://wiki.nps.edu/download/attachments/526090244/MP2-syntax.pdf'>Monterey Phoenix language</a>" + " called Firebird. The language was created and developed by Mikhail Augston an Associate Proffesor at the department Computer Science. Among other things I updated the rendering engine to PIXI.js and worked on the front-end development."
-	}, {
-	   title: "Hurricane Simulation",
-	   thumbSrc: "/images/webDev/hurricaneSimthumb.jpg",
-	   imgSrc: "/images/webDev/hurricaneSim.png",
-	   website: { title: "Hurricane Simulator", url: "https://eddy.nps.edu/hurricaneSim/simulation" },
-	   description: "The Hurricane Decision Simulator provides decision makers with experience and practice in dealing with simulated storm variations, interpreting forecast details, and making critical decisions. On this project I worked mainly on the front-end development. This was one of the most interesting projects I have worked on.  Some of the project restrictions were resolution max of 1024 x 768 and it must be compatable with IE7."
-	}];
-
-/***/ },
-/* 96 */
-/***/ function(module, exports) {
-
-	module.exports = function(obj){
-	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-	with(obj||{}){
-	__p+='<div class="project-container">\n  <div class="text-wrapper">\n    <div class="project-title">'+
-	((__t=( title ))==null?'':__t)+
-	'</div>\n    <p>'+
-	((__t=( description ))==null?'':__t)+
-	'</p>\n    <div class="link-container">\n      <a href="'+
-	((__t=( website.url ))==null?'':__t)+
-	'" target="_blank">\n        <div class="button-link"></div>\n        Public Site: '+
-	((__t=( website.title ))==null?'':__t)+
-	'\n      </a>\n    </div>\n  </div>\n  <div class="img-wrapper">\n    <img src="'+
-	((__t=( thumbSrc ))==null?'':__t)+
-	'"  data-imgsrc="'+
-	((__t=( imgSrc ))==null?'':__t)+
-	'"/>\n    <div class="hover-zoom">\n      <div class="button-zoom"></div>\n    </div>\n  </div>\n</div>\n';
-	}
-	return __p;
-	};
-
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _BaseView2d = __webpack_require__(94);
-
-	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
-
-	var _ThreeDAnimationViewTemplate = __webpack_require__(98);
-
-	var _ThreeDAnimationViewTemplate2 = _interopRequireDefault(_ThreeDAnimationViewTemplate);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var ThreeDAnimationView = _BaseView2d2.default.extend({
-	  className: "animation-3d",
-	  title: "3D Animation",
-	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-	  initialize: function initialize() {
-	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
-	  },
-	  render: function render() {
-	    this.$el.append(this.titleTemplate({ title: this.title }));
-	    this.$el.append(_ThreeDAnimationViewTemplate2.default);
-	    return this;
-	  }
-	});
-	// import pageData from "../../data/pageData/3dAnimation";
-
-
-	module.exports = ThreeDAnimationView;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 98 */
-/***/ function(module, exports) {
-
-	module.exports = function(obj){
-	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-	with(obj||{}){
-	__p+='<div class="project-container animation">\n  <p class=\'animation-intro\'>Below is collection of my favorite animations from 2016. I used <a href=\'http://www.blender.org\'>Blender</a> to render\n    all the 3d graphics. Adobe Affter affects was used to composite the video and add the audio. My current system that was used to render these videos\n    is a Windows 8, Intel i7 -3930k CPU, with two GTX 970\'s GPU\'s. Below is a link to my YouTube portfolio. The first video in the playlist is my "Blender cycles 2016 Demo" and is rendered in 720p resolution.\n  </p>\n    <iframe width="560" height="315" style="background-color: black;" src="https://www.youtube.com/embed/videoseries?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M" frameborder="0" allowfullscreen></iframe>\n</div>\n<hr/>\n';
-	}
-	return __p;
-	};
-
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _BaseView2d = __webpack_require__(94);
-
-	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
-
-	var _digitalArt = __webpack_require__(75);
-
-	var _digitalArt2 = _interopRequireDefault(_digitalArt);
-
-	var _digitalArtViewTemplate = __webpack_require__(100);
-
-	var _digitalArtViewTemplate2 = _interopRequireDefault(_digitalArtViewTemplate);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var DigitalArtView = _BaseView2d2.default.extend({
-	  className: "digital-art",
-	  title: "Digital Art",
-	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-	  initialize: function initialize() {
-	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
-	  },
-	  render: function render() {
-	    this.$el.append(this.titleTemplate({ title: this.title }));
-	    _.each(_digitalArt2.default, function (templateData) {
-	      this.$el.append(_.template((0, _digitalArtViewTemplate2.default)(templateData)));
-	    }, this);
-	    return this;
-	  }
-	});
-
-	module.exports = DigitalArtView;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 100 */
-/***/ function(module, exports) {
-
-	module.exports = function(obj){
-	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-	with(obj||{}){
-	__p+='<div class="project-container">\n  <div class="project-title">'+
-	((__t=( title ))==null?'':__t)+
-	'</div>\n  <p>'+
-	((__t=( description ))==null?'':__t)+
-	'</p>\n  <div class="img-wrapper">\n    <img src="'+
-	((__t=( thumbSrc ))==null?'':__t)+
-	'"  data-imgsrc="'+
-	((__t=( imgSrc ))==null?'':__t)+
-	'"/>\n    <div class="hover-zoom">\n      <div class="button-zoom"></div>\n    </div>\n  </div>\n</div>\n';
-	}
-	return __p;
-	};
-
-
-/***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _BaseView2d = __webpack_require__(94);
-
-	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
-
-	var _digitalArt = __webpack_require__(75);
-
-	var _digitalArt2 = _interopRequireDefault(_digitalArt);
-
-	var _aboutMeView = __webpack_require__(102);
-
-	var _aboutMeView2 = _interopRequireDefault(_aboutMeView);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var AboutMeView = _BaseView2d2.default.extend({
-	  className: "about-me",
-	  title: "Skills/Resume",
-	  titleTemplate: _.template("<h2 class='section-title'><%= title %></h2><hr class='first'/>"),
-	  initialize: function initialize() {
-	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
-	  },
-	  render: function render() {
-	    this.$el.append(this.titleTemplate({ title: this.title }));
-	    this.$el.append(_aboutMeView2.default);
-	    return this;
-	  }
-	});
-
-	module.exports = AboutMeView;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 102 */
-/***/ function(module, exports) {
-
-	module.exports = function(obj){
-	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-	with(obj||{}){
-	__p+='<div class="project-container">\r\n  <img class="profile-pic" src="/images/aboutMe/RickVpic.jpg"></img>\r\n  <div class="project-title">About Me</div>\r\n  <p class="about-me-intro">\r\n     I\'m Rick von Buelow and this is my portfolio site.  I have been a full time Web Developer for 3 years. My passion is on front end development.  My second passion is 3d Modeling and creating motion graphics. That is why I created my portfolio site in 2d and 3d. I like working on jobs that require me to use as many of my different skills as possible. Below is a link to my resume. My contact information is avaible in my resume. Thanks for taking the time to check out my portfolio website. You can fork/view this website code on github <a href="https://github.com/rvonbue/portfolio" target="_blank" style="font-size:100%;">here</a> </p>\r\n   <div class="link-wrapper">\r\n     <div class="button-file"></div>\r\n     <a href="other/Resume-RichardvonBuelowDec2016.pdf">Resume.pdf</a>\r\n   </div>\r\n   <div class="link-wrapper">\r\n     <div class="button-file"></div>\r\n     <a href="other/Resume-RichardvonBuelowDec2016.docx">Resume.docx</a>\r\n   </div>\r\n</div>\r\n';
-	}
-	return __p;
-	};
-
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _BaseView2d = __webpack_require__(94);
-
-	var _BaseView2d2 = _interopRequireDefault(_BaseView2d);
-
-	var _digitalArt = __webpack_require__(75);
-
-	var _digitalArt2 = _interopRequireDefault(_digitalArt);
-
-	var _contactView = __webpack_require__(104);
-
-	var _contactView2 = _interopRequireDefault(_contactView);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var ContactView = _BaseView2d2.default.extend({
-	  className: "contact",
-	  title: "Contact Info",
-	  initialize: function initialize() {
-	    _BaseView2d2.default.prototype.initialize.apply(this, arguments);
-	  },
-	  render: function render() {
-	    this.$el.append(this.titleTemplate({ title: this.title }));
-	    this.$el.append(_contactView2.default);
-	    return this;
-	  }
-	});
-
-	module.exports = ContactView;
-
-/***/ },
-/* 104 */
-/***/ function(module, exports) {
-
-	module.exports = function(obj){
-	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-	with(obj||{}){
-	__p+='<div class="link-container">\n  <a href="mailto:rvonbue@gmail.com">\n    <img src="/images/contact/ic_mail_outline_black_48px.svg"/>\n    rvonbue@gmail.com\n  </a>\n  <a href="https://www.linkedin.com/in/rick-von-buelow-270314103" target="_blank">\n    <img src="/images/contact/linkedin_44x36.png"/>\n    Linked In\n  </a>\n</div>\n';
-	}
-	return __p;
-	};
-
-
-/***/ },
-/* 105 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-
-	var _eventController = __webpack_require__(28);
-
-	var _eventController2 = _interopRequireDefault(_eventController);
-
-	var _BaseView = __webpack_require__(35);
-
-	var _BaseView2 = _interopRequireDefault(_BaseView);
-
-	var _navigationList = __webpack_require__(49);
-
-	var _navigationList2 = _interopRequireDefault(_navigationList);
-
-	var _SwitchView = __webpack_require__(106);
-
-	var _SwitchView2 = _interopRequireDefault(_SwitchView);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	// import utils from "../../util/utils";
-
-	var MobileNavigationBarView = _BaseView2.default.extend({
-	  className: "mobile-navigation-bar",
-	  template: _.template("<li class='hvr-sweep-to-top normal'><a ><%= displayTitle %></a><a class='css-icons<%= i %>'></a></li>"),
-	  events: {
-	    "mouseenter ul>li": "enterMenuItem",
-	    "mouseleave ul>li": "leaveMenuItem",
-	    "click ul>li": "clickme",
-	    "click .button-menu": "toggleSidebar",
-	    "click .button-home": "resetSceneDetails",
-	    "click .sidebar-click-catcher": "toggleSidebar"
-	  },
-	  initialize: function initialize() {
-	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	  },
-	  toggleSidebar: function toggleSidebar() {
-	    _eventController2.default.trigger(_eventController2.default.TOGGLE_SIDEBAR_VISIBILITY);
-	  },
-	  enterMenuItem: function enterMenuItem(evt) {
-	    this.enterHoverNavigationLi($(evt.currentTarget).index());
-	  },
-	  leaveMenuItem: function leaveMenuItem(evt) {
-	    this.leaveHoverNavigationLi($(evt.currentTarget).index());
-	  },
-	  clickme: function clickme(evt) {
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, $(evt.currentTarget).closest("li").index());
-	  },
-	  resetSceneDetails: function resetSceneDetails() {
-	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE);
-	  },
-	  enterHoverNavigationLi: function enterHoverNavigationLi(index) {
-	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[index], true);
-	  },
-	  leaveHoverNavigationLi: function leaveHoverNavigationLi() {
-	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR);
-	  },
-	  getMenuItems: function getMenuItems() {
-	    var html = "<ul class='nav-list'>";
-
-	    _.each(_navigationList2.default, function (navItem, i) {
-	      html += this.template({ displayTitle: navItem.name.toUpperCase(), i: i });
-	    }, this);
-
-	    return html + "</ul>";
-	  },
-	  getSidebarClickCatchHTML: function getSidebarClickCatchHTML() {
-	    return "<div class='sidebar-click-catcher'></div>";
-	  },
-	  render: function render() {
-	    var toolbar = $("<div class='toolbar'></div>");
-	    toolbar.append("<div class='button-home'></div>");
-	    toolbar.append(new _SwitchView2.default({}).render().el);
-	    var sidebarHeader = $("<div class='side-header'></div>");
-	    sidebarHeader.append("<img class='side-header-img' src='/images/small-header.png'/>");
-	    sidebarHeader.append(toolbar);
-	    var navbarBody = $("<div class='navbar-body'></div>");
-	    navbarBody.append(sidebarHeader);
-	    navbarBody.append(this.getMenuItems());
-
-	    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
-	    this.$el.append(navbarBody);
-	    this.$el.append(this.getSidebarClickCatchHTML());
-	    return this;
-	  }
-	});
-	module.exports = MobileNavigationBarView;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ },
-/* 106 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _eventController = __webpack_require__(28);
-
-	var _eventController2 = _interopRequireDefault(_eventController);
-
-	var _BaseView = __webpack_require__(35);
-
-	var _BaseView2 = _interopRequireDefault(_BaseView);
-
-	var _switchView = __webpack_require__(107);
-
-	var _switchView2 = _interopRequireDefault(_switchView);
-
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-
-	var SwitchView = _BaseView2.default.extend({
-	  className: "switch-views",
-	  events: {
-	    "click #myonoffswitch": "clickSwitchViews"
-	  },
-	  initialize: function initialize() {
-	    _BaseView2.default.prototype.initialize.apply(this, arguments);
-	    _eventController2.default.on(_eventController2.default.SET_VIEW, this.updateCheckBox, this);
-	    // eventController.on(eventController.SWITCH_VIEWS, this.updateCheckBox, this);
-	  },
-	  clickSwitchViews: function clickSwitchViews(evt) {
-	    var whichView = this.getIsChecked() ? "3d" : "2d";
-
-	    this.updateViewPreference(whichView);
-	    whichView === "3d" ? this.switchView3d() : this.switchView2d();
-	  },
-	  getIsChecked: function getIsChecked() {
-	    return this.$el.find("input:checked").length > 0 ? true : false;
-	  },
-	  switchView2d: function switchView2d() {
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "2d");
-	  },
-	  switchView3d: function switchView3d() {
-	    _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, "3d");
-	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE, "3d");
-	  },
-	  updateCheckBox: function updateCheckBox(whichView) {
-	    // isChecked means 3d view
-	    var isChecked = this.getIsChecked();
-
-	    if (whichView === "2d" && isChecked === true) {
-	      this.$el.find("input:first").click();
-	    } else if (whichView === "3d" && isChecked !== true) {
-	      this.$el.find("input:first").click();
-	    } else {
-	      _eventController2.default.trigger(_eventController2.default.SWITCH_VIEWS, whichView);
-	    }
-	  },
-	  updateViewPreference: function updateViewPreference(whichView) {
-	    if (localStorage) localStorage.setItem('startView', whichView);
-	  },
-	  render: function render() {
-	    this.$el.append(_switchView2.default);
-	    return this;
-	  }
-	});
-
-	module.exports = SwitchView;
-
-/***/ },
 /* 107 */
-/***/ function(module, exports) {
-
-	module.exports = function(obj){
-	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-	with(obj||{}){
-	__p+='  <span class="switch-view-label">Switch Views</span>\n  <div class="onoffswitch">\n      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>\n      <label class="onoffswitch-label" for="myonoffswitch">\n          <span class="onoffswitch-inner"></span>\n          <span class="onoffswitch-switch"></span>\n      </label>\n  </div>\n';
-	}
-	return __p;
-	};
-
-
-/***/ },
-/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _photoswipe = __webpack_require__(109);
+	var _photoswipe = __webpack_require__(108);
 
 	var _photoswipe2 = _interopRequireDefault(_photoswipe);
 
@@ -68842,11 +68891,11 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _photoswipeUiDefaultMin = __webpack_require__(110);
+	var _photoswipeUiDefaultMin = __webpack_require__(109);
 
 	var _photoswipeUiDefaultMin2 = _interopRequireDefault(_photoswipeUiDefaultMin);
 
-	var _photoSwipe = __webpack_require__(111);
+	var _photoSwipe = __webpack_require__(110);
 
 	var _photoSwipe2 = _interopRequireDefault(_photoSwipe);
 
@@ -68894,7 +68943,7 @@
 	module.exports = PhotoSwipeView;
 
 /***/ },
-/* 109 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe - v4.1.1 - 2015-12-24
@@ -72617,7 +72666,7 @@
 	});
 
 /***/ },
-/* 110 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe Default UI - 4.1.1 - 2015-12-24
@@ -72626,7 +72675,7 @@
 	!function(a,b){ true?!(__WEBPACK_AMD_DEFINE_FACTORY__ = (b), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"object"==typeof exports?module.exports=b():a.PhotoSwipeUI_Default=b()}(this,function(){"use strict";var a=function(a,b){var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v=this,w=!1,x=!0,y=!0,z={barsSize:{top:44,bottom:"auto"},closeElClasses:["item","caption","zoom-wrap","ui","top-bar"],timeToIdle:4e3,timeToIdleOutside:1e3,loadingIndicatorDelay:1e3,addCaptionHTMLFn:function(a,b){return a.title?(b.children[0].innerHTML=a.title,!0):(b.children[0].innerHTML="",!1)},closeEl:!0,captionEl:!0,fullscreenEl:!0,zoomEl:!0,shareEl:!0,counterEl:!0,arrowEl:!0,preloaderEl:!0,tapToClose:!1,tapToToggleControls:!0,clickToCloseNonZoomable:!0,shareButtons:[{id:"facebook",label:"Share on Facebook",url:"https://www.facebook.com/sharer/sharer.php?u={{url}}"},{id:"twitter",label:"Tweet",url:"https://twitter.com/intent/tweet?text={{text}}&url={{url}}"},{id:"pinterest",label:"Pin it",url:"http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}"},{id:"download",label:"Download image",url:"{{raw_image_url}}",download:!0}],getImageURLForShare:function(){return a.currItem.src||""},getPageURLForShare:function(){return window.location.href},getTextForShare:function(){return a.currItem.title||""},indexIndicatorSep:" / ",fitControlsWidth:1200},A=function(a){if(r)return!0;a=a||window.event,q.timeToIdle&&q.mouseUsed&&!k&&K();for(var c,d,e=a.target||a.srcElement,f=e.getAttribute("class")||"",g=0;g<S.length;g++)c=S[g],c.onTap&&f.indexOf("pswp__"+c.name)>-1&&(c.onTap(),d=!0);if(d){a.stopPropagation&&a.stopPropagation(),r=!0;var h=b.features.isOldAndroid?600:30;s=setTimeout(function(){r=!1},h)}},B=function(){return!a.likelyTouchDevice||q.mouseUsed||screen.width>q.fitControlsWidth},C=function(a,c,d){b[(d?"add":"remove")+"Class"](a,"pswp__"+c)},D=function(){var a=1===q.getNumItemsFn();a!==p&&(C(d,"ui--one-slide",a),p=a)},E=function(){C(i,"share-modal--hidden",y)},F=function(){return y=!y,y?(b.removeClass(i,"pswp__share-modal--fade-in"),setTimeout(function(){y&&E()},300)):(E(),setTimeout(function(){y||b.addClass(i,"pswp__share-modal--fade-in")},30)),y||H(),!1},G=function(b){b=b||window.event;var c=b.target||b.srcElement;return a.shout("shareLinkClick",b,c),c.href?c.hasAttribute("download")?!0:(window.open(c.href,"pswp_share","scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left="+(window.screen?Math.round(screen.width/2-275):100)),y||F(),!1):!1},H=function(){for(var a,b,c,d,e,f="",g=0;g<q.shareButtons.length;g++)a=q.shareButtons[g],c=q.getImageURLForShare(a),d=q.getPageURLForShare(a),e=q.getTextForShare(a),b=a.url.replace("{{url}}",encodeURIComponent(d)).replace("{{image_url}}",encodeURIComponent(c)).replace("{{raw_image_url}}",c).replace("{{text}}",encodeURIComponent(e)),f+='<a href="'+b+'" target="_blank" class="pswp__share--'+a.id+'"'+(a.download?"download":"")+">"+a.label+"</a>",q.parseShareButtonOut&&(f=q.parseShareButtonOut(a,f));i.children[0].innerHTML=f,i.children[0].onclick=G},I=function(a){for(var c=0;c<q.closeElClasses.length;c++)if(b.hasClass(a,"pswp__"+q.closeElClasses[c]))return!0},J=0,K=function(){clearTimeout(u),J=0,k&&v.setIdle(!1)},L=function(a){a=a?a:window.event;var b=a.relatedTarget||a.toElement;b&&"HTML"!==b.nodeName||(clearTimeout(u),u=setTimeout(function(){v.setIdle(!0)},q.timeToIdleOutside))},M=function(){q.fullscreenEl&&!b.features.isOldAndroid&&(c||(c=v.getFullscreenAPI()),c?(b.bind(document,c.eventK,v.updateFullscreen),v.updateFullscreen(),b.addClass(a.template,"pswp--supports-fs")):b.removeClass(a.template,"pswp--supports-fs"))},N=function(){q.preloaderEl&&(O(!0),l("beforeChange",function(){clearTimeout(o),o=setTimeout(function(){a.currItem&&a.currItem.loading?(!a.allowProgressiveImg()||a.currItem.img&&!a.currItem.img.naturalWidth)&&O(!1):O(!0)},q.loadingIndicatorDelay)}),l("imageLoadComplete",function(b,c){a.currItem===c&&O(!0)}))},O=function(a){n!==a&&(C(m,"preloader--active",!a),n=a)},P=function(a){var c=a.vGap;if(B()){var g=q.barsSize;if(q.captionEl&&"auto"===g.bottom)if(f||(f=b.createEl("pswp__caption pswp__caption--fake"),f.appendChild(b.createEl("pswp__caption__center")),d.insertBefore(f,e),b.addClass(d,"pswp__ui--fit")),q.addCaptionHTMLFn(a,f,!0)){var h=f.clientHeight;c.bottom=parseInt(h,10)||44}else c.bottom=g.top;else c.bottom="auto"===g.bottom?0:g.bottom;c.top=g.top}else c.top=c.bottom=0},Q=function(){q.timeToIdle&&l("mouseUsed",function(){b.bind(document,"mousemove",K),b.bind(document,"mouseout",L),t=setInterval(function(){J++,2===J&&v.setIdle(!0)},q.timeToIdle/2)})},R=function(){l("onVerticalDrag",function(a){x&&.95>a?v.hideControls():!x&&a>=.95&&v.showControls()});var a;l("onPinchClose",function(b){x&&.9>b?(v.hideControls(),a=!0):a&&!x&&b>.9&&v.showControls()}),l("zoomGestureEnded",function(){a=!1,a&&!x&&v.showControls()})},S=[{name:"caption",option:"captionEl",onInit:function(a){e=a}},{name:"share-modal",option:"shareEl",onInit:function(a){i=a},onTap:function(){F()}},{name:"button--share",option:"shareEl",onInit:function(a){h=a},onTap:function(){F()}},{name:"button--zoom",option:"zoomEl",onTap:a.toggleDesktopZoom},{name:"counter",option:"counterEl",onInit:function(a){g=a}},{name:"button--close",option:"closeEl",onTap:a.close},{name:"button--arrow--left",option:"arrowEl",onTap:a.prev},{name:"button--arrow--right",option:"arrowEl",onTap:a.next},{name:"button--fs",option:"fullscreenEl",onTap:function(){c.isFullscreen()?c.exit():c.enter()}},{name:"preloader",option:"preloaderEl",onInit:function(a){m=a}}],T=function(){var a,c,e,f=function(d){if(d)for(var f=d.length,g=0;f>g;g++){a=d[g],c=a.className;for(var h=0;h<S.length;h++)e=S[h],c.indexOf("pswp__"+e.name)>-1&&(q[e.option]?(b.removeClass(a,"pswp__element--disabled"),e.onInit&&e.onInit(a)):b.addClass(a,"pswp__element--disabled"))}};f(d.children);var g=b.getChildByClass(d,"pswp__top-bar");g&&f(g.children)};v.init=function(){b.extend(a.options,z,!0),q=a.options,d=b.getChildByClass(a.scrollWrap,"pswp__ui"),l=a.listen,R(),l("beforeChange",v.update),l("doubleTap",function(b){var c=a.currItem.initialZoomLevel;a.getZoomLevel()!==c?a.zoomTo(c,b,333):a.zoomTo(q.getDoubleTapZoom(!1,a.currItem),b,333)}),l("preventDragEvent",function(a,b,c){var d=a.target||a.srcElement;d&&d.getAttribute("class")&&a.type.indexOf("mouse")>-1&&(d.getAttribute("class").indexOf("__caption")>0||/(SMALL|STRONG|EM)/i.test(d.tagName))&&(c.prevent=!1)}),l("bindEvents",function(){b.bind(d,"pswpTap click",A),b.bind(a.scrollWrap,"pswpTap",v.onGlobalTap),a.likelyTouchDevice||b.bind(a.scrollWrap,"mouseover",v.onMouseOver)}),l("unbindEvents",function(){y||F(),t&&clearInterval(t),b.unbind(document,"mouseout",L),b.unbind(document,"mousemove",K),b.unbind(d,"pswpTap click",A),b.unbind(a.scrollWrap,"pswpTap",v.onGlobalTap),b.unbind(a.scrollWrap,"mouseover",v.onMouseOver),c&&(b.unbind(document,c.eventK,v.updateFullscreen),c.isFullscreen()&&(q.hideAnimationDuration=0,c.exit()),c=null)}),l("destroy",function(){q.captionEl&&(f&&d.removeChild(f),b.removeClass(e,"pswp__caption--empty")),i&&(i.children[0].onclick=null),b.removeClass(d,"pswp__ui--over-close"),b.addClass(d,"pswp__ui--hidden"),v.setIdle(!1)}),q.showAnimationDuration||b.removeClass(d,"pswp__ui--hidden"),l("initialZoomIn",function(){q.showAnimationDuration&&b.removeClass(d,"pswp__ui--hidden")}),l("initialZoomOut",function(){b.addClass(d,"pswp__ui--hidden")}),l("parseVerticalMargin",P),T(),q.shareEl&&h&&i&&(y=!0),D(),Q(),M(),N()},v.setIdle=function(a){k=a,C(d,"ui--idle",a)},v.update=function(){x&&a.currItem?(v.updateIndexIndicator(),q.captionEl&&(q.addCaptionHTMLFn(a.currItem,e),C(e,"caption--empty",!a.currItem.title)),w=!0):w=!1,y||F(),D()},v.updateFullscreen=function(d){d&&setTimeout(function(){a.setScrollOffset(0,b.getScrollY())},50),b[(c.isFullscreen()?"add":"remove")+"Class"](a.template,"pswp--fs")},v.updateIndexIndicator=function(){q.counterEl&&(g.innerHTML=a.getCurrentIndex()+1+q.indexIndicatorSep+q.getNumItemsFn())},v.onGlobalTap=function(c){c=c||window.event;var d=c.target||c.srcElement;if(!r)if(c.detail&&"mouse"===c.detail.pointerType){if(I(d))return void a.close();b.hasClass(d,"pswp__img")&&(1===a.getZoomLevel()&&a.getZoomLevel()<=a.currItem.fitRatio?q.clickToCloseNonZoomable&&a.close():a.toggleDesktopZoom(c.detail.releasePoint))}else if(q.tapToToggleControls&&(x?v.hideControls():v.showControls()),q.tapToClose&&(b.hasClass(d,"pswp__img")||I(d)))return void a.close()},v.onMouseOver=function(a){a=a||window.event;var b=a.target||a.srcElement;C(d,"ui--over-close",I(b))},v.hideControls=function(){b.addClass(d,"pswp__ui--hidden"),x=!1},v.showControls=function(){x=!0,w||v.update(),b.removeClass(d,"pswp__ui--hidden")},v.supportsFullscreen=function(){var a=document;return!!(a.exitFullscreen||a.mozCancelFullScreen||a.webkitExitFullscreen||a.msExitFullscreen)},v.getFullscreenAPI=function(){var b,c=document.documentElement,d="fullscreenchange";return c.requestFullscreen?b={enterK:"requestFullscreen",exitK:"exitFullscreen",elementK:"fullscreenElement",eventK:d}:c.mozRequestFullScreen?b={enterK:"mozRequestFullScreen",exitK:"mozCancelFullScreen",elementK:"mozFullScreenElement",eventK:"moz"+d}:c.webkitRequestFullscreen?b={enterK:"webkitRequestFullscreen",exitK:"webkitExitFullscreen",elementK:"webkitFullscreenElement",eventK:"webkit"+d}:c.msRequestFullscreen&&(b={enterK:"msRequestFullscreen",exitK:"msExitFullscreen",elementK:"msFullscreenElement",eventK:"MSFullscreenChange"}),b&&(b.enter=function(){return j=q.closeOnScroll,q.closeOnScroll=!1,"webkitRequestFullscreen"!==this.enterK?a.template[this.enterK]():void a.template[this.enterK](Element.ALLOW_KEYBOARD_INPUT)},b.exit=function(){return q.closeOnScroll=j,document[this.exitK]()},b.isFullscreen=function(){return document[this.elementK]}),b}};return a});
 
 /***/ },
-/* 111 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -72639,7 +72688,7 @@
 
 
 /***/ },
-/* 112 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -72652,7 +72701,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _introView = __webpack_require__(113);
+	var _introView = __webpack_require__(112);
 
 	var _introView2 = _interopRequireDefault(_introView);
 
@@ -72714,7 +72763,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 113 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -72727,7 +72776,7 @@
 
 
 /***/ },
-/* 114 */
+/* 113 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

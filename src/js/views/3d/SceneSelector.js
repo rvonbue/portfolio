@@ -96,6 +96,9 @@ var SceneSelector = BaseView.extend({
         var address = window.location.origin + "/" + intersectObject.object.clickData.url;
         window.open(address);
         break;
+      case "loadSidebarContent":
+        eventController.trigger(eventController.LOAD_SIDEBAR_CONTENT, intersectObject.object.clickData.name);
+        break;
       case "link:ext":
         var address = "https://www.youtube.com/watch?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M&v=tNs3_4HyIcM";
         window.open(address);

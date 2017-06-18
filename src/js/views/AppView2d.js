@@ -29,6 +29,7 @@ var AppView2d = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.SWITCH_PAGE , this.switchPage, this);
+    commandController.reply(commandController.GET_2D_VIEW, this.getView, this)
   },
   removeListeners: function () {
     eventController.off(eventController.SWITCH_PAGE , this.switchPage, this);
@@ -53,6 +54,11 @@ var AppView2d = BaseView.extend({
     if ( this.currentViewIndex === index) return;
     this.childViews[this.currentViewIndex].view.hide();
     this.setSection(index);
+  },
+  getView: function (index) {
+    var new2dView = new viewArray[index];
+      console.log("getView::new2dView",  new2dView);
+    return new viewArray[index];
   },
   render: function () {
     var navigationBar2d = new NavigationBar2d({ parentEl: this.$el });

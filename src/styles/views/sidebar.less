@@ -18,8 +18,7 @@
   overflow: hidden;
 }
 .navbar-body-container {
-  max-height: ~"calc(100% - 250px)";
-  overflow: auto;
+  overflow-y: auto;
 }
 
 ul.nav-list  {
@@ -98,7 +97,7 @@ hr.toolbar-hr {
   opacity: 0;
   z-index: -1;
 }
-.button-home, .button-settings {
+.button-home, .button-settings, .button-list {
   border-bottom: 2px solid @color-1;
   &:hover, &.active {
     border-bottom: 2px solid @color-4;

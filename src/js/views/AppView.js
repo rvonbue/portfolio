@@ -17,7 +17,6 @@ var AppView = BaseView.extend({
   },
   addListeners: function () {
     eventController.on(eventController.SWITCH_VIEWS, this.switchViews, this);
-    eventController.on(eventController.TOGGLE_SIDEBAR_VISIBILITY, this.toggleSidebar, this);
   },
   initScene: function () {
     var startView = null;
@@ -52,9 +51,6 @@ var AppView = BaseView.extend({
     this.$el.addClass("threeD").removeClass("twoD");
     this.appView3d.initScene();
   },
-  toggleSidebar: function () {
-    this.$el.toggleClass("sidebar-hide");
-  },
   getSkyGradientHTML: function () {
     var startSkyColor = utils.getWorldLighting().background.cssSkyGradient;
     var skyGradientDiv = "<div class='sky-gradient sky-gradient-" + startSkyColor + "'></div>";
@@ -62,7 +58,8 @@ var AppView = BaseView.extend({
   },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
-    this.$el.append(new SidebarView().render().el);
+    var sidebarView = new SidebarView();
+    this.$el.append(sidebarView.render().el);
     this.$el.append(this.getSkyGradientHTML());
     return this;
   }

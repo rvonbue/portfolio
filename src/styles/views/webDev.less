@@ -95,7 +95,59 @@ hr {
     }
   }
 }
+.view2d-sidebar {
+  background-color: @color-5;
+}
+.view2d-sidebar > .web-dev {
+    width: 100%;
+    margin: 0px;
 
+    .section-title {
+      text-align: center;
+      font-size: 200%;
+    }
+    .project-title {
+      text-align: left;
+      font-size: 150%;
+    }
+    .text-wrapper, .img-wrapper {
+      width: 100%;
+      display: block;
+      text-align: center;
+      p {
+        padding-right: 0px;
+        text-align: justify;
+      }
+    }
+    .img-wrapper {
+      margin-top: 30px;
+    }
+
+  .text-wrapper, .img-wrapper {
+    width: 100%;
+    display: block;
+  }
+  .img-wrapper {
+    margin-top: 30px;
+  }
+  .text-wrapper {
+    p {
+      padding-right:0px;
+      // color: @color-5;
+    }
+
+  }
+  .link-container {
+    font-size: 100%;
+    text-align: left;
+  }
+  .button-link {
+    // background-image: url(../sprites/ic_link_white_36px.svg);
+    // width: 36px;
+    // height: 36px;
+    // vertical-align: middle;
+  }
+}
 @media screen and (max-width: @breakPoint1) {
   .web-dev {
     width: 72%;
@@ -117,10 +169,6 @@ hr {
       margin-top: 30px;
     }
   }
-
-}
-
-@media screen and (max-width: @breakPoint1) {
   .text-wrapper, .img-wrapper {
     width: 100%;
     display: block;
