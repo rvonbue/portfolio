@@ -10,7 +10,7 @@ import IntroView from "./components/IntroView";
 import utils from "../util/utils";
 
 var AppView = BaseView.extend({
-  className: "appview-container",
+  className: "appview-container sidebar-hide",
   initialize: function () {
     BaseView.prototype.initialize.apply(this, arguments);
     this.addListeners();
@@ -58,8 +58,7 @@ var AppView = BaseView.extend({
   },
   render: function () {
     var photoSwipeView = new PhotoSwipeView({ parentEl: this.$el });
-    var sidebarView = new SidebarView();
-    this.$el.append(sidebarView.render().el);
+    this.$el.append( new SidebarView().render().el);
     this.$el.append(this.getSkyGradientHTML());
     return this;
   }
