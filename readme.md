@@ -4,10 +4,10 @@
   npm install
 
 ## Start dev Server from project direct CLI
-  webpack-dev-server --hot --inline
+  npm run start
 
 ## Build all the assets when your ready to deploy to server.
-  webpack
+  npm run build
 
 ## Build images from src to bin
   gulp build

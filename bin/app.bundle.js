@@ -78,7 +78,7 @@
 
 	var _AppView2 = _interopRequireDefault(_AppView);
 
-	var _index = __webpack_require__(113);
+	var _index = __webpack_require__(115);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -56950,7 +56950,9 @@
 	  BUILD_SCENE_DETAILS: "BUILD_SCENE_DETAILS",
 
 	  UPDATE_SKY_GRADIENT: "UPDATE_SKY_GRADIENT",
-	  UPDATE_HEMISPHERE_LIGHT: "UPDATE_HEMISPHERE_LIGHT"
+	  UPDATE_HEMISPHERE_LIGHT: "UPDATE_HEMISPHERE_LIGHT",
+
+	  LOAD_SIDEBAR_CONTENT: "LOAD_SIDEBAR_CONTENT"
 	};
 
 /***/ },
@@ -57002,7 +57004,8 @@
 	"use strict";
 
 	module.exports = {
-	  GET_SELECTED_SECTION: "GET_SELECTED_SECTION"
+	  GET_SELECTED_SECTION: "GET_SELECTED_SECTION",
+	  GET_2D_VIEW: "GET_2D_VIEW"
 	};
 
 /***/ },
@@ -57031,11 +57034,11 @@
 
 	var _SidebarView2 = _interopRequireDefault(_SidebarView);
 
-	var _PhotoSwipeView = __webpack_require__(107);
+	var _PhotoSwipeView = __webpack_require__(109);
 
 	var _PhotoSwipeView2 = _interopRequireDefault(_PhotoSwipeView);
 
-	var _IntroView = __webpack_require__(111);
+	var _IntroView = __webpack_require__(113);
 
 	var _IntroView2 = _interopRequireDefault(_IntroView);
 
@@ -57049,14 +57052,13 @@
 
 	// import SwitchView from "./components/SwitchView";
 	var AppView = _BaseView2.default.extend({
-	  className: "appview-container",
+	  className: "appview-container sidebar-hide",
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
 	    this.addListeners();
 	  },
 	  addListeners: function addListeners() {
 	    _eventController2.default.on(_eventController2.default.SWITCH_VIEWS, this.switchViews, this);
-	    _eventController2.default.on(_eventController2.default.TOGGLE_SIDEBAR_VISIBILITY, this.toggleSidebar, this);
 	  },
 	  initScene: function initScene() {
 	    var startView = null;
@@ -57096,9 +57098,6 @@
 	    this.$el.append(this.appView3d.render().el);
 	    this.$el.addClass("threeD").removeClass("twoD");
 	    this.appView3d.initScene();
-	  },
-	  toggleSidebar: function toggleSidebar() {
-	    this.$el.toggleClass("sidebar-hide");
 	  },
 	  getSkyGradientHTML: function getSkyGradientHTML() {
 	    var startSkyColor = _utils2.default.getWorldLighting().background.cssSkyGradient;
@@ -62310,7 +62309,7 @@
 	        obj3d.clickData = { action: "link", url: "other/dvs/index.html" };
 	        break;
 	      case "computerMonitor":
-	        obj3d.clickData = { action: "link", url: "computerMonitor.html" };
+	        obj3d.clickData = { action: "loadSidebarContent", name: "Web Dev" };
 	        break;
 	      default:
 	        obj3d.clickData = { action: "default", url: "webDv" };
@@ -62934,6 +62933,9 @@
 	      case "link":
 	        var address = window.location.origin + "/" + intersectObject.object.clickData.url;
 	        window.open(address);
+	        break;
+	      case "loadSidebarContent":
+	        _eventController2.default.trigger(_eventController2.default.LOAD_SIDEBAR_CONTENT, intersectObject.object.clickData.name);
 	        break;
 	      case "link:ext":
 	        var address = "https://www.youtube.com/watch?list=PLuVBBqTFs-RebOygGDHcqiMUpmfbR_I0M&v=tNs3_4HyIcM";
@@ -63566,6 +63568,7 @@
 	  },
 	  addListeners: function addListeners() {
 	    _eventController2.default.on(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
+	    _commandController2.default.reply(_commandController2.default.GET_2D_VIEW, this.getView, this);
 	  },
 	  removeListeners: function removeListeners() {
 	    _eventController2.default.off(_eventController2.default.SWITCH_PAGE, this.switchPage, this);
@@ -63590,6 +63593,11 @@
 	    if (this.currentViewIndex === index) return;
 	    this.childViews[this.currentViewIndex].view.hide();
 	    this.setSection(index);
+	  },
+	  getView: function getView(index) {
+	    var new2dView = new viewArray[index]();
+	    console.log("getView::new2dView", new2dView);
+	    return new viewArray[index]();
 	  },
 	  render: function render() {
 	    var navigationBar2d = new _NavigationBar2d2.default({ parentEl: this.$el });
@@ -64108,6 +64116,10 @@
 
 	var _eventController2 = _interopRequireDefault(_eventController);
 
+	var _commandController = __webpack_require__(31);
+
+	var _commandController2 = _interopRequireDefault(_commandController);
+
 	var _BaseView = __webpack_require__(35);
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
@@ -64124,11 +64136,19 @@
 
 	var _DatGuiView2 = _interopRequireDefault(_DatGuiView);
 
+	var _sidebarHeader = __webpack_require__(107);
+
+	var _sidebarHeader2 = _interopRequireDefault(_sidebarHeader);
+
+	var _toolbar = __webpack_require__(108);
+
+	var _toolbar2 = _interopRequireDefault(_toolbar);
+
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
 	}
 
-	// import utils from "../../util/utils";
+	var viewArray = [__webpack_require__(88), __webpack_require__(92), __webpack_require__(94), __webpack_require__(96), __webpack_require__(98)];
 
 	var SidebarView = _BaseView2.default.extend({
 	  className: "sidebar",
@@ -64139,14 +64159,24 @@
 	    "click ul.nav-list>li": "clickme",
 	    "click .button-menu": "toggleSidebar",
 	    "click .button-home": "showNavList",
-	    "click .button-settings": "show3dSettings",
+	    "click .button-list, .button-settings": "clickToolbar",
 	    "click .sidebar-click-catcher": "toggleSidebar"
 	  },
 	  initialize: function initialize() {
 	    _BaseView2.default.prototype.initialize.apply(this, arguments);
+	    _eventController2.default.on(_eventController2.default.LOAD_SIDEBAR_CONTENT, this.loadSidebarContent, this);
+	    _eventController2.default.on(_eventController2.default.ON_RESIZE, this.setHeight, this);
 	  },
-	  toggleSidebar: function toggleSidebar() {
-	    _eventController2.default.trigger(_eventController2.default.TOGGLE_SIDEBAR_VISIBILITY);
+	  setHeight: function setHeight(size) {
+	    var total = size.h - this.navbarBodyContainerEl.offset().top;
+	    this.navbarBodyContainerEl.css("height", total + 'px');
+	  },
+	  toggleSidebar: function toggleSidebar(showSidebar) {
+	    if (showSidebar && showSidebar == true) {
+	      this.$el.parent().removeClass("sidebar-hide");
+	    } else {
+	      this.$el.parent().toggleClass("sidebar-hide");
+	    }
 	  },
 	  enterMenuItem: function enterMenuItem(evt) {
 	    this.enterHoverNavigationLi($(evt.currentTarget).index());
@@ -64158,13 +64188,11 @@
 	    _eventController2.default.trigger(_eventController2.default.SWITCH_PAGE, $(evt.currentTarget).closest("li").index());
 	  },
 	  showNavList: function showNavList(evt) {
-	    var el = $(evt.currentTarget);
-	    this.swapSelectedSubmenu(el);
+	    this.clickToolbar(evt);
 	    _eventController2.default.trigger(_eventController2.default.RESET_SCENE);
 	  },
-	  show3dSettings: function show3dSettings(evt) {
-	    var el = $(evt.currentTarget);
-	    this.swapSelectedSubmenu(el);
+	  clickToolbar: function clickToolbar(evt) {
+	    this.swapSelectedSubmenu($(evt.currentTarget));
 	  },
 	  enterHoverNavigationLi: function enterHoverNavigationLi(index) {
 	    _eventController2.default.trigger(_eventController2.default.HOVER_SCENE_MODEL_FROM_NAV_BAR, _navigationList2.default[index], true);
@@ -64175,14 +64203,25 @@
 	  swapSelectedSubmenu: function swapSelectedSubmenu(currentTargetEl) {
 	    this.toolbarEl.find(".active:first").removeClass("active");
 	    currentTargetEl.addClass("active");
-	    var index = currentTargetEl.index();
 	    this.navbarBodyContainerEl.find(".show:first").removeClass("show");
-	    this.navbarBodyContainerEl.children().eq(index).addClass("show");
-	    // console.log("swapSelectedSubmenu", this.navbarBodyContainerEl.children().eq(index));
+	    this.navbarBodyContainerEl.children().eq(currentTargetEl.index()).addClass("show");
 	  },
-	  showHideSubmenu: function showHideSubmenu() {},
+	  loadSidebarContent: function loadSidebarContent(whichPage) {
+	    this.toggleSidebar(true);
+	    this.$el.find(".button-list:first").click();
+
+	    var self = this;
+	    _.each(_navigationList2.default, function (obj, i) {
+	      if (obj.name == whichPage) {
+	        var view2d = new viewArray[i]();
+	        self.view2dSidebarEl.empty().append(view2d.render().el);
+	        view2d.$el.show();
+	        return;
+	      }
+	    });
+	  },
 	  getMenuItemsHTML: function getMenuItemsHTML() {
-	    var html = "<div class='show'><ul class='nav-list'>";
+	    var html = "<div class='nav-list-container show'><ul class='nav-list'>";
 
 	    _.each(_navigationList2.default, function (navItem, i) {
 	      html += this.template({ displayTitle: navItem.name.toUpperCase(), i: i });
@@ -64193,33 +64232,18 @@
 	  getSidebarClickCatchHTML: function getSidebarClickCatchHTML() {
 	    return "<div class='sidebar-click-catcher'></div>";
 	  },
-	  addDatGui: function addDatGui() {
-	    var datGui = new _DatGuiView2.default();
-	    datGui.render();
-	    return datGui;
-	  },
 	  render: function render() {
-	    this.toolbarEl = $("<div class='toolbar'></div>");
-	    this.toolbarEl.append("<div class='button-home active'></div>");
-	    this.toolbarEl.append("<div class='button-settings'></div>");
-	    this.toolbarEl.append(new _SwitchView2.default({}).render().el);
-	    this.datGui = this.addDatGui();
+	    this.datGui = new _DatGuiView2.default().render();
+	    this.view2dSidebarEl = $("<div class='view2d-sidebar'></div>");
 
-	    this.navbarBodyContainerEl = $("<div class='navbar-body-container'></div>");
-	    this.navbarBodyContainerEl.append(this.getMenuItemsHTML());
-	    this.navbarBodyContainerEl.append(this.datGui.$el);
-
-	    var sidebarHeader = $("<div class='side-header'></div>");
-	    sidebarHeader.append("<img class='side-header-img' src='/images/small-header.png'/>");
+	    this.navbarBodyContainerEl = $("<div class='navbar-body-container'></div>").append(this.getMenuItemsHTML()).append(this.view2dSidebarEl).append(this.datGui.$el);
 
 	    var navbarBody = $("<div class='navbar-body'></div>");
-	    navbarBody.append(sidebarHeader);
-	    navbarBody.append(this.toolbarEl);
-	    navbarBody.append(this.navbarBodyContainerEl);
+	    navbarBody.append(_sidebarHeader2.default).append(_toolbar2.default).append(this.navbarBodyContainerEl);
 
-	    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>");
-	    this.$el.append(navbarBody);
-	    this.$el.append(this.getSidebarClickCatchHTML());
+	    this.toolbarEl = navbarBody.find(".toolbar:first").append(new _SwitchView2.default({}).render().el);
+
+	    this.$el.append("<div class='button-menu-tab'><div class='button-menu'></div></div>").append(navbarBody).append(this.getSidebarClickCatchHTML());
 
 	    return this;
 	  }
@@ -68875,11 +68899,37 @@
 
 /***/ },
 /* 107 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class=\'side-header\'>\r\n  <img class=\'side-header-img\' src=\'/images/small-header.png\'/>\r\n</div>\r\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 108 */
+/***/ function(module, exports) {
+
+	module.exports = function(obj){
+	var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+	with(obj||{}){
+	__p+='<div class=\'toolbar\'>\r\n  <div class=\'button-home active\'></div>\r\n  <div class=\'button-list\'></div>\r\n  <div class=\'button-settings\'></div>\r\n</div>\r\n';
+	}
+	return __p;
+	};
+
+
+/***/ },
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _photoswipe = __webpack_require__(108);
+	var _photoswipe = __webpack_require__(110);
 
 	var _photoswipe2 = _interopRequireDefault(_photoswipe);
 
@@ -68891,11 +68941,11 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _photoswipeUiDefaultMin = __webpack_require__(109);
+	var _photoswipeUiDefaultMin = __webpack_require__(111);
 
 	var _photoswipeUiDefaultMin2 = _interopRequireDefault(_photoswipeUiDefaultMin);
 
-	var _photoSwipe = __webpack_require__(110);
+	var _photoSwipe = __webpack_require__(112);
 
 	var _photoSwipe2 = _interopRequireDefault(_photoSwipe);
 
@@ -68943,7 +68993,7 @@
 	module.exports = PhotoSwipeView;
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe - v4.1.1 - 2015-12-24
@@ -72666,7 +72716,7 @@
 	});
 
 /***/ },
-/* 109 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! PhotoSwipe Default UI - 4.1.1 - 2015-12-24
@@ -72675,7 +72725,7 @@
 	!function(a,b){ true?!(__WEBPACK_AMD_DEFINE_FACTORY__ = (b), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"object"==typeof exports?module.exports=b():a.PhotoSwipeUI_Default=b()}(this,function(){"use strict";var a=function(a,b){var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v=this,w=!1,x=!0,y=!0,z={barsSize:{top:44,bottom:"auto"},closeElClasses:["item","caption","zoom-wrap","ui","top-bar"],timeToIdle:4e3,timeToIdleOutside:1e3,loadingIndicatorDelay:1e3,addCaptionHTMLFn:function(a,b){return a.title?(b.children[0].innerHTML=a.title,!0):(b.children[0].innerHTML="",!1)},closeEl:!0,captionEl:!0,fullscreenEl:!0,zoomEl:!0,shareEl:!0,counterEl:!0,arrowEl:!0,preloaderEl:!0,tapToClose:!1,tapToToggleControls:!0,clickToCloseNonZoomable:!0,shareButtons:[{id:"facebook",label:"Share on Facebook",url:"https://www.facebook.com/sharer/sharer.php?u={{url}}"},{id:"twitter",label:"Tweet",url:"https://twitter.com/intent/tweet?text={{text}}&url={{url}}"},{id:"pinterest",label:"Pin it",url:"http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}"},{id:"download",label:"Download image",url:"{{raw_image_url}}",download:!0}],getImageURLForShare:function(){return a.currItem.src||""},getPageURLForShare:function(){return window.location.href},getTextForShare:function(){return a.currItem.title||""},indexIndicatorSep:" / ",fitControlsWidth:1200},A=function(a){if(r)return!0;a=a||window.event,q.timeToIdle&&q.mouseUsed&&!k&&K();for(var c,d,e=a.target||a.srcElement,f=e.getAttribute("class")||"",g=0;g<S.length;g++)c=S[g],c.onTap&&f.indexOf("pswp__"+c.name)>-1&&(c.onTap(),d=!0);if(d){a.stopPropagation&&a.stopPropagation(),r=!0;var h=b.features.isOldAndroid?600:30;s=setTimeout(function(){r=!1},h)}},B=function(){return!a.likelyTouchDevice||q.mouseUsed||screen.width>q.fitControlsWidth},C=function(a,c,d){b[(d?"add":"remove")+"Class"](a,"pswp__"+c)},D=function(){var a=1===q.getNumItemsFn();a!==p&&(C(d,"ui--one-slide",a),p=a)},E=function(){C(i,"share-modal--hidden",y)},F=function(){return y=!y,y?(b.removeClass(i,"pswp__share-modal--fade-in"),setTimeout(function(){y&&E()},300)):(E(),setTimeout(function(){y||b.addClass(i,"pswp__share-modal--fade-in")},30)),y||H(),!1},G=function(b){b=b||window.event;var c=b.target||b.srcElement;return a.shout("shareLinkClick",b,c),c.href?c.hasAttribute("download")?!0:(window.open(c.href,"pswp_share","scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left="+(window.screen?Math.round(screen.width/2-275):100)),y||F(),!1):!1},H=function(){for(var a,b,c,d,e,f="",g=0;g<q.shareButtons.length;g++)a=q.shareButtons[g],c=q.getImageURLForShare(a),d=q.getPageURLForShare(a),e=q.getTextForShare(a),b=a.url.replace("{{url}}",encodeURIComponent(d)).replace("{{image_url}}",encodeURIComponent(c)).replace("{{raw_image_url}}",c).replace("{{text}}",encodeURIComponent(e)),f+='<a href="'+b+'" target="_blank" class="pswp__share--'+a.id+'"'+(a.download?"download":"")+">"+a.label+"</a>",q.parseShareButtonOut&&(f=q.parseShareButtonOut(a,f));i.children[0].innerHTML=f,i.children[0].onclick=G},I=function(a){for(var c=0;c<q.closeElClasses.length;c++)if(b.hasClass(a,"pswp__"+q.closeElClasses[c]))return!0},J=0,K=function(){clearTimeout(u),J=0,k&&v.setIdle(!1)},L=function(a){a=a?a:window.event;var b=a.relatedTarget||a.toElement;b&&"HTML"!==b.nodeName||(clearTimeout(u),u=setTimeout(function(){v.setIdle(!0)},q.timeToIdleOutside))},M=function(){q.fullscreenEl&&!b.features.isOldAndroid&&(c||(c=v.getFullscreenAPI()),c?(b.bind(document,c.eventK,v.updateFullscreen),v.updateFullscreen(),b.addClass(a.template,"pswp--supports-fs")):b.removeClass(a.template,"pswp--supports-fs"))},N=function(){q.preloaderEl&&(O(!0),l("beforeChange",function(){clearTimeout(o),o=setTimeout(function(){a.currItem&&a.currItem.loading?(!a.allowProgressiveImg()||a.currItem.img&&!a.currItem.img.naturalWidth)&&O(!1):O(!0)},q.loadingIndicatorDelay)}),l("imageLoadComplete",function(b,c){a.currItem===c&&O(!0)}))},O=function(a){n!==a&&(C(m,"preloader--active",!a),n=a)},P=function(a){var c=a.vGap;if(B()){var g=q.barsSize;if(q.captionEl&&"auto"===g.bottom)if(f||(f=b.createEl("pswp__caption pswp__caption--fake"),f.appendChild(b.createEl("pswp__caption__center")),d.insertBefore(f,e),b.addClass(d,"pswp__ui--fit")),q.addCaptionHTMLFn(a,f,!0)){var h=f.clientHeight;c.bottom=parseInt(h,10)||44}else c.bottom=g.top;else c.bottom="auto"===g.bottom?0:g.bottom;c.top=g.top}else c.top=c.bottom=0},Q=function(){q.timeToIdle&&l("mouseUsed",function(){b.bind(document,"mousemove",K),b.bind(document,"mouseout",L),t=setInterval(function(){J++,2===J&&v.setIdle(!0)},q.timeToIdle/2)})},R=function(){l("onVerticalDrag",function(a){x&&.95>a?v.hideControls():!x&&a>=.95&&v.showControls()});var a;l("onPinchClose",function(b){x&&.9>b?(v.hideControls(),a=!0):a&&!x&&b>.9&&v.showControls()}),l("zoomGestureEnded",function(){a=!1,a&&!x&&v.showControls()})},S=[{name:"caption",option:"captionEl",onInit:function(a){e=a}},{name:"share-modal",option:"shareEl",onInit:function(a){i=a},onTap:function(){F()}},{name:"button--share",option:"shareEl",onInit:function(a){h=a},onTap:function(){F()}},{name:"button--zoom",option:"zoomEl",onTap:a.toggleDesktopZoom},{name:"counter",option:"counterEl",onInit:function(a){g=a}},{name:"button--close",option:"closeEl",onTap:a.close},{name:"button--arrow--left",option:"arrowEl",onTap:a.prev},{name:"button--arrow--right",option:"arrowEl",onTap:a.next},{name:"button--fs",option:"fullscreenEl",onTap:function(){c.isFullscreen()?c.exit():c.enter()}},{name:"preloader",option:"preloaderEl",onInit:function(a){m=a}}],T=function(){var a,c,e,f=function(d){if(d)for(var f=d.length,g=0;f>g;g++){a=d[g],c=a.className;for(var h=0;h<S.length;h++)e=S[h],c.indexOf("pswp__"+e.name)>-1&&(q[e.option]?(b.removeClass(a,"pswp__element--disabled"),e.onInit&&e.onInit(a)):b.addClass(a,"pswp__element--disabled"))}};f(d.children);var g=b.getChildByClass(d,"pswp__top-bar");g&&f(g.children)};v.init=function(){b.extend(a.options,z,!0),q=a.options,d=b.getChildByClass(a.scrollWrap,"pswp__ui"),l=a.listen,R(),l("beforeChange",v.update),l("doubleTap",function(b){var c=a.currItem.initialZoomLevel;a.getZoomLevel()!==c?a.zoomTo(c,b,333):a.zoomTo(q.getDoubleTapZoom(!1,a.currItem),b,333)}),l("preventDragEvent",function(a,b,c){var d=a.target||a.srcElement;d&&d.getAttribute("class")&&a.type.indexOf("mouse")>-1&&(d.getAttribute("class").indexOf("__caption")>0||/(SMALL|STRONG|EM)/i.test(d.tagName))&&(c.prevent=!1)}),l("bindEvents",function(){b.bind(d,"pswpTap click",A),b.bind(a.scrollWrap,"pswpTap",v.onGlobalTap),a.likelyTouchDevice||b.bind(a.scrollWrap,"mouseover",v.onMouseOver)}),l("unbindEvents",function(){y||F(),t&&clearInterval(t),b.unbind(document,"mouseout",L),b.unbind(document,"mousemove",K),b.unbind(d,"pswpTap click",A),b.unbind(a.scrollWrap,"pswpTap",v.onGlobalTap),b.unbind(a.scrollWrap,"mouseover",v.onMouseOver),c&&(b.unbind(document,c.eventK,v.updateFullscreen),c.isFullscreen()&&(q.hideAnimationDuration=0,c.exit()),c=null)}),l("destroy",function(){q.captionEl&&(f&&d.removeChild(f),b.removeClass(e,"pswp__caption--empty")),i&&(i.children[0].onclick=null),b.removeClass(d,"pswp__ui--over-close"),b.addClass(d,"pswp__ui--hidden"),v.setIdle(!1)}),q.showAnimationDuration||b.removeClass(d,"pswp__ui--hidden"),l("initialZoomIn",function(){q.showAnimationDuration&&b.removeClass(d,"pswp__ui--hidden")}),l("initialZoomOut",function(){b.addClass(d,"pswp__ui--hidden")}),l("parseVerticalMargin",P),T(),q.shareEl&&h&&i&&(y=!0),D(),Q(),M(),N()},v.setIdle=function(a){k=a,C(d,"ui--idle",a)},v.update=function(){x&&a.currItem?(v.updateIndexIndicator(),q.captionEl&&(q.addCaptionHTMLFn(a.currItem,e),C(e,"caption--empty",!a.currItem.title)),w=!0):w=!1,y||F(),D()},v.updateFullscreen=function(d){d&&setTimeout(function(){a.setScrollOffset(0,b.getScrollY())},50),b[(c.isFullscreen()?"add":"remove")+"Class"](a.template,"pswp--fs")},v.updateIndexIndicator=function(){q.counterEl&&(g.innerHTML=a.getCurrentIndex()+1+q.indexIndicatorSep+q.getNumItemsFn())},v.onGlobalTap=function(c){c=c||window.event;var d=c.target||c.srcElement;if(!r)if(c.detail&&"mouse"===c.detail.pointerType){if(I(d))return void a.close();b.hasClass(d,"pswp__img")&&(1===a.getZoomLevel()&&a.getZoomLevel()<=a.currItem.fitRatio?q.clickToCloseNonZoomable&&a.close():a.toggleDesktopZoom(c.detail.releasePoint))}else if(q.tapToToggleControls&&(x?v.hideControls():v.showControls()),q.tapToClose&&(b.hasClass(d,"pswp__img")||I(d)))return void a.close()},v.onMouseOver=function(a){a=a||window.event;var b=a.target||a.srcElement;C(d,"ui--over-close",I(b))},v.hideControls=function(){b.addClass(d,"pswp__ui--hidden"),x=!1},v.showControls=function(){x=!0,w||v.update(),b.removeClass(d,"pswp__ui--hidden")},v.supportsFullscreen=function(){var a=document;return!!(a.exitFullscreen||a.mozCancelFullScreen||a.webkitExitFullscreen||a.msExitFullscreen)},v.getFullscreenAPI=function(){var b,c=document.documentElement,d="fullscreenchange";return c.requestFullscreen?b={enterK:"requestFullscreen",exitK:"exitFullscreen",elementK:"fullscreenElement",eventK:d}:c.mozRequestFullScreen?b={enterK:"mozRequestFullScreen",exitK:"mozCancelFullScreen",elementK:"mozFullScreenElement",eventK:"moz"+d}:c.webkitRequestFullscreen?b={enterK:"webkitRequestFullscreen",exitK:"webkitExitFullscreen",elementK:"webkitFullscreenElement",eventK:"webkit"+d}:c.msRequestFullscreen&&(b={enterK:"msRequestFullscreen",exitK:"msExitFullscreen",elementK:"msFullscreenElement",eventK:"MSFullscreenChange"}),b&&(b.enter=function(){return j=q.closeOnScroll,q.closeOnScroll=!1,"webkitRequestFullscreen"!==this.enterK?a.template[this.enterK]():void a.template[this.enterK](Element.ALLOW_KEYBOARD_INPUT)},b.exit=function(){return q.closeOnScroll=j,document[this.exitK]()},b.isFullscreen=function(){return document[this.elementK]}),b}};return a});
 
 /***/ },
-/* 110 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -72688,7 +72738,7 @@
 
 
 /***/ },
-/* 111 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -72701,7 +72751,7 @@
 
 	var _BaseView2 = _interopRequireDefault(_BaseView);
 
-	var _introView = __webpack_require__(112);
+	var _introView = __webpack_require__(114);
 
 	var _introView2 = _interopRequireDefault(_introView);
 
@@ -72763,7 +72813,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
 
 /***/ },
-/* 112 */
+/* 114 */
 /***/ function(module, exports) {
 
 	module.exports = function(obj){
@@ -72776,7 +72826,7 @@
 
 
 /***/ },
-/* 113 */
+/* 115 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
